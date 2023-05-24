@@ -1,0 +1,34 @@
+<div class="login-wrapper">
+    <div class="login-box">
+        <div class="login-logo">
+            <img src="./assets/images/logo.png" alt=""/>
+        </div>
+        <h1 class="font25">Login</h1>
+
+        <div class="alert alert-danger" *ngIf="error=='true'">
+            {{errorMessage}}
+        </div>
+        <div class="loading-custom" *ngIf="loading"><span class="fa fa-spinner fa-spin"></span> &nbsp;Loading...</div>
+
+        <form (ngSubmit)="login()" autocomplete="nope" class="form-signin" [formGroup]="loginForm">
+            <div class="form-box">
+                <div class="mb-3">
+                    <label for="emailInput" class="form-label">Email address</label>
+                    <input type="text" name="email" placeholder="Enter Email" formControlName="email" id="input-email"
+                    class="form-control">
+                    <span *ngIf="email && email.invalid && email.touched" class="text-danger">Email is required</span>
+                </div>
+                <div class="mb-3">
+                    <label for="passInput" class="form-label">Password</label>
+                    <input type="password" name="password" placeholder="Enter Password" formControlName="password" id="input-email" class="form-control">
+                    <span *ngIf="password && password.invalid && password.touched" class="text-danger">Password is required</span>
+                </div>
+                <div class="text-center">
+                    <button class="mt-5 btn" [disabled]="loginForm.invalid">Login</button>
+                </div>            
+            </div>
+        </form>
+
+
+    </div>
+</div>
