@@ -46,35 +46,32 @@ export class LoginComponent implements OnInit {
     this.error = "false";
     console.warn("warn: ", this.loginForm.value);
 
-
     this.userCredentials = { email: this.loginForm.value.email, password: this.loginForm.value.password };
     this.userService.doLogin(this.userCredentials).subscribe(
       data => {
         this.result = data;
         console.log("resultStatus: ", this.result);
-        if (this.result.status == 1) {
-          this.setSession(this.result);
 
-
-          //get the user stats details like userid, module id, ip address, browser, last login
-          // this.locationService.getPosition().then(pos => {
-          //   // console.log(`Positon: ${pos.lng} ${pos.lat}`);
-          //   localStorage.setItem("pos_lat", `${pos.lat}`);
-          //   localStorage.setItem("pos_long", `${pos.lng}`);
-          //   // console.log("set Geo2: ", localStorage.getItem("pos_lat"));
-          //   this.userService.remoteAccess({ lat: localStorage.getItem("pos_lat"), long: localStorage.getItem("pos_long") }).subscribe(
-          //     data => {
-          //       this.result = data;
-          //       console.log("data2: ", this.result);
-          //     });
-          // });
-
-          this.router.navigate(['./index']);
-        } else {
+        if (this.result.success == false) {
           this.error = "true";
           this.loading = false;
-          this.errorMessage = "Invalid Email or Password...";
+          this.errorMessage = "Invalid User name or password";
+        } else {
+          if (this.result.success == true) {
+            this.setSession(this.result.search['original']);
+            // this._router.navigate(['/index'], { relativeTo: this._activatedRoute });
+            this.router.navigate(['./index']);
+          }
         }
+
+        // if (this.result.status == 1) {
+        //   this.setSession(this.result);
+        //   this.router.navigate(['./index']);
+        // } else {
+        //   this.error = "true";
+        //   this.loading = false;
+        //   this.errorMessage = "Invalid Email or Password...";
+        // }
       },
       err => {
         this.error = "true";
@@ -88,11 +85,10 @@ export class LoginComponent implements OnInit {
 
   }
 
-
   private setSession(authResult: any) {
-    const expiresAt = moment().add(authResult.expiresAt, authResult.expireTimeUnit);
-    sessionStorage.setItem('currentUser', JSON.stringify({ user_name: authResult.user_name, user_id: authResult.user_id }));
-    localStorage.setItem('id_token', authResult.idToken);
+    const expiresAt = moment().add(authResult.expires_in, authResult.expireTimeUnit);
+    sessionStorage.setItem('currentUser', JSON.stringify({ user_name: authResult.user.name, user_id: authResult.user.user_id, user_type_id: authResult.user.user_type_id, email: authResult.user.email }));
+    localStorage.setItem('id_token', authResult.access_token);
     localStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
   }
 
