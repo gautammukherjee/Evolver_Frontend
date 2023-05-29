@@ -20,7 +20,7 @@ node(){
     }
 
     stage('Package Build') {
-        sh "tar -zcvf bundle.tar.gz dist/evolver-ai-new-ver2/"
+        sh "tar -zcvf bundle.tar.gz dist/evolver-ai-new-ver/"
     }
 
     stage('Artifacts Creation') {
