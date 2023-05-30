@@ -34,7 +34,7 @@ node(){
     }
 }
 
-node('awsnode') {
+node('evolver_node') {
     echo 'Unstash'
     unstash 'buildArtifacts'
     echo 'Artifacts copied'
