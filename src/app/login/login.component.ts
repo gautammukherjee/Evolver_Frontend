@@ -58,7 +58,8 @@ export class LoginComponent implements OnInit {
           this.errorMessage = "Invalid User name or password";
         } else {
           if (this.result.success == true) {
-            this.setSession(this.result.search['original']);
+            console.log("result: ", this.result.search[0]);
+            this.setSession(this.result.search[0]);
             // this._router.navigate(['/index'], { relativeTo: this._activatedRoute });
             this.router.navigate(['./index']);
           }
@@ -86,10 +87,10 @@ export class LoginComponent implements OnInit {
   }
 
   private setSession(authResult: any) {
-    const expiresAt = moment().add(authResult.expires_in, authResult.expireTimeUnit);
-    sessionStorage.setItem('currentUser', JSON.stringify({ user_name: authResult.user.name, user_id: authResult.user.user_id, user_type_id: authResult.user.user_type_id, email: authResult.user.email }));
-    localStorage.setItem('id_token', authResult.access_token);
-    localStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
+    // const expiresAt = moment().add(authResult.expires_in, authResult.expireTimeUnit);
+    sessionStorage.setItem('currentUser', JSON.stringify({ user_name: authResult.name, user_id: authResult.user_id, user_type_id: authResult.user_type_id, email: authResult.email }));
+    // localStorage.setItem('id_token', authResult.access_token);
+    // localStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
   }
 
   get email() {

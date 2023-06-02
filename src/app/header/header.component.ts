@@ -21,9 +21,9 @@ export class HeaderComponent implements OnInit {
   constructor(private userService: UserService, private router: Router) {
     this.result = JSON.parse(sessionStorage.getItem('currentUser') || "null");
 
-    if (this.userService.isLoggednIn() == false) {
-      this.autologout();
-    }
+    // if (this.userService.isLoggednIn() == false) {
+    //   this.autologout();
+    // }
 
     // if (this.result !== null) {
     // }
@@ -32,6 +32,7 @@ export class HeaderComponent implements OnInit {
     //   this.errorMessage = "Your session is expired..";
     //   this.router.navigate(['login'], { queryParams: { error: this.error, errorMessage: this.errorMessage } }); // when user is not logged in app is redirected to login page 
     // }
+
   }
 
   ngOnInit(): void {
@@ -47,8 +48,8 @@ export class HeaderComponent implements OnInit {
       this.error = "true";
       this.errorMessage = "Your session is expired..";
       sessionStorage.removeItem('currentUser');
-      localStorage.removeItem('id_token');
-      localStorage.removeItem('expires_at');
+      // localStorage.removeItem('id_token');
+      // localStorage.removeItem('expires_at');
       this.router.navigate(['login'], { queryParams: { error: this.error, errorMessage: this.errorMessage } }); // when user is not logged in app is redirected to login page 
     }, 1000);
   }

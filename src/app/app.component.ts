@@ -17,9 +17,9 @@ export class AppComponent implements OnInit {
   constructor(private userService: UserService, private router: Router) {
     this.result = JSON.parse(sessionStorage.getItem('currentUser') || "null");
 
-    if (this.userService.isLoggednIn() == false) {
-      this.autologout();
-    }
+    // if (this.userService.isLoggednIn() == false) {
+    //   this.autologout();
+    // }
     // this.user = JSON.parse(this.userService.getCurrentUser());
     // console.log("idToken:: ", localStorage.getItem('id_token'));
 
@@ -38,8 +38,8 @@ export class AppComponent implements OnInit {
       this.error = "true";
       this.errorMessage = "Your session is expired..";
       sessionStorage.removeItem('currentUser');
-      localStorage.removeItem('id_token');
-      localStorage.removeItem('expires_at');
+      // localStorage.removeItem('id_token');
+      // localStorage.removeItem('expires_at');
       this.router.navigate(['login'], { queryParams: { error: this.error, errorMessage: this.errorMessage } }); // when user is not logged in app is redirected to login page 
     }, 1000);
   }
