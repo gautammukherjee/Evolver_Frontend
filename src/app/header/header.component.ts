@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/users.service';
-import { Router, RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { GlobalVariableService } from '../services/common/global-variable.service';
 
 @Component({
   selector: 'app-header',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
@@ -18,7 +15,7 @@ export class HeaderComponent implements OnInit {
   errorMessage = "";
   userName: any = '';
 
-  constructor(private userService: UserService, private router: Router) {
+  constructor(private router: Router, private _activatedRoute: ActivatedRoute, private usersService: UserService, private globalVariableService: GlobalVariableService) {
     this.result = JSON.parse(sessionStorage.getItem('currentUser') || "null");
 
     // if (this.userService.isLoggednIn() == false) {

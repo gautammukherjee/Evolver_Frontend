@@ -1,0 +1,243 @@
+import { Component, OnInit, EventEmitter, Output, ChangeDetectorRef, Input, Pipe, PipeTransform, ElementRef, ViewChild, ViewChildren } from '@angular/core';
+import { NodeSelectsService } from '../../services/common/node-selects.service';
+import { GlobalVariableService } from '../../services/common/global-variable.service';
+import { Subject } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+@Component({
+  selector: 'app-filter-node-select',
+  templateUrl: './filter-node-select.component.html',
+  styleUrls: ['./filter-node-select.component.scss']
+})
+export class FilterNodeSelectComponent implements OnInit {
+
+  @Output() onSelectNode: EventEmitter<any> = new EventEmitter();
+  // @Input() UpdateFilterDataApply?: Subject<any>;
+  // public alphabeticallyGroupedGenes = [];
+  public alphabeticallyGroupedNodeSelects: any = '';
+  public selectedNodeSelects: any = [];
+  public node_selects: any = [];
+  private params: object = {};
+  private result: any = [];
+  private results2: any = [];
+  public loading: boolean = false;
+  public nodeSelectsCheck: boolean = false;
+  public enableFilter: boolean = false;;
+  public filterText: string = '';
+  public seeMoreFilterText: string = '';
+  public filterPlaceholder: string = '';
+  public seeMoreFilterPlaceholder: string = '';
+  public filterInput = new FormControl();
+  public seeMoreFilterInput = new FormControl();
+  public isAllSelected: boolean = false;
+  togglecollapseStatus: boolean = false;
+  private seeMoreNodeSelectsModal: any;
+  mouseOverON: any = undefined;
+  otherMouseOverONElem: any = undefined;
+  public disableProceed = true;
+  nodeSelectsFilter: string = '';
+  nodeSelectsFilterText: string = '';
+  //diseaseCheck: any;
+  //diseaseCheckCT: any;
+  hideCardBody: boolean = true;
+
+  constructor(
+    private nodeSelectsService: NodeSelectsService,
+    private globalVariableService: GlobalVariableService,
+    private modalService: NgbModal,
+    private elementRef: ElementRef
+  ) { }
+
+  ngOnInit(): void {
+    //To filter the gene lists
+    this.enableFilter = true;
+    this.filterText = "";
+    this.filterPlaceholder = "Nodes Filter..";
+
+    //To filter the "SEE MORE" gene lists
+    this.seeMoreFilterText = "";
+    this.seeMoreFilterPlaceholder = "Search Nodes";
+    //End here
+
+    // this.UpdateFilterDataApply.subscribe(event => {  // Calling from details, details working as mediator
+    //   console.log("eventGenes:: ", event);
+    //   if (event == undefined) {
+    //     this.hideCardBody = true;
+    //     // this.selectedGenes = []; // Reinitialized, because when data updated on click TA, it should empty locally
+    //     // this.getNodeSelects(event, 2);
+    //   } else if (event !== undefined && event.clickOn != 'geneFilter' && event.clickOn != 'geneFilter')
+    //     this.hideCardBody = true;
+    //   // this.getNodeSelects(event, 2);
+    // });
+    this.getNodeSelects(event, 1);
+    this.hideCardBody = true;
+
+    this.selectedNodeSelects = Array.from(this.globalVariableService.getSelectedNodeSelects());
+  }
+
+  ngOnDestroy() {
+    // this.UpdateFilterDataApply?.unsubscribe();
+  }
+
+  public getNodeSelects(event: any, type: any) {
+    this.loading = true;
+    this.params = this.globalVariableService.getFilterParams();
+    // this.diseaseCheck = this.params['di_ids']; // if disease_id is checked
+    // this.diseaseCheckCT = this.params['ct_di_ids']; // if disease_id is checked
+    // console.log("checked here Gene: ", this.diseaseCheck);
+
+    // this.selectedGenes = [];
+
+    //if (this.diseaseCheck !== undefined || this.diseaseCheckCT !== undefined) {
+    this.nodeSelectsService.getNodeSelects()
+      .subscribe(
+        data => {
+          this.result = data;
+          // console.log("result: ", this.result);
+          this.node_selects = this.result.nodeSelectsRecords;
+          console.log("node_selects: ", this.node_selects);
+
+          this.alphabeticallyGroupedNodeSelects = this.groupBy(this.node_selects, 'pair_name');
+          // console.log("alphabeticallyGroupedGenes: ", this.alphabeticallyGroupedGenes);
+
+          //if (event !== undefined && event.type == 'load') { // i.e No Genes selected previously
+          for (let i = 0; i < this.result.nodeSelectsRecords.length && i < 1; i++) {
+            this.selectedNodeSelects.push(this.result.nodeSelectsRecords[i].nnrt_id);
+            //this.selectedGenes = [];
+          }
+          console.log("selected Nodes: ", this.selectedNodeSelects);
+          this.globalVariableService.setSelectedNodeSelects(this.selectedNodeSelects);
+          //} else {
+          //this.selectedGenes = Array.from(this.globalVariableService.getSelectedNodeSelects());
+          //}
+        },
+        err => {
+          this.nodeSelectsCheck = true;
+          this.loading = false;
+          console.log(err.message)
+        },
+        () => {
+          this.nodeSelectsCheck = true;
+          this.loading = false;
+          console.log("loading finish")
+        }
+      );
+    // }
+    // else {
+    //   this.genes = [];
+    //   this.loading = false;
+    // }
+  }
+
+  selectNode(nodeValue: any) {
+    console.log("nodeValue: ", nodeValue.target.value);
+    // if (event.target.checked) {
+    //   this.selectedNodeSelects.push(node.nnrt_id);
+    // } else {
+    //   this.selectedNodeSelects.splice(this.selectedNodeSelects.indexOf(node.nnrt_id), 1);
+    // }
+    this.selectedNodeSelects = nodeValue.target.value;
+
+    console.log("selectedNodeSelects: ", this.selectedNodeSelects);
+    // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data   
+
+    // if (from != 'nodeSelectsWarningModal')
+    this.proceed();
+    this.enableDisableProceedButton();
+  }
+
+  collapseMenuItem() {
+    this.togglecollapseStatus = !this.togglecollapseStatus;
+  }
+
+  selectAll(event: any, geneWarningModal: any) {
+    if (this.isAllSelected) {
+      this.result.map((element: any) => {
+        // console.log("element: ", element);
+        this.selectedNodeSelects.push(element.nnrt_id);
+      })
+    } else {
+      this.selectedNodeSelects = [];
+    }
+    this.enableDisableProceedButton();
+  }
+
+  resetNode() {
+    this.selectedNodeSelects = [];
+    this.globalVariableService.setSelectedNodeSelects(this.selectedNodeSelects);
+    this.selectedNodeSelects = Array.from(this.globalVariableService.getSelectedNodeSelects());
+    // this.proceed();
+  }
+
+  reloadNode() {
+    // this.globalVariableService.resetChartFilter();
+    // this.hideCardBody = !this.hideCardBody;
+    // this.params = this.globalVariableService.getFilterParams();
+    // if (!this.hideCardBody)
+    this.getNodeSelects(event, 1);
+  }
+
+  SeeMore(evt: any, seeMoreGeneModal: any) {
+    this.seeMoreNodeSelectsModal = this.modalService.open(seeMoreGeneModal, { size: 'lg', windowClass: 'diseaseModal-custom-class', keyboard: false, backdrop: 'static' });
+  }
+
+  seeMoreClosePopup() {
+    this.selectedNodeSelects = Array.from(this.globalVariableService.getSelectedNodeSelects());
+    this.isAllSelected = false;
+    this.seeMoreNodeSelectsModal.close();
+  }
+
+  closePopup() {
+    this.selectedNodeSelects = Array.from(this.globalVariableService.getSelectedNodeSelects());
+    this.isAllSelected = false;
+    this.seeMoreNodeSelectsModal.close();
+  }
+
+  public seeMoreproceed() {
+    this.proceed();
+    // this.enableDisableProceedButton();
+  }
+
+  proceed() {
+    this.globalVariableService.setSelectedNodeSelects(this.selectedNodeSelects);
+    this.selectedNodeSelects = Array.from(this.globalVariableService.getSelectedNodeSelects());
+    if (this.seeMoreNodeSelectsModal != undefined)
+      this.seeMoreNodeSelectsModal.close();
+    this.onSelectNode.emit();
+  }
+
+  private enableDisableProceedButton() {
+    if (this.selectedNodeSelects.length < 1) {
+      this.disableProceed = true;
+    } else {
+      this.disableProceed = false;
+    }
+  }
+
+  private groupBy(collection: any, property: any) {   //collection:Array, property:String
+    // prevents the application from breaking if the array of objects doesn't exist yet
+    if (!collection) {
+      return null;
+    }
+
+    const groupedCollection = collection.reduce((previous: any, current: any) => {
+      if (!previous[current[property].charAt(0)]) {
+        previous[current[property].charAt(0)] = [current];
+      } else {
+        previous[current[property].charAt(0)].push(current);
+      }
+
+      return previous;
+    }, {});
+    // this will return an array of objects, each object containing a group of objects
+    return Object.keys(groupedCollection).map(key => ({ key, value: groupedCollection[key] }));
+  }
+
+  scrollToView(key: any) {
+    var elmnt = document.getElementById(key);
+    if (elmnt !== null)
+      elmnt.scrollIntoView();
+  }
+
+}
