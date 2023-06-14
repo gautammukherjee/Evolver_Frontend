@@ -239,3 +239,22 @@ body {
         color: #000;
     }
 }
+
+.loading-custom-desc {
+    position: absolute;
+    width: 100px;
+    background: #b6eaef;
+    text-align: center;
+    border: 0px solid #b3af22;
+    font-size: 13px;
+    color: #000;
+    top: 102px;
+    padding: 4px;
+    left: 50%;
+    margin-left: -50px;
+    z-index: 999;
+
+    span {
+        color: #000;
+    }
+}

@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { APP_BASE_HREF, DatePipe } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthInterceptor } from './auth.interceptor';
@@ -14,6 +15,10 @@ import { LogoutComponent } from './logout/logout.component';
 import { ManagePasswordComponent } from './manage-password/manage-password.component';
 import { IndexComponent } from './index/index.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { NetworkMapComponent } from './network-map/network-map.component';
+import { NgCytoComponent } from './ng-cyto/ng-cyto.component';
+import { EventDescriptionComponent } from './event-description/event-description.component';
+
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { FilterDataRangeComponent } from './filters/filter-data-range/filter-data-range.component';
@@ -36,6 +41,9 @@ import { FilterEdgeTypeComponent } from './filters/filter-edge-type/filter-edge-
     ManagePasswordComponent,
     IndexComponent,
     DashboardComponent,
+    NetworkMapComponent,
+    NgCytoComponent,
+    EventDescriptionComponent,
     FilterNodeSelectComponent,
     FilterSourceNodeComponent,
     FilterDestinationNodeComponent,
@@ -74,6 +82,7 @@ import { FilterEdgeTypeComponent } from './filters/filter-edge-type/filter-edge-
   ],
   schemas: [],
   providers: [
+    DatePipe,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

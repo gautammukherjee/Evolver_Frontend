@@ -12,7 +12,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class FilterSourceNodeComponent implements OnInit {
 
-  @Output() onSelectNode: EventEmitter<any> = new EventEmitter();
+  @Output() onSelectSourceNode: EventEmitter<any> = new EventEmitter();
   @Input() UpdateFilterDataApply?: Subject<any>;
 
   // public alphabeticallyGroupedGenes = [];
@@ -40,7 +40,7 @@ export class FilterSourceNodeComponent implements OnInit {
   public disableProceed = true;
   sourceNodeFilter: string = '';
   sourceNodeFilterText: string = '';
-  hideCardBody: boolean = true;
+  // hideCardBody: boolean = true;
 
   constructor(
     private nodeSelectsService: NodeSelectsService,
@@ -60,23 +60,26 @@ export class FilterSourceNodeComponent implements OnInit {
     this.seeMoreFilterPlaceholder = "Search Source Nodes";
     //End here
 
+    this.globalVariableService.setSelectedSourceNodes([33163]);
+    this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
+    console.log("selectedSourceNodes: ", this.selectedSourceNodes);
+
     this.filterParams = this.globalVariableService.getFilterParams();
-    console.log("new Filters1: ", this.filterParams);
+    // console.log("new Filters source node: ", this.filterParams);
 
     this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
-      console.log("eventSource:: ", event);
+      // console.log("eventSource:: ", event);
       if (event == undefined) {
-        this.hideCardBody = true;
+        // this.hideCardBody = true;
         this.selectedSourceNodes = []; // Reinitialized, because when data updated on click TA, it should empty locally
         this.getSourceNode(event, 2);
-      } else if (event !== undefined && event.clickOn != 'geneFilter' && event.clickOn != 'geneFilter')
-        this.hideCardBody = true;
-      this.getSourceNode(event, 2);
+        // } else if (event !== undefined && event.clickOn != 'geneFilter' && event.clickOn != 'geneFilter')
+      } else if (event !== undefined)
+        // this.hideCardBody = true;
+        this.getSourceNode(event, 2);
     });
     this.getSourceNode(event, 1);
     // this.hideCardBody = true;
-
-    this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
   }
 
   ngOnDestroy() {
@@ -195,7 +198,7 @@ export class FilterSourceNodeComponent implements OnInit {
     this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
     if (this.seeMoreNodeSelectsModal != undefined)
       this.seeMoreNodeSelectsModal.close();
-    this.onSelectNode.emit();
+    this.onSelectSourceNode.emit();
   }
 
   private enableDisableProceedButton() {

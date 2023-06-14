@@ -23,11 +23,15 @@ export class GlobalVariableService {
   selectedCompany = [];
   selectedDevelopment = [];
   selectedDrug = [];
-  selectedNodeSelects = [];
+  selectedNodeSelects = '';
   selectedSourceNodes = [];
   selectedDestinationNodes = [];
   selectedEdgeTypes = [];
-  selectedMoa = [];
+
+  selectedNodes = [];
+  selectedEdges: any;
+  selectedMapsType: any;
+
 
   selectedChooseDate = [];
 
@@ -83,14 +87,38 @@ export class GlobalVariableService {
     return this.selectedEdgeTypes;
   }
 
+  setSelectedNodes(nodes: any) {
+    this.selectedNodes = nodes;
+  }
+  getSelectedNodes() {
+    return this.selectedNodes;
+  }
+  setSelectedEdges(edge_select: any) {
+    this.selectedEdges = edge_select;
+  }
+  getSelectedEdges() {
+    return this.selectedEdges;
+  }
+
+  setMapsSelected(mapType: any) {
+    this.selectedMapsType = mapType;
+  }
+  getMapsSelected() {
+    return this.selectedMapsType;
+  }
+
   getFilterParams(mergeParam = {}) {  // Use of parameter is for if someone wants to pass filter params custom,
     this.filterParams = {
       from_date: this.getFromDate(),
       to_date: this.getToDate(),
-      nnrt_id: this.getSelectedNodeSelects().length > 0 ? this.getSelectedNodeSelects() : undefined,
+      nnrt_id: this.getSelectedNodeSelects() != undefined ? this.getSelectedNodeSelects() : 1,
       source_node: this.getSelectedSourceNodes().length > 0 ? this.getSelectedSourceNodes() : undefined,
       destination_node: this.getSelectedDestinationNodes().length > 0 ? this.getSelectedDestinationNodes() : undefined,
       edge_type_id: this.getSelectedEdgeTypes().length > 0 ? this.getSelectedEdgeTypes() : undefined,
+
+      node_id: this.getSelectedNodes().length > 0 ? this.getSelectedNodes() : undefined,
+      edge_select: this.getSelectedEdges() != undefined ? this.getSelectedEdges() : 1,
+      mapType: this.getMapsSelected() != undefined ? this.getMapsSelected() : 'default',
     };
     return Object.assign(mergeParam, this.filterParams);
   }

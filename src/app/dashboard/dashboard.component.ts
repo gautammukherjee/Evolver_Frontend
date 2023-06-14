@@ -31,17 +31,22 @@ export class DashboardComponent implements OnInit {
   }
 
   nodeChanged(e: any) {
-    // this.doFilterApply.next(e);
+    this.doFilterApply.next(e);
     this.doUpdateFilterDataApply.next(e);
   }
   sourceNodeChanged(e: any) {
-    // this.doFilterApply.next(e);
+    this.doFilterApply.next(e);
   }
   destinationNodeChanged(e: any) {
-    // this.doFilterApply.next(e);
+    this.doFilterApply.next(e);
   }
   edgeTypeChanged(e: any) {
-    // this.doFilterApply.next(e);
+    this.doFilterApply.next(e);
+  }
+
+  graphSelected(param: any) {
+    console.log("you here:: ", param);
+    this.doFilterApply.next({ clickOn: param });
   }
 
 }

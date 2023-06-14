@@ -41,6 +41,7 @@ export class FilterNodeSelectComponent implements OnInit {
   //diseaseCheck: any;
   //diseaseCheckCT: any;
   hideCardBody: boolean = true;
+  private filterParams: any;
 
   constructor(
     private nodeSelectsService: NodeSelectsService,
@@ -73,7 +74,13 @@ export class FilterNodeSelectComponent implements OnInit {
     this.getNodeSelects(event, 1);
     this.hideCardBody = true;
 
+    this.globalVariableService.setSelectedNodeSelects(1);
     this.selectedNodeSelects = Array.from(this.globalVariableService.getSelectedNodeSelects());
+    console.log("sel_nodes: ", this.selectedNodeSelects);
+
+    this.filterParams = this.globalVariableService.getFilterParams();
+    console.log("new Filters node select: ", this.filterParams);
+
   }
 
   ngOnDestroy() {
@@ -103,7 +110,8 @@ export class FilterNodeSelectComponent implements OnInit {
 
           //if (event !== undefined && event.type == 'load') { // i.e No Genes selected previously
           for (let i = 0; i < this.result.nodeSelectsRecords.length && i < 1; i++) {
-            this.selectedNodeSelects.push(this.result.nodeSelectsRecords[i].nnrt_id);
+            // this.selectedNodeSelects.push(this.result.nodeSelectsRecords[i].nnrt_id);
+            this.selectedNodeSelects = this.result.nodeSelectsRecords[i].nnrt_id;
             //this.selectedGenes = [];
           }
           console.log("selected Nodes: ", this.selectedNodeSelects);
@@ -151,17 +159,17 @@ export class FilterNodeSelectComponent implements OnInit {
     this.togglecollapseStatus = !this.togglecollapseStatus;
   }
 
-  selectAll(event: any, geneWarningModal: any) {
-    if (this.isAllSelected) {
-      this.result.map((element: any) => {
-        // console.log("element: ", element);
-        this.selectedNodeSelects.push(element.nnrt_id);
-      })
-    } else {
-      this.selectedNodeSelects = [];
-    }
-    this.enableDisableProceedButton();
-  }
+  // selectAll(event: any, geneWarningModal: any) {
+  //   if (this.isAllSelected) {
+  //     this.result.map((element: any) => {
+  //       // console.log("element: ", element);
+  //       this.selectedNodeSelects.push(element.nnrt_id);
+  //     })
+  //   } else {
+  //     this.selectedNodeSelects = [];
+  //   }
+  //   this.enableDisableProceedButton();
+  // }
 
   resetNode() {
     this.selectedNodeSelects = [];

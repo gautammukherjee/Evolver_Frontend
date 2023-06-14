@@ -12,7 +12,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class FilterDestinationNodeComponent implements OnInit {
 
-  @Output() onSelectNode: EventEmitter<any> = new EventEmitter();
+  @Output() onSelectDestinationNode: EventEmitter<any> = new EventEmitter();
   @Input() UpdateFilterDataApply?: Subject<any>;
 
   // public alphabeticallyGroupedGenes = [];
@@ -42,7 +42,7 @@ export class FilterDestinationNodeComponent implements OnInit {
   destinationNodeFilterText: string = '';
   //diseaseCheck: any;
   //diseaseCheckCT: any;
-  hideCardBody: boolean = true;
+  // hideCardBody: boolean = true;
 
   constructor(
     private nodeSelectsService: NodeSelectsService,
@@ -62,23 +62,27 @@ export class FilterDestinationNodeComponent implements OnInit {
     this.seeMoreFilterPlaceholder = "Search Destination Nodes";
     //End here
 
+    this.globalVariableService.setSelectedDestinationNodes([45136]);
+    this.selectedDestinationNodes = Array.from(this.globalVariableService.getSelectedDestinationNodes());
+    console.log("selectedDestinationNodes: ", this.selectedDestinationNodes);
+
     this.filterParams = this.globalVariableService.getFilterParams();
-    console.log("new Filters1: ", this.filterParams);
+    // console.log("new Filters destination: ", this.filterParams);
 
     this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
-      console.log("eventDestination:: ", event);
+      // console.log("eventDestination:: ", event);
       if (event == undefined) {
-        this.hideCardBody = true;
+        // this.hideCardBody = true;
         this.selectedDestinationNodes = []; // Reinitialized, because when data updated on click TA, it should empty locally
         this.getDestinationNode(event, 2);
-      } else if (event !== undefined && event.clickOn != 'geneFilter' && event.clickOn != 'geneFilter')
-        this.hideCardBody = true;
-      this.getDestinationNode(event, 2);
+        // } else if (event !== undefined && event.clickOn != 'geneFilter' && event.clickOn != 'geneFilter')
+      } else if (event !== undefined)
+        // this.hideCardBody = true;
+        this.getDestinationNode(event, 2);
     });
     this.getDestinationNode(event, 1);
     // this.hideCardBody = true;
 
-    this.selectedDestinationNodes = Array.from(this.globalVariableService.getSelectedDestinationNodes());
   }
 
   ngOnDestroy() {
@@ -203,7 +207,7 @@ export class FilterDestinationNodeComponent implements OnInit {
     this.selectedDestinationNodes = Array.from(this.globalVariableService.getSelectedDestinationNodes());
     if (this.seeMoreNodeSelectsModal != undefined)
       this.seeMoreNodeSelectsModal.close();
-    this.onSelectNode.emit();
+    this.onSelectDestinationNode.emit();
   }
 
   private enableDisableProceedButton() {

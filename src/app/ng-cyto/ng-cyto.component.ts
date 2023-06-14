@@ -1,7 +1,6 @@
-import { Component, OnChanges, Renderer, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnChanges, Renderer2, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GlobalVariableService } from 'src/app/services/common/global-variable.service';
-import { DiseaseGeneNetworkmapService } from 'src/app/services/neuroscience/disease-gene-networkmap.service';
 
 // import * as $ from 'jquery';
 // declare var jQuery: any;
@@ -40,23 +39,23 @@ export class NgCytoComponent implements OnChanges {
     private modalRef: any;
     private params: object = {};
     private _selectedNodes: any;
-    private checkedNodes = [];
+    private checkedNodes: any = [];
 
-    node_name: string;
-    edge_name: string;
+    node_name: string = '';
+    edge_name: string = '';
     loading = false;
-    private filterParams;
+    private filterParams: any;
     resultSDGs: any = [];
     dataSDGs = [];
     SDGDetails: any = [];
-    nodeName;
+    nodeName: any;
 
     // searchConnections;
 
-    @ViewChild('showNode', { static: false }) show_nodes: ElementRef;
-    @ViewChild('showEdge', { static: false }) show_edges: ElementRef;
+    @ViewChild('showNode', { static: false }) show_nodes?: ElementRef;
+    @ViewChild('showEdge', { static: false }) show_edges?: ElementRef;
 
-    public constructor(private globalVariableService: GlobalVariableService, private renderer: Renderer, private el: ElementRef, private modalService: NgbModal, private diseaseGeneNetworkmapService: DiseaseGeneNetworkmapService) {
+    public constructor(private globalVariableService: GlobalVariableService, private renderer: Renderer2, private el: ElementRef, private modalService: NgbModal) {
 
         this._selectedNodes = this.globalVariableService.getSelectedNodes();
 
@@ -140,7 +139,7 @@ export class NgCytoComponent implements OnChanges {
 
         // console.log("cy:: ", cy._private.elements);
 
-        cy.on('click', 'node', (e) => {
+        cy.on('click', 'node', (e: any) => {
             var node = e.target;
 
             var neighborhood = node.neighborhood().add(node);
@@ -163,14 +162,14 @@ export class NgCytoComponent implements OnChanges {
                 nodeDetails += '<div style="padding: 5px;"><strong>Node Type: ' + TargetNode.node_type + '</strong></div>';
                 nodeDetails += '<div style="padding: 5px;"><strong>Connections: </strong></div>';
 
-                nodeDetails += '<input type="text" id="searchInput" autocomplete="off" onkeyup="searchConnections()" placeholder="&#xf002; Search for connections..">';
+                // nodeDetails += '<input type="text" id="searchInput" autocomplete="off" onkeyup="searchConnections()" placeholder="&#xf002; Search for connections..">';
 
                 nodeDetails += "<ul style='padding: 2px 18px;'>";
-                directlyConnectedNodes.forEach(directlyConnectedNode => {
+                directlyConnectedNodes.forEach((directlyConnectedNode: any) => {
                     // window.gv = directlyConnectedNode;
                     //console.log("inner: ", directlyConnectedNode);
                     // console.log("inner: ", gv);
-                    nodeDetails += "<li style='list-style: initial; color:" + directlyConnectedNode._private.data.colorCode + " '>" + directlyConnectedNode._private.data.name + "</li>"; //22509 -HSP90 molecular
+                    nodeDetails += "<li style='list-style: initial; color:" + directlyConnectedNode._private.data.colorCode + "'>" + directlyConnectedNode._private.data.name + "</li>"; //22509 -HSP90 molecular
                 });
                 nodeDetails += "</ul>";
                 nodeDetails += "</div>";
@@ -178,20 +177,21 @@ export class NgCytoComponent implements OnChanges {
             } else {
                 $("#nodeDetails").html("");
             }
-            $('#myModalNode').modal('show');
+            ($('#myModalNode') as any).modal('show');
             this.showNodeInfo(node._private.data.id);
         });
 
-        cy.on('tap', function (e) {
+        cy.on('tap', function (e: any) {
             if (e.target === cy) {
                 cy.elements().removeClass('faded');
             }
         });
 
-        cy.on('mouseover', 'node', (e) => {
+        cy.on('mouseover', 'node', (e: any) => {
             var node = e.target;
             // console.log("actRight: ", node[0]._private.data);
             let node_ids = parseInt(node[0]._private.data.id);
+            // console.log("nodeIds: ", node_ids);
 
             node.qtip({
                 content: e.target._private.data.name,
@@ -205,92 +205,27 @@ export class NgCytoComponent implements OnChanges {
                 }
             }, e);
 
-            if (node[0]._private.data.node_type == "FDG") {
-                this.globalVariableService.setSelectedNodesForSDG(node_ids);
-                // this.globalVariableService.getSelectedNodesForSDG();
-                this.filterParams = this.globalVariableService.getFilterParams();
-                console.log("filterparams: ", this.filterParams);
 
-                this.diseaseGeneNetworkmapService.getSDGLists(this.filterParams).subscribe(
-                    data => {
-                        this.resultSDGs = data;
-                        this.dataSDGs = this.resultSDGs.nameSDGs;
-                        console.log("dataSDGs: ", this.dataSDGs);
 
-                        if (this.dataSDGs.length > 0) {
-
-                            $("#nodeName").html("Second Degree Gene: "+ e.target._private.data.name); // To show the title in popup
-
-                            this.SDGDetails = [];
-                            var pubmedBaseUrl = "https://www.ncbi.nlm.nih.gov/pubmed/";
-                            this.dataSDGs.forEach(dataSDG => {
-                                var temps = {};
-                                temps["name"] = dataSDG.sdg_name;
-                                temps["edge_weight"] = dataSDG.edge_weight;
-
-                                temps["pmid_lists"] = "";
-                                dataSDG.pmidlist.forEach(pmidLists => {
-                                    temps["pmid_lists"] += "<a target='_blank' href='" + pubmedBaseUrl + pmidLists.trim() + "'>" + pubmedBaseUrl + pmidLists.trim() + "</a><br/>";
-                                });
-                                this.SDGDetails.push(temps);
-                            });
-                            console.log("lists:: ", this.SDGDetails);
-
-                            jQuery('#demo-table2').bootstrapTable({
-                                bProcessing: true,
-                                bServerSide: true,
-                                pagination: true,
-                                showColumns: true,
-                                pageSize: 25,
-                                // pageList: [10, 25, 50, 100, All],
-                                striped: true,
-                                showFilter: true,
-                                filter: true,
-                                data: this.SDGDetails,
-                            });
-
-                            jQuery('#demo-table2').bootstrapTable("load", this.SDGDetails);
-
-                            jQuery('#demo-table2').on("search.bs.table", function () {
-                                jQuery('#demo-table2').bootstrapTable("load", this.SDGDetails);
-                            })
-                                .on("search.bs.table", function () {
-                                    jQuery('#demo-table2').bootstrapTable("load", this.SDGDetails);
-                                })
-                                .on("page-change.bs.table", function () {
-                                    jQuery('#demo-table2').bootstrapTable("load", this.SDGDetails);
-                                });
-                            $('#myModalSDGLists').modal('show');
-                        }
-                    },
-                    err => {
-                        console.log(err.message);
-                    },
-                    () => {
-                        this.loading = false;
-                    }
-                )
-            }
-            // this.showNodeInfo(node[0]._private.data.id);
         });
 
-        cy.on('tap', 'edge', function (e) {
+        cy.on('tap', 'edge', function (e: any) {
             var edge = e.target._private.data;
             // console.log("PMID: ", e.target._private.data);
 
-            var pubmedURLsDownload;
-            if (edge.PMID != undefined) {
-                // var PMIDList = edge.PMID.split(",");
-                var pubmedBaseUrl = "https://www.ncbi.nlm.nih.gov/pubmed/";
-                pubmedURLsDownload = "";
-                edge.PMID.forEach(PMID => {
-                    pubmedURLsDownload += "<div style='list-style: none; font-size: 14px;'><a target='_blank' style='color: white !important;' href='" + pubmedBaseUrl + PMID.trim() + "'>" + pubmedBaseUrl + PMID.trim() + "</a></div>";
-                });
-                pubmedURLsDownload += "<div style='clear: both;'><hr/></div>";
-            } else {
-                pubmedURLsDownload = "<h4>No PMID Found..</h4>";
-                pubmedURLsDownload += "<div style='clear: both;'><hr/></div>";
-            }
+            // var pubmedURLsDownload: any;
+            // if (edge.PMID != undefined) {
+            //     // var PMIDList = edge.PMID.split(",");
+            //     var pubmedBaseUrl = "https://www.ncbi.nlm.nih.gov/pubmed/";
+            //     pubmedURLsDownload = "";
+            //     edge.PMID.forEach((PMID: any) => {
+            //         pubmedURLsDownload += "<div style='list-style: none; font-size: 14px;'><a target='_blank' style='color: white !important;' href='" + pubmedBaseUrl + PMID.trim() + "'>" + pubmedBaseUrl + PMID.trim() + "</a></div>";
+            //     });
+            //     pubmedURLsDownload += "<div style='clear: both;'><hr/></div>";
+            // } else {
+            //     pubmedURLsDownload = "<h4>No PMID Found..</h4>";
+            //     pubmedURLsDownload += "<div style='clear: both;'><hr/></div>";
+            // }
 
             var sourceData = e.target._private.source._private.data;
             var targetData = e.target._private.target._private.data;
@@ -305,18 +240,19 @@ export class NgCytoComponent implements OnChanges {
             pubmedEdgeDetails += '<div style="padding-bottom:10px;">' + edge.strength + '</div>';
             pubmedEdgeDetails += "</div>";
             console.log("pubmedEdgeDetails: ", pubmedEdgeDetails);
-            $("#pubmedURLsDownload").html(pubmedURLsDownload);
+            // $("#pubmedURLsDownload").html(pubmedURLsDownload);
             $("#pubmedURLs").html(pubmedEdgeDetails);
-            $('#myModalEdge').modal('show');
+            ($('#myModalEdge') as any).modal('show');
         });
     }
 
-    public showNodeInfo(nodeId) {
+    public showNodeInfo(nodeId: any) {
+        // var nodeId: any = $(nodeId);
         console.log("nodeId: ", nodeId);
         this.checkedNodes = Array.from(this.globalVariableService.getSelectedNodes()); //get the existing node id
         this.checkedNodes.push(parseInt(nodeId));  // and append the selecting nodeid
         this.globalVariableService.setSelectedNodes(this.checkedNodes);
-        // console.log("select2: ", this.checkedNodes);
+        console.log("select2: ", this.checkedNodes);
         this.onGraphSelection.emit();
 
         // this.node_name = "piyush";
@@ -324,15 +260,16 @@ export class NgCytoComponent implements OnChanges {
     }
 
 
-
     searchConnections = function () {
 
         console.log("sdfsfs");
         alert("sfsfsf");
         // Declare variables
-        var input, filter, ul, li, a, i, txtValue;
+        var input: any, filter: any, ul: any, li: any, a: any, i: any, txtValue: any;
         input = document.getElementById('searchInput');
+
         filter = input.value.toUpperCase();
+
         ul = document.getElementById("myUL");
         li = ul.getElementsByTagName('li');
 

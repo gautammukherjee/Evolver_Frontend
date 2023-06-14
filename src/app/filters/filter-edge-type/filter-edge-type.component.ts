@@ -12,7 +12,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class FilterEdgeTypeComponent implements OnInit {
 
-  @Output() onSelectNode: EventEmitter<any> = new EventEmitter();
+  @Output() onSelectEdgeType: EventEmitter<any> = new EventEmitter();
   @Input() UpdateFilterDataApply?: Subject<any>;
 
   // public alphabeticallyGroupedGenes = [];
@@ -186,7 +186,7 @@ export class FilterEdgeTypeComponent implements OnInit {
   proceed() {
     this.globalVariableService.setSelectedEdgeTypes(this.selectedEdgeTypes);
     this.selectedEdgeTypes = Array.from(this.globalVariableService.getSelectedEdgeTypes());
-    this.onSelectNode.emit();
+    this.onSelectEdgeType.emit();
   }
 
   private enableDisableProceedButton() {

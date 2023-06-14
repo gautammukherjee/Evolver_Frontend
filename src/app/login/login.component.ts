@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
   login() {
     this.loading = true;
     this.error = "false";
-    console.warn("warn: ", this.loginForm.value);
+    // console.warn("warn: ", this.loginForm.value);
 
     this.userCredentials = { email: this.loginForm.value.email, password: this.loginForm.value.password };
     this.userService.doLogin(this.userCredentials).subscribe(
