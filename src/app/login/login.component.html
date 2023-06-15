@@ -1,34 +1,61 @@
 <div class="login-wrapper">
-    <div class="login-box">
-        <div class="login-logo">
-            <img src="./assets/images/logo.png" alt=""/>
+    <div class="container">
+        <div class="bxl-logo">
+            <img src="../../assets/images/bioxcel-logo.png" alt="">
         </div>
-        <h1 class="font25">Login</h1>
-
-        <div class="alert alert-danger" *ngIf="error=='true'">
-            {{errorMessage}}
-        </div>
-        <div class="loading-custom" *ngIf="loading"><span class="fa fa-spinner fa-spin"></span> &nbsp;Loading...</div>
-
-        <form (ngSubmit)="login()" autocomplete="nope" class="form-signin" [formGroup]="loginForm">
-            <div class="form-box">
-                <div class="mb-3">
-                    <label for="emailInput" class="form-label">Email address</label>
-                    <input type="text" name="email" placeholder="Enter Email" formControlName="email" id="input-email"
-                    class="form-control">
-                    <span *ngIf="email && email.invalid && email.touched" class="text-danger">Email is required</span>
+        <div class="login-box">
+            <div class="login-box-inner">
+                <div class="login-logo">
+                    <img src="./assets/images/logo.png" alt="" />
                 </div>
-                <div class="mb-3">
-                    <label for="passInput" class="form-label">Password</label>
-                    <input type="password" name="password" placeholder="Enter Password" formControlName="password" id="input-email" class="form-control">
-                    <span *ngIf="password && password.invalid && password.touched" class="text-danger">Password is required</span>
+                <h1 class="font25">Welcome Back!</h1>
+                <p>Please login to your EvolverAI&trade; account</p>
+
+                <div class="alert alert-danger" *ngIf="error=='true'">
+                    {{errorMessage}}
                 </div>
-                <div class="text-center">
-                    <button class="mt-5 btn" [disabled]="loginForm.invalid">Login</button>
-                </div>            
+                <div class="loading-custom" *ngIf="loading"><span class="fa fa-spinner fa-spin"></span> &nbsp;Loading...
+                </div>
+
+                <form (ngSubmit)="login()" autocomplete="nope" class="form-signin" [formGroup]="loginForm">
+                    <div class="form-box">
+                        <div class="mb-4">
+                            <div class="input-group">
+                                <span>
+                                    <img src="../../assets/images/user-avatar.svg" alt="">
+                                </span>
+                                <input type="text" name="email" placeholder="User Id" formControlName="email"
+                                    id="input-email" class="form-control">
+                            </div>
+
+                            <span *ngIf="email && email.invalid && email.touched" class="text-danger">Email is
+                                required</span>
+                        </div>
+                        <div class="mb-4">
+                            <div class="input-group">
+                                <span>
+                                    <img src="../../assets/images/lock.svg" alt="">
+                                </span>
+                                <input type="password" name="password" placeholder="Password" formControlName="password"
+                                    id="input-email" class="form-control">
+                            </div>
+
+                            <span *ngIf="password && password.invalid && password.touched" class="text-danger">Password
+                                is
+                                required</span>
+                        </div>
+                        <div class="text-center">
+                            <button class="mt-5 btn" [disabled]="loginForm.invalid">Sign In</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-        </form>
 
+            <div class="create-account">
+                <span>Create a new account</span>
+                <span>Forget Password</span>
+            </div>
 
+        </div>
     </div>
 </div>
