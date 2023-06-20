@@ -51,6 +51,9 @@
               "./src/assets/extrnalJs/cytoscape.min.js",
               "node_modules/dagre/dist/dagre.min.js",
               "node_modules/cytoscape-dagre/cytoscape-dagre.js"
+            ],
+            "allowedCommonJsDependencies": [
+              "lodash"
             ]
           },
           "configurations": {
