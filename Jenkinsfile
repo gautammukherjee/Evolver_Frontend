@@ -16,7 +16,7 @@ node(){
         nodejs('nodejs') {
             sh 'npm update'
             sh 'npm run build'
-            sh 'npm cache clean'
+            //sh 'npm cache clean'
             echo "Build completed"
         }
         
