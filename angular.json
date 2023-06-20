@@ -36,7 +36,8 @@
               "./src/assets/extrnalJs/bootstrap-table/bootstrap-table.min.css",
               "./src/assets/extrnalJs/bootstrap-table/bootstrap-table.css",
               "./src/assets/extrnalJs/bootstrapValidator.min.css",
-              "./src/assets/extrnalJs/jquery.qtip.min.css"
+              "./src/assets/extrnalJs/jquery.qtip.min.css",
+              "./node_modules/bootstrap-icons/font/bootstrap-icons.min.css"
             ],
             "scripts": [
               "./src/assets/extrnalJs/jquery.min.js",
