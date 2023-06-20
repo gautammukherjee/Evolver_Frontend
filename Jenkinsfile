@@ -5,7 +5,7 @@ node(){
 
     stage('Install dependencies') {
         nodejs('nodejs') {
-            sh 'rm -r node_modules'
+            //sh 'rm -r node_modules'
             sh 'npm install --force'
             sh 'npm install --legacy-peer-deps'
             echo "Modules installed"
