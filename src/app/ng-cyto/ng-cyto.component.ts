@@ -157,6 +157,7 @@ export class NgCytoComponent implements OnChanges {
             $("#nodeDetails").html("");
             if (directlyConnectedNodes != undefined) {
                 var nodeDetails = "";
+                
                 nodeDetails += "<div style='float:left;'>";
                 nodeDetails += '<div style="padding: 5px;"><strong>' + TargetNode.name + '</strong></div>';
                 nodeDetails += '<div style="padding: 5px;"><strong>Node Type: ' + TargetNode.node_type + '</strong></div>';
