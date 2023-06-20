@@ -5,7 +5,6 @@ node(){
 
     stage('Install dependencies') {
         nodejs('nodejs') {
-            //sh 'rm -r node_modules'
             sh 'npm install --force'
             sh 'npm install --legacy-peer-deps'
             echo "Modules installed"
@@ -14,9 +13,7 @@ node(){
     }
     stage('Build') {
         nodejs('nodejs') {
-            sh 'npm update'
             sh 'npm run build'
-            //sh 'npm cache clean'
             echo "Build completed"
         }
         
