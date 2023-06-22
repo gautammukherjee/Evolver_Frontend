@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 // import 'rxjs/add/observable/of';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from './../../environments/environment';
-// import * as moment from "moment";
+import * as moment from "moment";
 
 const API_URL = environment.apiUrl;
 const httpOptions = {
@@ -27,7 +27,7 @@ export class UserService {
 
   isLoggednIn() {
     //return JSON.parse(this.getCurrentUser()) !== null;
-    return '';
+    return moment().isBefore(this.getExpiration());
   }
 
   isLoggedOut() {
@@ -43,7 +43,7 @@ export class UserService {
   getExpiration() {
     const expiration: any = localStorage.getItem("expires_at");
     const expiresAt = JSON.parse(expiration);
-    return '';
+    return moment(expiresAt);
   }
 
   getLoginUserStats() { // To show the user stats
