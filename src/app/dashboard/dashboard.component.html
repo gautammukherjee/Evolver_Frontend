@@ -6,9 +6,15 @@
         <div class="left-sidebar" style="overflow: scroll;">
         <app-filter-node-select (onSelectNode)='nodeChanged($event)'></app-filter-node-select>
         <app-filter-source-node (onSelectSourceNode)='sourceNodeChanged($event)' [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node>
-        <app-filter-destination-node (onSelectDestinationNode)='destinationNodeChanged($event)' [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-destination-node>
+        <app-filter-destination-node (onSelectDestinationNode)='destinationNodeChanged("diseasesIndicationsFilter")' [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-destination-node>
         <app-filter-edge-type (onSelectEdgeType)='edgeTypeChanged($event)'></app-filter-edge-type>
-        <app-filter-data-range></app-filter-data-range>
+
+        <div style="border: 1px solid #FDFDEC;padding: 5px;"> <h4 style="color:#fff;">Level 2 <br/><span style="font-size: 12px; color:#fff;">Please choose destination Nodes</span></h4>
+        <app-filter-node-select-level2 (onSelectNode2)='nodeChanged2($event)' [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-node-select-level2>
+        <app-filter-edge-type-level2 (onSelectEdgeType2)='edgeTypeChanged2($event)' [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type-level2>
+        </div>
+
+        <!--<app-filter-data-range></app-filter-data-range>-->
         </div>
 
         <div class="right-article">

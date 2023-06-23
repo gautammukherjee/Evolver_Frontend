@@ -79,7 +79,7 @@ export class FilterNodeSelectComponent implements OnInit {
     console.log("sel_nodes: ", this.selectedNodeSelects);
 
     this.filterParams = this.globalVariableService.getFilterParams();
-    console.log("new Filters node select: ", this.filterParams);
+    // console.log("new Filters node select: ", this.filterParams);
 
   }
 
