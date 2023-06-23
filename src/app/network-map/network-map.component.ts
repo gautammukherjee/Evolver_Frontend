@@ -73,10 +73,11 @@ export class NetworkMapComponent implements OnInit {
   ngOnInit() {
     this.filterParams = this.globalVariableService.getFilterParams();
     this.mapTypes = this.filterParams.mapType;
-    this.getMasterListsMap(this.filterParams);
+
     // this.drawChart();
 
     this.ProceedDoFilterApply?.subscribe(data => {  // Calling from details, details working as mediator
+      console.log("data: ", data);
       if (data === undefined) { // data=undefined true when apply filter from side panel
         this.filterParams = this.globalVariableService.getFilterParams();
         this.getMasterListsMap(this.filterParams);
@@ -89,6 +90,7 @@ export class NetworkMapComponent implements OnInit {
       }
 
     });
+    this.getMasterListsMap(this.filterParams);
   }
 
   ngOnDestroy() {
@@ -101,6 +103,8 @@ export class NetworkMapComponent implements OnInit {
   getMasterListsMap(_filterParams: any) {
 
     this.loading = true;
+    this.filterParams = this.globalVariableService.getFilterParams();
+    console.log("master map for filter: ", this.filterParams);
     this.nodeSelectsService.getMasterLists(_filterParams).subscribe(
       data => {
         this.nodeData = [];
@@ -131,7 +135,7 @@ export class NetworkMapComponent implements OnInit {
           //Edge data
           this.edgeData.push({
             // data: { source: Math.floor(event.source_id), target: Math.floor(event.target_id), PMID: event.pmidlist, colorCode: "pink", strength: Math.floor(event.edge_weight) },
-            data: { source: Math.floor(event.sourcenode), target: Math.floor(event.destinationnode), colorCode: "#32404E", strength: Math.floor(2) },
+            data: { source: Math.floor(event.sourcenode), target: Math.floor(event.destinationnode), colorCode: "#008000", strength: Math.floor(2) },
           });
         });
 
@@ -156,7 +160,7 @@ export class NetworkMapComponent implements OnInit {
           //Node data
           this.nodeData.push({
             // data: { id: Math.floor(event.node_id), name: event.node, node_type: event.nodetype, weight: 100, colorCode: event.colourcode, shapeType: 'octagon' },
-            data: { id: Math.floor(event.id), name: event.name, node_type: 'circular', weight: 100, colorCode: '#ff00ff', shapeType: 'octagon' }
+            data: { id: Math.floor(event.id), name: event.name, node_type: 'circular', weight: 100, colorCode: '#ff0000', shapeType: 'octagon' }
           });
         });
 

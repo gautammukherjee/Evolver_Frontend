@@ -62,23 +62,25 @@ export class FilterDestinationNodeComponent implements OnInit {
     this.seeMoreFilterPlaceholder = "Search Destination Nodes";
     //End here
 
-    this.globalVariableService.setSelectedDestinationNodes([45136]);
-    this.selectedDestinationNodes = Array.from(this.globalVariableService.getSelectedDestinationNodes());
-    console.log("selectedDestinationNodes: ", this.selectedDestinationNodes);
+    // this.globalVariableService.setSelectedDestinationNodes([45136]);
+    // this.selectedDestinationNodes = Array.from(this.globalVariableService.getSelectedDestinationNodes());
+    // console.log("selectedDestinationNodes: ", this.selectedDestinationNodes);
 
     this.filterParams = this.globalVariableService.getFilterParams();
     // console.log("new Filters destination: ", this.filterParams);
 
     this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
-      // console.log("eventDestination:: ", event);
+      console.log("eventDestination:: ", event.clickOn);
       if (event == undefined) {
         // this.hideCardBody = true;
         this.selectedDestinationNodes = []; // Reinitialized, because when data updated on click TA, it should empty locally
         this.getDestinationNode(event, 2);
         // } else if (event !== undefined && event.clickOn != 'geneFilter' && event.clickOn != 'geneFilter')
-      } else if (event !== undefined)
-        // this.hideCardBody = true;
+      } else if (event !== undefined && event.clickOn != 'diseasesIndicationsFilter') {
+        this.selectedDestinationNodes = []; // Reinitialized, because when data updated on click TA, it should empty locally
+        this.globalVariableService.setSelectedDestinationNodes(this.selectedDestinationNodes);
         this.getDestinationNode(event, 2);
+      }
     });
     this.getDestinationNode(event, 1);
     // this.hideCardBody = true;
@@ -107,15 +109,18 @@ export class FilterDestinationNodeComponent implements OnInit {
           // console.log("alphabeticallyGroupedGenes: ", this.alphabeticallyGroupedGenes);
 
           //if (event !== undefined && event.type == 'load') { // i.e No Genes selected previously
-          for (let i = 0; i < this.result.destinationNodeRecords.length && i < 1; i++) {
-            this.selectedDestinationNodes.push(this.result.destinationNodeRecords[i].destination_node);
-            //this.selectedDestinationNodes = [];
-          }
+          // for (let i = 0; i < this.result.destinationNodeRecords.length && i < 1; i++) {
+          //   this.selectedDestinationNodes.push(this.result.destinationNodeRecords[i].destination_node);
+          //   //this.selectedDestinationNodes = [];
+          // }
           console.log("selected destination Nodes: ", this.selectedDestinationNodes);
           this.globalVariableService.setSelectedDestinationNodes(this.selectedDestinationNodes);
           //} else {
           //this.selectedDestinationNodes = Array.from(this.globalVariableService.getSelectedDestinationNodes());
           //}
+          this.filterParams = this.globalVariableService.getFilterParams();
+          // console.log("new Filters destination: ", this.filterParams);
+          // console.log("new Filters destination in destin: ", this.filterParams.destination_node);
         },
         err => {
           this.destinationNodesCheck = true;
@@ -142,7 +147,7 @@ export class FilterDestinationNodeComponent implements OnInit {
       this.selectedDestinationNodes.splice(this.selectedDestinationNodes.indexOf(destinationNode.destination_node), 1);
     }
 
-    console.log("selectedDestinationNodes: ", this.selectedDestinationNodes);
+    // console.log("selectedDestinationNodes: ", this.selectedDestinationNodes);
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data   
 
     if (from != 'nodeSelectsWarningModal')
@@ -205,6 +210,10 @@ export class FilterDestinationNodeComponent implements OnInit {
   proceed() {
     this.globalVariableService.setSelectedDestinationNodes(this.selectedDestinationNodes);
     this.selectedDestinationNodes = Array.from(this.globalVariableService.getSelectedDestinationNodes());
+
+    this.filterParams = this.globalVariableService.getFilterParams();
+    // console.log("new Filters destination: ", this.filterParams);
+
     if (this.seeMoreNodeSelectsModal != undefined)
       this.seeMoreNodeSelectsModal.close();
     this.onSelectDestinationNode.emit();

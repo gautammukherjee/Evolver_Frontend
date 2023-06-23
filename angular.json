@@ -36,8 +36,7 @@
               "./src/assets/extrnalJs/bootstrap-table/bootstrap-table.min.css",
               "./src/assets/extrnalJs/bootstrap-table/bootstrap-table.css",
               "./src/assets/extrnalJs/bootstrapValidator.min.css",
-              "./src/assets/extrnalJs/jquery.qtip.min.css",
-              "./node_modules/bootstrap-icons/font/bootstrap-icons.min.css"
+              "./src/assets/extrnalJs/jquery.qtip.min.css"
             ],
             "scripts": [
               "./src/assets/extrnalJs/jquery.min.js",
@@ -62,8 +61,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "3mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
                 },
                 {
                   "type": "anyComponentStyle",

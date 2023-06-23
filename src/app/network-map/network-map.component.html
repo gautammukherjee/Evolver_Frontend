@@ -1,12 +1,13 @@
 <div class="row" style="margin-bottom: 20px;">
     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
         <div class="customTable" style="border: 1px solid #ddd;">
-            <h4>Network Map for <span style="text-transform: uppercase;"> {{mapTypes}} </span></h4>
-            <div class="loading-custom" *ngIf="loading"><span class="fa fa-spinner fa-spin"></span> &nbsp;Loading...</div>
+            <!--<h4>Network Map for <span style="text-transform: uppercase;"> {{mapTypes}} </span></h4>-->
+            <h4>Network Map </h4>
+            <div class="loading-custom-desc" *ngIf="loading"><span class="fa fa-spinner fa-spin"></span> &nbsp;Loading...</div>
             <!--<div class="table-responsive" *ngIf="nodesCheck">-->
             <div class="table-responsive">
 
-                <div class="form-check" style="margin-left: 12px;">
+                <!--<div class="form-check" style="margin-left: 12px;">
                     <input type="radio" class="form-check-input" name="edgeSelect" id="edgeUnchecked" value="1"
                         (change)="clickedEdges($event)" checked>
                     <label class="form-check-label" for="edgeUnchecked">Edge Type Selected</label>
@@ -14,7 +15,7 @@
                 <div class="form-check" style="margin-left: 12px;">
                     <input type="radio" class="form-check-input" name="edgeSelect" id="edgeChecked" value="0" (change)="clickedEdges($event)">
                     <label class="form-check-label" for="edgeChecked">Show All Targets</label>
-                </div>
+                </div>-->
 
                 <div style="height: 90%; width: 100%; float: left; overflow: auto; overflow-y: hidden">
                     <!-- <ng2-cytoscape [elements]="graphData" [layout]="layout" (select)="nodeChange($event)"></ng2-cytoscape> -->

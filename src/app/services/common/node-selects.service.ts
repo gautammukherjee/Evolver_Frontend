@@ -22,6 +22,23 @@ export class NodeSelectsService {
   getNodeSelects() {
     return this.http.get(this.API_URL + 'getNodeSelects', httpOptions);
   }
+
+  getNodeSelects2(params: any) {
+    return this.http.post(this.API_URL + 'getNodeSelects2', params, httpOptions);
+  }
+
+  // getCategories() {
+  //   if (this._TAs) {
+  //     return Observable.of(this._TAs);
+  //   } else {
+  //     //return this.http.get(API_URL + 'getTherapeuticAreas');
+  //     return this._http.get(this.API_URL + 'getTasLists', httpOptions).do(
+  //       (data: any) => {
+  //         this._TAs = data;
+  //       });
+  //   }
+  // }
+
   getSourceNode(params: any) {
     return this.http.post(this.API_URL + 'getSourceNode', params, httpOptions);
   }
