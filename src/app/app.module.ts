@@ -27,10 +27,12 @@ import { SourceNodePipe } from './pipes/sourceNodePipe';
 import { DestinationNodePipe } from './pipes/destinationNodePipe';
 import { EdgeTypePipe } from './pipes/edgeTypePipe';
 import { FilterNodeSelectComponent } from './filters/filter-node-select/filter-node-select.component';
+import { FilterNodeSelectLevel2Component } from './filters/filter-node-select-level2/filter-node-select-level2.component';
 import { NoPageComponent } from './no-page/no-page.component';
 import { FilterSourceNodeComponent } from './filters/filter-source-node/filter-source-node.component';
 import { FilterDestinationNodeComponent } from './filters/filter-destination-node/filter-destination-node.component';
 import { FilterEdgeTypeComponent } from './filters/filter-edge-type/filter-edge-type.component';
+import { FilterEdgeTypeLevel2Component } from './filters/filter-edge-type-level2/filter-edge-type-level2.component';
 
 
 @NgModule({
@@ -45,9 +47,11 @@ import { FilterEdgeTypeComponent } from './filters/filter-edge-type/filter-edge-
     NgCytoComponent,
     EventDescriptionComponent,
     FilterNodeSelectComponent,
+    FilterNodeSelectLevel2Component,
     FilterSourceNodeComponent,
     FilterDestinationNodeComponent,
     FilterEdgeTypeComponent,
+    FilterEdgeTypeLevel2Component,
     HeaderComponent,
     FooterComponent,
     FilterDataRangeComponent,
@@ -71,9 +75,11 @@ import { FilterEdgeTypeComponent } from './filters/filter-edge-type/filter-edge-
     FooterComponent,
     FilterDataRangeComponent,
     FilterNodeSelectComponent,
+    FilterNodeSelectLevel2Component,
     FilterSourceNodeComponent,
     FilterDestinationNodeComponent,
     FilterEdgeTypeComponent,
+    FilterEdgeTypeLevel2Component,
     NoPageComponent,
     NodeDataPipe,
     SourceNodePipe,

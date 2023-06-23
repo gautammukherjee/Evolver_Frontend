@@ -30,23 +30,34 @@ export class DashboardComponent implements OnInit {
     this.doFilterApply.next(e);
   }
 
-  nodeChanged(e: any) {
-    this.doFilterApply.next(e);
-    this.doUpdateFilterDataApply.next(e);
+  nodeChanged(clickOn: any) {
+    this.doFilterApply.next(undefined);
+    this.doUpdateFilterDataApply.next({ clickOn: clickOn });
   }
   sourceNodeChanged(e: any) {
     this.doFilterApply.next(e);
+    // this.doUpdateFilterDataApply.next(e);
   }
-  destinationNodeChanged(e: any) {
-    this.doFilterApply.next(e);
+  destinationNodeChanged(clickOn: any) {
+    this.doFilterApply.next(undefined);
+    // this.doUpdateFilterDataApply.next(e);
+    this.doUpdateFilterDataApply.next({ clickOn: clickOn });
   }
   edgeTypeChanged(e: any) {
+    this.doFilterApply.next(e);
+  }
+  edgeTypeChanged2(e: any) {
     this.doFilterApply.next(e);
   }
 
   graphSelected(param: any) {
     console.log("you here:: ", param);
     this.doFilterApply.next({ clickOn: param });
+  }
+
+  nodeChanged2(e: any) {
+    this.doFilterApply.next(e);
+    // this.doUpdateFilterDataApply.next(e);
   }
 
 }

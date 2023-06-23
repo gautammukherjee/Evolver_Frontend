@@ -24,9 +24,11 @@ export class GlobalVariableService {
   selectedDevelopment = [];
   selectedDrug = [];
   selectedNodeSelects = '';
+  selectedNodeSelects2 = '';
   selectedSourceNodes = [];
   selectedDestinationNodes = [];
   selectedEdgeTypes = [];
+  selectedEdgeTypes2 = [];
 
   selectedNodes = [];
   selectedEdges: any;
@@ -68,6 +70,14 @@ export class GlobalVariableService {
   getSelectedNodeSelects() {
     return this.selectedNodeSelects;
   }
+
+  setSelectedNodeSelects2(nodes2: any) {
+    this.selectedNodeSelects2 = nodes2;
+  }
+  getSelectedNodeSelects2() {
+    return this.selectedNodeSelects2;
+  }
+
   setSelectedSourceNodes(source_nodes: any) {
     this.selectedSourceNodes = source_nodes;
   }
@@ -85,6 +95,12 @@ export class GlobalVariableService {
   }
   getSelectedEdgeTypes() {
     return this.selectedEdgeTypes;
+  }
+  setSelectedEdgeTypes2(edge_types2: any) {
+    this.selectedEdgeTypes2 = edge_types2;
+  }
+  getSelectedEdgeTypes2() {
+    return this.selectedEdgeTypes2;
   }
 
   setSelectedNodes(nodes: any) {
@@ -112,9 +128,12 @@ export class GlobalVariableService {
       from_date: this.getFromDate(),
       to_date: this.getToDate(),
       nnrt_id: this.getSelectedNodeSelects() != undefined ? this.getSelectedNodeSelects() : 1,
+      nnrt_id2: this.getSelectedNodeSelects2() != undefined ? this.getSelectedNodeSelects2() : '',
       source_node: this.getSelectedSourceNodes().length > 0 ? this.getSelectedSourceNodes() : undefined,
       destination_node: this.getSelectedDestinationNodes().length > 0 ? this.getSelectedDestinationNodes() : undefined,
       edge_type_id: this.getSelectedEdgeTypes().length > 0 ? this.getSelectedEdgeTypes() : undefined,
+      edge_type_id2: this.getSelectedEdgeTypes2().length > 0 ? this.getSelectedEdgeTypes2() : undefined,
+
 
       node_id: this.getSelectedNodes().length > 0 ? this.getSelectedNodes() : undefined,
       edge_select: this.getSelectedEdges() != undefined ? this.getSelectedEdges() : 1,

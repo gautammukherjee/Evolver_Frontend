@@ -60,7 +60,7 @@ export class FilterSourceNodeComponent implements OnInit {
     this.seeMoreFilterPlaceholder = "Search Source Nodes";
     //End here
 
-    this.globalVariableService.setSelectedSourceNodes([33163]);
+    this.globalVariableService.setSelectedSourceNodes([10810]);
     this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
     console.log("selectedSourceNodes: ", this.selectedSourceNodes);
 
@@ -68,15 +68,19 @@ export class FilterSourceNodeComponent implements OnInit {
     // console.log("new Filters source node: ", this.filterParams);
 
     this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
-      // console.log("eventSource:: ", event);
+      console.log("eventSource:: ", event.clickOn);
       if (event == undefined) {
         // this.hideCardBody = true;
         this.selectedSourceNodes = []; // Reinitialized, because when data updated on click TA, it should empty locally
         this.getSourceNode(event, 2);
         // } else if (event !== undefined && event.clickOn != 'geneFilter' && event.clickOn != 'geneFilter')
-      } else if (event !== undefined)
+      } else if (event !== undefined && event.clickOn != 'diseasesIndicationsFilter') {
         // this.hideCardBody = true;
+        this.selectedSourceNodes = []; // Reinitialized, because when data updated on click TA, it should empty locally
+        this.globalVariableService.setSelectedSourceNodes([10810]);
+        this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
         this.getSourceNode(event, 2);
+      }
     });
     this.getSourceNode(event, 1);
     // this.hideCardBody = true;
