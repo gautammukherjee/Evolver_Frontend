@@ -31,6 +31,9 @@ import { NoPageComponent } from './no-page/no-page.component';
 import { FilterSourceNodeComponent } from './filters/filter-source-node/filter-source-node.component';
 import { FilterDestinationNodeComponent } from './filters/filter-destination-node/filter-destination-node.component';
 import { FilterEdgeTypeComponent } from './filters/filter-edge-type/filter-edge-type.component';
+//import { SafePipeModule } from 'safe-pipe';
+import { SafePipe } from './pipes/safe.pipe';
+import { BioInfomaticsComponent } from './bio-infomatics/bio-infomatics.component';
 
 
 @NgModule({
@@ -55,7 +58,9 @@ import { FilterEdgeTypeComponent } from './filters/filter-edge-type/filter-edge-
     NodeDataPipe,
     SourceNodePipe,
     DestinationNodePipe,
-    EdgeTypePipe
+    EdgeTypePipe,
+    SafePipe,
+    BioInfomaticsComponent
   ],
   imports: [
     BrowserModule,
@@ -64,7 +69,8 @@ import { FilterEdgeTypeComponent } from './filters/filter-edge-type/filter-edge-
     ReactiveFormsModule,
     NgbModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    //SafePipeModule 
   ],
   exports: [
     HeaderComponent,
