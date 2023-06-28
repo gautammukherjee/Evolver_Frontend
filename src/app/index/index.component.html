@@ -1,9 +1,9 @@
 <div class="stats-landing">
     <app-header></app-header>
-    
-    
-    
-    <section class="stats-wrapper">
+
+
+
+    <!-- <section class="stats-wrapper">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4">
@@ -50,9 +50,9 @@
                 <button class="btn enterApp" [routerLink]="['/dashboard']">Enter into App</button>
             </div>
         </div>
-    </section>
+    </section> -->
 
-    <section class="video-player">
+    <!-- <section class="video-player">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6">
@@ -66,11 +66,166 @@
                 </div>
             </div>
         </div>
-    </section>
-    
-    
+    </section> -->
+    <section class="stats-wrapper" style="padding:64px 0px;">
+        <div class="page-wrapper">
 
+            <div class="container-fluid">
+                <div class="row ml-1 mr-1">
+                    <div class="col mt-4">
+
+
+
+                        <!-- Carousel -->
+                        <div id="demo" class="carousel mt-4 slide border border-info" data-bs-ride="carousel">
+
+                            <!-- Indicators/dots -->
+                            <div class="carousel-indicators">
+                                <button type="button" data-bs-target="#demo" data-bs-slide-to="0"
+                                    class="active"></button>
+                                <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+                                <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+                                <button type="button" data-bs-target="#demo" data-bs-slide-to="3"></button>
+                                <button type="button" data-bs-target="#demo" data-bs-slide-to="4"></button>
+                                <button type="button" data-bs-target="#demo" data-bs-slide-to="5"></button>
+                            </div>
+
+                            <!-- The slideshow/carousel -->
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="./assets/images/carousel_img1.jpg" alt="" class="d-block img-responsive opacity"
+                                        style="height:500px; width: 100%;">
+                                    <div class="carousel-caption carousel-caption-margin">
+                                        <h3>Count of PMID</h3>
+                                        <p>6.7 M</p>
+                                    </div>
+                                    <!-- <div class="stat-box d-block w-100" style="color:#fff;">
+                                        <h1>6.7M</h1>
+                                    </div> -->
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="./assets/images/carousel_img2.jpg" alt="" class="d-block img-responsive opacity"
+                                        style="height:500px; width: 100%;">
+                                    <div class="carousel-caption carousel-caption-margin">
+                                        <h3>Total Number of Connections</h3>
+                                        <p>28680943</p>
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="./assets/images/login-background1.jpg" alt="" class="d-block img-responsive opacity"
+                                        style="height:500px; width: 100%;">
+                                    <div class="carousel-caption carousel-caption-margin">
+                                        <h3>Count of Disease</h3>
+                                        <p>111.0 K</p>
+                                    </div>
+                                </div>
+
+                                <div class="carousel-item">
+                                    <img src="./assets/images/carousel_img3.jpg" alt="" class="d-block img-responsive opacity"
+                                        style="height:500px; width: 100%;">
+                                    <div class="carousel-caption carousel-caption-margin">
+                                        <h3>Count of Gene</h3>
+                                        <p>42,486</p>
+                                    </div>
+                                </div>   
+
+                                <div class="carousel-item">
+                                    <img src="./assets/images/carousel_img4.jpg" alt="" class="d-block img-responsive opacity"
+                                        style="height:500px; width: 100%;">
+                                    <div class="carousel-caption carousel-caption-margin">
+                                        <h3>Count of Drug</h3>
+                                        <p>42,486</p>
+                                    </div>
+                                </div> 
+
+                                <div class="carousel-item">
+                                    <img src="./assets/images/carousel_img5.jpg" alt="" class="d-block img-responsive opacity"
+                                        style="height:500px; width: 100%;">
+                                    <div class="carousel-caption carousel-caption-margin">
+                                        <h3>Count of Edge Type</h3>
+                                        <p>42,486</p>
+                                    </div>
+                                </div> 
+                            </div>
+
+                            <!-- Left and right controls/icons -->
+                            <button class="carousel-control-prev" type="button" data-bs-target="#demo"
+                                data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon"></span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#demo"
+                                data-bs-slide="next">
+                                <span class="carousel-control-next-icon"></span>
+                            </button>
+                        </div>
+
+                        <!-- ********************************************************* -->
+                        
+                          
+                        <!-- ********************************************************* -->
+                    </div>
+                    <div class="col col-sm-3 col-md-3 mt-4">
+                        <div class="polaroid" id="network_map_card">
+                            <img src="./assets/images/Target-Disease-Association.png" alt="">
+
+                            <div class="target_page">
+                                <h5>Network Map</h5>
+                            </div>
+
+                            <div class="overlay" style="margin: 0px 0px 393px 0px;">
+                                <div class="text">
+                                    <a class="nav-link active text-light" [routerLink]="['/dashboard']">Let's
+                                        Enter To <br> Check Entity Relations</a>
+                                </div>
+                            </div>
+                            <div class="card_bottom">&nbsp;</div>
+                        </div>
+
+                        <div class="polaroid" id="gene_analysis_card">
+                            <img src="./assets/images/BR-Analysis.png" alt="">
+
+                            <div class="target_page">
+                                <h5>Gene Analysis</h5>
+                            </div>
+
+                            <div class="overlay" style="margin: 0px 0px 213px 0px;">
+                                <div class="text">
+                                    <a class="nav-link active text-light" [routerLink]="['/bio_infomatics']">Let's
+                                        Enter To <br>Analyze Gene</a>
+                                </div>
+                            </div>
+                            <div class="card_bottom">&nbsp;</div>
+                        </div>
+
+                        <div class="polaroid" id="search_card">
+                            <img src="./assets/images/Drug-Target-List.png" alt="">
+
+                            <div class="target_page">
+                                <h5>Search Tool</h5>
+                            </div>
+
+                            <div class="overlay" style="margin: 0px 0px 33px 0px;">
+                                <div class="text">
+                                    <a class="nav-link active text-light" target="_blank"
+                                        href="http://150.136.91.243:8887/login/?username=hsharma&password=test@123">Let's
+                                        Enter To <br>Search Any Data</a>
+                                </div>
+                            </div>
+                            <div class="card_bottom">&nbsp;</div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
+
+            </div>
+
+        </div>
+    </section>
     <!-- <iframe [src]="Iframe_URL | safe" noborder="0" name="iframe_a" height="800px" width="100%" title="Gaurav UI" scrolling="yes" seamless></iframe>  -->
-    
-   <app-footer></app-footer>
+
+    <app-footer></app-footer>
 </div>
