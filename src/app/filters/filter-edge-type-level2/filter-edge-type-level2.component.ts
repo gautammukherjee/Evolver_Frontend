@@ -69,19 +69,18 @@ export class FilterEdgeTypeLevel2Component implements OnInit {
       console.log("eventEdgeType:: ", event.clickOn);
       if (event.clickOn == undefined) {
         // this.hideCardBody = true;
-        this.selectedEdgeTypes2 = []; // Reinitialized, because when data updated on click TA, it should empty locally
         this.getEdgeType(event);
-      } else if (event !== undefined && event.clickOn == 'diseasesIndicationsFilter') {
+      } else if (event.clickOn !== undefined && event.clickOn == 'diseasesIndicationsFilter') {
         // this.hideCardBody = true;
 
         this.filterParams = this.globalVariableService.getFilterParams();
         if (this.filterParams.destination_node == undefined) {
-          this.destNodeCheck2 = false;
+          // this.destNodeCheck2 = false;
           // this.firstTimeCheck = false;
           this.edgeTypes2 = [];
         }
         else {
-          this.destNodeCheck2 = true;
+          // this.destNodeCheck2 = true;
           // if (this.firstTimeCheck === false) // Edge select only one time reload when we choose destination nodes are selected
           this.getEdgeType(event);
         }
@@ -101,7 +100,6 @@ export class FilterEdgeTypeLevel2Component implements OnInit {
     this.filterParams = this.globalVariableService.getFilterParams();
 
     if (this.filterParams.destination_node != undefined) {
-      // console.log("yes i am: ");
       this.loading = true;
       // this.firstTimeCheck = true;
       this.nodeSelectsService.getEdgeType()
@@ -110,7 +108,7 @@ export class FilterEdgeTypeLevel2Component implements OnInit {
             this.result = data;
             // console.log("result: ", this.result);
             this.edgeTypes2 = this.result.edgeTypeRecords;
-            console.log("edgeTypes2: ", this.edgeTypes2);
+            // console.log("edgeTypes2: ", this.edgeTypes2);
 
             if (event !== undefined && event.type == 'load') { // i.e No Genes selected previously
               for (let i = 0; i < this.result.edgeTypeRecords.length && i < 1; i++) {

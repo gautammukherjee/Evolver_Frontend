@@ -49,7 +49,8 @@ export class FilterDestinationNodeComponent implements OnInit {
     private globalVariableService: GlobalVariableService,
     private modalService: NgbModal,
     private elementRef: ElementRef
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     //To filter the gene lists
@@ -71,14 +72,14 @@ export class FilterDestinationNodeComponent implements OnInit {
 
     this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
       console.log("eventDestination:: ", event.clickOn);
-      if (event == undefined) {
+      if (event.clickOn == undefined) {
         // this.hideCardBody = true;
-        this.selectedDestinationNodes = []; // Reinitialized, because when data updated on click TA, it should empty locally
+        // this.selectedDestinationNodes = []; // Reinitialized, because when data updated on click TA, it should empty locally
         this.getDestinationNode(event, 2);
         // } else if (event !== undefined && event.clickOn != 'geneFilter' && event.clickOn != 'geneFilter')
-      } else if (event !== undefined && event.clickOn != 'diseasesIndicationsFilter') {
-        this.selectedDestinationNodes = []; // Reinitialized, because when data updated on click TA, it should empty locally
-        this.globalVariableService.setSelectedDestinationNodes(this.selectedDestinationNodes);
+      } else if (event.clickOn !== undefined && event.clickOn != 'diseasesIndicationsFilter') {
+        // this.selectedDestinationNodes = []; // Reinitialized, because when data updated on click TA, it should empty locally
+        // this.globalVariableService.setSelectedDestinationNodes(this.selectedDestinationNodes);
         this.getDestinationNode(event, 2);
       }
     });
@@ -113,6 +114,7 @@ export class FilterDestinationNodeComponent implements OnInit {
           //   this.selectedDestinationNodes.push(this.result.destinationNodeRecords[i].destination_node);
           //   //this.selectedDestinationNodes = [];
           // }
+          this.selectedDestinationNodes = [];
           console.log("selected destination Nodes: ", this.selectedDestinationNodes);
           this.globalVariableService.setSelectedDestinationNodes(this.selectedDestinationNodes);
           //} else {
@@ -159,9 +161,9 @@ export class FilterDestinationNodeComponent implements OnInit {
     this.togglecollapseStatus = !this.togglecollapseStatus;
   }
 
-  selectAll(event: any, geneWarningModal: any) {
+  selectAll(event: any, nodeSelectsWarningModal: any) {
     if (this.isAllSelected) {
-      this.result.map((element: any) => {
+      this.destinationNodes.map((element: any) => {
         // console.log("element: ", element);
         this.selectedDestinationNodes.push(element.destination_node);
       })

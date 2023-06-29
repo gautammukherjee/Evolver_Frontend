@@ -14,27 +14,27 @@ body {
     height: 100vh;
     background-image: url(./assets/images/login-background.jpg);
 
-    .container{
+    .container {
         position: relative;
-        height:100%;
+        height: 100%;
 
-        @media (max-width:575px){
+        @media (max-width:575px) {
             padding-top: 190px;
         }
     }
 
-    .bxl-logo{
+    .bxl-logo {
         position: absolute;
         right: 0;
-        top:50px;
+        top: 50px;
 
-        img{
-            @media (max-width:575px){
-                width:170px;
+        img {
+            @media (max-width:575px) {
+                width: 170px;
             }
         }
 
-        @media (max-width:991px){
+        @media (max-width:991px) {
             right: auto;
             left: calc(50% - 85px);
         }
@@ -47,15 +47,15 @@ body {
         top: 50%;
         transform: translate(0, -50%);
 
-        .login-box-inner{
+        .login-box-inner {
             border-radius: 25px;
-            border:1px solid #f7f7f7;
+            border: 1px solid #f7f7f7;
             padding: 45px 40px;
             background-color: rgb(0 0 0 / 69%);
 
             .login-logo {
                 text-align: center;
-    
+
                 img {
                     width: 180px;
                     margin: auto;
@@ -67,51 +67,52 @@ body {
                     margin-top: -90px;
                 }
             }
-    
-            p{
+
+            p {
                 color: #fff;
                 margin-bottom: 45px;
                 text-align: center;
                 font-size: 23px;
 
-                @media (max-width:480px){
+                @media (max-width:480px) {
                     font-size: 20px;
                     line-height: 23px;
                 }
             }
-    
+
             .form-box {
-                .input-group{
+                .input-group {
                     position: relative;
-    
-                    span{
+
+                    span {
                         background: #fff;
                         padding: 12px 17px;
                         border-radius: 26px !important;
                         position: absolute;
                         top: 0;
                         left: -1px;
-    
-                        img{
-                            width:27px;
+
+                        img {
+                            width: 27px;
                         }
                     }
-                    input{
+
+                    input {
                         background: transparent;
                         border: 1px solid #f7f7f7;
                         height: 52px;
                         border-radius: 26px !important;
                         color: #fff;
                         padding-left: 80px;
-        
-                        &::placeholder{
+
+                        &::placeholder {
                             color: #fff;
                         }
                     }
                 }
-    
-                
-    
+
+
+
                 button {
                     background-color: #fff;
                     font-weight: 500;
@@ -125,27 +126,28 @@ body {
                 }
             }
 
-            @media (max-width:575px){
-                padding:45px 15px;
+            @media (max-width:575px) {
+                padding: 45px 15px;
             }
         }
 
-        .create-account{
-            padding-top:10px;
+        .create-account {
+            padding-top: 10px;
             text-align: right;
-            span{
+
+            span {
                 color: #fff;
                 font-weight: 600;
                 cursor: pointer;
             }
         }
 
-        @media (max-width:991px){
+        @media (max-width:991px) {
             left: 50%;
             transform: translate(-50%, -50%);
         }
 
-        @media (max-width:480px){
+        @media (max-width:480px) {
             width: 100%;
             position: relative;
             top: auto;
@@ -331,14 +333,14 @@ body {
 }
 
 .loading-custom-desc {
-    position: absolute;
+    position: relative;
     width: 100px;
     background: #b6eaef;
     text-align: center;
     border: 0px solid #b3af22;
     font-size: 13px;
     color: #000;
-    top: 102px;
+    // top: 102px;
     padding: 4px;
     left: 50%;
     margin-left: -50px;
@@ -348,3 +350,102 @@ body {
         color: #000;
     }
 }
+
+///////////
+/// 
+/// *----INDICATOR MODAL POPUP---*/
+.indicators-modal {
+    padding: 0px !important;
+
+    .modal-header {
+        background: #f7f7f7;
+        display: inherit;
+        border-bottom: 1px solid #ddd;
+        padding: 10px 20px;
+
+        h6 {
+            font-size: 15px;
+            color: #333;
+            margin-bottom: 5px;
+            position: relative;
+            font-weight: bold;
+
+            span.close {
+                position: absolute;
+                right: -15px;
+                color: #fff;
+                opacity: 1;
+                padding: 0px;
+                width: 20px;
+                height: 20px;
+                line-height: 20px;
+                text-align: center;
+                top: -4px;
+                margin: 0px;
+                border-radius: 100%;
+            }
+        }
+
+        .indicator_search {
+            width: 30%;
+            float: left;
+
+            input {
+                border: 1px solid #ddd;
+                border-radius: 0px;
+                color: #333;
+            }
+
+            input:focus {
+                border: 1px solid #ddd;
+                background: #fff;
+            }
+
+            input::placeholder {
+                color: #333;
+            }
+        }
+
+        .indicator_alpha {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            width: 70%;
+            float: left;
+            margin-top: 13px;
+            padding-left: 30px;
+
+            span {
+                display: flex;
+                flex: auto;
+                font-size: 12px;
+                color: #666;
+                justify-content: start;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .custom-modal-body {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: scroll;
+        padding: 5px 20px;
+    }
+
+    .singleIndicatorFilter {
+
+
+        .two-column_popup {
+            width: 300px;
+            margin-bottom: 3px;
+
+            span.custom-control-description {
+                font-size: 12px;
+            }
+        }
+    }
+
+}
+
+/*----INDICATOR MODAL POPUP---*/

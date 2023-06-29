@@ -15,12 +15,11 @@ export class FilterSourceNodeComponent implements OnInit {
   @Output() onSelectSourceNode: EventEmitter<any> = new EventEmitter();
   @Input() UpdateFilterDataApply?: Subject<any>;
 
-  // public alphabeticallyGroupedGenes = [];
-
   private filterParams: any;
   public alphabeticallyGroupedSourceNodes: any = '';
   public selectedSourceNodes: any = [];
-  public sourceNodes: any = [];
+  // public sourceNodes: any = [];
+  public sourceNodes: Array<object> = [];
   private params: object = {};
   private result: any = [];
   public loading: boolean = false;
@@ -69,16 +68,22 @@ export class FilterSourceNodeComponent implements OnInit {
 
     this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
       console.log("eventSource:: ", event.clickOn);
-      if (event == undefined) {
+      if (event.clickOn == undefined) {
         // this.hideCardBody = true;
         this.selectedSourceNodes = []; // Reinitialized, because when data updated on click TA, it should empty locally
+
+        this.filterParams = this.globalVariableService.getFilterParams();
+        // console.log("click on node selected: ", this.filterParams.nnrt_id);
+
         this.getSourceNode(event, 2);
         // } else if (event !== undefined && event.clickOn != 'geneFilter' && event.clickOn != 'geneFilter')
-      } else if (event !== undefined && event.clickOn != 'diseasesIndicationsFilter') {
+      } else if (event.clickOn !== undefined && event.clickOn != 'diseasesIndicationsFilter') {
         // this.hideCardBody = true;
         this.selectedSourceNodes = []; // Reinitialized, because when data updated on click TA, it should empty locally
-        this.globalVariableService.setSelectedSourceNodes([10810]);
-        this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
+        // this.globalVariableService.setSelectedSourceNodes([10810]);
+        // this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
+        // this.filterParams = this.globalVariableService.getFilterParams();
+        // console.log("change on click: ", this.filterParams);
         this.getSourceNode(event, 2);
       }
     });
@@ -104,7 +109,7 @@ export class FilterSourceNodeComponent implements OnInit {
           console.log("sourceNodes: ", this.sourceNodes);
 
           this.alphabeticallyGroupedSourceNodes = this.groupBy(this.sourceNodes, 'source_node_name');
-          // console.log("alphabeticallyGroupedGenes: ", this.alphabeticallyGroupedGenes);
+          // console.log("alphabeticallyGroupedSourceNodes: ", this.alphabeticallyGroupedSourceNodes);
 
           //if (event !== undefined && event.type == 'load') { // i.e No Genes selected previously
           for (let i = 0; i < this.result.sourceNodeRecords.length && i < 1; i++) {
@@ -149,10 +154,10 @@ export class FilterSourceNodeComponent implements OnInit {
     this.togglecollapseStatus = !this.togglecollapseStatus;
   }
 
-  selectAll(event: any, geneWarningModal: any) {
+  selectAll(event: any, nodeSelectsWarningModal: any) {
     if (this.isAllSelected) {
-      this.result.map((element: any) => {
-        // console.log("element: ", element);
+      this.sourceNodes.map((element: any) => {
+        console.log("element: ", element);
         this.selectedSourceNodes.push(element.source_node);
       })
     } else {

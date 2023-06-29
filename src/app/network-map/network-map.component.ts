@@ -31,7 +31,7 @@ export class NetworkMapComponent implements OnInit {
   phase: any = {};
   resultNodes: any = [];
   resultEdges: any = [];
-  loading = false;
+  loadingMap = false;
   nodesCheck = false;
   public legendsNodeTypes: any = [];
 
@@ -67,7 +67,7 @@ export class NetworkMapComponent implements OnInit {
     //    this.doFilterApply.next({ clickOn: param });
     this.filterParams = this.globalVariableService.getFilterParams();
     // console.log("you here:: ", this.filterParams);
-    // this.getMasterListsMap(this.filterParams);
+    this.getMasterListsMap(this.filterParams);
   }
 
   ngOnInit() {
@@ -102,9 +102,10 @@ export class NetworkMapComponent implements OnInit {
 
   getMasterListsMap(_filterParams: any) {
 
-    this.loading = true;
-    this.filterParams = this.globalVariableService.getFilterParams();
-    console.log("master map for filter: ", this.filterParams);
+    this.loadingMap = true;
+    // this.filterParams = this.globalVariableService.getFilterParams();
+    console.log("master map for filter: ", _filterParams);
+
     this.nodeSelectsService.getMasterLists(_filterParams).subscribe(
       data => {
         this.nodeData = [];
@@ -177,11 +178,11 @@ export class NetworkMapComponent implements OnInit {
         this.drawChart();
       },
       err => {
-        this.loading = false;
+        this.loadingMap = false;
         console.log(err.message);
       },
       () => {
-        this.loading = false;
+        this.loadingMap = false;
       }
     );
   }
@@ -300,16 +301,16 @@ export class NetworkMapComponent implements OnInit {
     console.log("graphdatas22: ", this.graphData);
   }
 
-  // nodeChange(event) {
-  //   this.node_name = event;
-  //   console.log("checked here!!", this.node_name);
+  nodeChange(event: any) {
+    this.node_name = event;
+    console.log("checked here!!", this.node_name);
 
-  //   // this.showNodeInfo(event);
+    // this.showNodeInfo(event);
 
-  //   // var node_name = event.target;
-  //   // console.log("node_name: ", this.node_name);
-  //   this.modalRef = this.modalService.open(this.show_nodes, { size: 'lg', keyboard: false, backdrop: 'static' });
-  // }
+    // var node_name = event.target;
+    // console.log("node_name: ", this.node_name);
+    this.modalRef = this.modalService.open(this.show_nodes, { size: 'lg', keyboard: false, backdrop: 'static' });
+  }
 
   edgeChange(event: any) {
     this.edge_name = event;
