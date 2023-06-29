@@ -39,9 +39,9 @@
 
       <span *ngIf="selectedSourceNodes.length > 0" style="cursor: pointer; float:right;" class="float-left"
         (click)="resetSourceNode();">Reset</span>
-      <!--<span *ngIf="sourceNodes.length > 2" style="cursor: pointer" class="float-right"
+      <span *ngIf="sourceNodes.length > 2" style="cursor: pointer" class="float-right"
         (click)="SeeMore($event,seeMoreSourceNodeModal);">{{sourceNodes.length-10}}
-        More</span>-->
+        More</span>
   </div>
 </div>
 
@@ -110,6 +110,7 @@
         *ngFor="let sourceNodes of alphabeticallyGroupedSourceNodes">
         <div class="two-column_popup demo-checkboxes-radio"
           *ngFor="let sourceNode of sourceNodes.value | SourceNodeFilterPipe:sourceNodeFilterText">
+
           <input type="checkbox" name="sourceNodes" [value]="sourceNode"
             [checked]="selectedSourceNodes.indexOf(sourceNode.source_node)>-1 " (change)="selectSourceNode(sourceNode,$event,'nodeSelectsWarningModal')">
           <span class="custom-control-indicator"></span>
@@ -122,7 +123,10 @@
 
     <div class="modal-footer">
       <div class="demo-checkboxes-radio">
-      </div>
+        <input type="checkbox" name="sourceNodes" [(ngModel)]="isAllSelected" [value]="sourceNodes" [checked]=""
+            (change)="selectAll($event,nodeSelectsWarningModal);">
+        <span class="custom-control-description text-dark">&nbsp;Select All</span>
+    </div>
       <button class="btn btn-outline-primary" [disabled]="disableProceed" (click)="seeMoreproceed()">Proceed</button>
       <button class="btn btn-danger" (click)="seeMoreClosePopup()">Close</button>
     </div>

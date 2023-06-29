@@ -30,9 +30,7 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss",
-              "./src/assets/extrnalJs/bootstraps/css/bootstrap.min.css",
               "./src/assets/extrnalJs/bootstrap-table/bootstrap-table.min.css",
               "./src/assets/extrnalJs/bootstrap-table/bootstrap-table.css",
               "./src/assets/extrnalJs/bootstrapValidator.min.css",

@@ -1,0 +1,136 @@
+.page-wrapper {
+    background-color: #F3F3F3;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    /*min-height: 100vh;*/
+    /*background-image: url(../../assets/images/dashboard_background.jpg);*/
+    background-image: url(../../assets/images/carousel_img2.jpg);
+}
+
+div.polaroid {
+    width: 200px;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 25px 25px 0px 0px;
+    margin: 25px 0px;
+    text-align: center;
+    padding: 15px 0px 0px 0px;
+    height: 140px;
+}
+
+.right-top-card {
+    margin: 25px 0px;
+    padding: 15px 0px 0px 15px;
+    height: 140px;
+    color: #fff;
+    font-size: 24px;
+}
+
+.stat-highlight {
+    color: #D8DBEB;
+    font-size: 30px;
+    font-style: italic;
+    text-decoration: underline;
+}
+
+div.target_page {
+    text-align: center;
+    color: #00538E;
+    padding: 6px 20px;
+}
+
+div.card_bottom {
+    background-color: #00538E;
+    height: 8px;
+}
+
+.overlay {
+    position: absolute;
+    bottom: 0;
+    left: 15px;
+    right: 0;
+    background-color: #008CBA;
+    overflow: hidden;
+    width: 0;
+    height: 140px;
+    padding: 15px 0px 0px 0px;
+    border-radius: 25px 25px 0px 0px;
+    transition: .5s ease;
+
+}
+
+#network_map_card:hover .overlay {
+    width: 200px;
+    padding: 15px 0px 0px 0px;
+    margin: 0px 0px 25px 0px;
+    height: 140px;
+    border-radius: 25px 25px 0px 0px;
+}
+
+#gene_analysis_card:hover .overlay {
+    width: 200px;
+    padding: 15px 0px 0px 0px;
+    margin: 0px 0px 25px 0px;
+    height: 140px;
+    border-radius: 25px 25px 0px 0px;
+}
+
+#search_card:hover .overlay {
+    width: 200px;
+    padding: 15px 0px 0px 0px;
+    margin: 0px 0px 26px 0px;
+    height: 140px;
+    border-radius: 25px 25px 0px 0px;
+}
+
+.text {
+    white-space: nowrap;
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    overflow: hidden;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+}
+
+.stat-box {
+    width: 200px;
+    height: 150px;
+    background: #EBA6F6;
+    position: relative;
+    animation-name: example;
+    animation-duration: 3s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    border: 2px solid #283D90;
+    border-radius: 15px;
+}
+
+@keyframes example {
+    from {
+        top: 0px;
+    }
+
+    to {
+        top: 0px;
+        background-color: #f809cc;
+    }
+}
+
+.opacity {
+    opacity: 0.2;
+}
+
+.carousel-caption-margin {
+    margin-bottom: 150px;
+}
+
+.video-player {
+    padding: 50px 0px;
+    background-color: #fff;
+}
+
+/* -------------------------------------- */

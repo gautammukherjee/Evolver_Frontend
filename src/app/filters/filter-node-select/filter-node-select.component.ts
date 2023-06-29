@@ -139,7 +139,12 @@ export class FilterNodeSelectComponent implements OnInit {
   }
 
   selectNode(nodeValue: any) {
-    console.log("nodeValue: ", nodeValue.target.value);
+    // console.log("nodeValue: ", nodeValue.target.value);
+
+    this.globalVariableService.resetfilters();
+    this.params = this.globalVariableService.getFilterParams();
+    console.log("params1: ", this.params);
+
     // if (event.target.checked) {
     //   this.selectedNodeSelects.push(node.nnrt_id);
     // } else {
@@ -147,7 +152,7 @@ export class FilterNodeSelectComponent implements OnInit {
     // }
     this.selectedNodeSelects = nodeValue.target.value;
 
-    console.log("selectedNodeSelects: ", this.selectedNodeSelects);
+    // console.log("selectedNodeSelects: ", this.selectedNodeSelects);
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data   
 
     // if (from != 'nodeSelectsWarningModal')

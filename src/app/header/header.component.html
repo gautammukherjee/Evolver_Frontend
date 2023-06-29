@@ -1,33 +1,42 @@
 <header class="fixed-top">
     <nav class="navbar navbar-expand-lg bg-white evolver-header"> <!--fixed-top-->
         <div class="container-fluid">
-            <a class="navbar-brand" [routerLink]="['/index']"><img src="./assets/images/logo.png" alt=""
-                    width="180px"></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            <a class="navbar-brand" [routerLink]="['/index']">
+                <img src="./assets/images/logo.png" alt="" width="160px">
+            </a>
+            <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <ul class="navbar-nav me-auto mb-2 ml-4 mb-lg-0">
-              <li class="nav-item">
-                <!-- <a class="nav-link active btn mr-4" [routerLink]="['/index']" role="button">Search Tool</a> -->
-                <a class="nav-link active btn header-btn text-light mr-4" target="_blank" href="http://150.136.91.243:8887/login/?username=hsharma&password=test@123">Search Tool</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active btn header-btn text-light mr-4" [routerLink]="['/bio_infomatics']">Gene Analysis Platform</a>
-              </li>
-              <li class="nav-item">
-                <button class="nav-link active btn header-btn text-light enterApp mr-4" [routerLink]="['/dashboard']">Network Map</button>
-              </li>
-            </ul>
-
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                <div class="ml-4">
+                    <div class="header-btn">
+                        <a class="nav-link active text-dark enterApp mr-1 fs-6 header-btn-a"
+                            [routerLink]="['/dashboard']"><strong>Network
+                            Map</strong></a>
+                    </div>
+
+                    <div class="header-btn">
+                        <a class="nav-link active text-dark mr-1 fs-6 header-btn-a"
+                            [routerLink]="['/bio_infomatics']"><strong>Gene
+                            Analysis</strong></a>
+                    </div>
+
+                    <div class="header-btn">
+                        <a class="nav-link active text-dark mr-1 fs-6 header-btn-a" target="_blank"
+                            href="http://150.136.91.243:8887/login/?username=hsharma&password=test@123"><strong>Search Tool</strong></a>
+                    </div>
+                </div>
+
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            <img src="./assets/images/user.png" alt="" width="32px" class="mx-2">{{result.email}}
+                            <img src="./assets/images/user.png" alt="" width="32px" class="mx-2">
+                            {{result.email}}
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" [routerLink]="['/manage-password']">Reset Password</a></li>
@@ -42,7 +51,7 @@
             </div>
         </div>
     </nav>
-     
-    
+
+
 
 </header>

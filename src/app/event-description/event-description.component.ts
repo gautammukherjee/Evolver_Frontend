@@ -45,6 +45,7 @@ export class EventDescriptionComponent implements OnInit {
     this.getEventDescription(this.filterParams);
 
     this.ProceedDoFilterApply?.subscribe(data => {  // Calling from details, details working as mediator
+      console.log("eventData: ", data);
       if (data === undefined) { // data=undefined true when apply filter from side panel
         // this.hideCardBody = true;
         this.filterParams = this.globalVariableService.getFilterParams();

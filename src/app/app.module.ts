@@ -37,6 +37,7 @@ import { SafePipe } from './pipes/safe.pipe';
 import { BioInfomaticsComponent } from './bio-infomatics/bio-infomatics.component';
 
 import { FilterEdgeTypeLevel2Component } from './filters/filter-edge-type-level2/filter-edge-type-level2.component';
+import { EventChartComponent } from './event-chart/event-chart.component';
 
 
 
@@ -66,7 +67,8 @@ import { FilterEdgeTypeLevel2Component } from './filters/filter-edge-type-level2
     DestinationNodePipe,
     EdgeTypePipe,
     SafePipe,
-    BioInfomaticsComponent
+    BioInfomaticsComponent,
+    EventChartComponent
   ],
   imports: [
     BrowserModule,
