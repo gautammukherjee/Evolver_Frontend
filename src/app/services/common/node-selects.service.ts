@@ -2,9 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from './../../../environments/environment';
 
-// import { Observable } from 'rxjs';
+import { Observable } from 'rxjs';
+// import { of } from 'rxjs';
 // import 'rxjs/add/observable/of';
 // import 'rxjs/add/operator/do';
+// import 'rxjs/add/operator/of';
+import { tap } from "rxjs/operators";
+// import {tap} from 'rxjs/internal/operators';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -15,7 +19,7 @@ const httpOptions = {
 })
 export class NodeSelectsService {
   private API_URL: string = environment.apiUrl;
-  private _Gene_syns: any;
+  private _edge_types: any;
 
   constructor(private http: HttpClient) { }
 
@@ -45,6 +49,18 @@ export class NodeSelectsService {
   getDestinationNode(params: any) {
     return this.http.post(this.API_URL + 'getDestinationNode', params, httpOptions);
   }
+
+  // getEdgeType() {
+  //   if (this._edge_types) {
+  //     return Observable.of(this._edge_types);
+  //   } else {
+  //     return this.http.get(this.API_URL + 'getEdgeType', httpOptions).do(
+  //       (data) => {
+  //         this._edge_types = data;
+  //       });
+  //   }
+  // }
+
   getEdgeType() {
     return this.http.get(this.API_URL + 'getEdgeType', httpOptions);
   }

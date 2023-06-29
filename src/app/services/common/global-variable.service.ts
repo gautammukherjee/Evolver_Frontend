@@ -143,6 +143,10 @@ export class GlobalVariableService {
   }
 
   resetfilters() {
+    this.setSelectedSourceNodes([10810]);
+    this.setSelectedDestinationNodes([]);
+    this.setSelectedNodeSelects2('');
+    this.setSelectedEdgeTypes2([]);
   }
 
   resetfiltersInner() {

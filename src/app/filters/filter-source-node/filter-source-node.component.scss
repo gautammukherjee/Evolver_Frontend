@@ -9,11 +9,21 @@
 .modal-header {
     padding: 7px 20px;
     border: none;
-    background: #7d689f;
+    background: #077cb7;
 
     h4 {
         font-size: 20px;
         margin-top: 0px;
+    }
+}
+
+.inputWithSearchIcn {
+    position: relative;
+
+    span {
+        position: absolute;
+        right: 10px;
+        top: 12px;
     }
 }
 

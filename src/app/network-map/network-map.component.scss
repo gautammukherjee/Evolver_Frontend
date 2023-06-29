@@ -98,7 +98,8 @@ ng2-cytoscape {
     top: 300px;
 }
 
-.sidebar .closebtn, .sidebarBreadcrumb .closebtn {
+.sidebar .closebtn,
+.sidebarBreadcrumb .closebtn {
     position: absolute;
     top: 10px;
     right: 25px;
@@ -119,7 +120,7 @@ ng2-cytoscape {
     background-color: #444;
 }
 
-.newSearchInput{
+.newSearchInput {
     background-position: 10px 12px;
     background-repeat: no-repeat;
     width: 98%;
@@ -129,4 +130,23 @@ ng2-cytoscape {
     margin-bottom: 10px;
     color: #000;
     margin: 6px 2px;
+}
+
+.loading-custom-map {
+    position: relative;
+    width: 100px;
+    background: #b6eaef;
+    text-align: center;
+    border: 0px solid #b3af22;
+    font-size: 13px;
+    color: #000;
+    // top: 12px;
+    padding: 4px;
+    left: 50%;
+    margin-left: -50px;
+    z-index: 999;
+
+    span {
+        color: #000;
+    }
 }

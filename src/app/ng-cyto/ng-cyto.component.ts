@@ -57,7 +57,8 @@ export class NgCytoComponent implements OnChanges {
 
     public constructor(private globalVariableService: GlobalVariableService, private renderer: Renderer2, private el: ElementRef, private modalService: NgbModal) {
 
-        this._selectedNodes = this.globalVariableService.getSelectedNodes();
+        // this._selectedNodes = this.globalVariableService.getSelectedNodes();
+        this._selectedNodes = this.globalVariableService.getSelectedSourceNodes();
 
         this.layout = this.layout || {
             name: 'grid',
@@ -151,36 +152,39 @@ export class NgCytoComponent implements OnChanges {
 
             var TargetNode = node[0]._private.data;
             console.log("act: ", node[0]._private.data);
-
             var directlyConnectedNodes = node.neighborhood().nodes();
             console.log("nodesHere: ", directlyConnectedNodes);
             $("#nodeDetails").html("");
             if (directlyConnectedNodes != undefined) {
                 var nodeDetails = "";
-                
+
                 nodeDetails += "<div style='float:left;'>";
                 nodeDetails += '<div style="padding: 5px;"><strong>' + TargetNode.name + '</strong></div>';
                 nodeDetails += '<div style="padding: 5px;"><strong>Node Type: ' + TargetNode.node_type + '</strong></div>';
                 nodeDetails += '<div style="padding: 5px;"><strong>Connections: </strong></div>';
 
-                // nodeDetails += '<input type="text" id="searchInput" autocomplete="off" onkeyup="searchConnections()" placeholder="&#xf002; Search for connections..">';
+                //nodeDetails += '<input type="text" id="searchInput" autocomplete="off" onkeyup="searchConnections()" placeholder="&#xf002; Search for connections..">';
 
                 nodeDetails += "<ul style='padding: 2px 18px;'>";
                 directlyConnectedNodes.forEach((directlyConnectedNode: any) => {
                     // window.gv = directlyConnectedNode;
                     //console.log("inner: ", directlyConnectedNode);
                     // console.log("inner: ", gv);
-                    nodeDetails += "<li style='list-style: initial; color:" + directlyConnectedNode._private.data.colorCode + "'>" + directlyConnectedNode._private.data.name + "</li>"; //22509 -HSP90 molecular
+                    const el = document.getElementById("nodeClick");
+                    el?.addEventListener("onclick", this.nodeClickEvent);
+                    nodeDetails += "<li id='nodeClick' style='list-style: initial; color:" + directlyConnectedNode._private.data.colorCode + "'>" + directlyConnectedNode._private.data.name + "</li>"; //22509 -HSP90 molecular
                 });
                 nodeDetails += "</ul>";
                 nodeDetails += "</div>";
+
                 $("#nodeDetails").html(nodeDetails);
             } else {
                 $("#nodeDetails").html("");
             }
             ($('#myModalNode') as any).modal('show');
-            this.showNodeInfo(node._private.data.id);
+            this.showNodeInfo(node._private.data.id); //append the node and reload the graph
         });
+
 
         cy.on('tap', function (e: any) {
             if (e.target === cy) {
@@ -245,14 +249,16 @@ export class NgCytoComponent implements OnChanges {
             $("#pubmedURLs").html(pubmedEdgeDetails);
             ($('#myModalEdge') as any).modal('show');
         });
+
+        //document.getElementById("#btnsave").addEventListener ("click", nodeClickEvent, false);
     }
 
     public showNodeInfo(nodeId: any) {
         // var nodeId: any = $(nodeId);
         console.log("nodeId: ", nodeId);
-        this.checkedNodes = Array.from(this.globalVariableService.getSelectedNodes()); //get the existing node id
+        this.checkedNodes = Array.from(this.globalVariableService.getSelectedSourceNodes()); //get the existing node id
         this.checkedNodes.push(parseInt(nodeId));  // and append the selecting nodeid
-        this.globalVariableService.setSelectedNodes(this.checkedNodes);
+        this.globalVariableService.setSelectedSourceNodes(this.checkedNodes);
         console.log("select2: ", this.checkedNodes);
         this.onGraphSelection.emit();
 
@@ -260,9 +266,13 @@ export class NgCytoComponent implements OnChanges {
         // this.modalRef = this.modalService.open(this.show_nodes, { size: 'lg', keyboard: false, backdrop: 'static' });
     }
 
+    nodeClickEvent = function () {
+        console.log("test: ");
+    }
 
-    searchConnections = function () {
 
+    searchConnections22 = () => {
+        // searchConnections = function () {
         console.log("sdfsfs");
         alert("sfsfsf");
         // Declare variables

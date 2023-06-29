@@ -13,6 +13,7 @@ export class DashboardComponent implements OnInit {
   doFilterApply: Subject<any> = new Subject();  // ## P= Parent
   doUpdateFilterDataApply: Subject<any> = new Subject();
   showSidebar: boolean = false;
+  viewMode = 'event_list';
 
   constructor(private globalVaiableService: GlobalVariableService, private router: Router) {
     // this.globalVaiableService.setSelectedTa([1]);
