@@ -3,8 +3,9 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    min-height: 100vh;
-    background-image: url(../../assets/images/dashboard_background.jpg);
+    /*min-height: 100vh;*/
+    /*background-image: url(../../assets/images/dashboard_background.jpg);*/
+    background-image: url(../../assets/images/carousel_img2.jpg);
 }
 
 div.polaroid {
@@ -15,16 +16,32 @@ div.polaroid {
     margin: 25px 0px;
     text-align: center;
     padding: 15px 0px 0px 0px;
+    height: 140px;
+}
+
+.right-top-card {
+    margin: 25px 0px;
+    padding: 15px 0px 0px 15px;
+    height: 140px;
+    color: #fff;
+    font-size: 24px;
+}
+
+.stat-highlight {
+    color: #D8DBEB;
+    font-size: 30px;
+    font-style: italic;
+    text-decoration: underline;
 }
 
 div.target_page {
     text-align: center;
-    color: #942EC3;
-    padding: 10px 20px;
+    color: #00538E;
+    padding: 6px 20px;
 }
 
 div.card_bottom {
-    background-color: #EBA6F6;
+    background-color: #00538E;
     height: 8px;
 }
 
@@ -36,7 +53,7 @@ div.card_bottom {
     background-color: #008CBA;
     overflow: hidden;
     width: 0;
-    height: 147px;
+    height: 140px;
     padding: 15px 0px 0px 0px;
     border-radius: 25px 25px 0px 0px;
     transition: .5s ease;
@@ -46,27 +63,24 @@ div.card_bottom {
 #network_map_card:hover .overlay {
     width: 200px;
     padding: 15px 0px 0px 0px;
-    margin: 0px 0px 393px 0px;
-    /* --- */
-    height: 147px;
+    margin: 0px 0px 25px 0px;
+    height: 140px;
     border-radius: 25px 25px 0px 0px;
 }
 
 #gene_analysis_card:hover .overlay {
     width: 200px;
     padding: 15px 0px 0px 0px;
-    margin: 0px 0px 213px 0px;
-    /* --- */
-    height: 147px;
+    margin: 0px 0px 25px 0px;
+    height: 140px;
     border-radius: 25px 25px 0px 0px;
 }
 
 #search_card:hover .overlay {
     width: 200px;
     padding: 15px 0px 0px 0px;
-    margin: 0px 0px 33px 0px;
-    /* --- */
-    height: 147px;
+    margin: 0px 0px 26px 0px;
+    height: 140px;
     border-radius: 25px 25px 0px 0px;
 }
 
@@ -106,12 +120,17 @@ div.card_bottom {
     }
 }
 
-.opacity{
-    opacity: 0.3;
+.opacity {
+    opacity: 0.2;
 }
-.carousel-caption-margin{
+
+.carousel-caption-margin {
     margin-bottom: 150px;
 }
 
+.video-player {
+    padding: 50px 0px;
+    background-color: #fff;
+}
 
 /* -------------------------------------- */
