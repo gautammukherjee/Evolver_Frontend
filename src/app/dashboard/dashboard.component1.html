@@ -1,0 +1,98 @@
+<div class="stats-landing">
+    <app-header></app-header>
+
+    <section class="dashboard-main-wrapper">
+        <div class="container-fluid">
+
+            <div class="row p-4 top-panel">
+                <div class="col col-sm-3 col-md-3 col-lg-3">
+                    <app-filter-node-select (onSelectNode)='nodeChanged($event)'></app-filter-node-select>
+                </div>
+                <div class="col col-sm-3 col-md-3">
+                    <div class="d-grid gap-2 pt-4 txt-label-color">
+                        <a class="btn btn-light btn-lg button-border">
+                            <h4>Source Node</h4>
+                        </a>
+                    </div>
+                </div>
+                <div class="col col-sm-3 col-md-3">
+                    <div class="d-grid gap-2 pt-4 txt-label-color">
+                        <a class="btn btn-light btn-lg button-border">
+                            <h4>Destination Node</h4>
+                        </a>
+                    </div>
+                </div>
+                <div class="col col-sm-3 col-md-3">
+                    <div class="d-grid gap-2 pt-4 txt-label-color">
+                        <a class="btn btn-light btn-lg button-border">
+                            <h4>Edge Node</h4>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col col-sm-2 col-md-2 col-lg-2 top-panel vh-100">
+
+
+                    <div class="pt-4 pb-4 text-white" style="font-size: 15px;">Please
+                        choose destination Nodes</div>
+
+                    <app-filter-node-select-level2 (onSelectNode2)='nodeChanged2($event)'
+                        [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-node-select-level2>
+                    <app-filter-edge-type-level2 (onSelectEdgeType2)='edgeTypeChanged2($event)'
+                        [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type-level2>
+
+                </div>
+                <div class="col">
+                    <!-- <ul class="nav nav-tabs mt-2 mb-2">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#" tabindex="0">Network Map</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" tabindex="1">Event List</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" tabindex="2">Distribution by Association Type</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" tabindex="3" aria-disabled="true">Distribution by Relation Group</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" tabindex="4" aria-disabled="true"> Count of PMID with Relevant Genes or Diseases</a>
+                        </li> 
+                    </ul>-->
+                    <div class="mt-2 tab-slider--nav">
+                        <ul class="tab-slider--tabs">
+                            <li class="tab-slider--trigger" [class.active]="viewMode == 'event_list'" rel="event_list"
+                                (click)="viewMode ='event_list'">Event Lists</li>
+                            <li class="tab-slider--trigger" [class.active]="viewMode == 'event_chart'" rel="event_chart"
+                                (click)="viewMode ='event_chart'">Event Chart</li>
+                            <!-- <li class="tab-slider--trigger" [class.active]="viewMode == 'event_chart'" rel="event_chart"
+                                (click)="viewMode ='event_chart'">Distribution by Relation Group</li>
+                            <li class="tab-slider--trigger" [class.active]="viewMode == 'event_chart'" rel="event_chart"
+                                (click)="viewMode ='event_chart'">Count of PMID with Relevant Genes or Diseases</li> -->
+                        </ul>
+                    </div>
+                    <div class="tab-slider--container" [ngSwitch]="viewMode">
+
+                        <div id="event_list" class="tab-slider--body" *ngSwitchCase="'event_list'">
+                            <h2>&nbsp;</h2>
+                            <!--<app-event-description [ProceedDoFilterApply]="doFilterApply"></app-event-description>-->
+                        </div>
+                        <div id="event_chart" class="tab-slider--body" *ngSwitchCase="'event_chart'">
+                            <h2>Event Chart</h2>
+                            <app-event-chart></app-event-chart>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+
+</div>

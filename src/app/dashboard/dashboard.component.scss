@@ -20,11 +20,11 @@ h2 {
     padding: 0;
     list-style: none;
     position: relative;
-    border-radius: 35px;
+    border-radius: 5px;
     overflow: hidden;
     background: #fff;
     height: 55px;
-    background-color: #7880BA;
+    background-color: #03538E;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -42,7 +42,7 @@ h2 {
     left: 0;
     -webkit-transition: all 250ms ease-in-out;
     transition: all 250ms ease-in-out;
-    border-radius: 35px;
+    border-radius: 5px;
 }
 
 .tab-slider--tabs.slide:after {
@@ -72,10 +72,21 @@ h2 {
 
 .tab-slider--trigger.active {
     color: #fff;
-    background-color: #A25DA1;
-    border-radius: 25px;
+    background-color: #046EB5;
+    border-radius: 5px;
 }
 
 .tab-slider--body {
     margin-bottom: 20px;
+}
+
+
+.top-panel{
+    background-image: url(../../assets/images/dashboard_background.jpg);
+}
+.txt-label-color{
+    color: #00538E;
+}
+.button-border{
+    border-bottom: 6px solid #008CBA;
 }
