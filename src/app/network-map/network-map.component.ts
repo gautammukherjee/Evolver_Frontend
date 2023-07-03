@@ -66,7 +66,7 @@ export class NetworkMapComponent implements OnInit {
   graphSelected() {
     //    this.doFilterApply.next({ clickOn: param });
     this.filterParams = this.globalVariableService.getFilterParams();
-    // console.log("you here:: ", this.filterParams);
+    console.log("you here:: ", this.filterParams);
     this.getMasterListsMap(this.filterParams);
   }
 
@@ -123,12 +123,12 @@ export class NetworkMapComponent implements OnInit {
         this.masterListsData.forEach((event: any) => {
           //Source Node data
           this.sourcenodeData.push({
-            id: Math.floor(event.sourcenode), name: event.sourcenode_name,
+            id: Math.floor(event.sourcenode), name: event.sourcenode_name, colorNode: '#BF63A2', shapeType: 'round-hexagon', nodeType: 'source'
           });
 
           //Destination node data
           this.destinationnodeData.push({
-            id: Math.floor(event.destinationnode), name: event.destinationnode_name,
+            id: Math.floor(event.destinationnode), name: event.destinationnode_name, colorNode: '#4B5DA1', shapeType: 'barrel', nodeType: 'target'
           });
 
           this.legendsNodeTypes.push({ node_name: event.sourcenode, color_code: '#32404E' });
@@ -136,21 +136,27 @@ export class NetworkMapComponent implements OnInit {
           //Edge data
           this.edgeData.push({
             // data: { source: Math.floor(event.source_id), target: Math.floor(event.target_id), PMID: event.pmidlist, colorCode: "pink", strength: Math.floor(event.edge_weight) },
-            data: { source: Math.floor(event.sourcenode), target: Math.floor(event.destinationnode), colorCode: "#008000", strength: Math.floor(2) },
+            data: { source: Math.floor(event.sourcenode), target: Math.floor(event.destinationnode), colorCode: "#00e600", strength: Math.floor(2) },
           });
         });
+
+        console.log("sourcenodeData: ", this.sourcenodeData);
+        console.log("destinationnodeData: ", this.destinationnodeData);
 
         //Source id
         const key = 'id';
         const arrayUniqueBySourceId = [...new Map(this.sourcenodeData.map((item: any) =>
           [item[key], item])).values()];
+        console.log("arrayUniqueBySourceId: ", arrayUniqueBySourceId);
 
         //Destination id
         const key2 = 'id';
         const arrayUniqueByDestinationId = [...new Map(this.destinationnodeData.map((item: any) =>
           [item[key2], item])).values()];
+        console.log("arrayUniqueByDestinationId: ", arrayUniqueByDestinationId);
 
-        this.results = [...arrayUniqueBySourceId, ...arrayUniqueByDestinationId];
+        this.results = [...arrayUniqueByDestinationId, ...arrayUniqueBySourceId];
+        console.log("new Results:::: ", this.results);
 
         const key3 = 'id';
         const arrayUniqueResultsData = [...new Map(this.results.map((item: any) =>
@@ -161,7 +167,7 @@ export class NetworkMapComponent implements OnInit {
           //Node data
           this.nodeData.push({
             // data: { id: Math.floor(event.node_id), name: event.node, node_type: event.nodetype, weight: 100, colorCode: event.colourcode, shapeType: 'octagon' },
-            data: { id: Math.floor(event.id), name: event.name, node_type: 'circular', weight: 100, colorCode: '#ff0000', shapeType: 'octagon' }
+            data: { id: Math.floor(event.id), name: event.name, node_type: event.nodeType, weight: 100, colorCode: event.colorNode, shapeType: event.shapeType }
           });
         });
 
@@ -189,7 +195,29 @@ export class NetworkMapComponent implements OnInit {
 
   private drawChart() {
     this.layout = {
-      name: 'concentric',
+      // name: 'grid',
+      // animate: true,
+
+      name: 'cose',
+      idealEdgeLength: 200,
+      nodeOverlap: 4,
+      // refresh: 20,
+      nodeSpacing: 10,
+      spacingFactor: 152,
+      fit: true,
+      padding: 20,
+      randomize: false,
+      componentSpacing: 40,
+      nodeRepulsion: 2048,
+      edgeElasticity: 100,
+      nestingFactor: 5,
+      gravity: 1,
+      numIter: 1000,
+      initialTemp: 200,
+      coolingFactor: 0.95,
+      minTemp: 1.0,
+      animate: true,
+      animationThreshold: 250,
     };
 
     // this.graphData = {

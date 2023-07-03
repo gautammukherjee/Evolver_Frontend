@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, Inject } from '@angular/core';
 import { GlobalVariableService } from './../services/common/global-variable.service';
 import { NodeSelectsService } from '../services/common/node-selects.service';
-import { Subject, BehaviorSubject } from 'rxjs';
+import { Subject, BehaviorSubject, map, mergeMap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 import * as moment from "moment";
@@ -30,7 +30,9 @@ export class EventDescriptionComponent implements OnInit {
   helpContents: any;
   masterListsData: any = [];
   masterListsDataDetails: any = [];
-
+  edgeTypesLists: any = [];
+  public edgeTypes: any = [];
+  public edgeHere: any = [];
 
   constructor(
     private globalVariableService: GlobalVariableService,
@@ -69,11 +71,32 @@ export class EventDescriptionComponent implements OnInit {
         this.masterListsData = this.resultNodes.masterListsData;
         console.log("masterListsData: ", this.masterListsData);
         this.masterListsDataDetails = [];
+
         this.masterListsData.forEach((event: any) => {
           var temps: any = {};
+
+          //Get the Edge Type Name
+          // const regex = /[{}]/g;
+          // const edgeTypeIds = event.edge_type_ids;
+          // const edgeTypeIdsPost = edgeTypeIds.replace(regex, '');
+          // console.log("edgeTypeIdsPost: ", edgeTypeIdsPost);
+
+          // // var edgeHere = this.getEdgeTypes(edgeTypeIdsPost);
+          // this.getEdgeTypes(edgeTypeIdsPost).subscribe(s => {
+          //   this.result = s;
+          //   this.edgeHere = this.result.edgeTypeName;
+          //   this.edgeTypesLists = [];
+          //   this.edgeHere.forEach((event: any) => {
+          //     this.edgeTypesLists.push(event.edge_type_name);
+          //   });
+          //   console.log("edgeHere: ", this.edgeTypesLists);
+          // });
+
           // temps["news_id"] = event.news_id;
           temps["sourcenode_name"] = event.sourcenode_name;
           temps["destinationnode_name"] = event.destinationnode_name;
+          temps["level"] = event.level;
+          // temps["edgeTypes"] = this.edgeTypesLists;
           this.masterListsDataDetails.push(temps);
         });
 
@@ -142,6 +165,19 @@ export class EventDescriptionComponent implements OnInit {
     //   this.masterListsData = [];
     //   this.loadingDesc = false;
     // }
+  }
+
+  // getEdgeTypes2(edgeTypeIdsPost: any) {
+  //   return this.getEdgeTypes(edgeTypeIdsPost).subscribe(s => {
+  //     this.result = s;
+  //   })
+  // }
+
+  getEdgeTypes(edgeTypeIdsPost: any) {
+    return this.nodeSelectsService.getEdgeTypeName({ 'edge_type_ids': edgeTypeIdsPost }).pipe(map((p: any) => {
+      this.result = p;
+      return p;
+    }));
   }
 
   // reloadDescription() {
