@@ -69,5 +69,9 @@ export class NodeSelectsService {
     return this.http.post(this.API_URL + 'getMasterLists', params, httpOptions);
   }
 
+  getEdgeTypeName(params: any) {
+    return this.http.post(this.API_URL + 'getEdgeTypeName', params, httpOptions);
+  }
+
 
 }

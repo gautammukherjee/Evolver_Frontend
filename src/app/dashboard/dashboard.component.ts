@@ -5,7 +5,7 @@ import { GlobalVariableService } from '../services/common/global-variable.servic
 
 @Component({
   selector: 'app-dashboard',
-  templateUrl: './dashboard.component1.html',
+  templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {

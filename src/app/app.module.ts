@@ -39,6 +39,11 @@ import { BioInfomaticsComponent } from './bio-infomatics/bio-infomatics.componen
 import { FilterEdgeTypeLevel2Component } from './filters/filter-edge-type-level2/filter-edge-type-level2.component';
 import { EventChartComponent } from './event-chart/event-chart.component';
 
+import { NgSelectModule } from '@ng-select/ng-select';
+import { MatInputModule } from '@angular/material/input';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatListModule } from '@angular/material/list';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -78,6 +83,11 @@ import { EventChartComponent } from './event-chart/event-chart.component';
     NgbModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    NgSelectModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    MatListModule,
+    MatCheckboxModule
     //SafePipeModule 
   ],
   exports: [
