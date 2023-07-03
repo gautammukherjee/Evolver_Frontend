@@ -21,8 +21,8 @@ export class FilterSourceNodeComponent implements OnInit {
   private filterParams: any;
   public alphabeticallyGroupedSourceNodes: any = '';
   public selectedSourceNodes: any = [];
-  // public sourceNodes: any = [];
-  public sourceNodes: Array<object> = [];
+  public sourceNodes: any = [];
+  // public sourceNodes: Array<object> = [];
   private params: object = {};
   private result: any = [];
   public loading: boolean = false;
@@ -66,12 +66,12 @@ export class FilterSourceNodeComponent implements OnInit {
     this.seeMoreFilterPlaceholder = "Search Source Nodes";
     //End here
 
-    this.globalVariableService.setSelectedSourceNodes([10810]);
-    this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
-    console.log("selectedSourceNodes: ", this.selectedSourceNodes);
+    // this.globalVariableService.setSelectedSourceNodes([10810]);
+    // this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
+    // console.log("selectedSourceNodes: ", this.selectedSourceNodes);
 
     this.filterParams = this.globalVariableService.getFilterParams();
-    // console.log("new Filters source node: ", this.filterParams);
+    console.log("new Filters source node: ", this.filterParams);
 
     // this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
     //   console.log("eventSource:: ", event.clickOn);
@@ -102,44 +102,49 @@ export class FilterSourceNodeComponent implements OnInit {
     this.UpdateFilterDataApply?.unsubscribe();
   }
 
-  getSourceNode(event: any) {
-    this.loading = true;
-    this.params = this.globalVariableService.getFilterParams();
+  getSourceNode(searchval: any) {
+    console.log("searchval: ", searchval);
+    console.log("searchval2: ", searchval.length);
+    if (searchval.length > 2) {
+      this.loading = true;
+      // localStorage.setItem('searchval', searchval);
+      this.filterParams = this.globalVariableService.getFilterParams({ "searchval": searchval });
+      console.log("filterparamsSearchFirst: ", this.filterParams);
+      // this.params = this.globalVariableService.getFilterParams();
+      this.nodeSelectsService.getSourceNode(this.filterParams)
+        .subscribe(
+          data => {
+            this.result = data;
+            // console.log("result: ", this.result);
+            this.sourceNodes = this.result.sourceNodeRecords;
+            console.log("sourceNodes: ", this.sourceNodes);
+            // this.loading = true;
 
-
-    this.nodeSelectsService.getSourceNode(this.params)
-      .subscribe(
-        data => {
-          this.result = data;
-          // console.log("result: ", this.result);
-          this.sourceNodes = this.result.sourceNodeRecords;
-          console.log("sourceNodes: ", this.sourceNodes);
-
-          // this.alphabeticallyGroupedSourceNodes = this.groupBy(this.sourceNodes, 'source_node_name');
-          // console.log("alphabeticallyGroupedSourceNodes: ", this.alphabeticallyGroupedSourceNodes);
-
-          //if (event !== undefined && event.type == 'load') { // i.e No Genes selected previously
-          for (let i = 0; i < this.result.sourceNodeRecords.length && i < 1; i++) {
-            this.selectedSourceNodes.push(this.result.sourceNodeRecords[i].source_node);
-            //this.selectedSourceNodes = [];
+            // this.alphabeticallyGroupedSourceNodes = this.groupBy(this.sourceNodes, 'source_node_name');
+            // console.log("alphabeticallyGroupedSourceNodes: ", this.alphabeticallyGroupedSourceNodes);
+            //if (event !== undefined && event.type == 'load') { // i.e No Genes selected previously
+            // for (let i = 0; i < this.result.sourceNodeRecords.length && i < 1; i++) {
+            //   this.selectedSourceNodes.push(this.result.sourceNodeRecords[i].source_node);
+            //   //this.selectedSourceNodes = [];
+            // }
+            // console.log("selected source Nodes: ", this.selectedSourceNodes);
+            // this.globalVariableService.setSelectedSourceNodes(this.selectedSourceNodes);
+            //} else {
+            //this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
+            //}
+          },
+          err => {
+            // this.sourceNodesCheck = true;
+            this.loading = false;
+            console.log(err.message)
+          },
+          () => {
+            // this.sourceNodesCheck = true;
+            this.loading = false;
+            console.log("loading finish")
           }
-          console.log("selected source Nodes: ", this.selectedSourceNodes);
-          this.globalVariableService.setSelectedSourceNodes(this.selectedSourceNodes);
-          //} else {
-          //this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
-          //}
-        },
-        err => {
-          this.sourceNodesCheck = true;
-          this.loading = false;
-          console.log(err.message)
-        },
-        () => {
-          this.sourceNodesCheck = true;
-          this.loading = false;
-          console.log("loading finish")
-        }
-      );
+        );
+    }
   }
 
   selectSourceNode(sourceNode: any, event: any, from: any = null) {
@@ -152,8 +157,8 @@ export class FilterSourceNodeComponent implements OnInit {
     console.log("selectedSourceNodes: ", this.selectedSourceNodes);
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data   
 
-    if (from != 'nodeSelectsWarningModal')
-      this.proceed();
+    // if (from != 'nodeSelectsWarningModal')
+    //   this.proceed();
     this.enableDisableProceedButton();
   }
 
@@ -206,7 +211,7 @@ export class FilterSourceNodeComponent implements OnInit {
 
   public seeMoreproceed() {
     this.proceed();
-    // this.enableDisableProceedButton();
+    this.enableDisableProceedButton();
   }
 
   proceed() {

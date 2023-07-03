@@ -66,12 +66,13 @@ export class NetworkMapComponent implements OnInit {
   graphSelected() {
     //    this.doFilterApply.next({ clickOn: param });
     this.filterParams = this.globalVariableService.getFilterParams();
-    console.log("you here:: ", this.filterParams);
+    // console.log("you here:: ", this.filterParams);
     this.getMasterListsMap(this.filterParams);
   }
 
   ngOnInit() {
     this.filterParams = this.globalVariableService.getFilterParams();
+    console.log("you here2:: ", this.filterParams);
     this.mapTypes = this.filterParams.mapType;
 
     // this.drawChart();
@@ -90,7 +91,9 @@ export class NetworkMapComponent implements OnInit {
       }
 
     });
-    this.getMasterListsMap(this.filterParams);
+    if (this.filterParams.source_node != undefined) {
+      this.getMasterListsMap(this.filterParams);
+    }
   }
 
   ngOnDestroy() {
