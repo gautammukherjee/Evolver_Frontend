@@ -29,7 +29,7 @@ h2 {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    width: 49%;
+    width: 100%;
 }
 
 .tab-slider--tabs:after {
@@ -54,7 +54,7 @@ h2 {
     line-height: 1;
     font-weight: bold;
     // color: #345F90;
-    text-transform: uppercase;
+    //text-transform: uppercase;
     text-align: center;
     padding: 22px 84px;
     position: relative;

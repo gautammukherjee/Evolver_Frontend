@@ -38,7 +38,7 @@ import { BioInfomaticsComponent } from './bio-infomatics/bio-infomatics.componen
 
 import { FilterEdgeTypeLevel2Component } from './filters/filter-edge-type-level2/filter-edge-type-level2.component';
 import { EventChartComponent } from './event-chart/event-chart.component';
-
+import { HighchartsChartModule } from 'highcharts-angular';
 
 
 @NgModule({
@@ -79,6 +79,7 @@ import { EventChartComponent } from './event-chart/event-chart.component';
     HttpClientModule,
     BrowserAnimationsModule,
     //SafePipeModule 
+    HighchartsChartModule,
   ],
   exports: [
     HeaderComponent,
