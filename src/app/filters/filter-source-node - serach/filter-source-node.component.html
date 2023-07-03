@@ -1,3 +1,46 @@
+<form [formGroup]="formGroup">
+  <mat-form-field>
+    <mat-label>
+      Employee
+    </mat-label>
+    <input formControlName="employee" matInput type="text" [matAutocomplete]="auto" />
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let item of filteredOptions" [value]="item">
+        {{item}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
+
+
+<!--<mat-form-field class="example-full-width">
+	<input type="text" placeholder="Select Users" aria-label="Select Users" matInput [matAutocomplete]="auto" [formControl]="userControl">
+  <mat-hint>Enter text to find users by name</mat-hint>
+</mat-form-field>
+
+<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+	<mat-option *ngFor="let user of filteredUsers | async" [value]="selectedUsers">
+		<div (click)="optionClicked($event, user)">
+			<mat-checkbox [checked]="user.selected" (change)="toggleSelection(user)" (click)="$event.stopPropagation()">
+				{{ user.firstname }} {{ user.lastname }}
+			</mat-checkbox>
+		</div>
+	</mat-option>
+</mat-autocomplete>
+
+<br><br>
+
+<label>Selected Users:</label>
+<mat-list dense>
+	<mat-list-item *ngIf="selectedUsers?.length === 0">(None)</mat-list-item>
+	<mat-list-item *ngFor="let user of selectedUsers">
+		{{ user.firstname }} {{ user.lastname }}
+	</mat-list-item>
+</mat-list>-->
+
+
+
+
 <!--<div class="sidebar-card">
   <div class="heading">
       <h4>Level 1 Relation</h4>
@@ -19,17 +62,14 @@
 </div>-->
 
 
-<div class="sidebar-card">
+<!--<div class="sidebar-card">
   <div class="heading">
-      <h4>Source Nodes</h4> <img *ngIf="loading" src="../../assets/images/small-loader.gif" width="18px" />
+      <h4>Source Nodes here</h4> <img *ngIf="loading" src="../../assets/images/small-loader.gif" width="18px" />
   </div>
   <div class="body" *ngIf="sourceNodes.length > 0" style="height: 150px;overflow: auto;">
       
       <div class="search-input">
-
-        <input type="text" #searchInput class="form-control" placeholder='Search Synonym' aria-label="Search" area-describedby="basic-addon2">&nbsp;
-        <!--<input class="form-control" type="text" placeholder="Search" aria-label="Search" [(ngModel)]="sourceNodeFilter" />
-        <button class="btn btn-primary" [disabled]="!form.form.valid" (click)="getSourceNode(searchInput.value)">Search</button>-->
+        <input class="form-control" type="text" placeholder="Search" aria-label="Search" [(ngModel)]="sourceNodeFilter" />
       </div>
 
       <div class="mb-1 form-check" *ngFor="let sourceNode of sourceNodes | SourceNodeFilterPipe:sourceNodeFilter">
@@ -40,13 +80,13 @@
         </label>
       </div>
 
-      <!--<span *ngIf="selectedSourceNodes.length > 0" style="cursor: pointer; float:right;" class="float-left"
+      <span *ngIf="selectedSourceNodes.length > 0" style="cursor: pointer; float:right;" class="float-left"
         (click)="resetSourceNode();">Reset</span>
       <span *ngIf="sourceNodes.length > 2" style="cursor: pointer" class="float-right"
         (click)="SeeMore($event,seeMoreSourceNodeModal);">{{sourceNodes.length-10}}
-        More</span>-->
+        More</span>
   </div>
-</div>
+</div>-->
 
 
 <!--<div class="card-panel-box-detail" *ngIf="sourceNodes.length <= 0">
@@ -61,7 +101,7 @@
 </div>-->
 
 
-<ng-template #nodeSelectsWarningModal let-c="close" let-d="dismiss">
+<!--<ng-template #nodeSelectsWarningModal let-c="close" let-d="dismiss">
   <div class="modal-header    modal-lg" style="background: #ff0c66 !important;">
     <h4 class="modal-title">Warning</h4>
     &nbsp;
@@ -134,4 +174,4 @@
       <button class="btn btn-danger" (click)="seeMoreClosePopup()">Close</button>
     </div>
   </div>
-</ng-template>
+</ng-template>-->

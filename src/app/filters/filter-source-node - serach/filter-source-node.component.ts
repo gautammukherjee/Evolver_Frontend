@@ -1,12 +1,10 @@
 import { Component, OnInit, EventEmitter, Output, ChangeDetectorRef, Input, Pipe, PipeTransform, ElementRef, ViewChild, ViewChildren } from '@angular/core';
 import { NodeSelectsService } from '../../services/common/node-selects.service';
 import { GlobalVariableService } from '../../services/common/global-variable.service';
-import { Subject } from 'rxjs';
-import { FormControl } from '@angular/forms';
+import { Subject, debounceTime } from 'rxjs';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { map, startWith } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-
+import { ServService } from '../../services/common/serv.service';
 
 @Component({
   selector: 'app-filter-source-node',
@@ -14,6 +12,14 @@ import { Observable } from 'rxjs';
   styleUrls: ['./filter-source-node.component.scss']
 })
 export class FilterSourceNodeComponent implements OnInit {
+
+
+  options: any = ["Sam", "Varun", "Jasmine"];
+  filteredOptions: any = [];
+  formGroup!: FormGroup;
+
+
+
 
   @Output() onSelectSourceNode: EventEmitter<any> = new EventEmitter();
   @Input() UpdateFilterDataApply?: Subject<any>;
@@ -44,103 +50,110 @@ export class FilterSourceNodeComponent implements OnInit {
   sourceNodeFilterText: string = '';
   // hideCardBody: boolean = true;
 
-
   constructor(
     private nodeSelectsService: NodeSelectsService,
     private globalVariableService: GlobalVariableService,
     private modalService: NgbModal,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    private fb: FormBuilder,
+    private service: ServService
   ) { }
-
-
 
   ngOnInit(): void {
 
-    //To filter the gene lists
-    this.enableFilter = true;
-    this.filterText = "";
-    this.filterPlaceholder = "Source Nodes Filter..";
+    this.initForm();
+    this.getNames();
 
-    //To filter the "SEE MORE" gene lists
-    this.seeMoreFilterText = "";
-    this.seeMoreFilterPlaceholder = "Search Source Nodes";
-    //End here
-
-    this.globalVariableService.setSelectedSourceNodes([10810]);
-    this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
-    console.log("selectedSourceNodes: ", this.selectedSourceNodes);
-
-    this.filterParams = this.globalVariableService.getFilterParams();
-    // console.log("new Filters source node: ", this.filterParams);
-
-    // this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
-    //   console.log("eventSource:: ", event.clickOn);
-    //   if (event.clickOn == undefined) {
-    //     // this.hideCardBody = true;
-    //     this.selectedSourceNodes = []; // Reinitialized, because when data updated on click TA, it should empty locally
-
-    //     this.filterParams = this.globalVariableService.getFilterParams();
-    //     // console.log("click on node selected: ", this.filterParams.nnrt_id);
-
-    //     this.getSourceNode(event, 2);
-    //     // } else if (event !== undefined && event.clickOn != 'geneFilter' && event.clickOn != 'geneFilter')
-    //   } else if (event.clickOn !== undefined && event.clickOn != 'diseasesIndicationsFilter') {
-    //     // this.hideCardBody = true;
-    //     this.selectedSourceNodes = []; // Reinitialized, because when data updated on click TA, it should empty locally
-    //     // this.globalVariableService.setSelectedSourceNodes([10810]);
-    //     // this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
-    //     // this.filterParams = this.globalVariableService.getFilterParams();
-    //     // console.log("change on click: ", this.filterParams);
-    //     this.getSourceNode(event, 2);
-    //   }
-    // });
-    // this.getSourceNode(event, 1);
-    // this.hideCardBody = true;
   }
+
+
+  initForm() {
+    this.formGroup = this.fb.group({
+      'employee': ['']
+    })
+    this.formGroup?.get('employee')?.valueChanges.pipe(debounceTime(1000)).subscribe(response => {
+      console.log('data is ', response);
+
+      if (response && response.length) {
+        this.filterData(response);
+      } else {
+        this.filteredOptions = [];
+      }
+
+    })
+  }
+
+  filterData(enteredData: any) {
+    this.filteredOptions = this.options.filter((item: any) => {
+      return item.toLowerCase().indexOf(enteredData.toLowerCase()) > -1
+    })
+  }
+
+  getNames() {
+    this.service.getData().subscribe(response => {
+      console.log("response: ", response);
+      this.options = response;
+      this.filteredOptions = response;
+    })
+
+
+    // this.nodeSelectsService.getSourceNode(this.params).subscribe(
+    //   response => {
+    //     console.log("response1: ", response);
+
+    //     // this.result = response;
+    //     this.options = response;
+    //     console.log("response2: ", this.options.sourceNodeRecords);
+
+    //     this.filteredOptions = response;
+    //   });
+
+  }
+
 
   ngOnDestroy() {
     this.UpdateFilterDataApply?.unsubscribe();
   }
 
-  getSourceNode(event: any) {
-    this.loading = true;
-    this.params = this.globalVariableService.getFilterParams();
+  // public getSourceNode(event: any, type: any) {
+  //   this.loading = true;
+  //   this.params = this.globalVariableService.getFilterParams();
 
 
-    this.nodeSelectsService.getSourceNode(this.params)
-      .subscribe(
-        data => {
-          this.result = data;
-          // console.log("result: ", this.result);
-          this.sourceNodes = this.result.sourceNodeRecords;
-          console.log("sourceNodes: ", this.sourceNodes);
+  //   this.nodeSelectsService.getSourceNode(this.params)
+  //     .subscribe(
+  //       data => {
+  //         this.result = data;
+  //         // console.log("result: ", this.result);
+  //         this.sourceNodes = this.result.sourceNodeRecords;
+  //         console.log("sourceNodes: ", this.sourceNodes);
 
-          // this.alphabeticallyGroupedSourceNodes = this.groupBy(this.sourceNodes, 'source_node_name');
-          // console.log("alphabeticallyGroupedSourceNodes: ", this.alphabeticallyGroupedSourceNodes);
+  //         this.alphabeticallyGroupedSourceNodes = this.groupBy(this.sourceNodes, 'source_node_name');
+  //         // console.log("alphabeticallyGroupedSourceNodes: ", this.alphabeticallyGroupedSourceNodes);
 
-          //if (event !== undefined && event.type == 'load') { // i.e No Genes selected previously
-          for (let i = 0; i < this.result.sourceNodeRecords.length && i < 1; i++) {
-            this.selectedSourceNodes.push(this.result.sourceNodeRecords[i].source_node);
-            //this.selectedSourceNodes = [];
-          }
-          console.log("selected source Nodes: ", this.selectedSourceNodes);
-          this.globalVariableService.setSelectedSourceNodes(this.selectedSourceNodes);
-          //} else {
-          //this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
-          //}
-        },
-        err => {
-          this.sourceNodesCheck = true;
-          this.loading = false;
-          console.log(err.message)
-        },
-        () => {
-          this.sourceNodesCheck = true;
-          this.loading = false;
-          console.log("loading finish")
-        }
-      );
-  }
+  //         //if (event !== undefined && event.type == 'load') { // i.e No Genes selected previously
+  //         for (let i = 0; i < this.result.sourceNodeRecords.length && i < 1; i++) {
+  //           this.selectedSourceNodes.push(this.result.sourceNodeRecords[i].source_node);
+  //           //this.selectedSourceNodes = [];
+  //         }
+  //         console.log("selected source Nodes: ", this.selectedSourceNodes);
+  //         this.globalVariableService.setSelectedSourceNodes(this.selectedSourceNodes);
+  //         //} else {
+  //         //this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
+  //         //}
+  //       },
+  //       err => {
+  //         this.sourceNodesCheck = true;
+  //         this.loading = false;
+  //         console.log(err.message)
+  //       },
+  //       () => {
+  //         this.sourceNodesCheck = true;
+  //         this.loading = false;
+  //         console.log("loading finish")
+  //       }
+  //     );
+  // }
 
   selectSourceNode(sourceNode: any, event: any, from: any = null) {
     if (event.target.checked) {
