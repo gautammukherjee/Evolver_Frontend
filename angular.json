@@ -34,13 +34,14 @@
               "./src/assets/extrnalJs/bootstrap-table/bootstrap-table.min.css",
               "./src/assets/extrnalJs/bootstrap-table/bootstrap-table.css",
               "./src/assets/extrnalJs/bootstrapValidator.min.css",
-              "./src/assets/extrnalJs/jquery.qtip.min.css"
+              "./src/assets/extrnalJs/jquery.qtip.min.css",
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
             "scripts": [
               "./src/assets/extrnalJs/jquery.min.js",
               "./src/assets/extrnalJs/fancybox/jquery.fancybox.js",
-              "./src/assets/extrnalJs/popper.min.js",
-              "./src/assets/extrnalJs/bootstraps/js/bootstrap.min.js",
+              "./node_modules/@popperjs/core/dist/umd/popper.min.js",
+              "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
               "./src/assets/extrnalJs/bootstrap-table/bootstrap-table.js",
               "./src/assets/extrnalJs/bootstrap-table/extensions/export/bootstrap-table-export.js",
               "./src/assets/extrnalJs/bootstrap-table/table-export.js",
