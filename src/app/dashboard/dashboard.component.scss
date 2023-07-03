@@ -90,3 +90,23 @@ h2 {
 .button-border{
     border-bottom: 6px solid #008CBA;
 }
+
+.custom-nav-tabs{
+    ul{
+        border:none;
+        .nav-item{
+            margin-right: 5px;
+            button{
+                padding:10px 13px;
+                background-color: #c4d1d9;
+                color: #000;
+                font-size: 15px;
+
+                &.active{
+                    background-color: #046EB5;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}

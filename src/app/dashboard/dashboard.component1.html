@@ -63,38 +63,73 @@
                             <a class="nav-link" href="#" tabindex="4" aria-disabled="true"> Count of PMID with Relevant Genes or Diseases</a>
                         </li> 
                     </ul>-->
-                    <div class="mt-2 tab-slider--nav">
+                    <!-- <div class="mt-2 tab-slider--nav">
                         <ul class="tab-slider--tabs">
                             <li class="tab-slider--trigger" [class.active]="viewMode == 'event_list'" rel="event_list"
                                 (click)="viewMode ='event_list'">Event Lists</li>
                             <li class="tab-slider--trigger" [class.active]="viewMode == 'event_chart'" rel="event_chart"
                                 (click)="viewMode ='event_chart'">Event Chart</li>
-                            <!-- <li class="tab-slider--trigger" [class.active]="viewMode == 'event_chart'" rel="event_chart"
-                                (click)="viewMode ='event_chart'">Distribution by Relation Group</li>
-                            <li class="tab-slider--trigger" [class.active]="viewMode == 'event_chart'" rel="event_chart"
-                                (click)="viewMode ='event_chart'">Count of PMID with Relevant Genes or Diseases</li> -->
                         </ul>
                     </div>
                     <div class="tab-slider--container" [ngSwitch]="viewMode">
 
                         <div id="event_list" class="tab-slider--body" *ngSwitchCase="'event_list'">
                             <h2>&nbsp;</h2>
-                            <!--<app-event-description [ProceedDoFilterApply]="doFilterApply"></app-event-description>-->
                         </div>
                         <div id="event_chart" class="tab-slider--body" *ngSwitchCase="'event_chart'">
                             <h2>Event Chart</h2>
                             <app-event-chart></app-event-chart>
                         </div>
 
+                    </div> -->
+                    <div class="custom-nav-tabs mt-3">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1"
+                                    type="button" role="tab" aria-controls="tab1" aria-selected="true">Details of Associated data</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2"
+                                    type="button" role="tab" aria-controls="tab2" aria-selected="false">Distribution by Relation Group</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3"
+                                    type="button" role="tab" aria-controls="tab3" aria-selected="false">Distribution by Association Type</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="tab4-tab" data-bs-toggle="tab" data-bs-target="#tab4"
+                                    type="button" role="tab" aria-controls="tab4" aria-selected="false">Count of PMID with Relevant Genes or Diseases</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="tab5-tab" data-bs-toggle="tab" data-bs-target="#tab5"
+                                    type="button" role="tab" aria-controls="tab5" aria-selected="false">Distribution by Relation Type</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane p-2 fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+                                First tab
+                            </div>
+                            <div class="tab-pane p-2 fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+                                Second tab
+                            </div>
+                            <div class="tab-pane p-2 fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
+                                Third tab
+                            </div>
+                            <div class="tab-pane p-2 fade" id="tab4" role="tabpanel" aria-labelledby="tab4-tab">
+                                Third tab
+                            </div>
+                            <div class="tab-pane p-2 fade" id="tab5" role="tabpanel" aria-labelledby="tab5-tab">
+                                Third tab
+                            </div>
+                        </div>
                     </div>
-
 
 
                 </div>
             </div>
             <app-footer></app-footer>
         </div>
-        
+
     </section>
 
 
