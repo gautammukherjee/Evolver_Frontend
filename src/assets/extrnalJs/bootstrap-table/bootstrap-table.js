@@ -401,9 +401,9 @@
         searchTimeOut: 500,
         searchText: '',
         iconSize: undefined,
-        buttonsClass: bs.buttonsClass,
-        iconsPrefix: bs.iconsPrefix, // glyphicon or fa (font awesome)
-        icons: bs.icons,
+        //buttonsClass: bs.buttonsClass,
+        //iconsPrefix: bs.iconsPrefix, // glyphicon or fa (font awesome)
+        //icons: bs.icons,
 
         customSearch: $.noop,
 

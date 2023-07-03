@@ -7,6 +7,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ManagePasswordComponent } from './manage-password/manage-password.component';
 import { NoPageComponent } from './no-page/no-page.component';
 import { BioInfomaticsComponent } from './bio-infomatics/bio-infomatics.component';
+import { EventChartComponent } from './event-chart/event-chart.component';
 
 const routes: Routes = [
   {

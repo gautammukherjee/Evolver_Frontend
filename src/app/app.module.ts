@@ -39,6 +39,8 @@ import { BioInfomaticsComponent } from './bio-infomatics/bio-infomatics.componen
 import { FilterEdgeTypeLevel2Component } from './filters/filter-edge-type-level2/filter-edge-type-level2.component';
 import { EventChartComponent } from './event-chart/event-chart.component';
 import { HighchartsChartModule } from 'highcharts-angular';
+import { DistributionByRelGrpComponent } from './distribution-by-rel-grp/distribution-by-rel-grp.component';
+import { DetailsOfAssocDataComponent } from './details-of-assoc-data/details-of-assoc-data.component';
 
 
 @NgModule({
@@ -68,7 +70,9 @@ import { HighchartsChartModule } from 'highcharts-angular';
     EdgeTypePipe,
     SafePipe,
     BioInfomaticsComponent,
-    EventChartComponent
+    EventChartComponent,
+    DistributionByRelGrpComponent,
+    DetailsOfAssocDataComponent
   ],
   imports: [
     BrowserModule,
