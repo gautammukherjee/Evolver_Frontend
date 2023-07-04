@@ -3,7 +3,8 @@
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button"
-                    role="tab" aria-controls="tab1" aria-selected="true">Details of Associated data</button>
+                    role="tab" aria-controls="tab1" aria-selected="true">Distribution
+                    by Association Type</button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button"
@@ -12,8 +13,7 @@
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button"
-                    role="tab" aria-controls="tab3" aria-selected="false">Distribution
-                    by Association Type</button>
+                    role="tab" aria-controls="tab3" aria-selected="false">Details of Associated data</button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="tab4-tab" data-bs-toggle="tab" data-bs-target="#tab4" type="button"
@@ -29,7 +29,6 @@
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane p-2 fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
                 <app-details-of-assoc-data></app-details-of-assoc-data>
-                First tab
             </div>
             <div class="tab-pane p-2 fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
                 <app-distribution-by-rel-grp></app-distribution-by-rel-grp>
@@ -38,7 +37,7 @@
                 Third tab
             </div>
             <div class="tab-pane p-2 fade" id="tab4" role="tabpanel" aria-labelledby="tab4-tab">
-                Fourth tab
+                <app-pmid-count-with-gene-and-disease></app-pmid-count-with-gene-and-disease>
             </div>
             <div class="tab-pane p-2 fade" id="tab5" role="tabpanel" aria-labelledby="tab5-tab">
                 Fifth tab

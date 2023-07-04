@@ -1,6 +1,16 @@
-<div id="assoc_container">
-    <img src="./assets/images/loader_big.gif" *ngIf="graphLoader" />
-</div>
+ <div class="container">
+    <div class="row">
+        <div class="col">
+            <highcharts-chart [Highcharts]="highcharts" [options]="chartOptions" style="width: 100%; display: block"></highcharts-chart>
+        </div>
+    </div>
+    
+ </div>
+
+
+
+<img src="./assets/images/loader_big.gif" *ngIf="graphLoader" />
+
 <div *ngIf="errorMsg!==''">
     {{errorMsg}}
-</div>
+</div> 

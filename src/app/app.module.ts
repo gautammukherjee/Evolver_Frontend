@@ -43,7 +43,8 @@ import { EventChartComponent } from './event-chart/event-chart.component';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { DistributionByRelGrpComponent } from './distribution-by-rel-grp/distribution-by-rel-grp.component';
 import { DetailsOfAssocDataComponent } from './details-of-assoc-data/details-of-assoc-data.component';
-
+import { PmidCountWithGeneAndDiseaseComponent } from './pmid-count-with-gene-and-disease/pmid-count-with-gene-and-disease.component';
+//import { ChartModule, HIGHCHARTS_MODULES } from 'angular-highcharts';
 
 
 
@@ -79,7 +80,8 @@ import { DetailsOfAssocDataComponent } from './details-of-assoc-data/details-of-
     BioInfomaticsComponent,
     EventChartComponent,
     DistributionByRelGrpComponent,
-    DetailsOfAssocDataComponent
+    DetailsOfAssocDataComponent,
+    PmidCountWithGeneAndDiseaseComponent
   ],
   imports: [
     BrowserModule,
@@ -112,7 +114,7 @@ import { DetailsOfAssocDataComponent } from './details-of-assoc-data/details-of-
   providers: [
     DatePipe,
     {
-      provide: HTTP_INTERCEPTORS,
+      provide: [HTTP_INTERCEPTORS],
       useClass: AuthInterceptor,
       multi: true
     }

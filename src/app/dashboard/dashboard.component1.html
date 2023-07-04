@@ -5,51 +5,10 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col">
-<<<<<<< HEAD
-=======
-                    <!-- <ul class="nav nav-tabs mt-2 mb-2">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#" tabindex="0">Network Map</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" tabindex="1">Event List</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" tabindex="2">Distribution by Association Type</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" tabindex="3" aria-disabled="true">Distribution by Relation Group</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" tabindex="4" aria-disabled="true"> Count of PMID with Relevant Genes or Diseases</a>
-                        </li> 
-                    </ul>-->
-                    <div class="mt-2 tab-slider--nav">
-                        <ul class="tab-slider--tabs">
-                            <li class="tab-slider--trigger" [class.active]="viewMode == 'event_list'" rel="event_list"
-                                (click)="viewMode ='event_list'">Event Lists</li>
-                            <li class="tab-slider--trigger" [class.active]="viewMode == 'event_chart'" rel="event_chart"
-                                (click)="viewMode ='event_chart'">Event Chart</li>
-                            <!-- <li class="tab-slider--trigger" [class.active]="viewMode == 'event_chart'" rel="event_chart"
-                                (click)="viewMode ='event_chart'">Distribution by Relation Group</li>
-                            <li class="tab-slider--trigger" [class.active]="viewMode == 'event_chart'" rel="event_chart"
-                                (click)="viewMode ='event_chart'">Count of PMID with Relevant Genes or Diseases</li> -->
-                        </ul>
-                    </div>
-                    <div class="tab-slider--container" [ngSwitch]="viewMode">
 
-                        <div id="event_list" class="tab-slider--body" *ngSwitchCase="'event_list'">
-                            <h2>&nbsp;</h2>
-                            <app-event-description [ProceedDoFilterApply]="doFilterApply"></app-event-description>
-                        </div>
-                        <div id="event_chart" class="tab-slider--body" *ngSwitchCase="'event_chart'">
-                            <h2>Event Chart</h2>
-                            <app-event-chart></app-event-chart>
-                        </div>
+                    
 
-                    </div>
 
->>>>>>> 16c8590e14b7e85c05850e8e77aeb7a6441d37be
 
                     <app-event-chart></app-event-chart>
 
