@@ -4,10 +4,11 @@
             <!--<h4>Network Map for <span style="text-transform: uppercase;"> {{mapTypes}} </span></h4>-->
             <h4 style="text-align: center;background-color: #7880BA;padding: 10px; color:#fff;">Network Map </h4>
 
-            <div class="text-muted fs-2 text-center mb-4">Choose Filters To Generate Network Map</div>
+            <div class="text-muted fs-2 text-center mb-4" *ngIf="nodesCheckLength">Choose Filters To Generate Network Map</div>
             
-            <div class="loading-custom-map" *ngIf="loadingMap">
-                <span class="fa fa-spinner fa-spin"></span> &nbsp;Loading...
+            <div class="text-center" *ngIf="loadingMap">
+                <img src="../../assets/images/loader_big.gif" />
+                <!--<span class="fa fa-spinner fa-spin"></span> &nbsp;Loading...-->
             </div>
             <!--<div class="table-responsive" *ngIf="nodesCheck">-->
             <div class="table-responsive">

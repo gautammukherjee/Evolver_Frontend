@@ -32,7 +32,7 @@ export class NetworkMapComponent implements OnInit {
   resultNodes: any = [];
   resultEdges: any = [];
   loadingMap = false;
-  nodesCheck = false;
+  nodesCheckLength = true;
   public legendsNodeTypes: any = [];
 
   public results: any = {};
@@ -104,6 +104,7 @@ export class NetworkMapComponent implements OnInit {
   getMasterListsMap(_filterParams: any) {
     if (_filterParams.source_node != undefined) {
       this.loadingMap = true;
+
       // this.filterParams = this.globalVariableService.getFilterParams();
       console.log("master map for filter: ", _filterParams);
 
@@ -120,6 +121,13 @@ export class NetworkMapComponent implements OnInit {
           this.resultNodes = data;
           this.masterListsData = this.resultNodes.masterListsData;
           console.log("masterListsData: ", this.masterListsData);
+          console.log("masterListsDataLengtH: ", this.masterListsData.length);
+          if (this.masterListsData.length > 0) {
+            this.nodesCheckLength = false;
+          } else {
+            this.nodesCheckLength = true;
+          }
+          console.log("bdbdd: ", this.nodesCheckLength);
 
           this.masterListsData.forEach((event: any) => {
             //Source Node data
