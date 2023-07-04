@@ -118,7 +118,7 @@ export class FilterNodeSelectLevel2Component implements OnInit {
     // console.log("checked here Gene: ", this.diseaseCheck);
     // this.selectedNodeSelects2 = [];
 
-    // console.log("node_selects11111: ", this.filterParams.destination_node);
+    // console.log("node_selects11111: ", this.filterParams);
 
 
     if (this.filterParams.destination_node != undefined) {

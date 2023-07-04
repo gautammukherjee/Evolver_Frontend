@@ -91,9 +91,7 @@ export class NetworkMapComponent implements OnInit {
       }
 
     });
-    if (this.filterParams.source_node != undefined) {
-      this.getMasterListsMap(this.filterParams);
-    }
+    this.getMasterListsMap(this.filterParams);
   }
 
   ngOnDestroy() {
@@ -104,96 +102,97 @@ export class NetworkMapComponent implements OnInit {
   }
 
   getMasterListsMap(_filterParams: any) {
+    if (_filterParams.source_node != undefined) {
+      this.loadingMap = true;
+      // this.filterParams = this.globalVariableService.getFilterParams();
+      console.log("master map for filter: ", _filterParams);
 
-    this.loadingMap = true;
-    // this.filterParams = this.globalVariableService.getFilterParams();
-    console.log("master map for filter: ", _filterParams);
+      this.nodeSelectsService.getMasterLists(_filterParams).subscribe(
+        data => {
+          this.nodeData = [];
+          this.sourcenodeData = [];
+          this.sourceId = [];
+          this.destinationnodeData = [];
+          this.edgeData = [];
+          this.groupedNodeType = [];
+          this.legendsNodeTypes = [];
 
-    this.nodeSelectsService.getMasterLists(_filterParams).subscribe(
-      data => {
-        this.nodeData = [];
-        this.sourcenodeData = [];
-        this.sourceId = [];
-        this.destinationnodeData = [];
-        this.edgeData = [];
-        this.groupedNodeType = [];
-        this.legendsNodeTypes = [];
+          this.resultNodes = data;
+          this.masterListsData = this.resultNodes.masterListsData;
+          console.log("masterListsData: ", this.masterListsData);
 
-        this.resultNodes = data;
-        this.masterListsData = this.resultNodes.masterListsData;
-        console.log("masterListsData: ", this.masterListsData);
+          this.masterListsData.forEach((event: any) => {
+            //Source Node data
+            this.sourcenodeData.push({
+              id: Math.floor(event.sourcenode), name: event.sourcenode_name, colorNode: '#BF63A2', shapeType: 'round-hexagon', nodeType: 'source'
+            });
 
-        this.masterListsData.forEach((event: any) => {
-          //Source Node data
-          this.sourcenodeData.push({
-            id: Math.floor(event.sourcenode), name: event.sourcenode_name, colorNode: '#BF63A2', shapeType: 'round-hexagon', nodeType: 'source'
+            //Destination node data
+            this.destinationnodeData.push({
+              id: Math.floor(event.destinationnode), name: event.destinationnode_name, colorNode: '#4B5DA1', shapeType: 'barrel', nodeType: 'target'
+            });
+
+            this.legendsNodeTypes.push({ node_name: event.sourcenode, color_code: '#32404E' });
+
+            //Edge data
+            this.edgeData.push({
+              // data: { source: Math.floor(event.source_id), target: Math.floor(event.target_id), PMID: event.pmidlist, colorCode: "pink", strength: Math.floor(event.edge_weight) },
+              data: { source: Math.floor(event.sourcenode), target: Math.floor(event.destinationnode), colorCode: "#00e600", strength: Math.floor(2) },
+            });
           });
 
-          //Destination node data
-          this.destinationnodeData.push({
-            id: Math.floor(event.destinationnode), name: event.destinationnode_name, colorNode: '#4B5DA1', shapeType: 'barrel', nodeType: 'target'
+          console.log("sourcenodeData: ", this.sourcenodeData);
+          console.log("destinationnodeData: ", this.destinationnodeData);
+
+          //Source id
+          const key = 'id';
+          const arrayUniqueBySourceId = [...new Map(this.sourcenodeData.map((item: any) =>
+            [item[key], item])).values()];
+          console.log("arrayUniqueBySourceId: ", arrayUniqueBySourceId);
+
+          //Destination id
+          const key2 = 'id';
+          const arrayUniqueByDestinationId = [...new Map(this.destinationnodeData.map((item: any) =>
+            [item[key2], item])).values()];
+          console.log("arrayUniqueByDestinationId: ", arrayUniqueByDestinationId);
+
+          this.results = [...arrayUniqueByDestinationId, ...arrayUniqueBySourceId];
+          console.log("new Results:::: ", this.results);
+
+          const key3 = 'id';
+          const arrayUniqueResultsData = [...new Map(this.results.map((item: any) =>
+            [item[key3], item])).values()];
+          console.log("arrayUniqueResultsData: ", arrayUniqueResultsData);
+
+          arrayUniqueResultsData.forEach((event: any) => {
+            //Node data
+            this.nodeData.push({
+              // data: { id: Math.floor(event.node_id), name: event.node, node_type: event.nodetype, weight: 100, colorCode: event.colourcode, shapeType: 'octagon' },
+              data: { id: Math.floor(event.id), name: event.name, node_type: event.nodeType, weight: 100, colorCode: event.colorNode, shapeType: event.shapeType }
+            });
           });
 
-          this.legendsNodeTypes.push({ node_name: event.sourcenode, color_code: '#32404E' });
+          // console.log("nodeData: ", this.nodeData);
+          // console.log("edgeData: ", this.edgeData);
+          // console.log("legendsNodeTypes:: ", this.legendsNodeTypes);
 
-          //Edge data
-          this.edgeData.push({
-            // data: { source: Math.floor(event.source_id), target: Math.floor(event.target_id), PMID: event.pmidlist, colorCode: "pink", strength: Math.floor(event.edge_weight) },
-            data: { source: Math.floor(event.sourcenode), target: Math.floor(event.destinationnode), colorCode: "#00e600", strength: Math.floor(2) },
-          });
-        });
+          const x = this.legendsNodeTypes.reduce(
+            (accumulator: any, current: any) => accumulator.some((x: any) => x.node_name === current.node_name) ? accumulator : [...accumulator, current], []
+          )
 
-        console.log("sourcenodeData: ", this.sourcenodeData);
-        console.log("destinationnodeData: ", this.destinationnodeData);
-
-        //Source id
-        const key = 'id';
-        const arrayUniqueBySourceId = [...new Map(this.sourcenodeData.map((item: any) =>
-          [item[key], item])).values()];
-        console.log("arrayUniqueBySourceId: ", arrayUniqueBySourceId);
-
-        //Destination id
-        const key2 = 'id';
-        const arrayUniqueByDestinationId = [...new Map(this.destinationnodeData.map((item: any) =>
-          [item[key2], item])).values()];
-        console.log("arrayUniqueByDestinationId: ", arrayUniqueByDestinationId);
-
-        this.results = [...arrayUniqueByDestinationId, ...arrayUniqueBySourceId];
-        console.log("new Results:::: ", this.results);
-
-        const key3 = 'id';
-        const arrayUniqueResultsData = [...new Map(this.results.map((item: any) =>
-          [item[key3], item])).values()];
-        console.log("arrayUniqueResultsData: ", arrayUniqueResultsData);
-
-        arrayUniqueResultsData.forEach((event: any) => {
-          //Node data
-          this.nodeData.push({
-            // data: { id: Math.floor(event.node_id), name: event.node, node_type: event.nodetype, weight: 100, colorCode: event.colourcode, shapeType: 'octagon' },
-            data: { id: Math.floor(event.id), name: event.name, node_type: event.nodeType, weight: 100, colorCode: event.colorNode, shapeType: event.shapeType }
-          });
-        });
-
-        // console.log("nodeData: ", this.nodeData);
-        // console.log("edgeData: ", this.edgeData);
-        // console.log("legendsNodeTypes:: ", this.legendsNodeTypes);
-
-        const x = this.legendsNodeTypes.reduce(
-          (accumulator: any, current: any) => accumulator.some((x: any) => x.node_name === current.node_name) ? accumulator : [...accumulator, current], []
-        )
-
-        this.legendsNodeTypes = x;
-        console.log("legendsNodeTypes: ", this.legendsNodeTypes);
-        this.drawChart();
-      },
-      err => {
-        this.loadingMap = false;
-        console.log(err.message);
-      },
-      () => {
-        this.loadingMap = false;
-      }
-    );
+          this.legendsNodeTypes = x;
+          console.log("legendsNodeTypes: ", this.legendsNodeTypes);
+          this.drawChart();
+        },
+        err => {
+          this.loadingMap = false;
+          console.log(err.message);
+        },
+        () => {
+          this.loadingMap = false;
+        }
+      );
+    }
   }
 
   private drawChart() {

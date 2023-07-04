@@ -3,10 +3,14 @@
         <div class="customTable" style="border: 1px solid #ddd;">
             <!--<h4>Network Map for <span style="text-transform: uppercase;"> {{mapTypes}} </span></h4>-->
             <h4 style="text-align: center;background-color: #7880BA;padding: 10px; color:#fff;">Network Map </h4>
-            <div class="loading-custom-map" *ngIf="loadingMap"><span class="fa fa-spinner fa-spin"></span> &nbsp;Loading...</div>
+
+            <div class="text-muted fs-2 text-center mb-4">Choose Filters To Generate Network Map</div>
+            
+            <div class="loading-custom-map" *ngIf="loadingMap">
+                <span class="fa fa-spinner fa-spin"></span> &nbsp;Loading...
+            </div>
             <!--<div class="table-responsive" *ngIf="nodesCheck">-->
             <div class="table-responsive">
-
                 <!--<div class="form-check" style="margin-left: 12px;">
                     <input type="radio" class="form-check-input" name="edgeSelect" id="edgeUnchecked" value="1"
                         (change)="clickedEdges($event)" checked>

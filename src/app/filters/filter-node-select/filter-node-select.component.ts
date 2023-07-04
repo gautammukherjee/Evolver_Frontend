@@ -105,7 +105,7 @@ export class FilterNodeSelectComponent implements OnInit {
           this.node_selects = this.result.nodeSelectsRecords;
           console.log("node_selects: ", this.node_selects);
 
-          this.alphabeticallyGroupedNodeSelects = this.groupBy(this.node_selects, 'pair_name');
+          // this.alphabeticallyGroupedNodeSelects = this.groupBy(this.node_selects, 'pair_name');
           // console.log("alphabeticallyGroupedGenes: ", this.alphabeticallyGroupedGenes);
 
           //if (event !== undefined && event.type == 'load') { // i.e No Genes selected previously
@@ -152,6 +152,11 @@ export class FilterNodeSelectComponent implements OnInit {
     // }
     this.selectedNodeSelects = nodeValue.target.value;
 
+    this.globalVariableService.setSelectedNodeSelects(this.selectedNodeSelects);
+    this.selectedNodeSelects = Array.from(this.globalVariableService.getSelectedNodeSelects());
+    this.filterParams = this.globalVariableService.getFilterParams();
+    console.log("new Filters NODE SELECTS:: ", this.filterParams);
+
     // console.log("selectedNodeSelects: ", this.selectedNodeSelects);
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data   
 
@@ -164,18 +169,6 @@ export class FilterNodeSelectComponent implements OnInit {
     this.togglecollapseStatus = !this.togglecollapseStatus;
   }
 
-  // selectAll(event: any, geneWarningModal: any) {
-  //   if (this.isAllSelected) {
-  //     this.result.map((element: any) => {
-  //       // console.log("element: ", element);
-  //       this.selectedNodeSelects.push(element.nnrt_id);
-  //     })
-  //   } else {
-  //     this.selectedNodeSelects = [];
-  //   }
-  //   this.enableDisableProceedButton();
-  // }
-
   resetNode() {
     this.selectedNodeSelects = [];
     this.globalVariableService.setSelectedNodeSelects(this.selectedNodeSelects);
@@ -183,17 +176,9 @@ export class FilterNodeSelectComponent implements OnInit {
     // this.proceed();
   }
 
-  reloadNode() {
-    // this.globalVariableService.resetChartFilter();
-    // this.hideCardBody = !this.hideCardBody;
-    // this.params = this.globalVariableService.getFilterParams();
-    // if (!this.hideCardBody)
-    this.getNodeSelects(event, 1);
-  }
-
-  SeeMore(evt: any, seeMoreGeneModal: any) {
-    this.seeMoreNodeSelectsModal = this.modalService.open(seeMoreGeneModal, { size: 'lg', windowClass: 'diseaseModal-custom-class', keyboard: false, backdrop: 'static' });
-  }
+  // SeeMore(evt: any, seeMoreGeneModal: any) {
+  //   this.seeMoreNodeSelectsModal = this.modalService.open(seeMoreGeneModal, { size: 'lg', windowClass: 'diseaseModal-custom-class', keyboard: false, backdrop: 'static' });
+  // }
 
   seeMoreClosePopup() {
     this.selectedNodeSelects = Array.from(this.globalVariableService.getSelectedNodeSelects());
@@ -207,14 +192,20 @@ export class FilterNodeSelectComponent implements OnInit {
     this.seeMoreNodeSelectsModal.close();
   }
 
-  public seeMoreproceed() {
-    this.proceed();
-    // this.enableDisableProceedButton();
-  }
+  // public seeMoreproceed() {
+  //   this.proceed();
+  //   // this.enableDisableProceedButton();
+  // }
 
   proceed() {
-    this.globalVariableService.setSelectedNodeSelects(this.selectedNodeSelects);
-    this.selectedNodeSelects = Array.from(this.globalVariableService.getSelectedNodeSelects());
+    // this.globalVariableService.setSelectedNodeSelects(this.selectedNodeSelects);
+    // this.selectedNodeSelects = Array.from(this.globalVariableService.getSelectedNodeSelects());
+
+    // this.globalVariableService.setSelectedNodeSelects(this.selectedNodeSelects);
+    // this.selectedNodeSelects = Array.from(this.globalVariableService.getSelectedNodeSelects());
+    // this.filterParams = this.globalVariableService.getFilterParams();
+    // console.log("new Filters NODE SELECTS:: ", this.filterParams);
+
     if (this.seeMoreNodeSelectsModal != undefined)
       this.seeMoreNodeSelectsModal.close();
     this.onSelectNode.emit();
