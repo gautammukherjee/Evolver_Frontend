@@ -61,4 +61,8 @@ export class DashboardComponent implements OnInit {
     // this.doUpdateFilterDataApply.next(e);
   }
 
+  secondTab() {
+
+  }
+
 }

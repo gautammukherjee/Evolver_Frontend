@@ -14,7 +14,7 @@ export class DistributionByRelGrpComponent implements OnInit {
   errorMsg: string | undefined;
   graphLoader: boolean = true;
   private filterParams: any;
-  
+
   constructor(
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
@@ -29,7 +29,7 @@ export class DistributionByRelGrpComponent implements OnInit {
         this.data = response.nodeSelectsRecords;
         this.drawColumnChart();
       },
-      (error: any) => { 
+      (error: any) => {
         //console.error(error)
         //this.errorMsg = error;
       }
@@ -38,16 +38,16 @@ export class DistributionByRelGrpComponent implements OnInit {
   }
 
   drawColumnChart() {
-    let graphData:any[] = [];
-    
+    let graphData: any[] = [];
+
     //console.log(this.data);
     //console.log(this.data[4]['count']);
-    for(let i=0; i<this.data.length;i++){
-      graphData.push([this.data[i]['Temp Edge Types_Name'],this.data[i]['count']]);
+    for (let i = 0; i < this.data.length; i++) {
+      graphData.push([this.data[i]['Temp Edge Types_Name'], this.data[i]['count']]);
     }
     console.log(graphData)
     Highcharts.chart('container', {
-      
+
       chart: {
         type: 'column'
       },
@@ -99,10 +99,10 @@ export class DistributionByRelGrpComponent implements OnInit {
             fontFamily: 'Verdana, sans-serif'
           }
         },
-        accessibility:{
-          enabled:false
+        accessibility: {
+          enabled: false
         },
-        
+
       }],
 
     });
