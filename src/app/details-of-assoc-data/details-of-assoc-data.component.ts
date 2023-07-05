@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RelationDistributionService } from '../services/relation-distribution.service';
 import { GlobalVariableService } from 'src/app/services/common/global-variable.service';
 import * as Highcharts from 'highcharts';
+import { Subject, BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-details-of-assoc-data',
@@ -15,7 +16,10 @@ export class DetailsOfAssocDataComponent implements OnInit {
   graphLoader: boolean = true;
   private filterParams: any;
   highcharts = Highcharts;
-  chartOptions:any;
+  chartOptions: any;
+  loadingChart = false;
+
+  @Input() ProceedDoFilterApply?: Subject<any>; //# Input for ProceedDoFilter is getting from clinical details html 
 
   constructor(
     private _router: Router,
@@ -26,6 +30,22 @@ export class DetailsOfAssocDataComponent implements OnInit {
 
   ngOnInit(): void {
     this.filterParams = this.globalVariableService.getFilterParams();
+    console.log("you assoc charts:: ", this.filterParams);
+
+    this.ProceedDoFilterApply?.subscribe(data => {  // Calling from details, details working as mediator
+      console.log("data1: ", data);
+      // console.log("data2: ", data);
+      if (data === undefined) { // data=undefined true when apply filter from side panel
+        this.filterParams = this.globalVariableService.getFilterParams();
+        this.getDetailsAssocData(this.filterParams);
+        console.log("new Filters assoc charts: ", this.filterParams);
+      }
+    });
+    this.getDetailsAssocData(this.filterParams);
+  }
+
+  getDetailsAssocData(_filterParams: any) {
+    this.loadingChart = true;
     this._RDS.details_of_association_type(this.filterParams).subscribe(
       (response: any) => {
         this.data = response.nodeSelectsRecords;
@@ -34,59 +54,62 @@ export class DetailsOfAssocDataComponent implements OnInit {
       (error: any) => {
         console.error(error)
         this.errorMsg = error;
+        this.loadingChart = false;
+      },
+      () => {
+        this.loadingChart = false;
       }
     );
-
   }
 
   drawLineChart() {
     console.log("In drawColumnChart");
     console.log(this.data);
-    
-    let categories:any[] = [];
-    let seriesData:any[] =[];
-    
+
+    let categories: any[] = [];
+    let seriesData: any[] = [];
+
     //console.log(this.data);
     //console.log(this.data[4]['count']);
-    for(let i=0; i<this.data.length;i++){
-      categories.push(this.data[i]['Node Node Relation Types']);
+    for (let i = 0; i < this.data.length; i++) {
+      categories.push(this.data[i]['node_node_relation_types']);
       seriesData.push(this.data[i]['count']);
     }
 
 
-    this.chartOptions = {   
+    this.chartOptions = {
       chart: {
-         type: "spline",
-         //width: 900,
-         
+        type: "spline",
+        //width: 900,
+
       },
       title: {
-         text: "Distribution by Association Type"
+        text: "Distribution by Association Type"
       },
       subtitle: {
-         text: "EvolverAI"
+        text: "EvolverAI"
       },
-      xAxis:{
-         categories:categories
+      xAxis: {
+        categories: categories
       },
-      yAxis: {          
-         title:{
-            text:"Count"
-         } 
+      yAxis: {
+        title: {
+          text: "Count"
+        }
       },
       tooltip: {
-         valueSuffix:" "
+        valueSuffix: " "
       },
       series: [{
-         name: 'count',
-         data: seriesData
+        name: 'count',
+        data: seriesData
       },
       ]
-   };
+    };
 
 
 
-  this.graphLoader = false;
-}
+    this.graphLoader = false;
+  }
 
 }

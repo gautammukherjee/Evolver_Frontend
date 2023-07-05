@@ -2,12 +2,16 @@
     <app-header></app-header>
 
     <section class="dashboard-main-wrapper">
-
-        <div class="left-sidebar" style="overflow: scroll;">
-            <app-filter-node-select (onSelectNode)='nodeChanged($event)'></app-filter-node-select>
-            <app-filter-source-node (onSelectSourceNode)='sourceNodeChanged($event)'
+        <div class="horizonal-filter-bar">
+            <div class="filter-single">
+                <app-filter-node-select (onSelectNode)='nodeChanged($event)'></app-filter-node-select>
+            </div>
+            <div class="filter-single">
+                <app-filter-source-node (onSelectSourceNode)='sourceNodeChanged($event)'
                 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node>
-            <app-filter-destination-node (onSelectDestinationNode)='destinationNodeChanged("diseasesIndicationsFilter")'
+            </div>
+            <div class="filter-single">
+                <app-filter-destination-node (onSelectDestinationNode)='destinationNodeChanged("diseasesIndicationsFilter")'
                 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-destination-node>
             <app-filter-edge-type (onSelectEdgeType)='edgeTypeChanged($event)'></app-filter-edge-type>
             <hr class="text-white"/>
@@ -23,8 +27,8 @@
 
         <div class="right-article">
             <div class="network-map" style="text-align:left !important">
-                <app-network-map [ProceedDoFilterApply]="doFilterApply"
-                    (onGraphSelection)='graphSelected("clickOnEventDetails")'></app-network-map>
+                <!--<app-network-map [ProceedDoFilterApply]="doFilterApply"
+                    (onGraphSelection)='graphSelected("clickOnEventDetails")'></app-network-map>-->
 
                 <!-- <div class="container">
                     

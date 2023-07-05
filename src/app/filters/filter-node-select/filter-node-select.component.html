@@ -1,8 +1,10 @@
 
-<div class="text-white fs-5 text-center mb-2">Direct Level Association</div>
+<!-- <div class="text-white fs-5 text-center mb-2">Direct Level Association <img *ngIf="loading" src="../../assets/images/loader_small.gif" /></div> -->
 
 <div class="sidebar-card">
-  <div class="heading"><img style="float:left;" *ngIf="loading" src="../../assets/images/loader_small.gif" /></div>
+  <div class="heading">
+    <h4>Direct Level Association <img *ngIf="loading" width="20px" src="../../assets/images/loader_small.gif" /></h4>
+  </div>
   <div class="body">
     <select name="" id="" class="form-control" (change)="selectNode($event)">
       <!--<option value="node_select.nnrt_id" [selected]="selectedNodeSelects.indexOf(node_select.nnrt_id)>-1 ">{{node_select.pair_name}}</option>-->
