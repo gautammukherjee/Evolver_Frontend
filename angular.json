@@ -42,6 +42,7 @@
               "./src/assets/extrnalJs/fancybox/jquery.fancybox.js",
               "./node_modules/@popperjs/core/dist/umd/popper.min.js",
               "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "./src/assets/extrnalJs/bootstraps/js/bootstrap.min.js",
               "./src/assets/extrnalJs/bootstrap-table/bootstrap-table.js",
               "./src/assets/extrnalJs/bootstrap-table/extensions/export/bootstrap-table-export.js",
               "./src/assets/extrnalJs/bootstrap-table/table-export.js",
