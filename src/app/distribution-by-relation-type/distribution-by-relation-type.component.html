@@ -11,7 +11,7 @@
     <!--<div class="card-panel-box-detail" [hidden]="hideCardBody">-->
     <div class="card-panel-box-detail">
         <div class="customTable " id="eventListTable">
-            <div *ngIf="loadingDesc">
+            <div *ngIf="loadingDesc" style="position:absolute; margin-left:350px;">
                 <img src="../../assets/images/loader_big.gif" />                
             </div>
             <div class="table-responsive custom-fixed-header-table" style="max-height:600px">
@@ -21,10 +21,10 @@
                     <thead>
                         <tr class="d-flex">
                             <!-- <th data-field="news_id" data-sortable="true" width="10%">News ID</th> -->
-                            <th data-field="sourcenode_name" data-sortable="true" width="10%">Source Name</th>
-                            <th data-field="destinationnode_name" data-sortable="true" width="10%">Destination Name</th>
-                            <!--<th data-field="temp_edge_type_name" data-sortable="true" width="10%">Edge Type Name</th>
-                            <th data-field="pmid_values" data-sortable="true" width="10%">PMID Values</th>-->
+                            <th data-field="source_node_name" data-sortable="true" width="10%">Source Name</th>
+                            <th data-field="destination_node_name" data-sortable="true" width="10%">Destination Name</th>
+                            <th data-field="temp_edge_types_name" data-sortable="true" width="10%">Edge Type Name</th>
+                            <th data-field="pmid_count" data-sortable="true" width="10%">Distinct PMID Count</th>
                         </tr>
                     </thead>
                 </table>

@@ -73,10 +73,10 @@ export class DistributionByRelationTypeComponent implements OnInit {
             var temps: any = {};
 
             // temps["news_id"] = event.news_id;
-            temps["sourcenode_name"] = event.sourcenode_name;
-            temps["destinationnode_name"] = event.destinationnode_name;
-            temps["level"] = event.level;
-            // temps["edgeTypes"] = this.edgeTypesLists;
+            temps["source_node_name"] = event.source_node_name;
+            temps["destination_node_name"] = event.destination_node_name;
+            temps["pmid_count"] = event.count;
+            temps["temp_edge_types_name"] = event.temp_edge_types_name;
             this.distributionDataDetails.push(temps);
           });
 
