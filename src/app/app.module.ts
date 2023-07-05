@@ -45,7 +45,7 @@ import { DistributionByRelGrpComponent } from './distribution-by-rel-grp/distrib
 import { DetailsOfAssocDataComponent } from './details-of-assoc-data/details-of-assoc-data.component';
 import { PmidCountWithGeneAndDiseaseComponent } from './pmid-count-with-gene-and-disease/pmid-count-with-gene-and-disease.component';
 //import { ChartModule, HIGHCHARTS_MODULES } from 'angular-highcharts';
-
+import { DistributionByRelationTypeComponent } from './distribution-by-relation-type/distribution-by-relation-type.component';
 
 
 
@@ -81,7 +81,8 @@ import { PmidCountWithGeneAndDiseaseComponent } from './pmid-count-with-gene-and
     EventChartComponent,
     DistributionByRelGrpComponent,
     DetailsOfAssocDataComponent,
-    PmidCountWithGeneAndDiseaseComponent
+    PmidCountWithGeneAndDiseaseComponent,
+    DistributionByRelationTypeComponent
   ],
   imports: [
     BrowserModule,

@@ -73,5 +73,9 @@ export class NodeSelectsService {
     return this.http.post(this.API_URL + 'getEdgeTypeName', params, httpOptions);
   }
 
+  getDistributionRelationType(params: any) {
+    return this.http.post(this.API_URL + 'getDistributionRelationType', params, httpOptions);
+  }
+
 
 }
