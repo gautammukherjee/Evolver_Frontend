@@ -41,6 +41,7 @@ export class FilterEdgeTypeComponent implements OnInit {
   //diseaseCheck: any;
   //diseaseCheckCT: any;
   hideCardBody: boolean = true;
+  showEdgeBody: boolean = true;
 
   constructor(
     private nodeSelectsService: NodeSelectsService,
@@ -201,6 +202,10 @@ export class FilterEdgeTypeComponent implements OnInit {
     var elmnt = document.getElementById(key);
     if (elmnt !== null)
       elmnt.scrollIntoView();
+  }
+
+  onEdgeHeaderClick() {
+    this.showEdgeBody = !this.showEdgeBody;
   }
 
 }

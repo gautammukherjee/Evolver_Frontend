@@ -11,7 +11,8 @@
     <!--<div class="card-panel-box-detail" [hidden]="hideCardBody">-->
     <div class="card-panel-box-detail">
         <div class="customTable " id="eventListTable">
-            <div class="loading-custom-desc" *ngIf="loadingDesc"><span class="fa fa-spinner fa-spin"></span>&nbsp;Loading...
+            <div *ngIf="loadingDesc">
+                <img src="../../assets/images/loader_big.gif" />                
             </div>
             <div class="table-responsive custom-fixed-header-table" style="max-height:600px">
                 <table id="showEventDescription" class="table" data-toolbar="#toolbar" data-search="true"

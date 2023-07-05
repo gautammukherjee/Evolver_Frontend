@@ -1,5 +1,8 @@
 <div id="container">
-    <img src="./assets/images/loader_big.gif" *ngIf="graphLoader" />
+    <div class="text-center" *ngIf="loadingChart">
+        <img src="../../assets/images/loader_big.gif" />
+    </div>
+    <!--<img src="./assets/images/loader_big.gif" *ngIf="graphLoader" />-->
 </div>
 <div *ngIf="errorMsg!==''">
     {{errorMsg}}

@@ -29,6 +29,7 @@ export class FilterSourceNodeComponent implements OnInit {
   togglecollapseStatus: boolean = false;
   private seeMoreNodeSelectsModal: any;
   public disableProceed = true;
+  showSourceBody: boolean = false;
 
   constructor(
     private nodeSelectsService: NodeSelectsService,
@@ -153,6 +154,10 @@ export class FilterSourceNodeComponent implements OnInit {
     var elmnt = document.getElementById(key);
     if (elmnt !== null)
       elmnt.scrollIntoView();
+  }
+
+  onSourceHeaderClick() {
+    this.showSourceBody = !this.showSourceBody;
   }
 
 }
