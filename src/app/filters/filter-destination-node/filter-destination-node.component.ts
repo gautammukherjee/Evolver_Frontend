@@ -37,7 +37,8 @@ export class FilterDestinationNodeComponent implements OnInit {
   private seeMoreNodeSelectsModal: any;
   mouseOverON: any = undefined;
   otherMouseOverONElem: any = undefined;
-  public disableProceed = true;
+  public disableProceed: boolean = true;
+  public showDestinationBody: boolean = true;
 
   constructor(
     private nodeSelectsService: NodeSelectsService,
@@ -175,6 +176,10 @@ export class FilterDestinationNodeComponent implements OnInit {
     var elmnt = document.getElementById(key);
     if (elmnt !== null)
       elmnt.scrollIntoView();
+  }
+
+  onDestinationHeaderClick() {
+    this.showDestinationBody = !this.showDestinationBody;
   }
 
 }

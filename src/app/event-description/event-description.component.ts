@@ -58,108 +58,110 @@ export class EventDescriptionComponent implements OnInit {
   }
 
   getEventDescription(_filterParams: any) {
-    this.loadingDesc = true;
+    if (_filterParams.source_node != undefined) {
+      this.loadingDesc = true;
 
-    // this.diseaseCheck = _filterParams['di_ids']; // if disease_id is checked
-    // console.log("checked here Disease in event description: ", this.diseaseCheck);
-    // if (this.diseaseCheck !== undefined) {
-    console.log("filterparams: ", _filterParams);
-    this.nodeSelectsService.getMasterLists(_filterParams).subscribe(
-      data => {
-        console.log("data: ", data);
-        this.resultNodes = data;
-        this.masterListsData = this.resultNodes.masterListsData;
-        console.log("masterListsData: ", this.masterListsData);
-        this.masterListsDataDetails = [];
+      // this.diseaseCheck = _filterParams['di_ids']; // if disease_id is checked
+      // console.log("checked here Disease in event description: ", this.diseaseCheck);
+      // if (this.diseaseCheck !== undefined) {
+      console.log("filterparams: ", _filterParams);
+      this.nodeSelectsService.getMasterLists(_filterParams).subscribe(
+        data => {
+          console.log("data: ", data);
+          this.resultNodes = data;
+          this.masterListsData = this.resultNodes.masterListsData;
+          console.log("masterListsData: ", this.masterListsData);
+          this.masterListsDataDetails = [];
 
-        this.masterListsData.forEach((event: any) => {
-          var temps: any = {};
+          this.masterListsData.forEach((event: any) => {
+            var temps: any = {};
 
-          //Get the Edge Type Name
-          // const regex = /[{}]/g;
-          // const edgeTypeIds = event.edge_type_ids;
-          // const edgeTypeIdsPost = edgeTypeIds.replace(regex, '');
-          // console.log("edgeTypeIdsPost: ", edgeTypeIdsPost);
+            //Get the Edge Type Name
+            // const regex = /[{}]/g;
+            // const edgeTypeIds = event.edge_type_ids;
+            // const edgeTypeIdsPost = edgeTypeIds.replace(regex, '');
+            // console.log("edgeTypeIdsPost: ", edgeTypeIdsPost);
 
-          // // var edgeHere = this.getEdgeTypes(edgeTypeIdsPost);
-          // this.getEdgeTypes(edgeTypeIdsPost).subscribe(s => {
-          //   this.result = s;
-          //   this.edgeHere = this.result.edgeTypeName;
-          //   this.edgeTypesLists = [];
-          //   this.edgeHere.forEach((event: any) => {
-          //     this.edgeTypesLists.push(event.edge_type_name);
-          //   });
-          //   console.log("edgeHere: ", this.edgeTypesLists);
-          // });
+            // // var edgeHere = this.getEdgeTypes(edgeTypeIdsPost);
+            // this.getEdgeTypes(edgeTypeIdsPost).subscribe(s => {
+            //   this.result = s;
+            //   this.edgeHere = this.result.edgeTypeName;
+            //   this.edgeTypesLists = [];
+            //   this.edgeHere.forEach((event: any) => {
+            //     this.edgeTypesLists.push(event.edge_type_name);
+            //   });
+            //   console.log("edgeHere: ", this.edgeTypesLists);
+            // });
 
-          // temps["news_id"] = event.news_id;
-          temps["sourcenode_name"] = event.sourcenode_name;
-          temps["destinationnode_name"] = event.destinationnode_name;
-          temps["level"] = event.level;
-          // temps["edgeTypes"] = this.edgeTypesLists;
-          this.masterListsDataDetails.push(temps);
-        });
+            // temps["news_id"] = event.news_id;
+            temps["sourcenode_name"] = event.sourcenode_name;
+            temps["destinationnode_name"] = event.destinationnode_name;
+            temps["level"] = event.level;
+            // temps["edgeTypes"] = this.edgeTypesLists;
+            this.masterListsDataDetails.push(temps);
+          });
 
-        jQuery('#showEventDescription').bootstrapTable({
-          bProcessing: true,
-          bServerSide: true,
-          pagination: true,
-          // showRefresh: true,
-          // showToggle: true,
-          showColumns: true,
-          // search: true,
-          pageSize: 25,
-          // pageList: [10, 25, 50, 100, All],
-          striped: true,
-          showFilter: true,
-          filter: true,
-          showExport: true,
-          exportOptions: {
-            ignoreColumn: [5],
-            // columns: [6],
-            // visible: [6,'true'],
-          },
-          // columns: [
-          //   {
-          //     dataField: 'active_ingredients',
-          //     text: 'Active Ingredients',
-          //     headerStyle: { 'white-space': 'nowrap' }
-          //   }],
-          columns: [
-            // {
-            //   title: 'Title',
-            //   field: 'title',
-            //   class: 'text-left',
-            // },
-            // {
-            //   title: 'Active Ingredients/Brand',
-            //   field: 'active_ingredient',
-            //   class: 'text-left',
-            // }
-          ],
-          data: this.masterListsDataDetails,
-        });
+          jQuery('#showEventDescription').bootstrapTable({
+            bProcessing: true,
+            bServerSide: true,
+            pagination: true,
+            // showRefresh: true,
+            // showToggle: true,
+            showColumns: true,
+            // search: true,
+            pageSize: 25,
+            // pageList: [10, 25, 50, 100, All],
+            striped: true,
+            showFilter: true,
+            filter: true,
+            showExport: true,
+            exportOptions: {
+              ignoreColumn: [5],
+              // columns: [6],
+              // visible: [6,'true'],
+            },
+            // columns: [
+            //   {
+            //     dataField: 'active_ingredients',
+            //     text: 'Active Ingredients',
+            //     headerStyle: { 'white-space': 'nowrap' }
+            //   }],
+            columns: [
+              // {
+              //   title: 'Title',
+              //   field: 'title',
+              //   class: 'text-left',
+              // },
+              // {
+              //   title: 'Active Ingredients/Brand',
+              //   field: 'active_ingredient',
+              //   class: 'text-left',
+              // }
+            ],
+            data: this.masterListsDataDetails,
+          });
 
-        jQuery('#showEventDescription').bootstrapTable("load", this.masterListsDataDetails);
+          jQuery('#showEventDescription').bootstrapTable("load", this.masterListsDataDetails);
 
-        jQuery('#showEventDescription').on("search.bs.table", function (e: any) {
-          jQuery('#showEventDescription').bootstrapTable("load", e.masterListsDataDetails);
-        })
-          .on("search.bs.table", function (e: any) {
+          jQuery('#showEventDescription').on("search.bs.table", function (e: any) {
             jQuery('#showEventDescription').bootstrapTable("load", e.masterListsDataDetails);
           })
-          .on("page-change.bs.table", function (e: any) {
-            jQuery('#showEventDescription').bootstrapTable("load", e.masterListsDataDetails);
-          });
-      },
-      err => {
-        console.log(err.message);
-        this.loadingDesc = false;
-      },
-      () => {
-        this.loadingDesc = false;
-      }
-    );
+            .on("search.bs.table", function (e: any) {
+              jQuery('#showEventDescription').bootstrapTable("load", e.masterListsDataDetails);
+            })
+            .on("page-change.bs.table", function (e: any) {
+              jQuery('#showEventDescription').bootstrapTable("load", e.masterListsDataDetails);
+            });
+        },
+        err => {
+          console.log(err.message);
+          this.loadingDesc = false;
+        },
+        () => {
+          this.loadingDesc = false;
+        }
+      );
+    }
     // }
     // else {
     //   this.masterListsData = [];

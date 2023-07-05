@@ -17,7 +17,7 @@ export class DetailsOfAssocDataComponent implements OnInit {
   private filterParams: any;
   highcharts = Highcharts;
   chartOptions: any;
-  loadingChart = false;
+  loadingChart: boolean = false;
 
   @Input() ProceedDoFilterApply?: Subject<any>; //# Input for ProceedDoFilter is getting from clinical details html 
 
@@ -45,21 +45,23 @@ export class DetailsOfAssocDataComponent implements OnInit {
   }
 
   getDetailsAssocData(_filterParams: any) {
-    this.loadingChart = true;
-    this._RDS.details_of_association_type(this.filterParams).subscribe(
-      (response: any) => {
-        this.data = response.nodeSelectsRecords;
-        this.drawLineChart();
-      },
-      (error: any) => {
-        console.error(error)
-        this.errorMsg = error;
-        this.loadingChart = false;
-      },
-      () => {
-        this.loadingChart = false;
-      }
-    );
+    if (_filterParams.source_node != undefined) {
+      this.loadingChart = true;
+      this._RDS.details_of_association_type(this.filterParams).subscribe(
+        (response: any) => {
+          this.data = response.nodeSelectsRecords;
+          this.drawLineChart();
+        },
+        (error: any) => {
+          console.error(error)
+          this.errorMsg = error;
+          this.loadingChart = false;
+        },
+        () => {
+          this.loadingChart = false;
+        }
+      );
+    }
   }
 
   drawLineChart() {
@@ -76,12 +78,10 @@ export class DetailsOfAssocDataComponent implements OnInit {
       seriesData.push(this.data[i]['count']);
     }
 
-
     this.chartOptions = {
       chart: {
         type: "spline",
         //width: 900,
-
       },
       title: {
         text: "Distribution by Association Type"

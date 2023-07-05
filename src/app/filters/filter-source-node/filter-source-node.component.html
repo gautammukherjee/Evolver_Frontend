@@ -3,7 +3,7 @@
     <h4>Source Nodes</h4>
   </div>
   <div class="body">
-    <div class="search-input">
+    <div class="search-input" (click)="onSourceHeaderClick()">
       <form #form="ngForm" class="md-inline-block form-inline  ml-auto mr-0 mr-md-3 my-2 my-md-0">
         <input type="text" #searchInput (keyup)="getSourceNode(searchInput.value)" class="form-control"
           placeholder='Search Source' aria-label="Search" area-describedby="basic-addon2">
@@ -14,17 +14,18 @@
         <!--<button style="float:left;margin-top: 10px;position: relative;" class="btn btn-primary" [disabled]="!form.form.valid" (click)="getSourceNode(searchInput.value)">Search</button>-->
       </form>
     </div>
-    <div class="search-options" *ngIf="sourceNodes.length">
-      <div class="mb-1 form-check" *ngFor="let sourceNode of sourceNodes">
-        <input class="form-check-input" type="checkbox" name="sourceNodes" id="defaultCheck1" [value]="sourceNode"
-          [checked]="selectedSourceNodes.indexOf(sourceNode.source_node)>-1 "
-          (change)="selectSourceNode(sourceNode,$event)">
-        <label class="form-check-label" for="defaultCheck1">
-          {{sourceNode.source_node_name}}
-        </label>
+    <div *ngIf="showSourceBody">
+      <div class="search-options" *ngIf="sourceNodes.length">
+        <div class="mb-1 form-check" *ngFor="let sourceNode of sourceNodes">
+          <input class="form-check-input" type="checkbox" name="sourceNodes" id="defaultCheck1" [value]="sourceNode"
+            [checked]="selectedSourceNodes.indexOf(sourceNode.source_node)>-1 "
+            (change)="selectSourceNode(sourceNode,$event)">
+          <label class="form-check-label" for="defaultCheck1">
+            {{sourceNode.source_node_name}}
+          </label>
+        </div>
       </div>
     </div>
-
 
     <span *ngIf="selectedSourceNodes.length > 0" style="cursor: pointer; float:right;" class="float-left"
       (click)="resetSourceNode();">Reset</span>
