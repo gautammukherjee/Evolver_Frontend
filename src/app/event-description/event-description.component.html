@@ -11,7 +11,8 @@
     <!--<div class="card-panel-box-detail" [hidden]="hideCardBody">-->
     <div class="card-panel-box-detail">
         <div class="customTable " id="eventListTable">
-            <div class="loading-custom-desc" *ngIf="loadingDesc"><span class="fa fa-spinner fa-spin"></span>&nbsp;Loading...
+            <div *ngIf="loadingDesc">
+                <img src="../../assets/images/loader_big.gif" />                
             </div>
             <div class="table-responsive custom-fixed-header-table" style="max-height:600px">
                 <table id="showEventDescription" class="table" data-toolbar="#toolbar" data-search="true"
@@ -22,6 +23,8 @@
                             <!-- <th data-field="news_id" data-sortable="true" width="10%">News ID</th> -->
                             <th data-field="sourcenode_name" data-sortable="true" width="10%">Source Name</th>
                             <th data-field="destinationnode_name" data-sortable="true" width="10%">Destination Name</th>
+                            <th data-field="level" data-sortable="true" width="10%">Level</th>
+                            <!--<th data-field="edgeTypes" data-sortable="true" width="10%">Edge Type</th>-->
                         </tr>
                     </thead>
                 </table>

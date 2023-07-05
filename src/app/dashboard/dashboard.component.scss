@@ -7,6 +7,7 @@ h2 {
     margin-bottom: 20px;
 }
 
+// Tab component css
 .tab-slider--nav {
     width: 100%;
     float: left;
@@ -20,16 +21,16 @@ h2 {
     padding: 0;
     list-style: none;
     position: relative;
-    border-radius: 35px;
+    border-radius: 5px;
     overflow: hidden;
     background: #fff;
     height: 55px;
-    background-color: #7880BA;
+    background-color: #03538E;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    width: 49%;
+    width: 100%;
 }
 
 .tab-slider--tabs:after {
@@ -42,7 +43,7 @@ h2 {
     left: 0;
     -webkit-transition: all 250ms ease-in-out;
     transition: all 250ms ease-in-out;
-    border-radius: 35px;
+    border-radius: 5px;
 }
 
 .tab-slider--tabs.slide:after {
@@ -54,7 +55,7 @@ h2 {
     line-height: 1;
     font-weight: bold;
     // color: #345F90;
-    text-transform: uppercase;
+    //text-transform: uppercase;
     text-align: center;
     padding: 22px 84px;
     position: relative;
@@ -72,10 +73,32 @@ h2 {
 
 .tab-slider--trigger.active {
     color: #fff;
-    background-color: #A25DA1;
-    border-radius: 25px;
+    background-color: #046EB5;
+    border-radius: 5px;
 }
 
 .tab-slider--body {
     margin-bottom: 20px;
+}
+
+.custom-nav-tabs {
+    ul {
+        border: none;
+
+        .nav-item {
+            margin-right: 5px;
+
+            button {
+                padding: 10px 13px;
+                background-color: #c4d1d9;
+                color: #000;
+                font-size: 15px;
+
+                &.active {
+                    background-color: #046EB5;
+                    color: #fff;
+                }
+            }
+        }
+    }
 }

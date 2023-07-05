@@ -30,7 +30,7 @@ export class GlobalVariableService {
   selectedEdgeTypes = [];
   selectedEdgeTypes2 = [];
 
-  selectedNodes = [];
+  selectedNodes = '';
   selectedEdges: any;
   selectedMapsType: any;
 
@@ -135,7 +135,7 @@ export class GlobalVariableService {
       edge_type_id2: this.getSelectedEdgeTypes2().length > 0 ? this.getSelectedEdgeTypes2() : undefined,
 
 
-      node_id: this.getSelectedNodes().length > 0 ? this.getSelectedNodes() : undefined,
+      node_id: this.getSelectedNodes() != undefined ? this.getSelectedNodes() : undefined,
       edge_select: this.getSelectedEdges() != undefined ? this.getSelectedEdges() : 1,
       mapType: this.getMapsSelected() != undefined ? this.getMapsSelected() : 'default',
     };
@@ -143,9 +143,10 @@ export class GlobalVariableService {
   }
 
   resetfilters() {
-    this.setSelectedSourceNodes([10810]);
+    this.setSelectedSourceNodes([]);
     this.setSelectedDestinationNodes([]);
-    this.setSelectedNodeSelects2('');
+    this.setSelectedNodeSelects2(undefined);
+    // this.setSelectedEdgeTypes([]);
     this.setSelectedEdgeTypes2([]);
   }
 

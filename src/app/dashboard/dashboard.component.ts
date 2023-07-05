@@ -32,7 +32,7 @@ export class DashboardComponent implements OnInit {
   }
 
   nodeChanged(clickOn: any) {
-    this.doFilterApply.next(undefined);
+    // this.doFilterApply.next(undefined);
     this.doUpdateFilterDataApply.next({ clickOn: clickOn });
   }
   sourceNodeChanged(e: any) {
@@ -59,6 +59,10 @@ export class DashboardComponent implements OnInit {
   nodeChanged2(e: any) {
     this.doFilterApply.next(e);
     // this.doUpdateFilterDataApply.next(e);
+  }
+
+  secondTab() {
+
   }
 
 }

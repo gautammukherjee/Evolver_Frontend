@@ -61,7 +61,7 @@ export class NgCytoComponent implements OnChanges {
         this._selectedNodes = this.globalVariableService.getSelectedSourceNodes();
 
         this.layout = this.layout || {
-            name: 'grid',
+            name: 'cose',
             directed: true,
             padding: 0
         };
@@ -76,41 +76,33 @@ export class NgCytoComponent implements OnChanges {
             .selector('node')
             .css({
                 'shape': 'data(shapeType)',
-                'width': 25.0,
-                'height': 25.0,
+                'width': 'mapData(weight, 40, 80, 20, 60)',
+                'content': 'data(name)',
                 'text-valign': 'center',
+                'text-outline-width': 2,
                 'text-outline-color': 'data(colorCode)',
                 'background-color': 'data(colorCode)',
-                'color': '#32404E',
-                'font-size': 6,
-                'font-weight': 'bold',
-                'content': 'data(name)'
+                'color': '#fff'
+
             })
             .selector(':selected')
             .css({
                 'border-width': 1,
-                'border-color': 'black'
+                'border-color': '#333'
             })
             .selector('edge')
             .css({
-                'text-opacity': '1.0',
-                'color': 'rgb(0,0,0)',
-                'source-arrow-shape': 'none',
-                'font-family': 'SansSerif',
-                'font-weight': 'normal',
-                'line-style': 'solid',
-                'target-arrow-shape': 'none',
-                'target-arrow-color': 'rgb(0,0,0)',
-                'source-arrow-color': 'rgb(0,0,0)',
-                'opacity': '1.0',
-                'font-size': '10',
-                'width': '0.4',
-                'line-color': '#000',
-                //'curve-style': 'bezier',
+                'opacity': 0.666,
+                'width': 'mapData(strength, 70, 100, 2, 6)',
+                'target-arrow-shape': 'triangle',
+                'source-arrow-shape': 'circle',
+                'line-color': 'data(colorCode)',
+                'source-arrow-color': 'data(colorCode)',
+                'target-arrow-color': 'data(colorCode)'
             })
             .selector('edge.questionable')
             .css({
-                'line-style': 'dotted',
+                'line-style': 'solid',
                 'target-arrow-shape': 'diamond'
             })
             .selector('.faded')
@@ -159,7 +151,7 @@ export class NgCytoComponent implements OnChanges {
                 var nodeDetails = "";
 
                 nodeDetails += "<div style='float:left;'>";
-                nodeDetails += '<div style="padding: 5px;"><strong>' + TargetNode.name + '</strong></div>';
+                nodeDetails += '<div style="padding: 5px; color:#BF63A2"><strong>' + TargetNode.name + '</strong></div>';
                 nodeDetails += '<div style="padding: 5px;"><strong>Node Type: ' + TargetNode.node_type + '</strong></div>';
                 nodeDetails += '<div style="padding: 5px;"><strong>Connections: </strong></div>';
 
@@ -170,9 +162,9 @@ export class NgCytoComponent implements OnChanges {
                     // window.gv = directlyConnectedNode;
                     //console.log("inner: ", directlyConnectedNode);
                     // console.log("inner: ", gv);
-                    const el = document.getElementById("nodeClick");
-                    el?.addEventListener("onclick", this.nodeClickEvent);
-                    nodeDetails += "<li id='nodeClick' style='list-style: initial; color:" + directlyConnectedNode._private.data.colorCode + "'>" + directlyConnectedNode._private.data.name + "</li>"; //22509 -HSP90 molecular
+                    // const el = document.getElementById("nodeClick");
+                    // el?.addEventListener("onclick", this.nodeClickEvent);
+                    nodeDetails += "<li style='list-style: initial; color:" + directlyConnectedNode._private.data.colorCode + "'>" + directlyConnectedNode._private.data.name + "</li>"; //22509 -HSP90 molecular
                 });
                 nodeDetails += "</ul>";
                 nodeDetails += "</div>";
@@ -182,15 +174,26 @@ export class NgCytoComponent implements OnChanges {
                 $("#nodeDetails").html("");
             }
             ($('#myModalNode') as any).modal('show');
-            this.showNodeInfo(node._private.data.id); //append the node and reload the graph
+            // this.showNodeInfo(node[0]._private.data.id); //append the node and reload the graph
         });
 
-
-        cy.on('tap', function (e: any) {
-            if (e.target === cy) {
-                cy.elements().removeClass('faded');
-            }
+        cy.on('cxttap', 'node', (e: any) => {
+            var node = e.target;
+            console.log("rightclick: ", node[0]._private.data.id);
+            this.showNodeInfo(node[0]._private.data.id); //append the node and reload the graph
         });
+
+        // cy.on("tap", "node", (evt: any) => {
+        //     evt.cyTarget.connectedEdges().animate({
+        //         style: { lineColor: "red" }
+        //     })
+        // });
+
+        // cy.on('tap', function (e: any) {
+        //     if (e.target === cy) {
+        //         cy.elements().removeClass('faded');
+        //     }
+        // });
 
         cy.on('mouseover', 'node', (e: any) => {
             var node = e.target;
@@ -237,12 +240,12 @@ export class NgCytoComponent implements OnChanges {
 
             var pubmedEdgeDetails;
             pubmedEdgeDetails = "<div style='float:left;'>";
-            pubmedEdgeDetails += '<div style="color: #00ffff;"><strong>Source Name</strong></div>';
-            pubmedEdgeDetails += '<div style="padding-bottom:10px;">' + sourceData.name + '</div>';
-            pubmedEdgeDetails += '<div style="color: #00ffff;"><strong>Target Name</strong></div>';
-            pubmedEdgeDetails += '<div style="padding-bottom:10px;">' + targetData.name + '</div>';
-            pubmedEdgeDetails += '<div style="color: #00ffff;"><strong>Edge Weight</strong></div>';
-            pubmedEdgeDetails += '<div style="padding-bottom:10px;">' + edge.strength + '</div>';
+            pubmedEdgeDetails += '<div style="color: #BF63A2;"><strong>Source Name</strong></div>';
+            pubmedEdgeDetails += '<div style="padding-bottom:10px; color: #BF63A2;">' + sourceData.name + '</div>';
+            pubmedEdgeDetails += '<div style="color: #4B5DA1;"><strong>Target Name</strong></div>';
+            pubmedEdgeDetails += '<div style="padding-bottom:10px; color: #4B5DA1;">' + targetData.name + '</div>';
+            // pubmedEdgeDetails += '<div style="color: #00ffff;"><strong>Edge Weight</strong></div>';
+            // pubmedEdgeDetails += '<div style="padding-bottom:10px;">' + edge.strength + '</div>';
             pubmedEdgeDetails += "</div>";
             console.log("pubmedEdgeDetails: ", pubmedEdgeDetails);
             // $("#pubmedURLsDownload").html(pubmedURLsDownload);
@@ -261,6 +264,12 @@ export class NgCytoComponent implements OnChanges {
         this.globalVariableService.setSelectedSourceNodes(this.checkedNodes);
         console.log("select2: ", this.checkedNodes);
         this.onGraphSelection.emit();
+
+        // this.checkedNodes = Array.from(this.globalVariableService.getSelectedNodes()); //get the existing node id
+        // this.checkedNodes = parseInt(nodeId);  // and append the selecting nodeid
+        // this.globalVariableService.setSelectedNodes(this.checkedNodes);
+        // console.log("select22: ", this.checkedNodes);
+        // this.onGraphSelection.emit();
 
         // this.node_name = "piyush";
         // this.modalRef = this.modalService.open(this.show_nodes, { size: 'lg', keyboard: false, backdrop: 'static' });
