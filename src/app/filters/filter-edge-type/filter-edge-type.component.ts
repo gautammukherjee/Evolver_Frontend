@@ -41,7 +41,7 @@ export class FilterEdgeTypeComponent implements OnInit {
   //diseaseCheck: any;
   //diseaseCheckCT: any;
   hideCardBody: boolean = true;
-  showEdgeBody: boolean = true;
+  showEdgeBody: boolean = false;
 
   constructor(
     private nodeSelectsService: NodeSelectsService,

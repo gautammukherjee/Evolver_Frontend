@@ -3,21 +3,21 @@
 
     <section class="dashboard-main-wrapper">
         <div class="horizonal-filter-bar">
-                <div class="filter-single">
-                    <app-filter-node-select (onSelectNode)='nodeChanged($event)'></app-filter-node-select>
-                </div>
-                <div class="filter-single">
-                    <app-filter-source-node (onSelectSourceNode)='sourceNodeChanged($event)'
-                    [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node>
-                </div>
-                <div class="filter-single">
-                    <app-filter-destination-node (onSelectDestinationNode)='destinationNodeChanged("diseasesIndicationsFilter")'
-                    [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-destination-node>
-                </div>
-                <div class="filter-single">
-                    <app-filter-edge-type (onSelectEdgeType)='edgeTypeChanged($event)'></app-filter-edge-type>
-                </div>
+            <div class="filter-single">
+                <app-filter-node-select (onSelectNode)='nodeChanged($event)'></app-filter-node-select>
             </div>
+            <div class="filter-single">
+                <app-filter-source-node (onSelectSourceNode)='sourceNodeChanged($event)'
+                [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node>
+            </div>
+            <div class="filter-single">
+                <app-filter-destination-node (onSelectDestinationNode)='destinationNodeChanged("diseasesIndicationsFilter")'
+                [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-destination-node>
+            </div>
+            <div class="filter-single">
+                <app-filter-edge-type (onSelectEdgeType)='edgeTypeChanged($event)'></app-filter-edge-type>
+            </div>
+        </div>
         
         <div class="inner-wrapper">
             <div class="left-sidebar" style="overflow: scroll;">
@@ -31,10 +31,6 @@
             </div>
     
             <div class="right-article">
-                <!--<div class="network-map" style="text-align:left !important">
-                    <app-network-map [ProceedDoFilterApply]="doFilterApply"
-                        (onGraphSelection)='graphSelected("clickOnEventDetails")'></app-network-map>
-                </div>-->
                 <!--<app-event-chart></app-event-chart>-->
 
                 <div class="mt-2 tab-slider--nav">
@@ -60,13 +56,11 @@
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="tab4-tab" data-bs-toggle="tab" data-bs-target="#tab4" type="button"
-                                    role="tab" aria-controls="tab4" aria-selected="false">Count of
-                                    PMID with Relevant Genes or Diseases</button>
+                                    role="tab" aria-controls="tab4" aria-selected="false">Count of PMID with Relevant Genes or Diseases</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="tab5-tab" data-bs-toggle="tab" data-bs-target="#tab5" type="button"
-                                    role="tab" aria-controls="tab5" aria-selected="false">Distribution
-                                    by Relation Type</button>
+                                    role="tab" aria-controls="tab5" aria-selected="false">Distribution by Relation Type</button>
                             </li>
                         </ul>
                         <div class="tab-content" id="myTabContent">
@@ -87,7 +81,7 @@
                                 <app-pmid-count-with-gene-and-disease></app-pmid-count-with-gene-and-disease>
                             </div>
                             <div class="tab-pane p-2 fade" id="tab5" role="tabpanel" aria-labelledby="tab5-tab">
-                                Fifth tab
+                                <app-distribution-by-relation-type [ProceedDoFilterApply]="doFilterApply"></app-distribution-by-relation-type>
                             </div>
                         </div>
                     </div>
