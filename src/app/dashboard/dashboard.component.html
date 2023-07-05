@@ -2,93 +2,109 @@
     <app-header></app-header>
 
     <section class="dashboard-main-wrapper">
-
-        <div class="left-sidebar" style="overflow: scroll;">
-            <app-filter-node-select (onSelectNode)='nodeChanged($event)'></app-filter-node-select>
-            <app-filter-source-node (onSelectSourceNode)='sourceNodeChanged($event)'
-                [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node>
-            <app-filter-destination-node (onSelectDestinationNode)='destinationNodeChanged("diseasesIndicationsFilter")'
-                [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-destination-node>
-            <app-filter-edge-type (onSelectEdgeType)='edgeTypeChanged($event)'></app-filter-edge-type>
-            <hr class="text-white"/>
-            <div>
-                <app-filter-node-select-level2 (onSelectNode2)='nodeChanged2($event)'
-                    [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-node-select-level2>
-                <app-filter-edge-type-level2 (onSelectEdgeType2)='edgeTypeChanged2($event)'
-                    [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type-level2>
+        <div class="horizonal-filter-bar">
+            <div class="filter-single">
+                <app-filter-node-select (onSelectNode)='nodeChanged($event)'></app-filter-node-select>
             </div>
-
-            <!--<app-filter-data-range></app-filter-data-range>-->
+            <div class="filter-single">
+                <app-filter-source-node (onSelectSourceNode)='sourceNodeChanged($event)'
+                [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node>
+            </div>
+            <div class="filter-single">
+                <app-filter-destination-node (onSelectDestinationNode)='destinationNodeChanged("diseasesIndicationsFilter")'
+                [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-destination-node>
+            </div>
+            <div class="filter-single">
+                <app-filter-edge-type (onSelectEdgeType)='edgeTypeChanged($event)'></app-filter-edge-type>
+            </div>
+            
+            
+            
+            
         </div>
 
-        <div class="right-article">
-            <div class="network-map" style="text-align:left !important">
-                <!--<app-network-map [ProceedDoFilterApply]="doFilterApply"
-                    (onGraphSelection)='graphSelected("clickOnEventDetails")'></app-network-map>-->
-
-                <!-- <div class="container">
-                    
-
-                     <div class="mt-2 tab-slider--nav">
-                        <div class="custom-nav-tabs mt-3">
-                            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab"
-                                        data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1"
-                                        aria-selected="true">Details of Associated data</button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2"
-                                        type="button" role="tab" aria-controls="tab2" aria-selected="false">Distribution
-                                        by Relation Group</button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3"
-                                        type="button" role="tab" aria-controls="tab3" aria-selected="false">Distribution
-                                        by Association Type</button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="tab4-tab" data-bs-toggle="tab" data-bs-target="#tab4"
-                                        type="button" role="tab" aria-controls="tab4" aria-selected="false">Count of
-                                        PMID with Relevant Genes or Diseases</button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="tab5-tab" data-bs-toggle="tab" data-bs-target="#tab5"
-                                        type="button" role="tab" aria-controls="tab5" aria-selected="false">Distribution
-                                        by Relation Type</button>
-                                </li>
-                            </ul>
-                            <div class="tab-content" id="myTabContent">
-                                <div class="tab-pane p-2 fade show active" id="tab1" role="tabpanel"
-                                    aria-labelledby="tab1-tab">
-                                    First tab
-                                </div>
-                                <div class="tab-pane p-2 fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
-                                    <app-event-chart></app-event-chart>
-                                </div>
-                                <div class="tab-pane p-2 fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
-                                    Third tab
-                                </div>
-                                <div class="tab-pane p-2 fade" id="tab4" role="tabpanel" aria-labelledby="tab4-tab">
-                                    Fourth tab
-                                </div>
-                                <div class="tab-pane p-2 fade" id="tab5" role="tabpanel" aria-labelledby="tab5-tab">
-                                    Fifth tab
+        <div class="inner-wrapper">
+            <div class="left-sidebar" style="overflow: scroll;">
+                <div>
+                    <app-filter-node-select-level2 (onSelectNode2)='nodeChanged2($event)'
+                        [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-node-select-level2>
+                    <app-filter-edge-type-level2 (onSelectEdgeType2)='edgeTypeChanged2($event)'
+                        [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type-level2>
+                </div>
+    
+                <!--<app-filter-data-range></app-filter-data-range>-->
+            </div>
+    
+            <div class="right-article">
+                <div class="network-map" style="text-align:left !important">
+                    <!--<app-network-map [ProceedDoFilterApply]="doFilterApply"
+                        (onGraphSelection)='graphSelected("clickOnEventDetails")'></app-network-map>-->
+    
+                    <!-- <div class="container">
+                        
+    
+                         <div class="mt-2 tab-slider--nav">
+                            <div class="custom-nav-tabs mt-3">
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab"
+                                            data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1"
+                                            aria-selected="true">Details of Associated data</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2"
+                                            type="button" role="tab" aria-controls="tab2" aria-selected="false">Distribution
+                                            by Relation Group</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3"
+                                            type="button" role="tab" aria-controls="tab3" aria-selected="false">Distribution
+                                            by Association Type</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="tab4-tab" data-bs-toggle="tab" data-bs-target="#tab4"
+                                            type="button" role="tab" aria-controls="tab4" aria-selected="false">Count of
+                                            PMID with Relevant Genes or Diseases</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="tab5-tab" data-bs-toggle="tab" data-bs-target="#tab5"
+                                            type="button" role="tab" aria-controls="tab5" aria-selected="false">Distribution
+                                            by Relation Type</button>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane p-2 fade show active" id="tab1" role="tabpanel"
+                                        aria-labelledby="tab1-tab">
+                                        First tab
+                                    </div>
+                                    <div class="tab-pane p-2 fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+                                        <app-event-chart></app-event-chart>
+                                    </div>
+                                    <div class="tab-pane p-2 fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
+                                        Third tab
+                                    </div>
+                                    <div class="tab-pane p-2 fade" id="tab4" role="tabpanel" aria-labelledby="tab4-tab">
+                                        Fourth tab
+                                    </div>
+                                    <div class="tab-pane p-2 fade" id="tab5" role="tabpanel" aria-labelledby="tab5-tab">
+                                        Fifth tab
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div> 
-
-                </div> -->
-                <app-event-chart></app-event-chart>
-
+                        </div> 
+    
+                    </div> -->
+                    <app-event-chart></app-event-chart>
+    
+                </div>
+    
+                <div style="clear:both;">&nbsp;</div>
+                <div style="clear:both;">&nbsp;</div>
+                <div style="clear:both;">&nbsp;</div>
+                <app-footer></app-footer>
             </div>
-
-            <div style="clear:both;">&nbsp;</div>
-            <div style="clear:both;">&nbsp;</div>
-            <div style="clear:both;">&nbsp;</div>
-            <app-footer></app-footer>
         </div>
+        
     </section>
 
 

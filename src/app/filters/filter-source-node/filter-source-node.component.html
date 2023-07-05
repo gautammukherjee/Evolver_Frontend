@@ -1,28 +1,34 @@
 <div class="sidebar-card">
   <div class="heading">
-      <h4 style="float:left;">Source Nodes</h4>&nbsp;&nbsp;<img style="float:left;" *ngIf="loading" src="../../assets/images/loader_small.gif" />
-      <button class="float-end" style="margin-bottom: 5px;background-color: #00538E;color: #fff;float: right;" *ngIf="sourceNodes.length > 0" class="btn btn-outline-primary" [disabled]="disableProceed" (click)="seeMoreproceed()">&rarr;</button>
+    <h4>Source Nodes</h4>
   </div>
-  <div class="body" style="height: 120px;overflow: auto;clear:both;">
-      <div class="search-input"> 
-        <form #form="ngForm" class="md-inline-block form-inline  ml-auto mr-0 mr-md-3 my-2 my-md-0">
-          <input type="text" #searchInput (keyup)="getSourceNode(searchInput.value)" class="form-control" placeholder='Search Source' aria-label="Search" area-describedby="basic-addon2">&nbsp;
-          <!--<input class="form-control" type="text" placeholder="Search" aria-label="Search" [(ngModel)]="sourceNodeFilter" />-->
-          <!--<button style="float:left;margin-top: 10px;position: relative;" class="btn btn-primary" [disabled]="!form.form.valid" (click)="getSourceNode(searchInput.value)">Search</button>-->
-        </form>
-      </div>
-
+  <div class="body">
+    <div class="search-input">
+      <form #form="ngForm" class="md-inline-block form-inline  ml-auto mr-0 mr-md-3 my-2 my-md-0">
+        <input type="text" #searchInput (keyup)="getSourceNode(searchInput.value)" class="form-control"
+          placeholder='Search Source' aria-label="Search" area-describedby="basic-addon2">
+        <button class="btn btn-primary" *ngIf="sourceNodes.length > 0" [disabled]="disableProceed"
+          (click)="seeMoreproceed()">&rarr;</button>
+          <img *ngIf="loading" width="20px" src="../../assets/images/loader_small.gif" />
+        <!--<input class="form-control" type="text" placeholder="Search" aria-label="Search" [(ngModel)]="sourceNodeFilter" />-->
+        <!--<button style="float:left;margin-top: 10px;position: relative;" class="btn btn-primary" [disabled]="!form.form.valid" (click)="getSourceNode(searchInput.value)">Search</button>-->
+      </form>
+    </div>
+    <div class="search-options" *ngIf="sourceNodes.length">
       <div class="mb-1 form-check" *ngFor="let sourceNode of sourceNodes">
         <input class="form-check-input" type="checkbox" name="sourceNodes" id="defaultCheck1" [value]="sourceNode"
-          [checked]="selectedSourceNodes.indexOf(sourceNode.source_node)>-1 " (change)="selectSourceNode(sourceNode,$event)">
+          [checked]="selectedSourceNodes.indexOf(sourceNode.source_node)>-1 "
+          (change)="selectSourceNode(sourceNode,$event)">
         <label class="form-check-label" for="defaultCheck1">
           {{sourceNode.source_node_name}}
         </label>
       </div>
+    </div>
 
-      <span *ngIf="selectedSourceNodes.length > 0" style="cursor: pointer; float:right;" class="float-left"
-        (click)="resetSourceNode();">Reset</span>
-      <!--<span *ngIf="sourceNodes.length > 2" style="cursor: pointer" class="float-right"
+
+    <span *ngIf="selectedSourceNodes.length > 0" style="cursor: pointer; float:right;" class="float-left"
+      (click)="resetSourceNode();">Reset</span>
+    <!--<span *ngIf="sourceNodes.length > 2" style="cursor: pointer" class="float-right"
         (click)="SeeMore($event,seeMoreSourceNodeModal);">{{sourceNodes.length-10}}
         More</span>-->
   </div>

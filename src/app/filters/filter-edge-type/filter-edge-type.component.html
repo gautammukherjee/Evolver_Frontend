@@ -1,23 +1,26 @@
 <div class="sidebar-card">
   <div class="heading">
-      <h4>Edge Type</h4> <img *ngIf="loading" src="../../assets/images/loader_small.gif" />
+    <h4>Edge Type <img *ngIf="loading" src="../../assets/images/loader_small.gif" width="20px"/></h4>
   </div>
-  <div class="body" *ngIf="edgeTypes.length > 0" style="height: 150px;overflow: auto;">
-      
-      <div class="search-input">
-        <input class="form-control" type="text" placeholder="Search" aria-label="Search" [(ngModel)]="edgeTypeFilter" />
-      </div>
+  <div class="body" *ngIf="edgeTypes.length > 0">
 
+    <div class="search-input">
+      <input class="form-control" type="text" placeholder="Search" aria-label="Search" [(ngModel)]="edgeTypeFilter" />
+    </div>
+
+    <div class="search-options" *ngIf="edgeTypes.length">
       <div class="mb-1 form-check" *ngFor="let edgeType of edgeTypes | EdgeTypeFilterPipe:edgeTypeFilter">
-        <input class="form-check-input" type="checkbox" name="edgeTypes"  [value]="edgeType"
+        <input class="form-check-input" type="checkbox" name="edgeTypes" [value]="edgeType"
           [checked]="selectedEdgeTypes.indexOf(edgeType.edge_type_id)>-1 " (change)="selectEdgeType(edgeType,$event)">
         <label class="form-check-label">
           {{edgeType.edge_type_name}}
         </label>
       </div>
+    </div>
 
-      <span *ngIf="selectedEdgeTypes.length > 0" style="cursor: pointer; float:right;" class="float-left"
-        (click)="resetEdgeType();">Reset</span>
+
+    <span *ngIf="selectedEdgeTypes.length > 0" style="cursor: pointer; float:right;" class="float-left"
+      (click)="resetEdgeType();">Reset</span>
   </div>
 </div>
 
@@ -39,5 +42,3 @@
     </div>
   </div>
 </ng-template>
-
-
