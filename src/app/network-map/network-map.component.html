@@ -6,8 +6,8 @@
 
             <div class="text-muted fs-2 text-center mb-4" *ngIf="nodesCheckLength">Choose Filters To Generate Network Map</div>
             
-            <div class="text-center" *ngIf="loadingMap">
-                <img src="../../assets/images/loader_big.gif" />
+            <div class="text-center" *ngIf="loadingMap" style="position: absolute;z-index:7;margin:150px 0px 0px 500px;">
+                <img style="background-color: #FFF;" src="../../assets/images/loader_big.gif" />
                 <!--<span class="fa fa-spinner fa-spin"></span> &nbsp;Loading...-->
             </div>
             <!--<div class="table-responsive" *ngIf="nodesCheck">-->
