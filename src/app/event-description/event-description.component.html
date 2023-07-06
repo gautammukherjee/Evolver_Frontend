@@ -11,6 +11,7 @@
     <!--<div class="card-panel-box-detail" [hidden]="hideCardBody">-->
     <div class="card-panel-box-detail">
         <div class="customTable " id="eventListTable">
+            <!-- <div class="text-muted fs-2 text-center mb-4">Choose Filters To Display Details</div> -->
             <div *ngIf="loadingDesc">
                 <img src="../../assets/images/loader_big.gif" />                
             </div>
@@ -22,9 +23,9 @@
                     <thead>
                         <tr class="d-flex">
                             <!-- <th data-field="news_id" data-sortable="true" width="10%">News ID</th> -->
-                            <th data-field="sourcenode_name" data-sortable="true" width="10%">Source Name</th>
-                            <th data-field="destinationnode_name" data-sortable="true" width="10%">Destination Name</th>
-                            <th data-field="level" data-sortable="true" width="10%">Level</th>
+                            <th data-field="sourcenode_name" data-sortable="true">Source Name</th>
+                            <th data-field="destinationnode_name" data-sortable="true">Destination Name</th>
+                            <th data-field="level" data-sortable="true">Level</th>
                             <!--<th data-field="edgeTypes" data-sortable="true" width="10%">Edge Type</th>-->
                         </tr>
                     </thead>

@@ -14,7 +14,7 @@ export class PmidCountWithGeneAndDiseaseComponent implements OnInit {
   //data: any = {};
   result: any = {};
   errorMsg: string | undefined;
-  graphLoader: boolean = true;
+  graphLoader: boolean = false;
   private filterParams: any;
   highcharts = Highcharts;
   chartOptions: any;
