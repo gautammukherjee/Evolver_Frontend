@@ -1,9 +1,10 @@
 <div id="container">
+    <div class="text-muted fs-2 text-center mb-4">Choose Filters To Display Relations.</div>
     <div class="text-center" *ngIf="loadingChart">
         <img src="../../assets/images/loader_big.gif" />
     </div>
-    <!--<img src="./assets/images/loader_big.gif" *ngIf="graphLoader" />-->
 </div>
+
 <div *ngIf="errorMsg!==''">
     {{errorMsg}}
 </div>

@@ -3,7 +3,7 @@ import * as forge from 'node-forge';
 
 @Component({
   selector: 'app-index',
-  templateUrl: './index.component1.html',
+  templateUrl: './index.component.html',
   styleUrls: ['./index.component.scss']
 })
 export class IndexComponent implements OnInit {
