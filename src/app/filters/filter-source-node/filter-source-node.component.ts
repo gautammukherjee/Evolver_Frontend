@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output,ElementRef, Renderer2, ChangeDetectorRef, Input, Pipe, PipeTransform, ViewChild, ViewChildren } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, ElementRef, Renderer2, ChangeDetectorRef, Input, Pipe, PipeTransform, ViewChild, ViewChildren } from '@angular/core';
 import { NodeSelectsService } from '../../services/common/node-selects.service';
 import { GlobalVariableService } from '../../services/common/global-variable.service';
 import { Subject } from 'rxjs';
@@ -39,7 +39,7 @@ export class FilterSourceNodeComponent implements OnInit {
     private elementRef: ElementRef,
     private renderer: Renderer2
   ) {
-    this.renderer.listen('window', 'click',(e:Event)=>{
+    this.renderer.listen('window', 'click', (e: Event) => {
     })
   }
 
@@ -98,7 +98,7 @@ export class FilterSourceNodeComponent implements OnInit {
     } else {
       this.selectedSourceNodes.splice(this.selectedSourceNodes.indexOf(sourceNode.source_node), 1);
     }
-    // console.log("selectedSourceNodes: ", this.selectedSourceNodes);
+    console.log("selectedSourceNodes: ", this.selectedSourceNodes);
 
     this.globalVariableService.setSelectedSourceNodes(this.selectedSourceNodes);
     this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());

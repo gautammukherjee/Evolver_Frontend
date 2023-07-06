@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from './services/users.service';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { GlobalVariableService } from './services/common/global-variable.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ export class AppComponent implements OnInit {
   error = "false";
   errorMessage = "";
 
-  constructor(private userService: UserService, private router: Router) {
+  constructor(private userService: UserService, private router: Router, private globalVariableService: GlobalVariableService) {
     this.result = JSON.parse(sessionStorage.getItem('currentUser') || "null");
 
     // if (this.userService.isLoggednIn() == false) {
@@ -45,6 +46,9 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.globalVariableService.resetfilters();
+    // this.params = this.globalVariableService.getFilterParams();
+    // console.log("params1: ", this.params);
   }
 
 }

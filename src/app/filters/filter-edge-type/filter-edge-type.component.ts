@@ -42,6 +42,8 @@ export class FilterEdgeTypeComponent implements OnInit {
   //diseaseCheckCT: any;
   hideCardBody: boolean = true;
   showEdgeBody: boolean = false;
+  edgeTypesNames: any = [];
+  edgeTypeNameStores: any = [];
 
   constructor(
     private nodeSelectsService: NodeSelectsService,
@@ -134,7 +136,22 @@ export class FilterEdgeTypeComponent implements OnInit {
       this.selectedEdgeTypes.splice(this.selectedEdgeTypes.indexOf(edgeType.edge_type_id), 1);
     }
 
-    console.log("selectedEdgeTypes: ", this.selectedEdgeTypes);
+    console.log("selectedEdgeTypesHERE: ", this.selectedEdgeTypes);
+
+    // this.nodeSelectsService.getEdgeTypeName({ 'edge_type_ids': this.selectedEdgeTypes })
+    // .subscribe(
+    //   data => {
+    //     this.edgeTypeNameStores = [];
+    //     this.result = data;
+    //     // console.log("result: ", this.result);
+    //     this.edgeTypesNames = this.result.edgeTypeName;
+    //     console.log("edgeTypesNames: ", this.edgeTypesNames);
+
+    //     this.edgeTypesNames.forEach((event: any) => {
+    //       this.edgeTypeNameStores.push(event.edge_type_name);
+    //     });
+    //     console.log("name: ", this.edgeTypeNameStores);
+    //   });
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data   
 
     if (from != 'edgeSelectsWarningModal')

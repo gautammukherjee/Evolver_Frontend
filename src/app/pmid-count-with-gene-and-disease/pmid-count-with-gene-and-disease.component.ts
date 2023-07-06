@@ -18,9 +18,10 @@ export class PmidCountWithGeneAndDiseaseComponent implements OnInit {
   private filterParams: any;
   highcharts = Highcharts;
   chartOptions: any;
-  eventIntensityGraph: any = [];
+  pmidCountGraph: any = [];
   pmid_Count: any = [];
   public graphDateCategory: any = [];
+  datCatQuarter: any;
 
   //dateCat: any;
   @Input() ProceedDoFilterApply?: Subject<any>;
@@ -54,7 +55,7 @@ export class PmidCountWithGeneAndDiseaseComponent implements OnInit {
         (data: any) => {
 
           this.result = data;
-          this.eventIntensityGraph = this.result.nodeSelectsRecords;
+          this.pmidCountGraph = this.result.nodeSelectsRecords;
           this.drawAreaChart();
         },
         (error: any) => {
@@ -70,29 +71,41 @@ export class PmidCountWithGeneAndDiseaseComponent implements OnInit {
 
   drawAreaChart() {
 
-//    console.log("In drawAreaChart");
-  //  console.log(this.data);
+    //    console.log("In drawAreaChart");
+    //  console.log(this.data);
 
     this.pmid_Count = [];
     this.graphDateCategory = [];
 
-    this.eventIntensityGraph.forEach((element: any) => {
+    this.pmidCountGraph.forEach((element: any) => {
       var dateCat = element.publication_date;
       console.log("dateCat: ", dateCat);
 
+      let quarterSplit = dateCat.split(' ');
+      let quarterSplitDate = quarterSplit[0].split('-');
+      console.log('urlSegments2: ', quarterSplitDate);
+
+      switch (quarterSplitDate[1]) {
+        case '01':
+          this.datCatQuarter = "Q1";
+          break;
+        case '04':
+          this.datCatQuarter = "Q2";
+          break;
+        case '07':
+          this.datCatQuarter = "Q3";
+          break;
+        default:
+          this.datCatQuarter = "Q4";
+          break;
+      }
+      var dateQuarter = this.datCatQuarter + " - " + quarterSplitDate[0];
       this.pmid_Count.push({
         'y': parseFloat(element.count),
-        // 'date': element.yr,
-//        toolTipText: '<table style="border: 1; border-color: #D0021B;" cellspacing="2" cellpadding="2"><tr><td style="font-size:12px;">Date Quarter: </td><td style="font-size:11px;">' + dateCat + '</td></tr><tr><td style="font-size:12px; color: #B9D4F4;"><strong>Event Count:</strong> </td><td style="font-size:11px; color: #B9D4F4;"><strong>' + element.count_events + '</strong></td></tr><tr><td style="font-size:12px; color: #FADC7B;"><strong>Average Intensity: </strong></td><td style="font-size:11px; color: #FADC7B;"><strong>' + parseFloat(Highcharts.numberFormat(element.avg_intensity, 2)) + '</strong></td></tr></table>',
+        //'date': dateQuarter, toolTipText: '<table style="border: 1; border-color: #D0021B;" cellspacing="2" cellpadding="2"><tr><td style="font-size:12px;">Date Quarter: </td><td style="font-size:11px;">' + dateCat + '</td></tr><tr><td style="font-size:12px; color: #B9D4F4;"><strong>Event Count:</strong> </td><td style="font-size:11px; color: #B9D4F4;"><strong>' + element.count + '</strong></td></tr></table>',
       });
-      this.graphDateCategory.push(dateCat);
+      this.graphDateCategory.push(dateQuarter);
     });
-
-    // let categories: any[] = [];
-    // for (let i = 0; i < this.data.length; i++) {
-    //   categories.push(this.data[i]['node_node_relation_types']);
-
-    // }
 
     this.chartOptions = {
       chart: {
@@ -119,6 +132,9 @@ export class PmidCountWithGeneAndDiseaseComponent implements OnInit {
         backgroundColor: '#FFFFFF'
       },
       xAxis: {
+        title: {
+          text: 'Publication Date'
+        },
         categories: this.graphDateCategory
       },
       yAxis: {
@@ -128,7 +144,7 @@ export class PmidCountWithGeneAndDiseaseComponent implements OnInit {
       },
       tooltip: {
         shared: true,
-        valueSuffix: ' units'
+        valueSuffix: ''
       },
       credits: {
         enabled: false
