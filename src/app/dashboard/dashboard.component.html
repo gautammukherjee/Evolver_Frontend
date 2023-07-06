@@ -3,6 +3,9 @@
 
     <section class="dashboard-main-wrapper">
         <div class="horizonal-filter-bar">
+            <div class="filter-left-heading">
+                Direct Level Association
+            </div>
             <div class="filter-single">
                 <app-filter-node-select (onSelectNode)='nodeChanged($event)'></app-filter-node-select>
             </div>
@@ -20,8 +23,12 @@
         </div>
         
         <div class="inner-wrapper">
-            <div class="left-sidebar" style="overflow: scroll;">
-                <div>
+
+            <div class="left-sidebar" [ngClass]="showSidebar == false ? 'hide' : ''">
+                <button class="btn btn-primary menu-toggler" (click)="ontoggleSidebar()" ngbTooltip="Close sidemenu" placement="right">
+                    <img src="../../assets/images/bars-solid.svg" width="18px"/>
+                </button>
+                <div class="left-sidebar-inner">
                     <app-filter-node-select-level2 (onSelectNode2)='nodeChanged2($event)'
                         [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-node-select-level2>
                     <app-filter-edge-type-level2 (onSelectEdgeType2)='edgeTypeChanged2($event)'
@@ -30,11 +37,11 @@
                 <!--<app-filter-data-range></app-filter-data-range>-->
             </div>
     
-            <div class="right-article">
+            <div class="right-article" [ngClass]="showSidebar == false ? 'full-width' : ''">
                 <!--<app-event-chart></app-event-chart>-->
 
-                <div class="mt-2 tab-slider--nav">
-                    <div class="custom-nav-tabs mt-3">
+                <div class="tab-slider--nav">
+                    <div class="custom-nav-tabs">
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="tab0-tab" data-bs-toggle="tab" data-bs-target="#tab0" type="button"
