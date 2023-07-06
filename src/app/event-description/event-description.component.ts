@@ -70,7 +70,7 @@ export class EventDescriptionComponent implements OnInit {
           console.log("data: ", data);
           this.resultNodes = data;
           this.masterListsData = this.resultNodes.masterListsData;
-          console.log("masterListsData: ", this.masterListsData);
+          console.log("masterListsDataLength: ", this.masterListsData.length);
           this.masterListsDataDetails = [];
 
           this.masterListsData.forEach((event: any) => {

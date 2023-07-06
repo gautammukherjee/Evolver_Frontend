@@ -100,10 +100,10 @@ export class DistributionByRelGrpComponent implements OnInit {
         enabled: false
       },
       tooltip: {
-        pointFormat: 'Name: <b>{point.y:.1f} millions</b>'
+        pointFormat: 'Name: <b>{point.y:.1f} </b>'
       },
       series: [{
-        name: 'Population',
+        name: 'Relation Group',
         colors: [
           '#046EB5'
         ],

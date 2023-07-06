@@ -19,6 +19,7 @@ export class FilterEdgeTypeComponent implements OnInit {
 
   private filterParams: any;
   public selectedEdgeTypes: any = [];
+  public selectedEdgeTypesNames: any = [];
   public edgeTypes: any = [];
   private params: object = {};
   private result: any = [];
@@ -132,26 +133,13 @@ export class FilterEdgeTypeComponent implements OnInit {
   selectEdgeType(edgeType: any, event: any, from: any = null) {
     if (event.target.checked) {
       this.selectedEdgeTypes.push(edgeType.edge_type_id);
+      this.selectedEdgeTypesNames.push(edgeType.edge_type_name);
     } else {
       this.selectedEdgeTypes.splice(this.selectedEdgeTypes.indexOf(edgeType.edge_type_id), 1);
+      this.selectedEdgeTypesNames.splice(this.selectedEdgeTypes.indexOf(edgeType.edge_type_name), 1);
     }
+    // console.log("selectedEdgeTypesHERE: ", this.selectedEdgeTypesNames);
 
-    console.log("selectedEdgeTypesHERE: ", this.selectedEdgeTypes);
-
-    // this.nodeSelectsService.getEdgeTypeName({ 'edge_type_ids': this.selectedEdgeTypes })
-    // .subscribe(
-    //   data => {
-    //     this.edgeTypeNameStores = [];
-    //     this.result = data;
-    //     // console.log("result: ", this.result);
-    //     this.edgeTypesNames = this.result.edgeTypeName;
-    //     console.log("edgeTypesNames: ", this.edgeTypesNames);
-
-    //     this.edgeTypesNames.forEach((event: any) => {
-    //       this.edgeTypeNameStores.push(event.edge_type_name);
-    //     });
-    //     console.log("name: ", this.edgeTypeNameStores);
-    //   });
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data   
 
     if (from != 'edgeSelectsWarningModal')

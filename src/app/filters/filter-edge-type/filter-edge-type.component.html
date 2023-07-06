@@ -5,14 +5,14 @@
 
   <div class="body">
     <div class="search-input" (click)="onEdgeHeaderClick()">
-      <input class="form-control" type="text" placeholder="Search" aria-label="Search" [(ngModel)]="edgeTypeFilter" />
+      <input class="form-control" type="text" value="{{selectedEdgeTypesNames.join(', ')}}" placeholder="Search" aria-label="Search" [(ngModel)]="edgeTypeFilter" />
       <img *ngIf="loading" src="../../assets/images/loader_small.gif" width="20px"/>
       <span *ngIf="selectedEdgeTypes.length > 0" class="reset-search"
         (click)="resetEdgeType();">Reset</span>
     </div>
 
     <div *ngIf="showEdgeBody">
-      <!--<div>{{edgeTypeNameStores}}</div>-->
+      
       <div class="search-options" *ngIf="edgeTypes.length">
         <div class="mb-1 form-check" *ngFor="let edgeType of edgeTypes | EdgeTypeFilterPipe:edgeTypeFilter">
           <input class="form-check-input border border-secondary" type="checkbox" name="edgeTypes" [value]="edgeType"

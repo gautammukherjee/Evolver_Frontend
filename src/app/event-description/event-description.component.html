@@ -1,39 +1,47 @@
 <div class="card-panel-box">
-    <div class="card-panel-box-heading">
-        Event List
-    </div>
-    <!--<i (click)="reloadDescription()" class="fa fa-expand text-white"
-        style="position: absolute; top: 10px; right: 30px; font-size: 21px;"></i>-->
 
-    <!-- <i (click)="help(helpDesc)" class="fa fa-info-circle text-white"
-        style="position: absolute; top: 10px; right: 72px; font-size: 22px;"></i> -->
+    <div class="customTable" style="border: 1px solid #ddd; min-height:400px;">
 
-    <!--<div class="card-panel-box-detail" [hidden]="hideCardBody">-->
-    <div class="card-panel-box-detail">
-        <div class="customTable " id="eventListTable">
-            <!-- <div class="text-muted fs-2 text-center mb-4">Choose Filters To Display Details</div> -->
-            <div *ngIf="loadingDesc">
-                <img src="../../assets/images/loader_big.gif" />                
+        <div class="text-muted fs-2 text-center mb-4" *ngIf="masterListsData?.length ==0">Choose Filters To Display Details</div>
+
+        <!--<div class="card-panel-box-heading">
+            Event List
+        </div>-->
+        <!--<i (click)="reloadDescription()" class="fa fa-expand text-white"
+            style="position: absolute; top: 10px; right: 30px; font-size: 21px;"></i>-->
+
+        <!-- <i (click)="help(helpDesc)" class="fa fa-info-circle text-white"
+            style="position: absolute; top: 10px; right: 72px; font-size: 22px;"></i> -->
+
+        <!--<div class="card-panel-box-detail" [hidden]="hideCardBody">-->
+        <div class="card-panel-box-detail">
+            <div class="customTable " id="eventListTable">
+                <!-- <div class="text-muted fs-2 text-center mb-4">Choose Filters To Display Details</div> -->
+                <div *ngIf="loadingDesc">
+                    <img src="../../assets/images/loader_big.gif" />                
+                </div>
+                <div class="table-responsive custom-fixed-header-table" style="max-height:600px">
+                    <!--<table id="showEventDescription" data-toolbar="#toolbar" data-search="true"
+                        data-show-export="true" data-show-columns="true" data-page-size="50"
+                        data-page-list="[10, 25, 50, 100, All]">-->
+                    <table id="showEventDescription" data-toolbar="#toolbar" data-search="true" data-page-size="50" data-page-list="[10, 25, 50, 100, All]">
+                        <thead>
+                            <tr class="d-flex">
+                                <!-- <th data-field="news_id" data-sortable="true" width="10%">News ID</th> -->
+                                <th data-field="sourcenode_name" data-sortable="true">Source Name</th>
+                                <th data-field="destinationnode_name" data-sortable="true">Destination Name</th>
+                                <th data-field="level" data-sortable="true">Level</th>
+                                <!--<th data-field="edgeTypes" data-sortable="true" width="10%">Edge Type</th>-->
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
-            <div class="table-responsive custom-fixed-header-table" style="max-height:600px">
-                <!--<table id="showEventDescription" data-toolbar="#toolbar" data-search="true"
-                    data-show-export="true" data-show-columns="true" data-page-size="50"
-                    data-page-list="[10, 25, 50, 100, All]">-->
-                <table id="showEventDescription" data-toolbar="#toolbar" data-search="true" data-page-size="50" data-page-list="[10, 25, 50, 100, All]">
-                    <thead>
-                        <tr class="d-flex">
-                            <!-- <th data-field="news_id" data-sortable="true" width="10%">News ID</th> -->
-                            <th data-field="sourcenode_name" data-sortable="true">Source Name</th>
-                            <th data-field="destinationnode_name" data-sortable="true">Destination Name</th>
-                            <th data-field="level" data-sortable="true">Level</th>
-                            <!--<th data-field="edgeTypes" data-sortable="true" width="10%">Edge Type</th>-->
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+
         </div>
-
     </div>
+
+    
 </div>
 
 <!-- help section goes here -->
