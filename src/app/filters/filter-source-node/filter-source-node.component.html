@@ -1,15 +1,18 @@
-<div class="sidebar-card">
+<div class="sidebar-card" #sourceNodeFilter>
   <div class="heading">
-    <h4>Source Nodes</h4>
+    <h4>Source Nodes 
+      <button class="btn btn-primary" *ngIf="sourceNodes.length > 0" [disabled]="disableProceed"
+          (click)="seeMoreproceed()">&rarr;</button>
+    </h4>
   </div>
   <div class="body">
     <div class="search-input" (click)="onSourceHeaderClick()">
       <form #form="ngForm" class="md-inline-block form-inline  ml-auto mr-0 mr-md-3 my-2 my-md-0">
         <input type="text" #searchInput (keyup)="getSourceNode(searchInput.value)" class="form-control"
           placeholder='Search Source' aria-label="Search" area-describedby="basic-addon2">
-        <button class="btn btn-primary" *ngIf="sourceNodes.length > 0" [disabled]="disableProceed"
-          (click)="seeMoreproceed()">&rarr;</button>
           <img *ngIf="loading" width="20px" src="../../assets/images/loader_small.gif" />
+          <span *ngIf="selectedSourceNodes.length > 0" class="reset-search"
+            (click)="resetSourceNode();">Reset</span>
         <!--<input class="form-control" type="text" placeholder="Search" aria-label="Search" [(ngModel)]="sourceNodeFilter" />-->
         <!--<button style="float:left;margin-top: 10px;position: relative;" class="btn btn-primary" [disabled]="!form.form.valid" (click)="getSourceNode(searchInput.value)">Search</button>-->
       </form>
@@ -26,9 +29,6 @@
         </div>
       </div>
     </div>
-
-    <span *ngIf="selectedSourceNodes.length > 0" style="cursor: pointer; float:right;" class="float-left"
-      (click)="resetSourceNode();">Reset</span>
     <!--<span *ngIf="sourceNodes.length > 2" style="cursor: pointer" class="float-right"
         (click)="SeeMore($event,seeMoreSourceNodeModal);">{{sourceNodes.length-10}}
         More</span>-->

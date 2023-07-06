@@ -6,6 +6,10 @@ body {
     background-color: #f0f1f1;
 }
 
+.tooltip{
+    z-index: 9999999;
+}
+
 .login-wrapper {
     background-color: #F3F3F3;
     background-size: cover;
@@ -206,11 +210,25 @@ body {
         z-index: 9;
         background: #b765a3;
         column-gap: 10px;
-        padding: 10px;
+        padding: 0px 10px 0px 0px;
+        align-items: end;
+
+        .filter-left-heading{
+            font-size: 20px;
+            color: #fff;
+            height: 100%;
+            background: #89417d;
+            padding: 14px 10px;
+            font-weight: 600;
+            text-align: center;
+            width: 150px;
+            min-width: 150px;
+        }
 
         .filter-single {
             width: 25%;
             max-width: calc(25% - 10px);
+            padding:10px 0px;
 
             .sidebar-card {
                 .body {
@@ -231,20 +249,25 @@ body {
                         position: relative;
 
                         form {
-                            display: flex;
-                            column-gap: 10px;
-
-                            img {
-                                position: absolute;
-                                right: 10px;
-                                top: 10px;
-                            }
-
                             input[type=text] {
                                 &:focus {
                                     box-shadow: none;
                                 }
                             }
+                        }
+
+                        img {
+                            position: absolute;
+                            right: 10px;
+                            top: 10px;
+                        }
+
+                        .reset-search{
+                            position: absolute;
+                            right: 10px;
+                            top: 6px;
+                            cursor: pointer;
+                            color: #6a6a6a;
                         }
                     }
                 }
@@ -253,6 +276,14 @@ body {
                     h4 {
                         font-size: 18px;
                         color: #fff;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+
+                        button{
+                            height: 21px;
+                            line-height: 2px;
+                        }
                     }
                 }
             }
@@ -269,12 +300,24 @@ body {
             width: 300px;
             min-width: 300px;
             box-shadow: 0px 4px 27px rgba(0, 0, 0, 0.09);
-            padding: 20px 15px;
-            height: calc(100vh - 64px);
             background-color: #2f3c8f;
             position: fixed;
             left: 0;
             top: 152px;
+            transition: all 0.5s;
+
+            .menu-toggler{
+                position: absolute;
+                right: -30px;
+                border-radius: 0;
+                padding: 0px 5px 3px;
+            }
+
+            .left-sidebar-inner{
+                padding: 20px 15px;
+                height: calc(100vh - 64px);
+                overflow: auto;
+            }
 
             .sidebar-card {
                 margin-bottom: 6px;
@@ -318,16 +361,21 @@ body {
                     }
                 }
             }
+
+            &.hide{
+                margin-left: -300px;
+            }
         }
 
         .right-article {
             width: calc(100% - 330px);
             background: #fff;
-            margin-top: 20px;
+            margin-top: 50px;
             border-radius: 20px;
             margin-left: 330px;
             min-height: 100vh;
             position: relative;
+            transition: all 0.5s;
 
             .network-map {
                 padding-top: 0px;
@@ -343,6 +391,11 @@ body {
                 bottom: 0;
                 width: 100%;
                 left: 0;
+            }
+
+            &.full-width{
+                width:100%;
+                margin-left: 30px;
             }
         }
 

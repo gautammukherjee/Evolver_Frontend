@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, ChangeDetectorRef, Input, Pipe, PipeTransform, ElementRef, ViewChild, ViewChildren } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output,ElementRef, Renderer2, ChangeDetectorRef, Input, Pipe, PipeTransform, ViewChild, ViewChildren } from '@angular/core';
 import { NodeSelectsService } from '../../services/common/node-selects.service';
 import { GlobalVariableService } from '../../services/common/global-variable.service';
 import { Subject } from 'rxjs';
@@ -16,7 +16,8 @@ export class FilterSourceNodeComponent implements OnInit {
 
   @Output() onSelectSourceNode: EventEmitter<any> = new EventEmitter();
   @Input() UpdateFilterDataApply?: Subject<any>;
-
+  @ViewChild('sourceNodeFilter')
+  sourceNodeFilter!: ElementRef;
   private filterParams: any;
   public selectedSourceNodes: any = [];
   public sourceNodes: any = [];
@@ -35,8 +36,12 @@ export class FilterSourceNodeComponent implements OnInit {
     private nodeSelectsService: NodeSelectsService,
     private globalVariableService: GlobalVariableService,
     private modalService: NgbModal,
-    private elementRef: ElementRef
-  ) { }
+    private elementRef: ElementRef,
+    private renderer: Renderer2
+  ) {
+    this.renderer.listen('window', 'click',(e:Event)=>{
+    })
+  }
 
   ngOnInit(): void {
     // this.globalVariableService.setSelectedSourceNodes([10810]);

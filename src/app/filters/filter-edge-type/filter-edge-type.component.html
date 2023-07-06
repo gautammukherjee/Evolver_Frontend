@@ -1,11 +1,14 @@
 <div class="sidebar-card">
   <div class="heading">
-    <h4>Edge Type <img *ngIf="loading" src="../../assets/images/loader_small.gif" width="20px"/></h4>
+    <h4>Edge Type</h4>
   </div>
 
   <div class="body">
     <div class="search-input" (click)="onEdgeHeaderClick()">
       <input class="form-control" type="text" placeholder="Search" aria-label="Search" [(ngModel)]="edgeTypeFilter" />
+      <img *ngIf="loading" src="../../assets/images/loader_small.gif" width="20px"/>
+      <span *ngIf="selectedEdgeTypes.length > 0" class="reset-search"
+        (click)="resetEdgeType();">Reset</span>
     </div>
 
     <div *ngIf="showEdgeBody">
@@ -19,9 +22,6 @@
         </div>
       </div>
     </div>
-
-    <span *ngIf="selectedEdgeTypes.length > 0" style="cursor: pointer; float:right;" class="float-left"
-      (click)="resetEdgeType();">Reset</span>
   </div>
 </div>
 

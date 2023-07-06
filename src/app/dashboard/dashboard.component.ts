@@ -12,7 +12,7 @@ export class DashboardComponent implements OnInit {
 
   doFilterApply: Subject<any> = new Subject();  // ## P= Parent
   doUpdateFilterDataApply: Subject<any> = new Subject();
-  showSidebar: boolean = false;
+  showSidebar: boolean = true;
   viewMode = 'event_list';
 
   constructor(private globalVaiableService: GlobalVariableService, private router: Router) {
