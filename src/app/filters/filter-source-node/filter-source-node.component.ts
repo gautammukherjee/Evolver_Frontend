@@ -4,7 +4,7 @@ import { GlobalVariableService } from '../../services/common/global-variable.ser
 import { Subject } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { map, startWith } from 'rxjs/operators';
+// import { map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -116,6 +116,7 @@ export class FilterSourceNodeComponent implements OnInit {
   }
 
   resetSourceNode() {
+    // this.globalVariableService.resetfilters();
     this.selectedSourceNodes = [];
     this.globalVariableService.setSelectedSourceNodes(this.selectedSourceNodes);
     this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());

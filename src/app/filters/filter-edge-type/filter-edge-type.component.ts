@@ -136,9 +136,10 @@ export class FilterEdgeTypeComponent implements OnInit {
       this.selectedEdgeTypesNames.push(edgeType.edge_type_name);
     } else {
       this.selectedEdgeTypes.splice(this.selectedEdgeTypes.indexOf(edgeType.edge_type_id), 1);
-      this.selectedEdgeTypesNames.splice(this.selectedEdgeTypes.indexOf(edgeType.edge_type_name), 1);
+      this.selectedEdgeTypesNames.splice(this.selectedEdgeTypesNames.indexOf(edgeType.edge_type_name), 1);
     }
-    // console.log("selectedEdgeTypesHERE: ", this.selectedEdgeTypesNames);
+    // console.log("selectedEdgeTypesID: ", this.selectedEdgeTypes);
+    // console.log("selectedEdgeTypesName: ", this.selectedEdgeTypesNames);
 
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data   
 
@@ -166,6 +167,7 @@ export class FilterEdgeTypeComponent implements OnInit {
   resetEdgeType() {
     this.selectedEdgeTypes = [];
     this.globalVariableService.setSelectedEdgeTypes(this.selectedEdgeTypes);
+    this.selectedEdgeTypesNames = [];
     this.selectedEdgeTypes = Array.from(this.globalVariableService.getSelectedEdgeTypes());
     console.log("selected Edge Type: ", this.selectedEdgeTypes);
     // this.proceed();

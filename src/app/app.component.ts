@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
   user: any;
   error = "false";
   errorMessage = "";
+  private params: object = {};
 
   constructor(private userService: UserService, private router: Router, private globalVariableService: GlobalVariableService) {
     this.result = JSON.parse(sessionStorage.getItem('currentUser') || "null");
@@ -47,8 +48,8 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.globalVariableService.resetfilters();
-    // this.params = this.globalVariableService.getFilterParams();
-    // console.log("params1: ", this.params);
+    this.params = this.globalVariableService.getFilterParams();
+    console.log("Load Parameter: ", this.params);
   }
 
 }

@@ -143,6 +143,7 @@ export class GlobalVariableService {
   }
 
   resetfilters() {
+    this.setSelectedNodeSelects(1);
     this.setSelectedSourceNodes([]);
     this.setSelectedDestinationNodes([]);
     this.setSelectedNodeSelects2(undefined);

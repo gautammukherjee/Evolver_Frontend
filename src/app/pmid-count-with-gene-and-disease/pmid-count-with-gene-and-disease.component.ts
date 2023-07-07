@@ -79,11 +79,11 @@ export class PmidCountWithGeneAndDiseaseComponent implements OnInit {
 
     this.pmidCountGraph.forEach((element: any) => {
       var dateCat = element.publication_date;
-      console.log("dateCat: ", dateCat);
+      // console.log("dateCat: ", dateCat);
 
       let quarterSplit = dateCat.split(' ');
       let quarterSplitDate = quarterSplit[0].split('-');
-      console.log('urlSegments2: ', quarterSplitDate);
+      // console.log('urlSegments2: ', quarterSplitDate);
 
       switch (quarterSplitDate[1]) {
         case '01':
