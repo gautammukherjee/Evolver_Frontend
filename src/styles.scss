@@ -236,13 +236,14 @@ body {
 
                     .search-options {
                         position: absolute;
-                        max-height: 200px;
+                        max-height: 400px;
                         overflow: auto;
                         width: 100%;
                         background: #fff;
                         padding: 5px 10px;
                         border: 1px solid #ececec;
                         border-radius: 5px;
+                        resize: both;
                     }
 
                     .search-input {
