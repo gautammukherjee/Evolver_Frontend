@@ -1,7 +1,7 @@
 <div class="container2">
-    <div class="row">
+    <div class="row" style="border: 1px solid #ddd; min-height:380px;">
         <div class="col">
-            <!-- <div class="text-muted fs-2 text-center mb-4">Choose Filters To Display Relations.</div> -->
+            <div class="text-muted fs-2 text-center mb-4">Choose Filters To Display Relations</div>
             <img src="./assets/images/loader_big.gif" *ngIf="graphLoader" />
             <highcharts-chart [Highcharts]="highcharts" [options]="chartOptions" style="width: 100%; display: block"></highcharts-chart>
         </div>

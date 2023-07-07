@@ -53,6 +53,8 @@
               "node_modules/cytoscape-dagre/cytoscape-dagre.js"
             ],
             "allowedCommonJsDependencies": [
+              "lodash",
+              "rxjs-compat",
               "lodash"
             ]
           },
@@ -114,9 +116,7 @@
               "src/favicon.ico",
               "src/assets"
             ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "styles": [],
             "scripts": []
           }
         }

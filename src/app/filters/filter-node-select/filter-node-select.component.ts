@@ -143,7 +143,7 @@ export class FilterNodeSelectComponent implements OnInit {
 
     this.globalVariableService.resetfilters();
     this.params = this.globalVariableService.getFilterParams();
-    console.log("params1: ", this.params);
+    // console.log("params1: ", this.params);
 
     // if (event.target.checked) {
     //   this.selectedNodeSelects.push(node.nnrt_id);

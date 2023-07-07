@@ -1,9 +1,6 @@
 <div class="card-panel-box">
-
     <div class="customTable" style="border: 1px solid #ddd; min-height:400px;">
-
         <div class="text-muted fs-2 text-center mb-4" *ngIf="masterListsData?.length ==0">Choose Filters To Display Details</div>
-
         <!--<div class="card-panel-box-heading">
             Event List
         </div>-->
@@ -14,11 +11,11 @@
             style="position: absolute; top: 10px; right: 72px; font-size: 22px;"></i> -->
 
         <!--<div class="card-panel-box-detail" [hidden]="hideCardBody">-->
-        <div class="card-panel-box-detail">
+        <div class="card-panel-box-detail" id="overlay">
             <div class="customTable " id="eventListTable">
                 <!-- <div class="text-muted fs-2 text-center mb-4">Choose Filters To Display Details</div> -->
-                <div *ngIf="loadingDesc">
-                    <img src="../../assets/images/loader_big.gif" />                
+                <div class="overlay" *ngIf="loadingDesc">
+                    <img style="margin:185px 653px;" src="../../assets/images/loader_big.gif" />                
                 </div>
                 <div class="table-responsive custom-fixed-header-table" style="max-height:600px">
                     <!--<table id="showEventDescription" data-toolbar="#toolbar" data-search="true"

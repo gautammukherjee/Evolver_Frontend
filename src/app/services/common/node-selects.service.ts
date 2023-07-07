@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 // import 'rxjs/add/observable/of';
 // import 'rxjs/add/operator/do';
 // import 'rxjs/add/operator/of';
-import { tap } from "rxjs/operators";
+// import { tap } from "rxjs/operators";
 // import {tap} from 'rxjs/internal/operators';
 
 const httpOptions = {

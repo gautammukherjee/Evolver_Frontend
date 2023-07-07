@@ -59,6 +59,8 @@ export class EventDescriptionComponent implements OnInit {
 
   getEventDescription(_filterParams: any) {
     if (_filterParams.source_node != undefined) {
+
+      // $('.overlay').fadeOut(500);
       this.loadingDesc = true;
 
       // this.diseaseCheck = _filterParams['di_ids']; // if disease_id is checked
