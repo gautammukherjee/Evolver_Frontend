@@ -2,10 +2,10 @@
   <div class="heading">
     <h4>Input-1 (Gene or Disease)
 
-      <button class="m-2" style="background-color: #FFF;color:#000;" *ngIf="selectedSourceNodes.length > 0"
-        [disabled]="disableProceed" (click)="resetSourceNode();"><i class="bi bi-trash" alt="Reset"></i></button>
-      <button class="m-2" style="background-color: #FFF;color:#000;" *ngIf="sourceNodes.length > 0"
-        [disabled]="disableProceed" (click)="seeMoreproceed()" alt="submit"><i class="bi bi-search"></i></button>
+      <button class="m-1" *ngIf="selectedSourceNodes.length > 0" [disabled]="disableProceed"
+        (click)="resetSourceNode();" title="RESET"><i class="bi bi-bootstrap-reboot"></i></button>
+      <button class="m-1" style="background-color: #FFF;color:#000;" *ngIf="sourceNodes.length > 0"
+        [disabled]="disableProceed" (click)="seeMoreproceed()" title="submit"><i class="bi bi-search"></i></button>
     </h4>
   </div>
   <div class="body">
