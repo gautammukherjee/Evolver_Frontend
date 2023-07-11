@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap");
+@import "~bootstrap-icons/font/bootstrap-icons.css";
 
 body {
     font-family: 'Roboto', sans-serif;
@@ -236,13 +237,14 @@ body {
 
                     .search-options {
                         position: absolute;
-                        max-height: 200px;
+                        max-height: 400px;
                         overflow: auto;
                         width: 100%;
                         background: #fff;
                         padding: 5px 10px;
                         border: 1px solid #ececec;
                         border-radius: 5px;
+                        resize: both;
                     }
 
                     .search-input {
