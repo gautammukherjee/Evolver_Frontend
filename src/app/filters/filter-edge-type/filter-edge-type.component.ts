@@ -38,7 +38,7 @@ export class FilterEdgeTypeComponent implements OnInit {
   otherMouseOverONElem: any = undefined;
   public disableProceed = true;
   edgeTypeFilter: string = '';
-  edgeTypeFilterText: string = '';
+  // edgeTypeFilterText: string = '';
   //diseaseCheck: any;
   //diseaseCheckCT: any;
   hideCardBody: boolean = true;

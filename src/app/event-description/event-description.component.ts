@@ -79,15 +79,16 @@ export class EventDescriptionComponent implements OnInit {
             var temps: any = {};
 
             //Get the Edge Type Name
-            // const regex = /[{}]/g;
-            // const edgeTypeIds = event.edge_type_ids;
-            // const edgeTypeIdsPost = edgeTypeIds.replace(regex, '');
+            const regex = /[{}]/g;
+            const edgeTypeIds = event.edge_type_ids;
+            const edgeTypeIdsPost = edgeTypeIds.replace(regex, '');
             // console.log("edgeTypeIdsPost: ", edgeTypeIdsPost);
 
-            // // var edgeHere = this.getEdgeTypes(edgeTypeIdsPost);
-            // this.getEdgeTypes(edgeTypeIdsPost).subscribe(s => {
+            // var edgeHere = this.getEdgeTypes(edgeTypeIdsPost);
+            // console.log("edgeHere: ", edgeHere);
+            // this.nodeSelectsService.getEdgeTypeName({ 'edge_type_ids': edgeTypeIdsPost }).subscribe((s: any) => {
             //   this.result = s;
-            //   this.edgeHere = this.result.edgeTypeName;
+            //   this.edgeHere = this.result;
             //   this.edgeTypesLists = [];
             //   this.edgeHere.forEach((event: any) => {
             //     this.edgeTypesLists.push(event.edge_type_name);
@@ -101,7 +102,9 @@ export class EventDescriptionComponent implements OnInit {
             temps["level"] = event.level;
             // temps["edgeTypes"] = this.edgeTypesLists;
             this.masterListsDataDetails.push(temps);
-          });
+            // console.log("masterListsData Event: ", this.masterListsDataDetails);
+          },
+          );
 
           jQuery('#showEventDescription').bootstrapTable({
             bProcessing: true,
@@ -154,6 +157,7 @@ export class EventDescriptionComponent implements OnInit {
             .on("page-change.bs.table", function (e: any) {
               jQuery('#showEventDescription').bootstrapTable("load", e.masterListsDataDetails);
             });
+
         },
         err => {
           console.log(err.message);
@@ -177,12 +181,18 @@ export class EventDescriptionComponent implements OnInit {
   //   })
   // }
 
-  getEdgeTypes(edgeTypeIdsPost: any) {
-    return this.nodeSelectsService.getEdgeTypeName({ 'edge_type_ids': edgeTypeIdsPost }).pipe(map((p: any) => {
-      this.result = p;
-      return p;
-    }));
-  }
+  // getEdgeTypes(edgeTypeIdsPost: any) {
+  //   return this.nodeSelectsService.getEdgeTypeName({ 'edge_type_ids': edgeTypeIdsPost }).subscribe((p: any) => {
+  //     this.result = p;
+  //     this.edgeHere = this.result.edgeTypeName;
+  //     this.edgeTypesLists = [];
+  //     this.edgeHere.forEach((event: any) => {
+  //       this.edgeTypesLists.push(event.edge_type_name);
+  //     });
+  //     // console.log("edgeHere: ", this.edgeTypesLists);
+  //     return this.edgeTypesLists;
+  //   });
+  // }
 
   // reloadDescription() {
   //   console.log("Event description: ")
