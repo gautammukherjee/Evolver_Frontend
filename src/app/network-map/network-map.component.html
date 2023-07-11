@@ -6,10 +6,11 @@
 
             <div class="text-muted fs-2 text-center mb-4" *ngIf="nodesCheckLength">Choose Filters To Generate Network Map</div>
             
-            <div class="text-center" *ngIf="loadingMap">
-                <img src="../../assets/images/loader_big.gif" />
-                <!--<span class="fa fa-spinner fa-spin"></span> &nbsp;Loading...-->
+            <div class="overlay" *ngIf="loadingMap">
+                <img style="margin:185px 653px;" src="../../assets/images/loader_big.gif" />                
             </div>
+
+
             <!--<div class="table-responsive" *ngIf="nodesCheck">-->
             <div class="table-responsive">
                 <!--<div class="form-check" style="margin-left: 12px;">
@@ -54,6 +55,7 @@
                                 <h5 class="modal-title">Edge Details</h5>
                             </div>
                             <div class="modal-body">
+                                <div id="pubmedURLsDownloadLoader"></div>
                                 <div id="pubmedURLsDownload"></div>
                                 <div id="pubmedURLs"></div>
                             </div>
@@ -61,8 +63,6 @@
                     </div>
                 </div>
 
-
-                
 
                 <!--<div class="footer" style="width: 10px; margin-left: 10px;" *ngFor="let legendsNodeType of legendsNodeTypes">
                     <div class="dot" [style.background]="legendsNodeType.color_code"><span>{{legendsNodeType.node_name}}</span></div>

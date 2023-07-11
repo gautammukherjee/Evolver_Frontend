@@ -121,7 +121,7 @@ export class NetworkMapComponent implements OnInit {
           this.resultNodes = data;
           this.masterListsData = this.resultNodes.masterListsData;
           console.log("masterListsData: ", this.masterListsData);
-          console.log("masterListsDataLengtH: ", this.masterListsData.length);
+          // console.log("masterListsDataLengtH: ", this.masterListsData.length);
           if (this.masterListsData.length > 0) {
             this.nodesCheckLength = false;
           } else {
@@ -145,7 +145,7 @@ export class NetworkMapComponent implements OnInit {
             //Edge data
             this.edgeData.push({
               // data: { source: Math.floor(event.source_id), target: Math.floor(event.target_id), PMID: event.pmidlist, colorCode: "pink", strength: Math.floor(event.edge_weight) },
-              data: { source: Math.floor(event.sourcenode), target: Math.floor(event.destinationnode), colorCode: "#00e600", strength: Math.floor(2) },
+              data: { source: Math.floor(event.sourcenode), target: Math.floor(event.destinationnode), neIds: event.ne_ids, colorCode: "#00e600", strength: Math.floor(2) },
             });
           });
 

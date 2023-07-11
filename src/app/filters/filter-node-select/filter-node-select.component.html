@@ -9,7 +9,7 @@
       <select name="" id="" class="form-control" (change)="selectNode($event)">
         <!--<option value="node_select.nnrt_id" [selected]="selectedNodeSelects.indexOf(node_select.nnrt_id)>-1 ">{{node_select.pair_name}}</option>-->
         <option value="null" disabled>Please choose Pair</option>
-        <option *ngFor="let node_select of node_selects; let i = index" [value]="node_selects[i].nnrt_id">
+        <option *ngFor="let node_select of node_selects; let i = index" [value]="node_selects[i].nnrt_id" [selected]="(node_selects[i].nnrt_id==2?'selected':'')">
           {{ node_select.pair_name }}
         </option>
       </select>

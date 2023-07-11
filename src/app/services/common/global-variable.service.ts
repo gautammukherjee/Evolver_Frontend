@@ -127,8 +127,8 @@ export class GlobalVariableService {
     this.filterParams = {
       from_date: this.getFromDate(),
       to_date: this.getToDate(),
-      nnrt_id: this.getSelectedNodeSelects() != undefined ? this.getSelectedNodeSelects() : 1,
-      nnrt_id2: this.getSelectedNodeSelects2() != undefined ? this.getSelectedNodeSelects2() : '',
+      nnrt_id: this.getSelectedNodeSelects() != undefined ? this.getSelectedNodeSelects() : 2,
+      nnrt_id2: this.getSelectedNodeSelects2() != undefined ? this.getSelectedNodeSelects2() : undefined,
       source_node: this.getSelectedSourceNodes().length > 0 ? this.getSelectedSourceNodes() : undefined,
       destination_node: this.getSelectedDestinationNodes().length > 0 ? this.getSelectedDestinationNodes() : undefined,
       edge_type_id: this.getSelectedEdgeTypes().length > 0 ? this.getSelectedEdgeTypes() : undefined,
@@ -143,7 +143,7 @@ export class GlobalVariableService {
   }
 
   resetfilters() {
-    this.setSelectedNodeSelects(1);
+    this.setSelectedNodeSelects(2);
     this.setSelectedSourceNodes([]);
     this.setSelectedDestinationNodes([]);
     this.setSelectedNodeSelects2(undefined);

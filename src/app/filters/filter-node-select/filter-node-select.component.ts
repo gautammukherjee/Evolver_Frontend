@@ -74,7 +74,7 @@ export class FilterNodeSelectComponent implements OnInit {
     this.getNodeSelects(event, 1);
     this.hideCardBody = true;
 
-    this.globalVariableService.setSelectedNodeSelects(1);
+    this.globalVariableService.setSelectedNodeSelects(2);
     this.selectedNodeSelects = Array.from(this.globalVariableService.getSelectedNodeSelects());
     console.log("sel_nodes: ", this.selectedNodeSelects);
 
@@ -111,7 +111,7 @@ export class FilterNodeSelectComponent implements OnInit {
           //if (event !== undefined && event.type == 'load') { // i.e No Genes selected previously
           for (let i = 0; i < this.result.nodeSelectsRecords.length && i < 1; i++) {
             // this.selectedNodeSelects.push(this.result.nodeSelectsRecords[i].nnrt_id);
-            this.selectedNodeSelects = this.result.nodeSelectsRecords[i].nnrt_id;
+            this.selectedNodeSelects = this.result.nodeSelectsRecords[i + 1].nnrt_id;
             //this.selectedGenes = [];
           }
           console.log("selected Nodes: ", this.selectedNodeSelects);

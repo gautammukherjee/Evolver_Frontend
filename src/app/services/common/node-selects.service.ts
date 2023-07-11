@@ -2,13 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from './../../../environments/environment';
 
-import { Observable } from 'rxjs';
+// import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 // import { of } from 'rxjs';
 // import 'rxjs/add/observable/of';
 // import 'rxjs/add/operator/do';
 // import 'rxjs/add/operator/of';
 // import { tap } from "rxjs/operators";
 // import {tap} from 'rxjs/internal/operators';
+import { tap, catchError, map } from 'rxjs/operators';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -69,12 +71,27 @@ export class NodeSelectsService {
     return this.http.post(this.API_URL + 'getMasterLists', params, httpOptions);
   }
 
-  getEdgeTypeName(params: any) {
-    return this.http.post(this.API_URL + 'getEdgeTypeName', params, httpOptions);
+  getEdgeTypeName(params: any): Observable<any> {
+    return this.http.post(this.API_URL + 'getEdgeTypeName', params, httpOptions)
+      .pipe(map((data: any) => {
+        // debug error here
+        // console.log("data22: ", data);
+        return data.edgeTypeName;
+      }),
+        catchError(this.handleError)
+      );
+  }
+
+  private handleError(error: any) {
+    return throwError(error);
   }
 
   getDistributionRelationType(params: any) {
     return this.http.post(this.API_URL + 'getDistributionRelationType', params, httpOptions);
+  }
+
+  getEdgePMIDLists(params: any) {
+    return this.http.post(this.API_URL + 'getEdgePMIDLists', params, httpOptions);
   }
 
 
