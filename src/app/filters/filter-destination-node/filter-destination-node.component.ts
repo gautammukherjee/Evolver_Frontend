@@ -38,7 +38,8 @@ export class FilterDestinationNodeComponent implements OnInit {
   mouseOverON: any = undefined;
   otherMouseOverONElem: any = undefined;
   public disableProceed: boolean = true;
-  public showDestinationBody: boolean = true;
+  searchInput: any = null;
+  // public showDestinationBody: boolean = true;
 
   constructor(
     private nodeSelectsService: NodeSelectsService,
@@ -68,10 +69,10 @@ export class FilterDestinationNodeComponent implements OnInit {
     this.destinationNodes = [];
   }
 
-  getDestinationNode(searchval: any) {
-    if (searchval.length > 2) {
+  getDestinationNode() {
+    if (this.searchInput.length > 2) {
       this.loading = true;
-      this.filterParams = this.globalVariableService.getFilterParams({ "searchval": searchval });
+      this.filterParams = this.globalVariableService.getFilterParams({ "searchval": this.searchInput });
       console.log("filterparamsSearchDestination: ", this.filterParams);
       this.nodeSelectsService.getDestinationNode(this.filterParams)
         .subscribe(
@@ -118,6 +119,8 @@ export class FilterDestinationNodeComponent implements OnInit {
   }
 
   resetDestinationNode() {
+    this.searchInput = '';
+    this.disableProceed = true;
     this.selectedDestinationNodes = [];
     this.globalVariableService.setSelectedDestinationNodes(this.selectedDestinationNodes);
     this.selectedDestinationNodes = Array.from(this.globalVariableService.getSelectedDestinationNodes());
@@ -178,8 +181,8 @@ export class FilterDestinationNodeComponent implements OnInit {
       elmnt.scrollIntoView();
   }
 
-  onDestinationHeaderClick() {
-    this.showDestinationBody = !this.showDestinationBody;
-  }
+  // onDestinationHeaderClick() {
+  //   this.showDestinationBody = !this.showDestinationBody;
+  // }
 
 }

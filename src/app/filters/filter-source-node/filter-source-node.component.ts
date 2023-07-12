@@ -16,8 +16,6 @@ export class FilterSourceNodeComponent implements OnInit {
 
   @Output() onSelectSourceNode: EventEmitter<any> = new EventEmitter();
   @Input() UpdateFilterDataApply?: Subject<any>;
-  @ViewChild('sourceNodeFilter')
-  sourceNodeFilter!: ElementRef;
   private filterParams: any;
   public selectedSourceNodes: any = [];
   public sourceNodes: any = [];
@@ -30,7 +28,9 @@ export class FilterSourceNodeComponent implements OnInit {
   togglecollapseStatus: boolean = false;
   private seeMoreNodeSelectsModal: any;
   public disableProceed = true;
-  showSourceBody: boolean = false;
+  // showSourceBody: boolean = false;
+
+  searchInput: any = null;
 
   constructor(
     private nodeSelectsService: NodeSelectsService,
@@ -67,10 +67,11 @@ export class FilterSourceNodeComponent implements OnInit {
     this.sourceNodes = [];
   }
 
-  getSourceNode(searchval: any) {
-    if (searchval.length > 2) {
+  getSourceNode() {
+    // console.log("val: ", this.searchInput);
+    if (this.searchInput.length > 2) {
       this.loading = true;
-      this.filterParams = this.globalVariableService.getFilterParams({ "searchval": searchval });
+      this.filterParams = this.globalVariableService.getFilterParams({ "searchval": this.searchInput });
       console.log("filterparamsSearchSource: ", this.filterParams);
       // this.params = this.globalVariableService.getFilterParams();
       this.nodeSelectsService.getSourceNode(this.filterParams)
@@ -116,6 +117,9 @@ export class FilterSourceNodeComponent implements OnInit {
   }
 
   resetSourceNode() {
+    this.searchInput = '';
+    this.disableProceed = true;
+    // console.log("event: ", event);
     // this.globalVariableService.resetfilters();
     this.selectedSourceNodes = [];
     this.globalVariableService.setSelectedSourceNodes(this.selectedSourceNodes);
@@ -162,8 +166,8 @@ export class FilterSourceNodeComponent implements OnInit {
       elmnt.scrollIntoView();
   }
 
-  onSourceHeaderClick() {
-    this.showSourceBody = !this.showSourceBody;
-  }
+  // onSourceHeaderClick() {
+  //   this.showSourceBody = !this.showSourceBody;
+  // }
 
 }

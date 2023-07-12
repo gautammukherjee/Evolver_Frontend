@@ -6,34 +6,40 @@
     </h4>
   </div>
 
-  <div class="body">
-    <div class="search-input" (click)="onDestinationHeaderClick()">
-      <form #form="ngForm" class="md-inline-block form-inline  ml-auto mr-0 mr-md-3 my-2 my-md-0">
-        <input type="text" #searchInput (keyup)="getDestinationNode(searchInput.value)" class="form-control"
-          placeholder='Search Destination' aria-label="Search" area-describedby="basic-addon2">
-        <img *ngIf="loading" width="20px" src="../../assets/images/loader_small.gif" />
-        <span *ngIf="selectedDestinationNodes.length > 0" class="reset-search"
-          (click)="resetDestinationNode();">Reset</span>
-        <!--<input class="form-control" type="text" placeholder="Search" aria-label="Search" [(ngModel)]="destinationNodeFilter" />-->
-        <!--<button style="float:left;margin-top: 10px;position: relative;" class="btn btn-primary" [disabled]="!form.form.valid" (click)="getSourceNode(searchInput.value)">Search</button>-->
-      </form>
-    </div>
-
-    <div *ngIf="showDestinationBody">
-      <div class="search-options" *ngIf="destinationNodes.length">
-        <div class="mb-1 form-check" *ngFor="let destinationNode of destinationNodes">
-          <input class="form-check-input border border-secondary" type="checkbox" name="destinationNodes" id="defaultCheck1"
-            [value]="destinationNode" [checked]="selectedDestinationNodes.indexOf(destinationNode.destination_node)>-1 "
-            (change)="selectDestinationNode(destinationNode,$event)">
-          <label class="form-check-label" for="defaultCheck1">
-            {{destinationNode.syn_node_name}} - <span class="badge bg-secondary">{{destinationNode.destination_node_name}}</span>
-          </label>
+  <div class="dropdown">
+    <div class="dropdown-toggle" id="designation-node-filter" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+      <div class="body">
+        <div class="search-input">
+          <form #form="ngForm" class="md-inline-block form-inline  ml-auto mr-0 mr-md-3 my-2 my-md-0">
+            <input type="text" [(ngModel)]="searchInput" name="searchInput" (keyup)="getDestinationNode()" class="form-control"
+              placeholder='Search Destination' aria-label="Search" area-describedby="basic-addon2">
+            <img *ngIf="loading" width="20px" src="../../assets/images/loader_small.gif" />
+            <span *ngIf="selectedDestinationNodes.length > 0" class="reset-search"
+              (click)="resetDestinationNode();">Reset</span>
+            <!--<input class="form-control" type="text" placeholder="Search" aria-label="Search" [(ngModel)]="destinationNodeFilter" />-->
+            <!--<button style="float:left;margin-top: 10px;position: relative;" class="btn btn-primary" [disabled]="!form.form.valid" (click)="getSourceNode(searchInput.value)">Search</button>-->
+          </form>
         </div>
       </div>
     </div>
-    <!--<span *ngIf="destinationNodes.length > 2" style="cursor: pointer" class="float-right"
-        (click)="SeeMore($event,seeMoreDestinationNodeModal);">{{destinationNodes.length-10}}
-        More</span>-->
+    <ul class="dropdown-menu" aria-labelledby="designation-node-filter">
+      <!-- *ngIf="showSourceBody" -->
+      <div class="body">
+        <div *ngIf="destinationNodes.length" >
+          <div class="search-options">
+            <div class="mb-1 form-check" *ngFor="let destinationNode of destinationNodes">
+              <input class="form-check-input border border-secondary" type="checkbox" name="destinationNodes" id="defaultCheck1"
+                [value]="destinationNode" [checked]="selectedDestinationNodes.indexOf(destinationNode.destination_node)>-1 "
+                (change)="selectDestinationNode(destinationNode,$event)">
+              <label class="form-check-label" for="defaultCheck1">
+                {{destinationNode.syn_node_name}} - <span class="badge bg-secondary">{{destinationNode.destination_node_name}}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </ul>
   </div>
 </div>
 
