@@ -124,7 +124,7 @@ export class PmidCountWithGeneAndDiseaseComponent implements OnInit {
       legend: {
         layout: 'vertical',
         align: 'left',
-        verticalAlign: 'top',
+        //verticalAlign: 'top',
         x: 150,
         y: 100,
         floating: true,

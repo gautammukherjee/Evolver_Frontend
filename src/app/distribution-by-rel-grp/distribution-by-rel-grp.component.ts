@@ -93,14 +93,24 @@ export class DistributionByRelGrpComponent implements OnInit {
       yAxis: {
         min: 0,
         title: {
-          text: 'Count'
+          text: 'Article Count'
+        },
+        stackLabels: {
+          //defer: false,
+          crop: false,
+          enabled: true,
+            style: {
+              fontWeight: 'bold',
+              color: 'black'
+          }
         }
       },
       legend: {
-        enabled: false
+        enabled: true,
+        
       },
       tooltip: {
-        pointFormat: 'Name: <b>{point.y:.1f} </b>'
+        pointFormat: 'Count: <b>{point.y:.1f} </b>'
       },
       series: [{
         name: 'Relation Group',
