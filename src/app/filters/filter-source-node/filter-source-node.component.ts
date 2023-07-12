@@ -118,6 +118,7 @@ export class FilterSourceNodeComponent implements OnInit {
 
   resetSourceNode() {
     this.searchInput = '';
+    this.disableProceed = true;
     // console.log("event: ", event);
     // this.globalVariableService.resetfilters();
     this.selectedSourceNodes = [];
