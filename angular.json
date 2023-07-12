@@ -40,7 +40,7 @@
             "scripts": [
               "./src/assets/extrnalJs/jquery.min.js",
               "./src/assets/extrnalJs/fancybox/jquery.fancybox.js",
-              "./node_modules/@popperjs/core/dist/umd/popper.min.js",
+              "./src/assets/extrnalJs/popper.min.js",
               "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
               "./src/assets/extrnalJs/bootstraps/js/bootstrap.min.js",
               "./src/assets/extrnalJs/bootstrap-table/bootstrap-table.js",
