@@ -32,6 +32,8 @@ export class FilterSourceNodeComponent implements OnInit {
   public disableProceed = true;
   showSourceBody: boolean = false;
 
+  searchInput: any = null;
+
   constructor(
     private nodeSelectsService: NodeSelectsService,
     private globalVariableService: GlobalVariableService,
@@ -67,10 +69,11 @@ export class FilterSourceNodeComponent implements OnInit {
     this.sourceNodes = [];
   }
 
-  getSourceNode(searchval: any) {
-    if (searchval.length > 2) {
+  getSourceNode() {
+    // console.log("val: ", this.searchInput);
+    if (this.searchInput.length > 2) {
       this.loading = true;
-      this.filterParams = this.globalVariableService.getFilterParams({ "searchval": searchval });
+      this.filterParams = this.globalVariableService.getFilterParams({ "searchval": this.searchInput });
       console.log("filterparamsSearchSource: ", this.filterParams);
       // this.params = this.globalVariableService.getFilterParams();
       this.nodeSelectsService.getSourceNode(this.filterParams)
@@ -116,6 +119,8 @@ export class FilterSourceNodeComponent implements OnInit {
   }
 
   resetSourceNode() {
+    this.searchInput = '';
+    // console.log("event: ", event);
     // this.globalVariableService.resetfilters();
     this.selectedSourceNodes = [];
     this.globalVariableService.setSelectedSourceNodes(this.selectedSourceNodes);
