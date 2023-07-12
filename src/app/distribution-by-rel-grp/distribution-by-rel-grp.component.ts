@@ -64,7 +64,7 @@ export class DistributionByRelGrpComponent implements OnInit {
 
   drawColumnChart() {
     let graphData: any[] = [];
-    //console.log(this.data);
+    console.log(this.data);
     //console.log(this.data[4]['count']);
     for (let i = 0; i < this.data.length; i++) {
       graphData.push([this.data[i]['temp_edge_types_name'], this.data[i]['count']]);
@@ -78,7 +78,7 @@ export class DistributionByRelGrpComponent implements OnInit {
         text: 'Distribution by Relation Group'
       },
       subtitle: {
-        text: 'EvolverAI'
+        //text: 'EvolverAI'
       },
       xAxis: {
         type: 'category',
@@ -110,7 +110,7 @@ export class DistributionByRelGrpComponent implements OnInit {
         
       },
       tooltip: {
-        pointFormat: 'Count: <b>{point.y:.1f} </b>'
+        pointFormat: 'Count: <b>{point.y} </b>'
       },
       series: [{
         name: 'Relation Group',
@@ -122,10 +122,12 @@ export class DistributionByRelGrpComponent implements OnInit {
         colorByPoint: true,
         dataLabels: {
           enabled: true,
-          rotation: -90,
-          color: '#FFFFFF',
-          align: 'right',
-          format: '{point.y:.1f}', // one decimal
+          crop: false,
+          overflow: 'allow',
+          rotation: 360,
+          color: '#A9A9A9',
+          align: 'center',
+          format: '{point.y}', // one decimal {point.y:.1f}
           y: 10, // 10 pixels down from the top
           style: {
             fontSize: '13px',
