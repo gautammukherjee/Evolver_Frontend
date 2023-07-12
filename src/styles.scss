@@ -288,6 +288,19 @@ body {
                         }
                     }
                 }
+
+                .dropdown{
+                    .dropdown-toggle{
+                        &::after{
+                            display: none;
+                        }
+                    }
+
+                    .dropdown-menu{
+                        padding: 0;
+                        width: 100%;
+                    }
+                }
             }
         }
     }

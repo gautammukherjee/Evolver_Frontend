@@ -38,7 +38,7 @@ export class FilterDestinationNodeComponent implements OnInit {
   mouseOverON: any = undefined;
   otherMouseOverONElem: any = undefined;
   public disableProceed: boolean = true;
-  public showDestinationBody: boolean = true;
+  // public showDestinationBody: boolean = true;
 
   constructor(
     private nodeSelectsService: NodeSelectsService,
@@ -178,8 +178,8 @@ export class FilterDestinationNodeComponent implements OnInit {
       elmnt.scrollIntoView();
   }
 
-  onDestinationHeaderClick() {
-    this.showDestinationBody = !this.showDestinationBody;
-  }
+  // onDestinationHeaderClick() {
+  //   this.showDestinationBody = !this.showDestinationBody;
+  // }
 
 }

@@ -16,8 +16,6 @@ export class FilterSourceNodeComponent implements OnInit {
 
   @Output() onSelectSourceNode: EventEmitter<any> = new EventEmitter();
   @Input() UpdateFilterDataApply?: Subject<any>;
-  @ViewChild('sourceNodeFilter')
-  sourceNodeFilter!: ElementRef;
   private filterParams: any;
   public selectedSourceNodes: any = [];
   public sourceNodes: any = [];
@@ -30,7 +28,7 @@ export class FilterSourceNodeComponent implements OnInit {
   togglecollapseStatus: boolean = false;
   private seeMoreNodeSelectsModal: any;
   public disableProceed = true;
-  showSourceBody: boolean = false;
+  // showSourceBody: boolean = false;
 
   searchInput: any = null;
 
@@ -167,8 +165,8 @@ export class FilterSourceNodeComponent implements OnInit {
       elmnt.scrollIntoView();
   }
 
-  onSourceHeaderClick() {
-    this.showSourceBody = !this.showSourceBody;
-  }
+  // onSourceHeaderClick() {
+  //   this.showSourceBody = !this.showSourceBody;
+  // }
 
 }

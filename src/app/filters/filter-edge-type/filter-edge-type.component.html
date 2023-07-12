@@ -2,27 +2,35 @@
   <div class="heading">
     <h4>Edge Type</h4>
   </div>
-
-  <div class="body">
-    <div class="search-input" (click)="onEdgeHeaderClick()">
-      <input class="form-control" type="text" value="{{selectedEdgeTypesNames.join(', ')}}" placeholder="Search" aria-label="Search" [(ngModel)]="edgeTypeFilter" />
-      <img *ngIf="loading" src="../../assets/images/loader_small.gif" width="20px"/>
-      <span *ngIf="selectedEdgeTypes.length > 0" class="reset-search"
-        (click)="resetEdgeType();">Reset</span>
-    </div>
-
-    <div *ngIf="showEdgeBody">
-      
-      <div class="search-options" *ngIf="edgeTypes.length">
-        <div class="mb-1 form-check" *ngFor="let edgeType of edgeTypes | EdgeTypeFilterPipe:edgeTypeFilter">
-          <input class="form-check-input border border-secondary" type="checkbox" name="edgeTypes" [value]="edgeType"
-            [checked]="selectedEdgeTypes.indexOf(edgeType.edge_type_id)>-1 " (change)="selectEdgeType(edgeType,$event)">
-          <label class="form-check-label">
-            {{edgeType.edge_type_name}}
-          </label>
+  
+  <div class="dropdown">
+    <div class="dropdown-toggle" id="edge-type-filter" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+      <div class="body">
+        <div class="search-input">
+          <input class="form-control" type="text" value="{{selectedEdgeTypesNames.join(', ')}}" placeholder="Search" aria-label="Search" [(ngModel)]="edgeTypeFilter" />
+          <img *ngIf="loading" src="../../assets/images/loader_small.gif" width="20px"/>
+          <span *ngIf="selectedEdgeTypes.length > 0" class="reset-search"
+            (click)="resetEdgeType();">Reset</span>
         </div>
       </div>
     </div>
+    <ul class="dropdown-menu" aria-labelledby="edge-type-filter">
+      <!-- *ngIf="showSourceBody" -->
+      <div class="body">
+        <div *ngIf="edgeTypes.length" >
+          <div class="search-options">
+            <div class="mb-1 form-check" *ngFor="let edgeType of edgeTypes | EdgeTypeFilterPipe:edgeTypeFilter">
+              <input class="form-check-input border border-secondary" type="checkbox" name="edgeTypes" [value]="edgeType"
+                [checked]="selectedEdgeTypes.indexOf(edgeType.edge_type_id)>-1 " (change)="selectEdgeType(edgeType,$event)">
+              <label class="form-check-label">
+                {{edgeType.edge_type_name}}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </ul>
   </div>
 </div>
 
