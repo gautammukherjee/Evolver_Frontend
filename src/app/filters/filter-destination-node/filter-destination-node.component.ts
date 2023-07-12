@@ -101,7 +101,7 @@ export class FilterDestinationNodeComponent implements OnInit {
     } else {
       this.selectedDestinationNodes.splice(this.selectedDestinationNodes.indexOf(destinationNode.destination_node), 1);
     }
-    // console.log("selectedDestinationNodes: ", this.selectedDestinationNodes);
+    console.log("selectedDestinationNodes: ", this.selectedDestinationNodes);
 
     this.globalVariableService.setSelectedDestinationNodes(this.selectedDestinationNodes);
     this.selectedDestinationNodes = Array.from(this.globalVariableService.getSelectedDestinationNodes());
@@ -110,7 +110,7 @@ export class FilterDestinationNodeComponent implements OnInit {
 
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data
     // if (from != 'nodeSelectsWarningModal')
-    //   this.proceed();
+    this.proceed();
     this.enableDisableProceedButton();
   }
 

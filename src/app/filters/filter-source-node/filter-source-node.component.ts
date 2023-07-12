@@ -29,7 +29,7 @@ export class FilterSourceNodeComponent implements OnInit {
   private seeMoreNodeSelectsModal: any;
   public disableProceed = true;
   // showSourceBody: boolean = false;
-
+  private warningModalRef: any;
   searchInput: any = null;
 
   constructor(
@@ -93,14 +93,20 @@ export class FilterSourceNodeComponent implements OnInit {
     }
   }
 
-  selectSourceNode(sourceNode: any, event: any, from: any = null) {
+  selectSourceNode(sourceNode: any, event: any, warning: any = null) {
     if (event.target.checked) {
       this.selectedSourceNodes.push(sourceNode.source_node);
     } else {
       this.selectedSourceNodes.splice(this.selectedSourceNodes.indexOf(sourceNode.source_node), 1);
     }
-    console.log("selectedSourceNodes: ", this.selectedSourceNodes);
+    console.log("selectedSourceNodes: ", this.selectedSourceNodes.length);
 
+
+    // if (this.selectedSourceNodes.length > 2) {
+    //   console.log("when more then one Source is selected");
+    //   this.warningModalRef = this.modalService.open(warning, { size: 'lg', keyboard: false, backdrop: 'static' });
+    // } else if (warning != null && this.selectedSourceNodes.length == 1) {
+    // }
     this.globalVariableService.setSelectedSourceNodes(this.selectedSourceNodes);
     this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
     this.filterParams = this.globalVariableService.getFilterParams();
@@ -108,7 +114,7 @@ export class FilterSourceNodeComponent implements OnInit {
 
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data   
     // if (from != 'nodeSelectsWarningModal')
-    //   this.proceed();
+    this.proceed();
     this.enableDisableProceedButton();
   }
 
@@ -137,6 +143,7 @@ export class FilterSourceNodeComponent implements OnInit {
     this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
     this.isAllSelected = false;
     this.seeMoreNodeSelectsModal.close();
+    this.warningModalRef.close();
   }
 
   public seeMoreproceed() {

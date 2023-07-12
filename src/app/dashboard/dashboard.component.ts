@@ -35,12 +35,12 @@ export class DashboardComponent implements OnInit {
     // this.doFilterApply.next(undefined);
     this.doUpdateFilterDataApply.next({ clickOn: clickOn });
   }
-  sourceNodeChanged(e: any) {
-    this.doFilterApply.next(e);
-    // this.doUpdateFilterDataApply.next(e);
+  sourceNodeChanged(clickOn: any) {
+    // this.doFilterApply.next(undefined);
+    this.doUpdateFilterDataApply.next({ clickOn: clickOn });
   }
   destinationNodeChanged(clickOn: any) {
-    this.doFilterApply.next(undefined);
+    // this.doFilterApply.next(undefined);
     // this.doUpdateFilterDataApply.next(e);
     this.doUpdateFilterDataApply.next({ clickOn: clickOn });
   }
