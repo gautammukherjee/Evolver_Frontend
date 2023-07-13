@@ -43,6 +43,8 @@ export class DistributionByRelGrpComponent implements OnInit {
 
   getDistributionByRelGroup(_filterParams: any) {
     if (_filterParams.source_node != undefined) {
+
+      console.log("new Filters by rel group charts IN: ", this.filterParams);
       this.loadingChart = true;
 
       this._RDS.distribution_by_relation_grp(this.filterParams).subscribe(
@@ -99,15 +101,15 @@ export class DistributionByRelGrpComponent implements OnInit {
           //defer: false,
           crop: false,
           enabled: true,
-            style: {
-              fontWeight: 'bold',
-              color: 'black'
+          style: {
+            fontWeight: 'bold',
+            color: 'black'
           }
         }
       },
       legend: {
         enabled: true,
-        
+
       },
       tooltip: {
         pointFormat: 'Count: <b>{point.y} </b>'

@@ -10,15 +10,15 @@
 
     <!--<div class="card-panel-box-detail" [hidden]="hideCardBody">-->
     <div class="card-panel-box-detail">
-        <div class="customTable " id="eventListTable">
-            <div *ngIf="loadingDesc" style="position:absolute; margin-left:350px;">
+        <div class="customTable">
+            <div *ngIf="loadingDesc" style="position:absolute; margin-left:350px; z-index:999;">
                 <img src="../../assets/images/loader_big.gif" />                
             </div>
             <div class="table-responsive custom-fixed-header-table" style="max-height:600px">
-                <!--<table id="showDistributionRelationData" data-toolbar="#toolbar" data-search="true"
+                <table id="showDistributionRelationData" data-toolbar="#toolbar" data-search="true"
                     data-show-export="true" data-show-columns="true" data-page-size="50"
-                    data-page-list="[10, 25, 50, 100, All]">-->
-                <table id="showDistributionRelationData" data-toolbar="#toolbar" data-search="true" data-page-size="50" data-page-list="[10, 25, 50, 100, All]">
+                    data-page-list="[10, 25, 50, 100, All]">
+                <!--<table id="showDistributionRelationData" data-toolbar="#toolbar" data-search="true" data-page-size="50" data-page-list="[10, 25, 50, 100, All]">-->
                     <thead>
                         <tr class="d-flex">
                             <!-- <th data-field="news_id" data-sortable="true" width="10%">News ID</th> -->

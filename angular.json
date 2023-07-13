@@ -32,7 +32,6 @@
             "styles": [
               "src/styles.scss",
               "./src/assets/extrnalJs/bootstrap-table/bootstrap-table.min.css",
-              "./src/assets/extrnalJs/bootstrap-table/bootstrap-table.css",
               "./src/assets/extrnalJs/bootstrapValidator.min.css",
               "./src/assets/extrnalJs/jquery.qtip.min.css",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css"

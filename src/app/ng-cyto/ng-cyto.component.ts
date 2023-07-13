@@ -64,11 +64,11 @@ export class NgCytoComponent implements OnChanges {
         // this._selectedNodes = this.globalVariableService.getSelectedNodes();
         this._selectedNodes = this.globalVariableService.getSelectedSourceNodes();
 
-        this.layout = this.layout || {
-            name: 'cose',
-            directed: true,
-            padding: 0
-        };
+        // this.layout = this.layout || {
+        //     name: 'cose',
+        //     directed: true,
+        //     padding: 0
+        // };
 
         this.zoom = this.zoom || {
             min: 0.1,
@@ -257,11 +257,17 @@ export class NgCytoComponent implements OnChanges {
                         // var PMIDList = edge.PMID.split(",");
                         var pubmedBaseUrl = "https://www.ncbi.nlm.nih.gov/pubmed/";
                         pubmedURLsDownload = "";
+
+                        pubmedURLsDownload = "<div>";
+                        pubmedURLsDownload += "<div style='font-size: 15px; font-weight:bold; text-decoration:underline; color:#32404E'>Title & PMID Lists</div>";
                         this.edgeTypeNameData.forEach((PMID: any) => {
                             // console.log("PMID:: ", PMID.edge_type_name);
+                            pubmedURLsDownload += "<div style='font-size: 14px;color:#32404E'>" + PMID.title + "</div>";
                             pubmedURLsDownload += "<div style='list-style: none; font-size: 14px;'><a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + PMID.pmid + "'>" + pubmedBaseUrl + PMID.pmid + "</a></div>";
+                            pubmedURLsDownload += "<hr style='color:#32404E'/>";
                         });
                         pubmedURLsDownload += "<div style='clear: both;'><hr/></div>";
+                        pubmedURLsDownload += "</div>";
                     } else {
                         pubmedURLsDownload = "<h4>No PMID Found..</h4>";
                         pubmedURLsDownload += "<div style='clear: both;'><hr/></div>";
@@ -272,15 +278,17 @@ export class NgCytoComponent implements OnChanges {
                     var targetData = e.target._private.target._private.data;
 
                     var pubmedEdgeDetails;
-                    pubmedEdgeDetails = "<div style='float:left;'>";
+                    pubmedEdgeDetails = "<div>";
                     pubmedEdgeDetails += '<div style="color: #BF63A2;"><strong>Source Name</strong></div>';
                     pubmedEdgeDetails += '<div style="padding-bottom:10px; color: #BF63A2;">' + sourceData.name + '</div>';
                     pubmedEdgeDetails += '<div style="color: #4B5DA1;"><strong>Target Name</strong></div>';
                     pubmedEdgeDetails += '<div style="padding-bottom:10px; color: #4B5DA1;">' + targetData.name + '</div>';
                     // pubmedEdgeDetails += '<div style="color: #00ffff;"><strong>Edge Weight</strong></div>';
                     // pubmedEdgeDetails += '<div style="padding-bottom:10px;">' + edge.strength + '</div>';
+                    pubmedEdgeDetails += "<hr style='color: #32404E;'/>";
                     pubmedEdgeDetails += "</div>";
-                    console.log("pubmedEdgeDetails: ", pubmedEdgeDetails);
+
+                    // console.log("pubmedEdgeDetails: ", pubmedEdgeDetails);
                     $("#pubmedURLsDownloadLoader").html('');
                     $("#pubmedURLsDownload").html(pubmedURLsDownload);
                     $("#pubmedURLs").html(pubmedEdgeDetails);
@@ -293,9 +301,6 @@ export class NgCytoComponent implements OnChanges {
                 () => {
                     this.loadingEdge = false;
                 });
-
-
-
         });
 
         //document.getElementById("#btnsave").addEventListener ("click", nodeClickEvent, false);
