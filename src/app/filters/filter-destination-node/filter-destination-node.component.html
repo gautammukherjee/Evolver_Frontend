@@ -28,10 +28,10 @@
         <div *ngIf="destinationNodes.length" >
           <div class="search-options">
             <div class="mb-1 form-check" *ngFor="let destinationNode of destinationNodes">
-              <input class="form-check-input border border-secondary" type="checkbox" name="destinationNodes" id="defaultCheck1"
+              <input class="form-check-input border border-secondary" type="checkbox" name="destinationNodes"
                 [value]="destinationNode" [checked]="selectedDestinationNodes.indexOf(destinationNode.destination_node)>-1 "
                 (change)="selectDestinationNode(destinationNode,$event)">
-              <label class="form-check-label" for="defaultCheck1">
+              <label class="form-check-label">
                 {{destinationNode.syn_node_name}} - <span class="badge bg-secondary">{{destinationNode.destination_node_name}}</span>
               </label>
             </div>

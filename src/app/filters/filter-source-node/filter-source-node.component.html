@@ -30,10 +30,10 @@
           <div class="search-options">
             <div class="mb-1 form-check" *ngFor="let sourceNode of sourceNodes">
               <input class="form-check-input border border-secondary" type="checkbox" name="sourceNodes"
-                id="defaultCheck1" [value]="sourceNode"
+                 [value]="sourceNode"
                 [checked]="selectedSourceNodes.indexOf(sourceNode.source_node)>-1 "
                 (change)="selectSourceNode(sourceNode,$event)">
-              <label class="form-check-label" for="defaultCheck1">
+              <label class="form-check-label">
                 {{sourceNode.syn_node_name}} - <span class="badge bg-secondary">{{sourceNode.source_node_name}}</span>
               </label>
             </div>

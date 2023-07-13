@@ -52,7 +52,7 @@ export class DistributionByRelationTypeComponent implements OnInit {
         // this.hideCardBody = true;
         this.filterParams = this.globalVariableService.getFilterParams();
         this.getDistributionByRelationType(this.filterParams);
-        console.log("new Filters for articles: ", this.filterParams);
+        // console.log("new Filters for articles: ", this.filterParams);
       }
     });
   }
@@ -60,7 +60,7 @@ export class DistributionByRelationTypeComponent implements OnInit {
   getDistributionByRelationType(_filterParams: any) {
     if (_filterParams.source_node != undefined) {
       this.loadingDesc = true;
-      console.log("filterparams: ", _filterParams);
+      // console.log("filterparams: ", _filterParams);
       this.nodeSelectsService.getDistributionRelationType(_filterParams).subscribe(
         data => {
           console.log("data: ", data);
@@ -91,6 +91,8 @@ export class DistributionByRelationTypeComponent implements OnInit {
             pageSize: 25,
             // pageList: [10, 25, 50, 100, All],
             striped: true,
+            fixedColumns: true,
+            stickyHeader: true,
             showFilter: true,
             filter: true,
             // showExport: true,
