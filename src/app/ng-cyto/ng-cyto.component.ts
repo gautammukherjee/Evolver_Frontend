@@ -2,6 +2,7 @@ import { Component, OnChanges, Renderer2, ViewChild, ElementRef, Input, Output, 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GlobalVariableService } from 'src/app/services/common/global-variable.service';
 import { NodeSelectsService } from '../services/common/node-selects.service';
+// import cytoscape from 'cytoscape';
 
 // import * as $ from 'jquery';
 // declare var jQuery: any;
@@ -11,8 +12,13 @@ declare var require: any;
 declare var jQuery: any;
 
 var cytoscape = require('cytoscape');
+
 var cyqtip = require('cytoscape-qtip');
 cyqtip(cytoscape); // register extension
+
+// require(['cytoscape-svg'], function (cytoscape: any, svg: any) {
+//     svg(cytoscape); // register extension
+// });
 
 @Component({
     selector: 'ng2-cytoscape',
@@ -71,7 +77,7 @@ export class NgCytoComponent implements OnChanges {
         // };
 
         this.zoom = this.zoom || {
-            min: 0.1,
+            min: 0.2,
             max: 1.5
         };
 
@@ -83,12 +89,13 @@ export class NgCytoComponent implements OnChanges {
                 'width': 'mapData(weight, 40, 80, 20, 60)',
                 'content': 'data(name)',
                 'text-valign': 'center',
-                'text-outline-width': 2,
+                'text-outline-width': 0,
                 'text-outline-color': 'data(colorCode)',
                 'background-color': 'data(colorCode)',
                 'color': '#fff'
-
             })
+            .style({ "font-size": 7 })    // big font
+
             .selector(':selected')
             .css({
                 'border-width': 1,
@@ -134,7 +141,13 @@ export class NgCytoComponent implements OnChanges {
             elements: this.elements,
         });
 
+        // cy.svg(true)
         // console.log("cy:: ", cy._private.elements);
+
+        // var dim = 12 / cy.zoom();
+        // var maxDim = Math.max(dim, 2);
+        // cy.nodes().css('font-size', maxDim);
+        // cy.fit(cy.$(':selected'), 50)
 
         cy.on('click', 'node', (e: any) => {
             var node = e.target;

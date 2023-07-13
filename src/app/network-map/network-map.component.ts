@@ -218,7 +218,7 @@ export class NetworkMapComponent implements OnInit {
       padding: 20,
       randomize: false,
       componentSpacing: 40,
-      nodeRepulsion: 400000,
+      nodeRepulsion: 500000,
       edgeElasticity: 100,
       nestingFactor: 5,
       gravity: 1,
