@@ -147,7 +147,10 @@ export class NgCytoComponent implements OnChanges {
         // var dim = 12 / cy.zoom();
         // var maxDim = Math.max(dim, 2);
         // cy.nodes().css('font-size', maxDim);
-        // cy.fit(cy.$(':selected'), 50)
+        cy.fit(cy.$(':selected'), 50);
+
+        // cy.animation({ zoom: 1.5 }).play().promise().then(() => cy.animation({ fit: 1 }).play().promise())
+
 
         cy.on('click', 'node', (e: any) => {
             var node = e.target;

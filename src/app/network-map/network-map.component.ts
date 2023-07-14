@@ -226,8 +226,9 @@ export class NetworkMapComponent implements OnInit {
       initialTemp: 200,
       coolingFactor: 0.95,
       minTemp: 1.0,
-      animate: true,
+      animate: false,
       animationThreshold: 250,
+      boundingBox: { x1: 0, y1: 0, w: 1000, h: 1000 }
     };
 
     // this.graphData = {
