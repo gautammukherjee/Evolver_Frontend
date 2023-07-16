@@ -96,21 +96,52 @@ export class NgCytoComponent implements OnChanges {
             })
             .style({ "font-size": 10 })    // big font
 
-            .selector(':selected')
+            // .selector(':selected')
+            // .css({
+            //     'border-width': 1,
+            //     'border-color': '#333'
+            // })
+
+            // .selector('edge')
+            // .css({
+            //     'opacity': 0.666,
+            //     'width': 'mapData(strength, 70, 100, 2, 6)',
+            //     'target-arrow-shape': 'triangle',
+            //     'source-arrow-shape': 'circle',
+            //     'line-color': 'data(colorCode)',
+            //     'source-arrow-color': 'data(colorCode)',
+            //     'target-arrow-color': 'data(colorCode)'
+            // })
+
+            .selector('edge.highlighted')
             .css({
-                'border-width': 1,
-                'border-color': '#333'
+                'line-color': 'black',
+                'target-arrow-color': '#b830f7'
             })
             .selector('edge')
             .css({
-                'opacity': 0.666,
-                'width': 'mapData(strength, 70, 100, 2, 6)',
+                'curve-style': 'bezier',
                 'target-arrow-shape': 'triangle',
-                'source-arrow-shape': 'circle',
-                'line-color': 'data(colorCode)',
-                'source-arrow-color': 'data(colorCode)',
-                'target-arrow-color': 'data(colorCode)'
+                'width': 4,
+                'line-color': '#4286f4',
+                'target-arrow-color': '#4286f4'
             })
+
+            // .selector('highlight')
+            // .css({
+            //     "background-color": "pink"
+            // })
+            // .selector('edge.highlighted')
+            // .css({
+            //     'line-color': 'black',
+            //     'target-arrow-color': '#32404E'
+            // })
+            // .selector('edge.lines')
+            // .css({
+            //     'line-color': '#32404E',
+            //     'target-arrow-color': '#32404E'
+            // })
+
             .selector('edge.questionable')
             .css({
                 'line-style': 'solid',
@@ -132,6 +163,9 @@ export class NgCytoComponent implements OnChanges {
         let cy_contianer = this.renderer.selectRootElement("#cy");
         let localselect = this.select;
 
+        var lastHighlighted = null;
+        var lastUnhighlighted = null;
+
         let cy = cytoscape({
             container: cy_contianer,
             layout: this.layout,
@@ -151,7 +185,6 @@ export class NgCytoComponent implements OnChanges {
 
         // cy.animation({ zoom: 1.5 }).play().promise().then(() => cy.animation({ fit: 1 }).play().promise())
 
-
         cy.on('click', 'node', (e: any) => {
             var node = e.target;
 
@@ -161,6 +194,11 @@ export class NgCytoComponent implements OnChanges {
             cy.elements().addClass('faded');
             neighborhood.removeClass('faded');
             localselect.emit(node.data('name'));
+
+            // var nhood = lastHighlighted = node.closedNeighborhood();
+            // var others = lastUnhighlighted = cy.elements().not(nhood);
+            // others.addClass('hidden');
+            // nhood.removeClass('hidden');
 
             var TargetNode = node[0]._private.data;
             console.log("act: ", node[0]._private.data);
@@ -199,43 +237,97 @@ export class NgCytoComponent implements OnChanges {
 
         cy.on('cxttap', 'node', (e: any) => {
             var node = e.target;
-            console.log("rightclick: ", node[0]._private.data.id);
+            // console.log("rightclick: ", node[0]._private.data.id);
             this.showNodeInfo(node[0]._private.data.id); //append the node and reload the graph
         });
 
+        // cy.on('click', function (e: any) {
+        //     if (e.target === cy || e.target.group() == "edges") {
+        //         console.log("here edges: ", e.target.group());
+        //         cy.edges().addClass('highlighted');
+        //     }
+        //     else {
+        //         console.log("here edges2: ");
+        //         // cy.edges("[source='" + e.target.id() + "']").addClass('highlighted');
+        //         cy.edges("[source='" + e.target.id() + "']").style('lineColor', "#AF0000");
+        //     }
+        // });
+
         // cy.on("tap", "node", (evt: any) => {
-        //     evt.cyTarget.connectedEdges().animate({
+        //     evt.target.connectedEdges().animate({
         //         style: { lineColor: "red" }
         //     })
         // });
 
-        // cy.on('tap', function (e: any) {
-        //     if (e.target === cy) {
-        //         cy.elements().removeClass('faded');
-        //     }
+        cy.on('tap', function (e: any) {
+            // console.log("cy1: ", cy);
+            if (e.target === cy) {
+                console.log("cy1: ", cy);
+                cy.edges().removeClass('highlighted');
+                cy.elements().removeClass('faded');
+            } else {
+                console.log("cy2: ", cy, "[source='" + e.target.id() + "']");
+                cy.edges("[source='" + e.target.id() + "']").addClass('highlighted');
+                // e.target.connectedEdges().animate({
+                //     style: { lineColor: "red" }
+                // })
+            }
+        })
+
+        // cy.on('tap', 'edge', function (event: any) {
+        //     var connected = event.target.connectedNodes();
+        //     console.log("cy11: ", connected);
+        //     event.target.connectedNodes().animate({
+        //         style: { lineColor: "green" }
+        //     })
+        //     // connected.addClass('highlighted');
         // });
 
-        cy.on('mouseover', 'node', (e: any) => {
-            var node = e.target;
-            // console.log("actRight: ", node[0]._private.data);
-            let node_ids = parseInt(node[0]._private.data.id);
-            // console.log("nodeIds: ", node_ids);
-
-            node.qtip({
-                content: e.target._private.data.name,
+        cy.on('mouseover', 'node', function (event: any) {
+            var evtTarget = event.target;
+            if (evtTarget !== cy) {
+                // console.log("Mouse Over");
+                evtTarget.style('border-width', '2px').style('border-color', "#AF0000");
+            }
+            evtTarget.qtip({
+                content: event.target._private.data.name,
                 show: {
-                    event: e.type,
+                    event: event.type,
                     ready: true,
                     solo: true
                 },
                 hide: {
                     // event: 'mouseout'
                 }
-            }, e);
+            }, event);
+        }).on('mouseout', function (event: any) {
+            var evtTarget = event.target;
+            if (evtTarget !== cy) {
+                // console.log("Fired");
+                evtTarget.style('border-width', '0px');
+            }
         });
 
-        cy.on('tap', 'edge', (e: any) => {
+        // cy.on('mouseover', 'node', (e: any) => {
+        //     var node = e.target;
+        //     // console.log("actRight: ", node[0]._private.data);
+        //     let node_ids = parseInt(node[0]._private.data.id);
+        //     // console.log("nodeIds: ", node_ids);
 
+        //     node.qtip({
+        //         content: e.target._private.data.name,
+        //         show: {
+        //             event: e.type,
+        //             ready: true,
+        //             solo: true
+        //         },
+        //         hide: {
+        //             // event: 'mouseout'
+        //         }
+        //     }, e);
+        // });
+
+        cy.on('tap', 'edge', (e: any) => {
             var edge = e.target._private.data;
             console.log("PMID: ", edge);
 
@@ -277,9 +369,13 @@ export class NgCytoComponent implements OnChanges {
                         pubmedURLsDownload = "<div>";
                         pubmedURLsDownload += "<div style='font-size: 15px; font-weight:bold; text-decoration:underline; color:#32404E'>Title & PMID Lists</div>";
                         this.edgeTypeNameData.forEach((PMID: any) => {
+
+                            // const myFormattedDate = this.pipe.transform(PMID.publication_date, 'short');
+
                             // console.log("PMID:: ", PMID.edge_type_name);
                             pubmedURLsDownload += "<div style='font-size: 14px;color:#32404E'>" + PMID.title + "</div>";
-                            pubmedURLsDownload += "<div style='list-style: none; font-size: 14px;'><a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + PMID.pmid + "'>" + pubmedBaseUrl + PMID.pmid + "</a></div>";
+                            pubmedURLsDownload += "<div style='list-style: none; font-size: 14px;'>PMID : <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + PMID.pmid + "'>" + PMID.pmid + "</a></div>";
+                            pubmedURLsDownload += "<div style='font-size: 14px;color:#32404E'>" + PMID.publication_date + "</div>";
                             pubmedURLsDownload += "<hr style='color:#32404E'/>";
                         });
                         pubmedURLsDownload += "<div style='clear: both;'><hr/></div>";

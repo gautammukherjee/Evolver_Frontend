@@ -52,7 +52,7 @@ export class DashboardComponent implements OnInit {
   }
 
   graphSelected(param: any) {
-    console.log("you here:: ", param);
+    console.log("your Graph:: ", param);
     this.doFilterApply.next({ clickOn: param });
   }
 

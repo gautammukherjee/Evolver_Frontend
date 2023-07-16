@@ -25,6 +25,7 @@ declare var jQuery: any;
 })
 export class NetworkMapComponent implements OnInit {
 
+  // @Output() onGraphSelection: EventEmitter<any> = new EventEmitter();
   @Input() ProceedDoFilterApply?: Subject<any>; //# Input for ProceedDoFilter is getting from clinical details html 
 
   private filterParams: any;
@@ -127,7 +128,7 @@ export class NetworkMapComponent implements OnInit {
           } else {
             this.nodesCheckLength = true;
           }
-          console.log("bdbdd: ", this.nodesCheckLength);
+          // console.log("bdbdd: ", this.nodesCheckLength);
 
           this.masterListsData.forEach((event: any) => {
             //Source Node data
@@ -370,7 +371,15 @@ export class NetworkMapComponent implements OnInit {
     let edge_select = parseInt(elem.target.value);
     this.globalVariableService.setSelectedEdges(edge_select);
     this.filterParams = this.globalVariableService.getFilterParams();
-    console.log("heres:: ", this.filterParams);
+    console.log("Click Edges:: ", this.filterParams);
+    if (this.filterParams.nnrt_id != undefined)
+      this.getMasterListsMap(this.filterParams);
+    // this.onGraphSelection.emit();
+  }
+
+  refreshMap(elem: any) {
+    this.filterParams = this.globalVariableService.getFilterParams();
+    console.log("refresh Map:: ", this.filterParams);
     if (this.filterParams.nnrt_id != undefined)
       this.getMasterListsMap(this.filterParams);
   }

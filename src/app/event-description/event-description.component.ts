@@ -111,52 +111,44 @@ export class EventDescriptionComponent implements OnInit {
             bServerSide: true,
             pagination: true,
             // showRefresh: true,
-            // showToggle: true,
-            // showColumns: true,
-            // search: true,
+            showToggle: true,
+            showColumns: true,
+            search: true,
             pageSize: 25,
             // pageList: [10, 25, 50, 100, All],
             striped: true,
-            showFilter: true,
-            filter: true,
-            // showExport: true,
-            exportOptions: {
-              ignoreColumn: [5],
-              // columns: [6],
-              // visible: [6,'true'],
-            },
+            //showFilter: true,
+            // filter: true,
+            showFullscreen: true,
+            stickyHeader: true,
+            showExport: true,
+            // exportOptions: {
+            //   ignoreColumn: [5],
+            //   // columns: [6],
+            //   // visible: [6,'true'],
+            // },
             // columns: [
             //   {
             //     dataField: 'active_ingredients',
             //     text: 'Active Ingredients',
             //     headerStyle: { 'white-space': 'nowrap' }
             //   }],
-            columns: [
-              // {
-              //   title: 'Title',
-              //   field: 'title',
-              //   class: 'text-left',
-              // },
-              // {
-              //   title: 'Active Ingredients/Brand',
-              //   field: 'active_ingredient',
-              //   class: 'text-left',
-              // }
-            ],
+            // columns: [
+            //   // {
+            //   //   title: 'Title',
+            //   //   field: 'title',
+            //   //   class: 'text-left',
+            //   // },
+            //   // {
+            //   //   title: 'Active Ingredients/Brand',
+            //   //   field: 'active_ingredient',
+            //   //   class: 'text-left',
+            //   // }
+            // ],
             data: this.masterListsDataDetails,
           });
 
           jQuery('#showEventDescription').bootstrapTable("load", this.masterListsDataDetails);
-
-          jQuery('#showEventDescription').on("search.bs.table", function (e: any) {
-            jQuery('#showEventDescription').bootstrapTable("load", e.masterListsDataDetails);
-          })
-            .on("search.bs.table", function (e: any) {
-              jQuery('#showEventDescription').bootstrapTable("load", e.masterListsDataDetails);
-            })
-            .on("page-change.bs.table", function (e: any) {
-              jQuery('#showEventDescription').bootstrapTable("load", e.masterListsDataDetails);
-            });
 
         },
         err => {
