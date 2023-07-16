@@ -263,11 +263,11 @@ export class NgCytoComponent implements OnChanges {
             // console.log("cy1: ", cy);
             if (e.target === cy) {
                 console.log("cy1: ", cy);
-                cy.edges().removeClass('highlighted');
+                // cy.edges().removeClass('highlighted');
                 cy.elements().removeClass('faded');
             } else {
-                console.log("cy2: ", cy, "[source='" + e.target.id() + "']");
-                cy.edges("[source='" + e.target.id() + "']").addClass('highlighted');
+                // console.log("cy2: ", cy, "[source='" + e.target.id() + "']");
+                // cy.edges("[source='" + e.target.id() + "']").addClass('highlighted');
                 // e.target.connectedEdges().animate({
                 //     style: { lineColor: "red" }
                 // })
