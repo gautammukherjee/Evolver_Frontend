@@ -2,7 +2,7 @@
     <app-header></app-header>
 
     <section class="dashboard-main-wrapper">
-        <div class="horizonal-filter-bar">
+        <div class="horizonal-filter-bar level1">
             <div class="filter-left-heading">
                 Direct Level Association
             </div>
@@ -21,13 +21,36 @@
                 <app-filter-edge-type (onSelectEdgeType)='edgeTypeChanged($event)' [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type>
             </div>
         </div>
+        <div class="horizonal-filter-bar level2">
+            <div class="filter-left-heading">
+                Multi Level Association
+            </div>
+            <div class="filter-single">
+                <app-filter-node-select (onSelectNode)='nodeChanged($event)'></app-filter-node-select>
+            </div>
+            <div class="filter-single">
+                <app-filter-source-node (onSelectSourceNode)='sourceNodeChanged("diseasesIndicationsFilter")'
+                [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node>
+            </div>
+            <div class="filter-single">
+                <app-filter-destination-node (onSelectDestinationNode)='destinationNodeChanged("diseasesIndicationsFilter")'
+                [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-destination-node>
+            </div>
+            <div class="filter-single">
+                <app-filter-edge-type (onSelectEdgeType)='edgeTypeChanged($event)' [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type>
+            </div>
+        </div>
         
         <div class="inner-wrapper">
-
-            <div class="left-sidebar" [ngClass]="showSidebar == false ? 'hide' : ''">
-                <button class="btn btn-primary menu-toggler" (click)="ontoggleSidebar()" placement="right"><!-- ngbTooltip="Close sidemenu" -->
+            <div class="reset-btns-group">
+                <button class="btn btn-primary me-2 btn-md">Reset</button>
+                <button class="btn btn-success btn-md">Submit</button>
+            </div>
+            <div class="left-sidebar d-none" [ngClass]="showSidebar == false ? 'hide' : ''">
+                <!-- Enable this to open side menu toggler -->
+                <!-- <button class="btn btn-primary menu-toggler" (click)="ontoggleSidebar()" placement="right">
                     <img src="../../assets/images/bars-solid.svg" width="18px"/>
-                </button>
+                </button> -->
                 <div class="left-sidebar-inner">
                     <app-filter-node-select-level2 (onSelectNode2)='nodeChanged2($event)'
                         [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-node-select-level2>
@@ -37,7 +60,7 @@
                 <!--<app-filter-data-range></app-filter-data-range>-->
             </div>
     
-            <div class="right-article" [ngClass]="showSidebar == false ? 'full-width' : ''">
+            <div class="right-article full-width" [ngClass]="showSidebar == false ? 'full-width' : ''">
                 <!--<app-event-chart></app-event-chart>-->
 
                 <div class="tab-slider--nav" style="margin-top: -45px;">
@@ -76,8 +99,7 @@
                         </ul>
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane p-2 fade show active" id="tab0" role="tabpanel" aria-labelledby="tab0-tab">
-                                <app-network-map [ProceedDoFilterApply]="doFilterApply"
-                                    (onGraphSelection)='graphSelected("clickOnEventDetails")'></app-network-map>
+                                <app-network-map [ProceedDoFilterApply]="doFilterApply"></app-network-map>
                             </div>
                             <div class="tab-pane p-2 fade" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
                                 <app-event-description [ProceedDoFilterApply]="doFilterApply"></app-event-description>
