@@ -207,7 +207,6 @@ body {
         display: flex;
         width: 100%;
         position: fixed;
-        z-index: 9;
         background: #0A66C2;
         column-gap: 10px;
         padding: 0px 10px 0px 0px;
@@ -215,11 +214,13 @@ body {
 
         &.level1{
             top: 64px;
+            z-index: 9;
         }
 
         &.level2{
             top:134px;
             border-top: 1px solid #1f52ab;
+            z-index: 8;
         }
 
         .filter-left-heading{
