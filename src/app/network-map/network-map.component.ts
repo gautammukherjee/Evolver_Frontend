@@ -67,8 +67,11 @@ export class NetworkMapComponent implements OnInit {
   graphSelected() {
     //    this.doFilterApply.next({ clickOn: param });
     this.filterParams = this.globalVariableService.getFilterParams();
-    // console.log("you here:: ", this.filterParams);
+    console.log("you here you1:: ", this.filterParams);
     this.getMasterListsMap(this.filterParams);
+    this.globalVariableService.resetNode();
+    this.filterParams = this.globalVariableService.getFilterParams();
+    console.log("you here you2:: ", this.filterParams);
   }
 
   ngOnInit() {

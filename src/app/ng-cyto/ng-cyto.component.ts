@@ -402,17 +402,18 @@ export class NgCytoComponent implements OnChanges {
     public showNodeInfo(nodeId: any) {
         // var nodeId: any = $(nodeId);
         console.log("nodeId: ", nodeId);
-        this.checkedNodes = Array.from(this.globalVariableService.getSelectedSourceNodes()); //get the existing node id
-        this.checkedNodes.push(parseInt(nodeId));  // and append the selecting nodeid
-        this.globalVariableService.setSelectedSourceNodes(this.checkedNodes);
-        console.log("select2: ", this.checkedNodes);
-        this.onGraphSelection.emit();
+
+        // this.checkedNodes = Array.from(this.globalVariableService.getSelectedSourceNodes()); //get the existing node id
+        // this.checkedNodes.push(parseInt(nodeId));  // and append the selecting nodeid
+        // this.globalVariableService.setSelectedSourceNodes(this.checkedNodes);
+        // console.log("select2: ", this.checkedNodes);
+        // this.onGraphSelection.emit();
 
         // this.checkedNodes = Array.from(this.globalVariableService.getSelectedNodes()); //get the existing node id
-        // this.checkedNodes = parseInt(nodeId);  // and append the selecting nodeid
-        // this.globalVariableService.setSelectedNodes(this.checkedNodes);
-        // console.log("select22: ", this.checkedNodes);
-        // this.onGraphSelection.emit();
+        this.checkedNodes = parseInt(nodeId);  // and append the selecting nodeid
+        this.globalVariableService.setSelectedNodes(this.checkedNodes);
+        console.log("select22: ", this.checkedNodes);
+        this.onGraphSelection.emit();
 
         // this.node_name = "piyush";
         // this.modalRef = this.modalService.open(this.show_nodes, { size: 'lg', keyboard: false, backdrop: 'static' });
