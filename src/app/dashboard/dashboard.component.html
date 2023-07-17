@@ -2,45 +2,60 @@
     <app-header></app-header>
 
     <section class="dashboard-main-wrapper">
-        <div class="horizonal-filter-bar level1">
-            <div class="filter-left-heading">
-                Direct Level Association
+        <div class="horizontal-filters-wrapper pt-2 pb-2">
+            <div class="horizonal-filter-bar">
+                <div class="filter-inner">
+                    <div class="filter-left-heading">
+                        Direct Level Association
+                    </div>
+                    <div class="filter-single">
+                        <app-filter-node-select (onSelectNode)='nodeChanged($event)'></app-filter-node-select>
+                    </div>
+                    <div class="filter-single">
+                        <app-filter-source-node (onSelectSourceNode)='sourceNodeChanged("diseasesIndicationsFilter")'
+                            [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node>
+                    </div>
+                    <div class="filter-single">
+                        <app-filter-destination-node
+                            (onSelectDestinationNode)='destinationNodeChanged("diseasesIndicationsFilter")'
+                            [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-destination-node>
+                    </div>
+                    <div class="filter-single">
+                        <app-filter-edge-type (onSelectEdgeType)='edgeTypeChanged($event)'
+                            [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type>
+                    </div>
+                </div>
             </div>
-            <div class="filter-single">
-                <app-filter-node-select (onSelectNode)='nodeChanged($event)'></app-filter-node-select>
+            <div *ngIf="showLevels" class="horizonal-filter-bar">
+                <div class="filter-inner">
+                    <div class="filter-left-heading">
+                        Multi Level Association
+                    </div>
+                    <div class="filter-single">
+                        <app-filter-node-select (onSelectNode)='nodeChanged($event)'></app-filter-node-select>
+                    </div>
+                    <div class="filter-single">
+                        <app-filter-source-node (onSelectSourceNode)='sourceNodeChanged("diseasesIndicationsFilter")'
+                            [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node>
+                    </div>
+                    <div class="filter-single">
+                        <app-filter-destination-node
+                            (onSelectDestinationNode)='destinationNodeChanged("diseasesIndicationsFilter")'
+                            [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-destination-node>
+                    </div>
+                    <div class="filter-single">
+                        <app-filter-edge-type (onSelectEdgeType)='edgeTypeChanged($event)'
+                            [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type>
+                    </div>
+                </div>
+
             </div>
-            <div class="filter-single">
-                <app-filter-source-node (onSelectSourceNode)='sourceNodeChanged("diseasesIndicationsFilter")'
-                [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node>
-            </div>
-            <div class="filter-single">
-                <app-filter-destination-node (onSelectDestinationNode)='destinationNodeChanged("diseasesIndicationsFilter")'
-                [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-destination-node>
-            </div>
-            <div class="filter-single">
-                <app-filter-edge-type (onSelectEdgeType)='edgeTypeChanged($event)' [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type>
+            <div class="add-level-handler text-end pe-2 pt-1">
+                <button class="btn btn-light btn-sm" (click)="onAddLevel()">+ Add Level</button>
+                <button class="btn btn-light btn-sm ms-2" *ngIf="currentLevel > 1" (click)="onToggleLevel()">{{showLevels == false ? 'Show' : 'Hide'}} Level</button>
             </div>
         </div>
-        <div class="horizonal-filter-bar level2">
-            <div class="filter-left-heading">
-                Multi Level Association
-            </div>
-            <div class="filter-single">
-                <app-filter-node-select (onSelectNode)='nodeChanged($event)'></app-filter-node-select>
-            </div>
-            <div class="filter-single">
-                <app-filter-source-node (onSelectSourceNode)='sourceNodeChanged("diseasesIndicationsFilter")'
-                [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node>
-            </div>
-            <div class="filter-single">
-                <app-filter-destination-node (onSelectDestinationNode)='destinationNodeChanged("diseasesIndicationsFilter")'
-                [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-destination-node>
-            </div>
-            <div class="filter-single">
-                <app-filter-edge-type (onSelectEdgeType)='edgeTypeChanged($event)' [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type>
-            </div>
-        </div>
-        
+
         <div class="inner-wrapper">
             <!--<div class="reset-btns-group">
                 <button class="btn btn-primary me-2 btn-md">Reset</button>
@@ -59,24 +74,26 @@
                 </div>
                 <!--<app-filter-data-range></app-filter-data-range>-->
             </div>
-    
-            <div class="right-article full-width" [ngClass]="showSidebar == false ? 'full-width' : ''">
+
+            <div class="right-article full-width" [ngClass]="showSidebar == false ? 'full-width' : ''" [ngStyle]="{'top' : currentLevel == 1 ? '170px' : currentLevel == 2 ? '225px' : '280px'}">
                 <!--<app-event-chart></app-event-chart>-->
 
-                <div class="tab-slider--nav" style="margin-top: -45px;">
+                <div class="tab-slider--nav">
                     <div class="custom-nav-tabs">
                         <ul class="nav nav-tabs ml-2" id="myTab" role="tablist" style="margin-left: 14px;">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="tab0-tab" data-bs-toggle="tab" data-bs-target="#tab0" type="button"
-                                    role="tab" aria-controls="tab0" aria-selected="true">Map</button>
+                                <button class="nav-link active" id="tab0-tab" data-bs-toggle="tab"
+                                    data-bs-target="#tab0" type="button" role="tab" aria-controls="tab0"
+                                    aria-selected="true">Map</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button"
-                                    role="tab" aria-controls="tab1" aria-selected="true">Details</button>
+                                <button class="nav-link" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1"
+                                    type="button" role="tab" aria-controls="tab1" aria-selected="true">Details</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button"
-                                    role="tab" aria-controls="tab2" aria-selected="false">Relation</button>
+                                <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2"
+                                    type="button" role="tab" aria-controls="tab2"
+                                    aria-selected="false">Relation</button>
                             </li>
                             <!-- <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button"
@@ -84,8 +101,9 @@
                                     by Association Type</button>
                             </li> -->
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="tab4-tab" data-bs-toggle="tab" data-bs-target="#tab4" type="button"
-                                    role="tab" aria-controls="tab4" aria-selected="false">Article Count</button>
+                                <button class="nav-link" id="tab4-tab" data-bs-toggle="tab" data-bs-target="#tab4"
+                                    type="button" role="tab" aria-controls="tab4" aria-selected="false">Article
+                                    Count</button>
                             </li>
 
                             <!-- <div class="ms-auto">
@@ -98,7 +116,8 @@
                             </li> -->
                         </ul>
                         <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane p-2 fade show active" id="tab0" role="tabpanel" aria-labelledby="tab0-tab">
+                            <div class="tab-pane p-2 fade show active" id="tab0" role="tabpanel"
+                                aria-labelledby="tab0-tab">
                                 <app-network-map [ProceedDoFilterApply]="doFilterApply"></app-network-map>
                             </div>
                             <div class="tab-pane p-2 fade" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
@@ -106,21 +125,24 @@
                                 <!-- <app-details-of-assoc-data [ProceedDoFilterApply]="doFilterApply"></app-details-of-assoc-data> -->
                             </div>
                             <div class="tab-pane p-2 fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
-                                <app-distribution-by-rel-grp [ProceedDoFilterApply]="doFilterApply"></app-distribution-by-rel-grp>
-                                <app-distribution-by-relation-type [ProceedDoFilterApply]="doFilterApply"></app-distribution-by-relation-type>
+                                <app-distribution-by-rel-grp
+                                    [ProceedDoFilterApply]="doFilterApply"></app-distribution-by-rel-grp>
+                                <app-distribution-by-relation-type
+                                    [ProceedDoFilterApply]="doFilterApply"></app-distribution-by-relation-type>
                             </div>
                             <!-- <div class="tab-pane p-2 fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
                                 <app-event-description [ProceedDoFilterApply]="doFilterApply"></app-event-description>
                             </div> -->
                             <div class="tab-pane p-2 fade" id="tab4" role="tabpanel" aria-labelledby="tab4-tab">
-                                <app-pmid-count-with-gene-and-disease [ProceedDoFilterApply]="doFilterApply"></app-pmid-count-with-gene-and-disease>
+                                <app-pmid-count-with-gene-and-disease
+                                    [ProceedDoFilterApply]="doFilterApply"></app-pmid-count-with-gene-and-disease>
                             </div>
                             <!-- <div class="tab-pane p-2 fade" id="tab5" role="tabpanel" aria-labelledby="tab5-tab">
                                 
                             </div> -->
                         </div>
                     </div>
-                </div> 
+                </div>
 
                 <div style="clear:both;">&nbsp;</div>
                 <div style="clear:both;">&nbsp;</div>
@@ -131,4 +153,3 @@
         </div>
     </section>
 </div>
-        
