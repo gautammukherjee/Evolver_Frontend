@@ -96,11 +96,11 @@ export class NgCytoComponent implements OnChanges {
             })
             .style({ "font-size": 10 })    // big font
 
-            // .selector(':selected')
-            // .css({
-            //     'border-width': 1,
-            //     'border-color': '#333'
-            // })
+            .selector(':selected')
+            .css({
+                'border-width': 1,
+                'border-color': '#333'
+            })
 
             // .selector('edge')
             // .css({
@@ -113,13 +113,9 @@ export class NgCytoComponent implements OnChanges {
             //     'target-arrow-color': 'data(colorCode)'
             // })
 
-            .selector('edge.highlighted')
-            .css({
-                'line-color': 'black',
-                'target-arrow-color': '#b830f7'
-            })
             .selector('edge')
             .css({
+                'opacity': 0.666,
                 'curve-style': 'bezier',
                 'target-arrow-shape': 'triangle',
                 'width': 4,
@@ -163,9 +159,6 @@ export class NgCytoComponent implements OnChanges {
         let cy_contianer = this.renderer.selectRootElement("#cy");
         let localselect = this.select;
 
-        var lastHighlighted = null;
-        var lastUnhighlighted = null;
-
         let cy = cytoscape({
             container: cy_contianer,
             layout: this.layout,
@@ -194,11 +187,6 @@ export class NgCytoComponent implements OnChanges {
             cy.elements().addClass('faded');
             neighborhood.removeClass('faded');
             localselect.emit(node.data('name'));
-
-            // var nhood = lastHighlighted = node.closedNeighborhood();
-            // var others = lastUnhighlighted = cy.elements().not(nhood);
-            // others.addClass('hidden');
-            // nhood.removeClass('hidden');
 
             var TargetNode = node[0]._private.data;
             console.log("act: ", node[0]._private.data);
@@ -260,28 +248,16 @@ export class NgCytoComponent implements OnChanges {
         // });
 
         cy.on('tap', function (e: any) {
-            // console.log("cy1: ", cy);
             if (e.target === cy) {
-                console.log("cy1: ", cy);
-                // cy.edges().removeClass('highlighted');
+                cy.edges().removeClass('highlighted');
                 cy.elements().removeClass('faded');
             } else {
-                // console.log("cy2: ", cy, "[source='" + e.target.id() + "']");
-                // cy.edges("[source='" + e.target.id() + "']").addClass('highlighted');
+                // cy.edges("[source='" + e.target.id() + "']").style('lineColor', "#AF0000");
                 // e.target.connectedEdges().animate({
                 //     style: { lineColor: "red" }
                 // })
             }
         })
-
-        // cy.on('tap', 'edge', function (event: any) {
-        //     var connected = event.target.connectedNodes();
-        //     console.log("cy11: ", connected);
-        //     event.target.connectedNodes().animate({
-        //         style: { lineColor: "green" }
-        //     })
-        //     // connected.addClass('highlighted');
-        // });
 
         cy.on('mouseover', 'node', function (event: any) {
             var evtTarget = event.target;
@@ -329,7 +305,13 @@ export class NgCytoComponent implements OnChanges {
 
         cy.on('tap', 'edge', (e: any) => {
             var edge = e.target._private.data;
-            console.log("PMID: ", edge);
+            // console.log("PMID: ", edge);
+
+            var node = e.target;
+            var neighborhood = node.neighborhood().add(node);
+
+            cy.edges().addClass('faded');
+            neighborhood.removeClass('faded');
 
             //Get the NE_IDs Lists
             const regex = /[{}]/g;
@@ -371,11 +353,10 @@ export class NgCytoComponent implements OnChanges {
                         this.edgeTypeNameData.forEach((PMID: any) => {
 
                             // const myFormattedDate = this.pipe.transform(PMID.publication_date, 'short');
-
                             // console.log("PMID:: ", PMID.edge_type_name);
                             pubmedURLsDownload += "<div style='font-size: 14px;color:#32404E'>" + PMID.title + "</div>";
-                            pubmedURLsDownload += "<div style='list-style: none; font-size: 14px;'>PMID : <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + PMID.pmid + "'>" + PMID.pmid + "</a></div>";
-                            pubmedURLsDownload += "<div style='font-size: 14px;color:#32404E'>" + PMID.publication_date + "</div>";
+                            pubmedURLsDownload += "<div style='list-style: none; font-size: 14px; color:#32404E'>PMID : <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + PMID.pmid + "'>" + PMID.pmid + "</a></div>";
+                            pubmedURLsDownload += "<div style='font-size: 14px; color:#32404E'>Publication Date : " + PMID.publication_date + "</div>";
                             pubmedURLsDownload += "<hr style='color:#32404E'/>";
                         });
                         pubmedURLsDownload += "<div style='clear: both;'><hr/></div>";
