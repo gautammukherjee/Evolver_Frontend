@@ -92,10 +92,12 @@ export class DistributionByRelationTypeComponent implements OnInit {
             // pageList: [10, 25, 50, 100, All],
             striped: true,
             fixedColumns: true,
+            showToggle: true,
             stickyHeader: true,
             showFilter: true,
             filter: true,
-            // showExport: true,
+            showFullscreen: true,
+            showExport: true,
             exportOptions: {
               ignoreColumn: [5],
               // columns: [6],
@@ -124,15 +126,15 @@ export class DistributionByRelationTypeComponent implements OnInit {
 
           jQuery('#showDistributionRelationData').bootstrapTable("load", this.distributionDataDetails);
 
-          jQuery('#showDistributionRelationData').on("search.bs.table", function (e: any) {
-            jQuery('#showDistributionRelationData').bootstrapTable("load", e.distributionDataDetails);
-          })
-            .on("search.bs.table", function (e: any) {
-              jQuery('#showDistributionRelationData').bootstrapTable("load", e.distributionDataDetails);
-            })
-            .on("page-change.bs.table", function (e: any) {
-              jQuery('#showDistributionRelationData').bootstrapTable("load", e.distributionDataDetails);
-            });
+          // jQuery('#showDistributionRelationData').on("search.bs.table", function (e: any) {
+          //   jQuery('#showDistributionRelationData').bootstrapTable("load", e.distributionDataDetails);
+          // })
+          //   .on("search.bs.table", function (e: any) {
+          //     jQuery('#showDistributionRelationData').bootstrapTable("load", e.distributionDataDetails);
+          //   })
+          //   .on("page-change.bs.table", function (e: any) {
+          //     jQuery('#showDistributionRelationData').bootstrapTable("load", e.distributionDataDetails);
+          //   });
         },
         err => {
           console.log(err.message);

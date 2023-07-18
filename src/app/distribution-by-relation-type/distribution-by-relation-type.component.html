@@ -16,16 +16,16 @@
             </div>
             <div class="table-responsive custom-fixed-header-table" style="max-height:600px">
                 <table id="showDistributionRelationData" data-toolbar="#toolbar" data-search="true"
-                    data-show-export="true" data-show-columns="true" data-page-size="50"
+                    data-show-export="true" data-show-columns="true" data-page-size="50" data-filter-control="true"
                     data-page-list="[10, 25, 50, 100, All]">
                 <!--<table id="showDistributionRelationData" data-toolbar="#toolbar" data-search="true" data-page-size="50" data-page-list="[10, 25, 50, 100, All]">-->
                     <thead>
-                        <tr class="d-flex">
+                        <tr>
                             <!-- <th data-field="news_id" data-sortable="true" width="10%">News ID</th> -->
-                            <th data-field="source_node_name" data-sortable="true" width="10%">Source Name</th>
-                            <th data-field="destination_node_name" data-sortable="true" width="10%">Destination Name</th>
-                            <th data-field="temp_edge_types_name" data-sortable="true" width="10%">Edge Type Name</th>
-                            <th data-field="pmid_count" data-sortable="true" width="10%">Distinct PMID Count</th>
+                            <th data-field="source_node_name" data-sortable="true" width="10%" data-filter-control="input">Source Name</th>
+                            <th data-field="destination_node_name" data-sortable="true" width="10%" data-filter-control="input">Destination Name</th>
+                            <th data-field="temp_edge_types_name" data-sortable="true" width="10%" data-filter-control="input">Edge Type Name</th>
+                            <th data-field="pmid_count" data-sortable="true" width="10%" data-filter-control="select">Distinct PMID Count</th>
                         </tr>
                     </thead>
                 </table>
