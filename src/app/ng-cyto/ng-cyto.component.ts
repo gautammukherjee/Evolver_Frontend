@@ -77,8 +77,8 @@ export class NgCytoComponent implements OnChanges {
         // };
 
         this.zoom = this.zoom || {
-            min: 0.2,
-            max: 1.5
+            min: 0.3,
+            max: 1.3
         };
 
         this.style = this.style || cytoscape.stylesheet()
@@ -94,7 +94,7 @@ export class NgCytoComponent implements OnChanges {
                 'background-color': 'data(colorCode)',
                 'color': '#fff'
             })
-            .style({ "font-size": 10 })    // big font
+            .style({ "font-size": 12 })    // big font
 
             // .selector(':selected')
             // .css({
