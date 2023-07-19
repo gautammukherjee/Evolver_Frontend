@@ -66,32 +66,15 @@ export class FilterNodeSelectLevel2Component implements OnInit {
     //End here
 
     this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
-      console.log("eventClickNode:: ", event.clickOn);
+      console.log("Node Level: ", event.clickOn);
       if (event.clickOn == undefined) {
-        // this.hideCardBody = true;
-        // this.selectedNodeSelects2 = []; // Reinitialized, because when data updated on click TA, it should empty locally
-
-        // this.selectedNodeSelects2 = ''; // Reinitialized, because when data updated on click node select, it should empty locally
-        // this.globalVariableService.setSelectedNodeSelects2(this.selectedNodeSelects2);
-
-        // this.filterParams = this.globalVariableService.getFilterParams();
-        // console.log("ssss1: ", this.filterParams);
-
-        this.getNodeSelects(event);
+        console.log("Click Node Level 2:1 ", event.clickOn);
+        this.node_selects2 = [];
+        // this.getNodeSelects(event);
       } else if (event.clickOn !== undefined && event.clickOn == 'diseasesIndicationsFilter') {
-        // this.hideCardBody = true;
-        this.filterParams = this.globalVariableService.getFilterParams();
-        // console.log("ssss2: ", this.filterParams);
-        if (this.filterParams.destination_node == undefined) {
-          // this.firstTimeCheck = false;
-          // this.selectedNodeSelects2 = ''; // Reinitialized, because when data updated on click TA, it should empty locally
-          // this.globalVariableService.setSelectedNodeSelects2(this.selectedNodeSelects2);
-          this.node_selects2 = [];
-        }
-        else {
-          // if (this.firstTimeCheck === false) // Node select only one time reload when we choose destination nodes are selected
-          this.getNodeSelects(event);
-        }
+        console.log("Click Node Level 2:2 ", event.clickOn);
+        // if (this.firstTimeCheck === false) // Node select only one time reload when we choose destination nodes are selected
+        this.getNodeSelects(event);
       }
     });
     this.getNodeSelects(event);
@@ -120,8 +103,7 @@ export class FilterNodeSelectLevel2Component implements OnInit {
 
     // console.log("node_selects11111: ", this.filterParams);
 
-
-    if (this.filterParams.destination_node != undefined) {
+    if (this.filterParams.source_node != undefined) {
       this.loading = true;
       // this.firstTimeCheck = true;
       this.nodeSelectsService.getNodeSelects2(this.filterParams)
@@ -160,12 +142,13 @@ export class FilterNodeSelectLevel2Component implements OnInit {
     }
     else {
       this.node_selects2 = [];
+      this.globalVariableService.resetfilters();
     }
 
   }
 
-  selectNode(nodeValue: any) {
-    console.log("nodeValue: ", nodeValue.target.value);
+  selectNode2(nodeValue: any) {
+    console.log("nodeValue2: ", nodeValue.target.value);
     // if (event.target.checked) {
     //   this.selectedNodeSelects2.push(node.nnrt_id);
     // } else {

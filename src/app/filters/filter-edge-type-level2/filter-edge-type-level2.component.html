@@ -1,25 +1,42 @@
 <div class="sidebar-card">
-  <div class="heading">
+  <!--<div class="heading">
       <h4 class="text-dark">Edge Type Level 2</h4> <img *ngIf="loading" src="../../assets/images/loader_small.gif" />
-  </div>
-  <div class="body" *ngIf="edgeTypes2.length > 0" style="height: 150px;overflow: auto;">
+  </div>-->
+
+  <div class="dropdown">
+    <div class="dropdown-toggle" id="edge-type-filter2" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+      <div class="body">
+        <div class="search-input">
+          <input class="form-control" type="text" value="{{selectedEdgeTypesNames2.join(', ')}}" placeholder="Search Edge Type level 2" aria-label="Search" [(ngModel)]="edgeTypeFilter" />
+          <img *ngIf="loading" src="../../assets/images/loader_small.gif" width="20px"/>
+          <!--<span *ngIf="selectedEdgeTypes.length > 0" class="reset-search"
+            (click)="resetEdgeType();">Reset</span>-->
+        </div>
+      </div>
+    </div>
+
+
+    <ul class="dropdown-menu" aria-labelledby="edge-type-filter2">
+      <!-- *ngIf="showSourceBody" -->
+      <div class="body">
+        <div *ngIf="edgeTypes2.length">
+          <div class="search-options">
+            <div class="mb-1 form-check" *ngFor="let edgeType of edgeTypes2 | EdgeTypeFilterPipe:edgeTypeFilter">
+              <input class="form-check-input border border-secondary" type="checkbox" name="edgeTypes2"  [value]="edgeType"
+                [checked]="selectedEdgeTypes2.indexOf(edgeType.edge_type_id)>-1 " (change)="selectEdgeType(edgeType,$event)">
+              <label class="form-check-label">
+                {{edgeType.edge_type_name}}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
       
-      <div class="search-input">
-        <input class="form-control" type="text" placeholder="Search" aria-label="Search" [(ngModel)]="edgeTypeFilter" />
-      </div>
-
-      <div class="mb-1 form-check" *ngFor="let edgeType of edgeTypes2 | EdgeTypeFilterPipe:edgeTypeFilter">
-        <input class="form-check-input" type="checkbox" name="edgeTypes2"  [value]="edgeType"
-          [checked]="selectedEdgeTypes2.indexOf(edgeType.edge_type_id)>-1 " (change)="selectEdgeType(edgeType,$event)">
-        <label class="form-check-label">
-          {{edgeType.edge_type_name}}
-        </label>
-      </div>
-
-      <span *ngIf="selectedEdgeTypes2.length > 0" style="cursor: pointer; float:right;" class="float-left"
-        (click)="resetEdgeType();">Reset</span>
+    </ul>
   </div>
 </div>
+
+
 
 <ng-template #edgeSelectsWarningModal let-c="close" let-d="dismiss">
   <div class="modal-header    modal-lg" style="background: #ff0c66 !important;">

@@ -106,6 +106,7 @@ export class NetworkMapComponent implements OnInit {
   }
 
   getMasterListsMap(_filterParams: any) {
+    console.log("inside: ");
     if (_filterParams.source_node != undefined) {
       this.loadingMap = true;
 
@@ -204,6 +205,11 @@ export class NetworkMapComponent implements OnInit {
           this.loadingMap = false;
         }
       );
+    } else {
+      console.log("go else: ");
+      this.nodeData = [];
+      this.edgeData = [];
+      this.drawChart();
     }
   }
 

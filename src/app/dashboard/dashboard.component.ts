@@ -14,8 +14,8 @@ export class DashboardComponent implements OnInit {
   doUpdateFilterDataApply: Subject<any> = new Subject();
   showSidebar: boolean = true;
   viewMode = 'event_list';
-  showLevels : boolean = false;
-  currentLevel : number = 1;
+  showLevels: boolean = false;
+  currentLevel: number = 1;
 
   constructor(private globalVaiableService: GlobalVariableService, private router: Router) {
     // this.globalVaiableService.setSelectedTa([1]);
@@ -34,7 +34,7 @@ export class DashboardComponent implements OnInit {
   }
 
   nodeChanged(clickOn: any) {
-    // this.doFilterApply.next(undefined);
+    this.doFilterApply.next(undefined);
     this.doUpdateFilterDataApply.next({ clickOn: clickOn });
   }
   sourceNodeChanged(clickOn: any) {
@@ -46,10 +46,12 @@ export class DashboardComponent implements OnInit {
     // this.doUpdateFilterDataApply.next(e);
     this.doUpdateFilterDataApply.next({ clickOn: clickOn });
   }
-  edgeTypeChanged(e: any) {
-    this.doFilterApply.next(e);
+  edgeTypeChanged(clickOn: any) {
+    // this.doFilterApply.next(e);
+    this.doUpdateFilterDataApply.next({ clickOn: clickOn });
   }
-  edgeTypeChanged2(e: any) {
+
+  submitChanged(e: any) {
     this.doFilterApply.next(e);
   }
 
@@ -58,23 +60,38 @@ export class DashboardComponent implements OnInit {
     this.doFilterApply.next({ clickOn: param });
   }
 
-  nodeChanged2(e: any) {
-    this.doFilterApply.next(e);
+  nodeChanged2(clickOn: any) {
+    // this.doFilterApply.next(e);
     // this.doUpdateFilterDataApply.next(e);
+    this.doUpdateFilterDataApply.next({ clickOn: clickOn });
   }
+
+  edgeTypeChanged2(e: any) {
+    // this.doFilterApply.next(e);
+  }
+
+  sourceNodeChanged2(clickOn: any) {
+    // this.doFilterApply.next(undefined);
+    this.doUpdateFilterDataApply.next({ clickOn: clickOn });
+  }
+  destinationNodeChanged2(clickOn: any) {
+    // this.doFilterApply.next(undefined);
+    // this.doUpdateFilterDataApply.next(e);
+    this.doUpdateFilterDataApply.next({ clickOn: clickOn });
+  }
+
 
   secondTab() {
-
   }
 
-  onToggleLevel(){
+  onToggleLevel() {
     this.showLevels = !this.showLevels;
   }
 
   onAddLevel() {
     this.showLevels = true;
     this.currentLevel = this.currentLevel + 1;
-    debugger
+    // debugger
   }
 
 }

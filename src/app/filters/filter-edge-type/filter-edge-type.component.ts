@@ -28,7 +28,6 @@ export class FilterEdgeTypeComponent implements OnInit {
   private params: object = {};
   private result: any = [];
   public loading: boolean = false;
-  public edgeTypesCheck: boolean = false;
   public enableFilter: boolean = false;;
   public filterText: string = '';
   public seeMoreFilterText: string = '';
@@ -42,9 +41,6 @@ export class FilterEdgeTypeComponent implements OnInit {
   otherMouseOverONElem: any = undefined;
   public disableProceed = true;
   edgeTypeFilter: string = '';
-  // edgeTypeFilterText: string = '';
-  //diseaseCheck: any;
-  //diseaseCheckCT: any;
   hideCardBody: boolean = true;
   showEdgeBody: boolean = false;
   edgeTypesNames: any = [];
@@ -71,16 +67,17 @@ export class FilterEdgeTypeComponent implements OnInit {
     this.filterParams = this.globalVariableService.getFilterParams();
     // console.log("new Filters1: ", this.filterParams);
 
-    this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
-      console.log("eventEdgeType:: ", event);
-      if (event == undefined) {
-        this.hideCardBody = true;
-        this.selectedEdgeTypes = []; // Reinitialized, because when data updated on click TA, it should empty locally
-        this.getEdgeType(event, 2);
-      } else if (event !== undefined && event.clickOn != 'diseasesIndicationsFilter')
-        this.hideCardBody = true;
-      this.getEdgeType(event, 2);
-    });
+    // this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
+    //   console.log("eventEdgeType:: ", event);
+    //   if (event.clickOn == undefined) {
+    //     this.hideCardBody = true;
+    //     this.selectedEdgeTypes = []; // Reinitialized, because when data updated on click TA, it should empty locally
+    //     this.getEdgeType(event, 2);
+    //   } else if (event.clickOn !== undefined && event.clickOn == 'diseasesIndicationsFilter') {
+    //     this.hideCardBody = true;
+    //     this.getEdgeType(event, 2);
+    //   }
+    // });
     this.getEdgeType(event, 1);
     // this.hideCardBody = true;
 
@@ -95,13 +92,13 @@ export class FilterEdgeTypeComponent implements OnInit {
     this.loading = true;
     this.params = this.globalVariableService.getFilterParams();
 
-    this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
-    this.selectedDestinationNodes = Array.from(this.globalVariableService.getSelectedDestinationNodes());
-    this.selectedEdgeTypes = Array.from(this.globalVariableService.getSelectedEdgeTypes());
+    // this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
+    // this.selectedDestinationNodes = Array.from(this.globalVariableService.getSelectedDestinationNodes());
+    // this.selectedEdgeTypes = Array.from(this.globalVariableService.getSelectedEdgeTypes());
 
-    console.log("1: ", this.selectedSourceNodes);
-    console.log("2: ", this.selectedDestinationNodes);
-    console.log("3: ", this.selectedEdgeTypes);
+    // console.log("1: ", this.selectedSourceNodes);
+    // console.log("2: ", this.selectedDestinationNodes);
+    // console.log("3: ", this.selectedEdgeTypes);
 
     this.enableDisableProceedButton();
 
@@ -127,12 +124,12 @@ export class FilterEdgeTypeComponent implements OnInit {
           }
         },
         err => {
-          this.edgeTypesCheck = true;
+          // this.edgeTypesCheck = true;
           this.loading = false;
           console.log(err.message)
         },
         () => {
-          this.edgeTypesCheck = true;
+          // this.edgeTypesCheck = true;
           this.loading = false;
           console.log("loading finish")
         }
@@ -163,7 +160,7 @@ export class FilterEdgeTypeComponent implements OnInit {
     console.log("new Filters Edge Types: ", this.filterParams);
 
     // if (from != 'edgeSelectsWarningModal')
-    //   this.proceed();
+    this.proceed();
     this.enableDisableProceedButton();
   }
 

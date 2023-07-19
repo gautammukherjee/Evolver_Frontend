@@ -30,8 +30,12 @@ import { FilterNodeSelectComponent } from './filters/filter-node-select/filter-n
 import { FilterNodeSelectLevel2Component } from './filters/filter-node-select-level2/filter-node-select-level2.component';
 import { NoPageComponent } from './no-page/no-page.component';
 import { FilterSourceNodeComponent } from './filters/filter-source-node/filter-source-node.component';
+import { FilterSourceNodeLevel2Component } from './filters/filter-source-node-level2/filter-source-node-level2.component';
 import { FilterDestinationNodeComponent } from './filters/filter-destination-node/filter-destination-node.component';
+import { FilterDestinationNodeLevel2Component } from './filters/filter-destination-node-level2/filter-destination-node-level2.component';
+
 import { FilterEdgeTypeComponent } from './filters/filter-edge-type/filter-edge-type.component';
+import { FilterSubmitComponent } from './filters/filter-submit/filter-submit.component';
 //import { SafePipeModule } from 'safe-pipe';
 import { SafePipe } from './pipes/safe.pipe';
 import { BioInfomaticsComponent } from './bio-infomatics/bio-infomatics.component';
@@ -48,9 +52,6 @@ import { PmidCountWithGeneAndDiseaseComponent } from './pmid-count-with-gene-and
 import { DistributionByRelationTypeComponent } from './distribution-by-relation-type/distribution-by-relation-type.component';
 
 
-
-
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -65,8 +66,11 @@ import { DistributionByRelationTypeComponent } from './distribution-by-relation-
     FilterNodeSelectComponent,
     FilterNodeSelectLevel2Component,
     FilterSourceNodeComponent,
+    FilterSourceNodeLevel2Component,
     FilterDestinationNodeComponent,
+    FilterDestinationNodeLevel2Component,
     FilterEdgeTypeComponent,
+    FilterSubmitComponent,
     FilterEdgeTypeLevel2Component,
     HeaderComponent,
     FooterComponent,
@@ -102,7 +106,9 @@ import { DistributionByRelationTypeComponent } from './distribution-by-relation-
     FilterNodeSelectComponent,
     FilterNodeSelectLevel2Component,
     FilterSourceNodeComponent,
+    FilterSourceNodeLevel2Component,
     FilterDestinationNodeComponent,
+    FilterDestinationNodeLevel2Component,
     FilterEdgeTypeComponent,
     FilterEdgeTypeLevel2Component,
     NoPageComponent,

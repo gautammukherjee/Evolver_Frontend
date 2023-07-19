@@ -72,7 +72,7 @@ export class FilterNodeSelectComponent implements OnInit {
     //   // this.getNodeSelects(event, 2);
     // });
     this.getNodeSelects(event, 1);
-    this.hideCardBody = true;
+    // this.hideCardBody = true;
 
     this.globalVariableService.setSelectedNodeSelects(2);
     this.selectedNodeSelects = Array.from(this.globalVariableService.getSelectedNodeSelects());
