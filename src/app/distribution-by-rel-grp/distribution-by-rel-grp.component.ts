@@ -127,13 +127,13 @@ export class DistributionByRelGrpComponent implements OnInit {
           crop: false,
           overflow: 'allow',
           rotation: 360,
-          color: '#A9A9A9',
+          //color: '#3066C4',
           align: 'center',
           format: '{point.y}', // one decimal {point.y:.1f}
           y: 10, // 10 pixels down from the top
           style: {
             fontSize: '13px',
-            fontFamily: 'Verdana, sans-serif'
+            //fontFamily: 'Verdana, sans-serif'
           }
         },
         accessibility: {
