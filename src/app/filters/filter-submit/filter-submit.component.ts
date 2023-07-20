@@ -30,7 +30,7 @@ export class FilterSubmitComponent implements OnInit {
       console.log("eventSubmit1: ", event);
       if (event == undefined) {
         this.getSubmit(event, 2);
-      } else if (event !== undefined && event.clickOn == 'diseasesIndicationsFilter') {
+      } else if (event !== undefined && event.clickOn == 'sourceNodeFilter') {
         this.getSubmit(event, 2);
       }
     });

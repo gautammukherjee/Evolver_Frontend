@@ -73,7 +73,7 @@ export class FilterEdgeTypeComponent implements OnInit {
     //     this.hideCardBody = true;
     //     this.selectedEdgeTypes = []; // Reinitialized, because when data updated on click TA, it should empty locally
     //     this.getEdgeType(event, 2);
-    //   } else if (event.clickOn !== undefined && event.clickOn == 'diseasesIndicationsFilter') {
+    //   } else if (event.clickOn !== undefined && event.clickOn == 'sourceNodeFilter') {
     //     this.hideCardBody = true;
     //     this.getEdgeType(event, 2);
     //   }

@@ -56,7 +56,7 @@ export class FilterSourceNodeLevel2Component implements OnInit {
       if (event.clickOn == undefined) {
         console.log("Source Level 2:1 ", event.clickOn);
         this.getResetSourceNode();
-      } else if (event.clickOn !== undefined && (event.clickOn == 'diseasesIndicationsFilter' || event.clickOn == 'edgeTypeFilter' || event.clickOn == 'destinationNodeFilter' || event.clickOn == 'nodeLevel2Filter')) {
+      } else if (event.clickOn !== undefined && (event.clickOn == 'sourceNodeFilter' || event.clickOn == 'edgeTypeFilter' || event.clickOn == 'destinationNodeFilter' || event.clickOn == 'nodeLevel2Filter')) {
         // this.hideCardBody = true;
         this.filterParams = this.globalVariableService.getFilterParams();
         console.log("Source Level 2:2 ", event.clickOn);

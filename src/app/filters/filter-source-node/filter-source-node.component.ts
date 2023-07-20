@@ -65,6 +65,7 @@ export class FilterSourceNodeComponent implements OnInit {
 
   public getResetSourceNode() {
     this.sourceNodes = [];
+    this.searchInput = '';
   }
 
   getSourceNode() {

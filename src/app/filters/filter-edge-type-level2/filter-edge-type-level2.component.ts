@@ -67,11 +67,7 @@ export class FilterEdgeTypeLevel2Component implements OnInit {
 
     this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
       console.log("Edge Level: ", event.clickOn);
-      if (event.clickOn == undefined) {
-        console.log("Edge Level 2:1 ", event.clickOn);
-        // this.getEdgeType2(event);
-        this.edgeTypes2 = [];
-      } else if (event.clickOn !== undefined && event.clickOn == 'diseasesIndicationsFilter') {
+      if (event.clickOn !== undefined && event.clickOn == 'sourceNodeFilter') {
         console.log("Edge Level 2:2 ", event.clickOn);
         this.getEdgeType2(event);
       }
