@@ -52,6 +52,15 @@ export class NodeSelectsService {
     return this.http.post(this.API_URL + 'getDestinationNode', params, httpOptions);
   }
 
+  getSourceNode2(params: any) {
+    return this.http.post(this.API_URL + 'getSourceNode2', params, httpOptions);
+  }
+
+  getDestinationNode2(params: any) {
+    return this.http.post(this.API_URL + 'getDestinationNode2', params, httpOptions);
+  }
+
+
   // getEdgeType() {
   //   if (this._edge_types) {
   //     return Observable.of(this._edge_types);

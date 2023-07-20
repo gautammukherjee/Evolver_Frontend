@@ -12,65 +12,70 @@
                         <app-filter-node-select (onSelectNode)='nodeChanged($event)'></app-filter-node-select>
                     </div>
                     <div class="filter-single">
-                        <app-filter-source-node (onSelectSourceNode)='sourceNodeChanged("diseasesIndicationsFilter")'
+                        <app-filter-source-node (onSelectSourceNode)='sourceNodeChanged("sourceNodeFilter")'
                             [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node>
                     </div>
                     <div class="filter-single">
-                        <app-filter-destination-node
-                            (onSelectDestinationNode)='destinationNodeChanged("diseasesIndicationsFilter")'
-                            [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-destination-node>
+                        <app-filter-edge-type (onSelectEdgeType)='edgeTypeChanged("edgeTypeFilter")'></app-filter-edge-type>
                     </div>
                     <div class="filter-single">
-                        <app-filter-edge-type (onSelectEdgeType)='edgeTypeChanged($event)'
-                            [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type>
+                        <app-filter-destination-node
+                        (onSelectDestinationNode)='destinationNodeChanged("destinationNodeFilter")'
+                        [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-destination-node>
                     </div>
                 </div>
             </div>
-            <div *ngIf="showLevels" class="horizonal-filter-bar">
-                <div class="filter-inner">
-                    <div class="filter-left-heading">
-                        Multi Level Association
-                    </div>
-                    <div class="filter-single">
-                        <app-filter-node-select (onSelectNode)='nodeChanged($event)'></app-filter-node-select>
-                    </div>
-                    <div class="filter-single">
-                        <app-filter-source-node (onSelectSourceNode)='sourceNodeChanged("diseasesIndicationsFilter")'
-                            [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node>
-                    </div>
-                    <div class="filter-single">
-                        <app-filter-destination-node
-                            (onSelectDestinationNode)='destinationNodeChanged("diseasesIndicationsFilter")'
-                            [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-destination-node>
-                    </div>
-                    <div class="filter-single">
-                        <app-filter-edge-type (onSelectEdgeType)='edgeTypeChanged($event)'
-                            [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type>
+            
+            <div [ngStyle]="{'display' : showLevels == false ? 'none' : 'block'}">
+                <div *ngIf="currentLevel == 2" class="horizonal-filter-bar">
+                    <div class="filter-inner">
+                        <div class="filter-left-heading">
+                            Multi Level Association
+                        </div>
+                        <div class="filter-single">
+                            <app-filter-node-select-level2 (onSelectNode2)='nodeChanged2("nodeLevel2Filter")'
+                            [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-node-select-level2>
+                        </div>
+                        <div class="filter-single">
+                            <app-filter-source-node-level2 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node-level2>
+                        </div>
+                        <div class="filter-single">
+                            <app-filter-edge-type-level2 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type-level2>
+                        </div>
+                        <div class="filter-single">
+                            <app-filter-destination-node-level2 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-destination-node-level2>
+                        </div>
                     </div>
                 </div>
+            </div>
+            
 
-            </div>
             <div class="add-level-handler text-end pe-2 pt-1">
-                <button class="btn btn-light btn-sm" (click)="onAddLevel()">+ Add Level</button>
+                <button class="btn btn-light btn-sm" (click)="onAddLevel()"  [disabled]="maxLevel === currentLevel">+ Add Level & Submit</button>
                 <button class="btn btn-light btn-sm ms-2" *ngIf="currentLevel > 1" (click)="onToggleLevel()">{{showLevels == false ? 'Show' : 'Hide'}} Level</button>
             </div>
         </div>
         <div class="inner-wrapper">
+            
+            <app-filter-submit (onSelectSubmit)='submitChanged($event)'
+                            [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-submit>
+
             <!--<div class="reset-btns-group">
                 <button class="btn btn-primary me-2 btn-md">Reset</button>
                 <button class="btn btn-success btn-md">Submit</button>
             </div>-->
+
             <div class="left-sidebar d-none" [ngClass]="showSidebar == false ? 'hide' : ''">
                 <!-- Enable this to open side menu toggler -->
                 <!-- <button class="btn btn-primary menu-toggler" (click)="ontoggleSidebar()" placement="right">
                     <img src="../../assets/images/bars-solid.svg" width="18px"/>
                 </button> -->
-                <div class="left-sidebar-inner">
+                <!--<div class="left-sidebar-inner">
                     <app-filter-node-select-level2 (onSelectNode2)='nodeChanged2($event)'
                         [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-node-select-level2>
                     <app-filter-edge-type-level2 (onSelectEdgeType2)='edgeTypeChanged2($event)'
                         [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type-level2>
-                </div>
+                </div>-->
                 <!--<app-filter-data-range></app-filter-data-range>-->
             </div>
 
@@ -120,7 +125,7 @@
                                 <app-network-map [ProceedDoFilterApply]="doFilterApply"></app-network-map>
                             </div>
                             <div class="tab-pane p-2 fade" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-                                <app-event-description [ProceedDoFilterApply]="doFilterApply" [currentLevel]="currentLevel"></app-event-description>
+                                <app-event-description [ProceedDoFilterApply]="doFilterApply" [toggleLevels]="showLevels" [currentLevel]="currentLevel"></app-event-description>
                                 <!-- <app-details-of-assoc-data [ProceedDoFilterApply]="doFilterApply"></app-details-of-assoc-data> -->
                             </div>
                             <div class="tab-pane p-2 fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">

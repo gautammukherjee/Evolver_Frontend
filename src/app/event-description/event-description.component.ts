@@ -16,7 +16,8 @@ declare var jQuery: any;
 })
 export class EventDescriptionComponent implements OnInit {
   @Input() ProceedDoFilterApply?: Subject<any>; //# Input for ProceedDoFilter is getting from clinical details html
-  @Input() currentLevel : any;
+  @Input() currentLevel: any;
+  @Input() toggleLevels: any;
   private filterParams: any;
   result: any = [];
   resultNodes: any = [];

@@ -8,17 +8,17 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-filter-source-node',
-  templateUrl: './filter-source-node.component.html',
-  styleUrls: ['./filter-source-node.component.scss']
+  selector: 'app-filter-source-node-level2',
+  templateUrl: './filter-source-node-level2.component.html',
+  styleUrls: ['./filter-source-node-level2.component.scss']
 })
-export class FilterSourceNodeComponent implements OnInit {
+export class FilterSourceNodeLevel2Component implements OnInit {
 
   @Output() onSelectSourceNode: EventEmitter<any> = new EventEmitter();
   @Input() UpdateFilterDataApply?: Subject<any>;
   private filterParams: any;
-  public selectedSourceNodes: any = [];
-  public sourceNodes: any = [];
+  public selectedSourceNodes2: any = [];
+  public sourceNodes2: any = [];
   // public sourceNodes: Array<object> = [];
   // private params: object = {};
   private result: any = [];
@@ -52,11 +52,20 @@ export class FilterSourceNodeComponent implements OnInit {
     // console.log("new Filters source node: ", this.filterParams);
 
     this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
-      console.log("event Source:: ", event.clickOn);
+      console.log("Source Level: ", event.clickOn);
       if (event.clickOn == undefined) {
+        console.log("Source Level 2:1 ", event.clickOn);
         this.getResetSourceNode();
+      } else if (event.clickOn !== undefined && (event.clickOn == 'sourceNodeFilter' || event.clickOn == 'edgeTypeFilter' || event.clickOn == 'destinationNodeFilter' || event.clickOn == 'nodeLevel2Filter')) {
+        // this.hideCardBody = true;
+        this.filterParams = this.globalVariableService.getFilterParams();
+        console.log("Source Level 2:2 ", event.clickOn);
+        // if (this.firstTimeCheck === false) // Node select only one time reload when we choose destination nodes are selected
+        this.getSourceNode2();
       }
     });
+    this.getSourceNode2();
+    this.selectedSourceNodes2 = Array.from(this.globalVariableService.getSelectedSourceNodes2());
   }
 
   ngOnDestroy() {
@@ -64,24 +73,22 @@ export class FilterSourceNodeComponent implements OnInit {
   }
 
   public getResetSourceNode() {
-    this.sourceNodes = [];
-    this.searchInput = '';
+    this.sourceNodes2 = [];
   }
 
-  getSourceNode() {
-    // console.log("val: ", this.searchInput);
-    if (this.searchInput.length > 2) {
-      this.selectedSourceNodes = [];
+  getSourceNode2() {
+    this.globalVariableService.resetSourceNode2(); // reset the source node when source node component refresh
+    this.filterParams = this.globalVariableService.getFilterParams();
+    this.selectedSourceNodes2 = []
+
+    if (this.filterParams.source_node != undefined) {
       this.loading = true;
-      this.filterParams = this.globalVariableService.getFilterParams({ "searchval": this.searchInput });
-      console.log("filterparamsSearchSource: ", this.filterParams);
-      // this.params = this.globalVariableService.getFilterParams();
-      this.nodeSelectsService.getSourceNode(this.filterParams)
+      this.nodeSelectsService.getSourceNode2(this.filterParams)
         .subscribe(
           data => {
             this.result = data;
-            this.sourceNodes = this.result.sourceNodeRecords;
-            console.log("sourceNodes: ", this.sourceNodes);
+            this.sourceNodes2 = this.result.sourceNodeRecords2;
+            console.log("sourceNodes2: ", this.sourceNodes2);
           },
           err => {
             this.loading = false;
@@ -92,31 +99,33 @@ export class FilterSourceNodeComponent implements OnInit {
             console.log("loading finish")
           }
         );
+    } else {
+      this.sourceNodes2 = [];
+      this.globalVariableService.resetfilters();
     }
   }
 
   selectSourceNode(sourceNode: any, event: any, warning: any = null) {
     if (event.target.checked) {
-      this.selectedSourceNodes.push(sourceNode.source_node);
+      this.selectedSourceNodes2.push(sourceNode.source_node);
     } else {
-      this.selectedSourceNodes.splice(this.selectedSourceNodes.indexOf(sourceNode.source_node), 1);
+      this.selectedSourceNodes2.splice(this.selectedSourceNodes2.indexOf(sourceNode.source_node), 1);
     }
-    // console.log("selectedSourceNodes: ", this.selectedSourceNodes.length);
+    // console.log("selectedSourceNodes2: ", this.selectedSourceNodes2.length);
 
-
-    // if (this.selectedSourceNodes.length > 2) {
+    // if (this.selectedSourceNodes2.length > 2) {
     //   console.log("when more then one Source is selected");
     //   this.warningModalRef = this.modalService.open(warning, { size: 'lg', keyboard: false, backdrop: 'static' });
-    // } else if (warning != null && this.selectedSourceNodes.length == 1) {
+    // } else if (warning != null && this.selectedSourceNodes2.length == 1) {
     // }
-    this.globalVariableService.setSelectedSourceNodes(this.selectedSourceNodes);
-    this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
+    this.globalVariableService.setSelectedSourceNodes2(this.selectedSourceNodes2);
+    this.selectedSourceNodes2 = Array.from(this.globalVariableService.getSelectedSourceNodes2());
     this.filterParams = this.globalVariableService.getFilterParams();
-    console.log("new Filters SOURCE:: ", this.filterParams);
+    console.log("new Filters SOURCE2:: ", this.filterParams);
 
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data   
     // if (from != 'nodeSelectsWarningModal')
-    this.proceed();
+    // this.proceed();
     this.enableDisableProceedButton();
   }
 
@@ -129,20 +138,20 @@ export class FilterSourceNodeComponent implements OnInit {
     this.disableProceed = true;
     // console.log("event: ", event);
     // this.globalVariableService.resetfilters();
-    this.selectedSourceNodes = [];
-    this.globalVariableService.setSelectedSourceNodes(this.selectedSourceNodes);
-    this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
+    this.selectedSourceNodes2 = [];
+    this.globalVariableService.setSelectedSourceNodes2(this.selectedSourceNodes2);
+    this.selectedSourceNodes2 = Array.from(this.globalVariableService.getSelectedSourceNodes2());
     // this.proceed();
   }
 
   seeMoreClosePopup() {
-    this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
+    this.selectedSourceNodes2 = Array.from(this.globalVariableService.getSelectedSourceNodes2());
     this.isAllSelected = false;
     this.seeMoreNodeSelectsModal.close();
   }
 
   closePopup() {
-    this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
+    this.selectedSourceNodes2 = Array.from(this.globalVariableService.getSelectedSourceNodes2());
     this.isAllSelected = false;
     this.seeMoreNodeSelectsModal.close();
     this.warningModalRef.close();
@@ -154,15 +163,15 @@ export class FilterSourceNodeComponent implements OnInit {
   }
 
   proceed() {
-    this.globalVariableService.setSelectedSourceNodes(this.selectedSourceNodes);
-    this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
+    this.globalVariableService.setSelectedSourceNodes2(this.selectedSourceNodes2);
+    this.selectedSourceNodes2 = Array.from(this.globalVariableService.getSelectedSourceNodes2());
     if (this.seeMoreNodeSelectsModal != undefined)
       this.seeMoreNodeSelectsModal.close();
     this.onSelectSourceNode.emit();
   }
 
   private enableDisableProceedButton() {
-    if (this.selectedSourceNodes.length < 1) {
+    if (this.selectedSourceNodes2.length < 1) {
       this.disableProceed = true;
     } else {
       this.disableProceed = false;

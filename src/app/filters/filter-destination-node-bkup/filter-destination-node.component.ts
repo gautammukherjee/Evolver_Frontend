@@ -77,7 +77,7 @@ export class FilterDestinationNodeComponent implements OnInit {
         // this.selectedDestinationNodes = []; // Reinitialized, because when data updated on click TA, it should empty locally
         this.getDestinationNode(event, 2);
         // } else if (event !== undefined && event.clickOn != 'geneFilter' && event.clickOn != 'geneFilter')
-      } else if (event.clickOn !== undefined && event.clickOn != 'diseasesIndicationsFilter') {
+      } else if (event.clickOn !== undefined && event.clickOn != 'sourceNodeFilter') {
         // this.selectedDestinationNodes = []; // Reinitialized, because when data updated on click TA, it should empty locally
         // this.globalVariableService.setSelectedDestinationNodes(this.selectedDestinationNodes);
         this.getDestinationNode(event, 2);

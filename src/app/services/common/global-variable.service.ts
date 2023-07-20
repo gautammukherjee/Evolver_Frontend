@@ -26,7 +26,9 @@ export class GlobalVariableService {
   selectedNodeSelects = '';
   selectedNodeSelects2 = '';
   selectedSourceNodes = [];
+  selectedSourceNodes2 = [];
   selectedDestinationNodes = [];
+  selectedDestinationNodes2 = [];
   selectedEdgeTypes = [];
   selectedEdgeTypes2 = [];
 
@@ -84,12 +86,28 @@ export class GlobalVariableService {
   getSelectedSourceNodes() {
     return this.selectedSourceNodes;
   }
+
+  setSelectedSourceNodes2(source_nodes2: any) {
+    this.selectedSourceNodes2 = source_nodes2;
+  }
+  getSelectedSourceNodes2() {
+    return this.selectedSourceNodes2;
+  }
+
   setSelectedDestinationNodes(destination_nodes: any) {
     this.selectedDestinationNodes = destination_nodes;
   }
   getSelectedDestinationNodes() {
     return this.selectedDestinationNodes;
   }
+
+  setSelectedDestinationNodes2(destination_nodes2: any) {
+    this.selectedDestinationNodes2 = destination_nodes2;
+  }
+  getSelectedDestinationNodes2() {
+    return this.selectedDestinationNodes2;
+  }
+
   setSelectedEdgeTypes(edge_types: any) {
     this.selectedEdgeTypes = edge_types;
   }
@@ -130,7 +148,9 @@ export class GlobalVariableService {
       nnrt_id: this.getSelectedNodeSelects() != undefined ? this.getSelectedNodeSelects() : 2,
       nnrt_id2: this.getSelectedNodeSelects2() != undefined ? this.getSelectedNodeSelects2() : undefined,
       source_node: this.getSelectedSourceNodes().length > 0 ? this.getSelectedSourceNodes() : undefined,
+      source_node2: this.getSelectedSourceNodes2().length > 0 ? this.getSelectedSourceNodes2() : undefined,
       destination_node: this.getSelectedDestinationNodes().length > 0 ? this.getSelectedDestinationNodes() : undefined,
+      destination_node2: this.getSelectedDestinationNodes2().length > 0 ? this.getSelectedDestinationNodes2() : undefined,
       edge_type_id: this.getSelectedEdgeTypes().length > 0 ? this.getSelectedEdgeTypes() : undefined,
       edge_type_id2: this.getSelectedEdgeTypes2().length > 0 ? this.getSelectedEdgeTypes2() : undefined,
 
@@ -145,6 +165,7 @@ export class GlobalVariableService {
   resetfilters() {
     this.setSelectedNodeSelects(2);
     this.setSelectedSourceNodes([]);
+    this.setSelectedSourceNodes2([]);
     this.setSelectedDestinationNodes([]);
     this.setSelectedNodeSelects2(undefined);
     // this.setSelectedEdgeTypes([]);
@@ -153,6 +174,13 @@ export class GlobalVariableService {
 
   resetNode() {
     this.setSelectedNodes(undefined);
+  }
+
+  resetSourceNode2() {
+    this.setSelectedSourceNodes2([]);
+  }
+  resetDestinationNode2() {
+    this.setSelectedDestinationNodes2([]);
   }
 
   resetfiltersInner() {

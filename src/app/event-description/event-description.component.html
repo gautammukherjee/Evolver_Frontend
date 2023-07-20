@@ -17,7 +17,7 @@
                 <div class="overlay" *ngIf="loadingDesc">
                     <img style="margin:185px 653px;" src="../../assets/images/loader_big.gif" />                
                 </div>
-                <div class="table-responsive custom-fixed-header-table" [ngClass]="currentLevel == '1' ? 'level1' : currentLevel == 2 ? 'level2' : 'level3'">
+                <div class="table-responsive custom-fixed-header-table" [ngClass]="toggleLevels == false ? 'hiddenLevels' : currentLevel == '1' ? 'level1' : currentLevel == 2 ? 'level2' : 'level3'">
                     <table id="showEventDescription" data-toolbar="#toolbar" data-search="true"
                         data-show-export="true" data-show-columns="true" data-page-size="50" data-filter-control="true"
                         data-page-list="[10, 25, 50, 100, All]">

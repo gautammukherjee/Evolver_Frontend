@@ -19,6 +19,7 @@ export class FilterEdgeTypeLevel2Component implements OnInit {
 
   private filterParams: any;
   public selectedEdgeTypes2: any = [];
+  public selectedEdgeTypesNames2: any = [];
   public edgeTypes2: any = [];
   private params: object = {};
   private result: any = [];
@@ -41,7 +42,6 @@ export class FilterEdgeTypeLevel2Component implements OnInit {
   edgeTypeFilterText: string = '';
   //diseaseCheck: any;
   //diseaseCheckCT: any;
-  hideCardBody: boolean = true;
   public destNodeCheck2: boolean = false;
 
   constructor(
@@ -66,29 +66,13 @@ export class FilterEdgeTypeLevel2Component implements OnInit {
     // console.log("new Filters1: ", this.filterParams);
 
     this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
-      console.log("eventEdgeType:: ", event.clickOn);
-      if (event.clickOn == undefined) {
-        // this.hideCardBody = true;
-        this.getEdgeType(event);
-      } else if (event.clickOn !== undefined && event.clickOn == 'diseasesIndicationsFilter') {
-        // this.hideCardBody = true;
-
-        this.filterParams = this.globalVariableService.getFilterParams();
-        if (this.filterParams.destination_node == undefined) {
-          // this.destNodeCheck2 = false;
-          // this.firstTimeCheck = false;
-          this.edgeTypes2 = [];
-        }
-        else {
-          // this.destNodeCheck2 = true;
-          // if (this.firstTimeCheck === false) // Edge select only one time reload when we choose destination nodes are selected
-          this.getEdgeType(event);
-        }
+      console.log("Edge Level: ", event.clickOn);
+      if (event.clickOn !== undefined && event.clickOn == 'sourceNodeFilter') {
+        console.log("Edge Level 2:2 ", event.clickOn);
+        this.getEdgeType2(event);
       }
     });
-    this.getEdgeType(event);
-    // this.hideCardBody = true;
-
+    this.getEdgeType2(event);
     this.selectedEdgeTypes2 = Array.from(this.globalVariableService.getSelectedEdgeTypes2());
   }
 
@@ -96,10 +80,10 @@ export class FilterEdgeTypeLevel2Component implements OnInit {
     this.UpdateFilterDataApply?.unsubscribe();
   }
 
-  public getEdgeType(event: any) {
+  public getEdgeType2(event: any) {
     this.filterParams = this.globalVariableService.getFilterParams();
 
-    if (this.filterParams.destination_node != undefined) {
+    if (this.filterParams.source_node != undefined) {
       this.loading = true;
       // this.firstTimeCheck = true;
       this.nodeSelectsService.getEdgeType()
@@ -135,21 +119,29 @@ export class FilterEdgeTypeLevel2Component implements OnInit {
     }
     else {
       this.edgeTypes2 = [];
+      this.globalVariableService.resetfilters();
     }
   }
 
   selectEdgeType(edgeType: any, event: any, from: any = null) {
     if (event.target.checked) {
       this.selectedEdgeTypes2.push(edgeType.edge_type_id);
+      this.selectedEdgeTypesNames2.push(edgeType.edge_type_name);
     } else {
       this.selectedEdgeTypes2.splice(this.selectedEdgeTypes2.indexOf(edgeType.edge_type_id), 1);
+      this.selectedEdgeTypesNames2.splice(this.selectedEdgeTypesNames2.indexOf(edgeType.edge_type_name), 1);
     }
 
-    console.log("selectedEdgeTypes2: ", this.selectedEdgeTypes2);
+    console.log("selectedEdgeTypesID2: ", this.selectedEdgeTypes2);
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data   
 
-    if (from != 'edgeSelectsWarningModal')
-      this.proceed();
+    this.globalVariableService.setSelectedEdgeTypes2(this.selectedEdgeTypes2);
+    this.selectedEdgeTypes2 = Array.from(this.globalVariableService.getSelectedEdgeTypes2());
+    this.filterParams = this.globalVariableService.getFilterParams();
+    console.log("new Filters Edge Types2: ", this.filterParams);
+
+    // if (from != 'edgeSelectsWarningModal')
+    //   this.proceed();
     this.enableDisableProceedButton();
   }
 
@@ -172,6 +164,7 @@ export class FilterEdgeTypeLevel2Component implements OnInit {
   resetEdgeType() {
     this.selectedEdgeTypes2 = [];
     this.globalVariableService.setSelectedEdgeTypes2(this.selectedEdgeTypes2);
+    this.selectedEdgeTypesNames2 = [];
     this.selectedEdgeTypes2 = Array.from(this.globalVariableService.getSelectedEdgeTypes2());
     // console.log("selected Edge Type: ", this.selectedEdgeTypes2);
     // this.proceed();
@@ -179,7 +172,6 @@ export class FilterEdgeTypeLevel2Component implements OnInit {
 
   // reloadEdgeType() {
   //   // this.globalVariableService.resetChartFilter();
-  //   // this.hideCardBody = !this.hideCardBody;
   //   this.params = this.globalVariableService.getFilterParams();
   //   // if (!this.hideCardBody)
   //   this.getEdgeType(this.params);

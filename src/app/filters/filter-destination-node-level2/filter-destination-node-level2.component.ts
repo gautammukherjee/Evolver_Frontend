@@ -6,11 +6,11 @@ import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-filter-destination-node',
-  templateUrl: './filter-destination-node.component.html',
-  styleUrls: ['./filter-destination-node.component.scss']
+  selector: 'app-filter-destination-node-level2',
+  templateUrl: './filter-destination-node-level2.component.html',
+  styleUrls: ['./filter-destination-node-level2.component.scss']
 })
-export class FilterDestinationNodeComponent implements OnInit {
+export class FilterDestinationNodeLevel2Component implements OnInit {
 
   @Output() onSelectDestinationNode: EventEmitter<any> = new EventEmitter();
   @Input() UpdateFilterDataApply?: Subject<any>;
@@ -18,9 +18,8 @@ export class FilterDestinationNodeComponent implements OnInit {
   // public alphabeticallyGroupedGenes = [];
 
   private filterParams: any;
-  public alphabeticallyGroupedDestinationNodes: any = '';
-  public selectedDestinationNodes: any = [];
-  public destinationNodes: any = [];
+  public selectedDestinationNodes2: any = [];
+  public destinationNodes2: any = [];
   private params: object = {};
   private result: any = [];
   public loading: boolean = false;
@@ -51,11 +50,14 @@ export class FilterDestinationNodeComponent implements OnInit {
 
   ngOnInit(): void {
     // this.filterParams = this.globalVariableService.getFilterParams();
-    // this.getDestinationNode(event, 1);
+    // this.getDestinationNode2(event, 1);
 
     this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
-      console.log("event Destination:: ", event.clickOn);
+      console.log("Destination level2:: ", event.clickOn);
       if (event.clickOn == undefined) {
+        this.getResetDestinationNode();
+      } else if (event.clickOn !== undefined && (event.clickOn == 'nodeLevel2Filter')) {
+        console.log("here1");
         this.getResetDestinationNode();
       }
     });
@@ -66,53 +68,61 @@ export class FilterDestinationNodeComponent implements OnInit {
   }
 
   public getResetDestinationNode() {
-    this.destinationNodes = [];
+    this.selectedDestinationNodes2 = []
+    this.destinationNodes2 = [];
+    this.globalVariableService.resetDestinationNode2();
+    this.searchInput = '';
   }
 
-  getDestinationNode() {
-    if (this.searchInput.length > 2) {
-      this.selectedDestinationNodes = [];
-      this.loading = true;
-      this.filterParams = this.globalVariableService.getFilterParams({ "searchval": this.searchInput });
-      console.log("filterparamsSearchDestination: ", this.filterParams);
-      this.nodeSelectsService.getDestinationNode(this.filterParams)
-        .subscribe(
-          data => {
-            this.result = data;
-            this.destinationNodes = this.result.destinationNodeRecords;
-            console.log("destinationNodes: ", this.destinationNodes);
-          },
-          err => {
-            this.destinationNodesCheck = true;
-            this.loading = false;
-            console.log(err.message)
-          },
-          () => {
-            this.destinationNodesCheck = true;
-            this.loading = false;
-            console.log("loading finish")
-          }
-        );
+  getDestinationNode2() {
+    this.filterParams = this.globalVariableService.getFilterParams();
+    this.selectedDestinationNodes2 = [];
+    if (this.filterParams.source_node != undefined) {
+      if (this.searchInput.length > 2) {
+        this.loading = true;
+        this.filterParams = this.globalVariableService.getFilterParams({ "searchval": this.searchInput });
+        console.log("filterparamsSearchDestination: ", this.filterParams);
+        this.nodeSelectsService.getDestinationNode2(this.filterParams)
+          .subscribe(
+            data => {
+              this.result = data;
+              this.destinationNodes2 = this.result.destinationNodeRecords2;
+              console.log("destinationNodes2: ", this.destinationNodes2);
+            },
+            err => {
+              this.destinationNodesCheck = true;
+              this.loading = false;
+              console.log(err.message)
+            },
+            () => {
+              this.destinationNodesCheck = true;
+              this.loading = false;
+              console.log("loading finish")
+            }
+          );
+      }
+    } else {
+      this.globalVariableService.resetfilters();
     }
   }
 
   selectDestinationNode(destinationNode: any, event: any, from: any = null) {
     if (event.target.checked) {
-      this.selectedDestinationNodes.push(destinationNode.destination_node);
+      this.selectedDestinationNodes2.push(destinationNode.destination_node);
     } else {
-      this.selectedDestinationNodes.splice(this.selectedDestinationNodes.indexOf(destinationNode.destination_node), 1);
+      this.selectedDestinationNodes2.splice(this.selectedDestinationNodes2.indexOf(destinationNode.destination_node), 1);
     }
-    console.log("selectedDestinationNodes: ", this.selectedDestinationNodes);
+    console.log("selectedDestinationNodes2: ", this.selectedDestinationNodes2);
 
-    this.globalVariableService.setSelectedDestinationNodes(this.selectedDestinationNodes);
-    this.selectedDestinationNodes = Array.from(this.globalVariableService.getSelectedDestinationNodes());
+    this.globalVariableService.setSelectedDestinationNodes2(this.selectedDestinationNodes2);
+    this.selectedDestinationNodes2 = Array.from(this.globalVariableService.getSelectedDestinationNodes2());
     this.filterParams = this.globalVariableService.getFilterParams();
-    console.log("new Filters DESTINATION: ", this.filterParams);
+    console.log("new Filters DESTINATION 2: ", this.filterParams);
 
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data
     // if (from != 'nodeSelectsWarningModal')
-    this.proceed();
-    this.enableDisableProceedButton();
+    // this.proceed();
+    // this.enableDisableProceedButton();
   }
 
   collapseMenuItem() {
@@ -122,9 +132,9 @@ export class FilterDestinationNodeComponent implements OnInit {
   resetDestinationNode() {
     this.searchInput = '';
     this.disableProceed = true;
-    this.selectedDestinationNodes = [];
-    this.globalVariableService.setSelectedDestinationNodes(this.selectedDestinationNodes);
-    this.selectedDestinationNodes = Array.from(this.globalVariableService.getSelectedDestinationNodes());
+    this.selectedDestinationNodes2 = [];
+    this.globalVariableService.setSelectedDestinationNodes2(this.selectedDestinationNodes2);
+    this.selectedDestinationNodes2 = Array.from(this.globalVariableService.getSelectedDestinationNodes2());
     // this.proceed();
   }
 
@@ -133,7 +143,7 @@ export class FilterDestinationNodeComponent implements OnInit {
   //   // this.hideCardBody = !this.hideCardBody;
   //   this.params = this.globalVariableService.getFilterParams();
   //   // if (!this.hideCardBody)
-  //   this.getDestinationNode(this.params);
+  //   this.getDestinationNode2(this.params);
   // }
 
   SeeMore(evt: any, seeMoreDestinationNodeModal: any) {
@@ -141,13 +151,13 @@ export class FilterDestinationNodeComponent implements OnInit {
   }
 
   seeMoreClosePopup() {
-    this.selectedDestinationNodes = Array.from(this.globalVariableService.getSelectedDestinationNodes());
+    this.selectedDestinationNodes2 = Array.from(this.globalVariableService.getSelectedDestinationNodes2());
     this.isAllSelected = false;
     this.seeMoreNodeSelectsModal.close();
   }
 
   closePopup() {
-    this.selectedDestinationNodes = Array.from(this.globalVariableService.getSelectedDestinationNodes());
+    this.selectedDestinationNodes2 = Array.from(this.globalVariableService.getSelectedDestinationNodes2());
     this.isAllSelected = false;
     this.seeMoreNodeSelectsModal.close();
   }
@@ -158,8 +168,8 @@ export class FilterDestinationNodeComponent implements OnInit {
   }
 
   proceed() {
-    this.globalVariableService.setSelectedDestinationNodes(this.selectedDestinationNodes);
-    this.selectedDestinationNodes = Array.from(this.globalVariableService.getSelectedDestinationNodes());
+    this.globalVariableService.setSelectedDestinationNodes2(this.selectedDestinationNodes2);
+    this.selectedDestinationNodes2 = Array.from(this.globalVariableService.getSelectedDestinationNodes2());
     this.filterParams = this.globalVariableService.getFilterParams();
     // console.log("new Filters destination: ", this.filterParams);
 
@@ -169,7 +179,7 @@ export class FilterDestinationNodeComponent implements OnInit {
   }
 
   private enableDisableProceedButton() {
-    if (this.selectedDestinationNodes.length < 1) {
+    if (this.selectedDestinationNodes2.length < 1) {
       this.disableProceed = true;
     } else {
       this.disableProceed = false;
