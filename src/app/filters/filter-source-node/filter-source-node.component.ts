@@ -113,7 +113,6 @@ export class FilterSourceNodeComponent implements OnInit {
     this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
     this.filterParams = this.globalVariableService.getFilterParams();
     console.log("new Filters SOURCE:: ", this.filterParams);
-
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data   
     // if (from != 'nodeSelectsWarningModal')
     this.proceed();
@@ -158,7 +157,7 @@ export class FilterSourceNodeComponent implements OnInit {
     this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
     if (this.seeMoreNodeSelectsModal != undefined)
       this.seeMoreNodeSelectsModal.close();
-    this.onSelectSourceNode.emit();
+    this.onSelectSourceNode.emit(this.selectedSourceNodes);
   }
 
   private enableDisableProceedButton() {
