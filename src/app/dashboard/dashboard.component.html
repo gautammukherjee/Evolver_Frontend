@@ -12,7 +12,7 @@
                         <app-filter-node-select (onSelectNode)='nodeChanged($event)'></app-filter-node-select>
                     </div>
                     <div class="filter-single">
-                        <app-filter-source-node (onSelectSourceNode)='sourceNodeChanged("sourceNodeFilter")'
+                        <app-filter-source-node (onSelectSourceNode)='sourceNodeChanged("sourceNodeFilter" , $event)'
                             [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node>
                     </div>
                     <div class="filter-single">
@@ -51,7 +51,7 @@
             
 
             <div class="add-level-handler text-end pe-2 pt-1">
-                <button class="btn btn-light btn-sm" (click)="onAddLevel()"  [disabled]="maxLevel === currentLevel">+ Add Level & Submit</button>
+                <button class="btn btn-light btn-sm" (click)="onAddLevel()"  [disabled]="maxLevel === currentLevel || !isSourceNodes">+ Add Level & Submit</button>
                 <button class="btn btn-light btn-sm ms-2" *ngIf="currentLevel > 1" (click)="onToggleLevel()">{{showLevels == false ? 'Show' : 'Hide'}} Level</button>
             </div>
         </div>
