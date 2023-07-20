@@ -142,7 +142,7 @@ export class NetworkMapComponent implements OnInit {
 
             //Destination node data
             this.destinationnodeData.push({
-              id: Math.floor(event.destinationnode), name: event.destinationnode_name, colorNode: '#4B5DA1', shapeType: 'barrel', nodeType: 'target'
+              id: Math.floor(event.destinationnode), name: event.destinationnode_name, colorNode: '#4B5DA1', shapeType: 'circle', nodeType: 'target'
             });
 
             this.legendsNodeTypes.push({ node_name: event.sourcenode, color_code: '#4B5DA1' });
@@ -219,7 +219,7 @@ export class NetworkMapComponent implements OnInit {
       // animate: true,
 
       name: 'cose',
-      idealEdgeLength: 200,
+      idealEdgeLength: 50,
       nodeOverlap: 4,
       // refresh: 20,
       nodeSpacing: 10,
