@@ -179,6 +179,9 @@ export class GlobalVariableService {
   resetSourceNode2() {
     this.setSelectedSourceNodes2([]);
   }
+  resetDestinationNode2() {
+    this.setSelectedDestinationNodes2([]);
+  }
 
   resetfiltersInner() {
   }

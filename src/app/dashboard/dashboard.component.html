@@ -37,17 +37,13 @@
                             [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-node-select-level2>
                         </div>
                         <div class="filter-single">
-                            <app-filter-source-node-level2 (onSelectSourceNode)='sourceNodeChanged2("diseasesIndicationsFilter")'
-                                [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node-level2>
+                            <app-filter-source-node-level2 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node-level2>
                         </div>
                         <div class="filter-single">
-                            <app-filter-edge-type-level2 (onSelectEdgeType2)='edgeTypeChanged2($event)'
-                            [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type-level2>
+                            <app-filter-edge-type-level2 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type-level2>
                         </div>
                         <div class="filter-single">
-                            <app-filter-destination-node-level2
-                            (onSelectDestinationNode)='destinationNodeChanged2("diseasesIndicationsFilter")'
-                            [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-destination-node-level2>
+                            <app-filter-destination-node-level2 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-destination-node-level2>
                         </div>
                     </div>
                 </div>

@@ -50,11 +50,14 @@ export class FilterDestinationNodeLevel2Component implements OnInit {
 
   ngOnInit(): void {
     // this.filterParams = this.globalVariableService.getFilterParams();
-    // this.getDestinationNode(event, 1);
+    // this.getDestinationNode2(event, 1);
 
     this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
       console.log("Destination level2:: ", event.clickOn);
       if (event.clickOn == undefined) {
+        this.getResetDestinationNode();
+      } else if (event.clickOn !== undefined && (event.clickOn == 'nodeLevel2Filter')) {
+        console.log("here1");
         this.getResetDestinationNode();
       }
     });
@@ -65,10 +68,13 @@ export class FilterDestinationNodeLevel2Component implements OnInit {
   }
 
   public getResetDestinationNode() {
+    this.selectedDestinationNodes2 = []
     this.destinationNodes2 = [];
+    this.globalVariableService.resetDestinationNode2();
+    this.searchInput = '';
   }
 
-  getDestinationNode() {
+  getDestinationNode2() {
     this.filterParams = this.globalVariableService.getFilterParams();
     this.selectedDestinationNodes2 = [];
     if (this.filterParams.source_node != undefined) {
@@ -137,7 +143,7 @@ export class FilterDestinationNodeLevel2Component implements OnInit {
   //   // this.hideCardBody = !this.hideCardBody;
   //   this.params = this.globalVariableService.getFilterParams();
   //   // if (!this.hideCardBody)
-  //   this.getDestinationNode(this.params);
+  //   this.getDestinationNode2(this.params);
   // }
 
   SeeMore(evt: any, seeMoreDestinationNodeModal: any) {

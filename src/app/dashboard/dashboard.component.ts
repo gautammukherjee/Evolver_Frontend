@@ -67,19 +67,19 @@ export class DashboardComponent implements OnInit {
     this.doUpdateFilterDataApply.next({ clickOn: clickOn });
   }
 
-  edgeTypeChanged2(e: any) {
-    // this.doFilterApply.next(e);
-  }
+  // edgeTypeChanged2(e: any) {
+  //   // this.doFilterApply.next(e);
+  // }
 
-  sourceNodeChanged2(clickOn: any) {
-    // this.doFilterApply.next(undefined);
-    this.doUpdateFilterDataApply.next({ clickOn: clickOn });
-  }
-  destinationNodeChanged2(clickOn: any) {
-    // this.doFilterApply.next(undefined);
-    // this.doUpdateFilterDataApply.next(e);
-    this.doUpdateFilterDataApply.next({ clickOn: clickOn });
-  }
+  // sourceNodeChanged2(clickOn: any) {
+  //   // this.doFilterApply.next(undefined);
+  //   this.doUpdateFilterDataApply.next({ clickOn: clickOn });
+  // }
+  // destinationNodeChanged2(clickOn: any) {
+  //   // this.doFilterApply.next(undefined);
+  //   // this.doUpdateFilterDataApply.next(e);
+  //   this.doUpdateFilterDataApply.next({ clickOn: clickOn });
+  // }
 
 
   secondTab() {
