@@ -125,7 +125,7 @@ export class FilterDestinationNodeComponent implements OnInit {
     this.selectedDestinationNodes = [];
     this.globalVariableService.setSelectedDestinationNodes(this.selectedDestinationNodes);
     this.selectedDestinationNodes = Array.from(this.globalVariableService.getSelectedDestinationNodes());
-    // this.proceed();
+    this.proceed();
   }
 
   // reloadNode() {

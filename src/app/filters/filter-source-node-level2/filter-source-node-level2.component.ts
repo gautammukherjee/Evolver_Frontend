@@ -54,12 +54,12 @@ export class FilterSourceNodeLevel2Component implements OnInit {
     this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
       console.log("Source Level: ", event.clickOn);
       if (event.clickOn == undefined) {
-        console.log("Source Level 2:1 ", event.clickOn);
+        // console.log("Source Level 2:1 ", event.clickOn);
         this.getResetSourceNode();
       } else if (event.clickOn !== undefined && (event.clickOn == 'sourceNodeFilter' || event.clickOn == 'edgeTypeFilter' || event.clickOn == 'destinationNodeFilter' || event.clickOn == 'nodeLevel2Filter')) {
         // this.hideCardBody = true;
         this.filterParams = this.globalVariableService.getFilterParams();
-        console.log("Source Level 2:2 ", event.clickOn);
+        // console.log("Source Level 2:2 ", event.clickOn);
         // if (this.firstTimeCheck === false) // Node select only one time reload when we choose destination nodes are selected
         this.getSourceNode2();
       }
