@@ -76,7 +76,7 @@ export class FilterDestinationNodeLevel2Component implements OnInit {
 
   getDestinationNode2() {
     this.filterParams = this.globalVariableService.getFilterParams();
-    this.selectedDestinationNodes2 = [];
+    // this.selectedDestinationNodes2 = [];
     if (this.filterParams.source_node != undefined) {
       if (this.searchInput.length > 2) {
         this.loading = true;

@@ -131,7 +131,7 @@ export class FilterSourceNodeComponent implements OnInit {
     this.selectedSourceNodes = [];
     this.globalVariableService.setSelectedSourceNodes(this.selectedSourceNodes);
     this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
-    // this.proceed();
+    this.proceed();
   }
 
   seeMoreClosePopup() {

@@ -82,6 +82,7 @@ export class FilterEdgeTypeLevel2Component implements OnInit {
 
   public getEdgeType2(event: any) {
     this.filterParams = this.globalVariableService.getFilterParams();
+    this.selectedEdgeTypesNames2 = []
 
     if (this.filterParams.source_node != undefined) {
       this.loading = true;

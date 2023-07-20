@@ -71,7 +71,7 @@ export class FilterDestinationNodeComponent implements OnInit {
 
   getDestinationNode() {
     if (this.searchInput.length > 2) {
-      this.selectedDestinationNodes = [];
+      // this.selectedDestinationNodes = [];
       this.loading = true;
       this.filterParams = this.globalVariableService.getFilterParams({ "searchval": this.searchInput });
       console.log("filterparamsSearchDestination: ", this.filterParams);
@@ -125,7 +125,7 @@ export class FilterDestinationNodeComponent implements OnInit {
     this.selectedDestinationNodes = [];
     this.globalVariableService.setSelectedDestinationNodes(this.selectedDestinationNodes);
     this.selectedDestinationNodes = Array.from(this.globalVariableService.getSelectedDestinationNodes());
-    // this.proceed();
+    this.proceed();
   }
 
   // reloadNode() {
