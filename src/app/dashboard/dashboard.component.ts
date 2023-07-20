@@ -14,8 +14,9 @@ export class DashboardComponent implements OnInit {
   doUpdateFilterDataApply: Subject<any> = new Subject();
   showSidebar: boolean = true;
   viewMode = 'event_list';
-  showLevels: boolean = false;
+  showLevels: boolean = true;
   currentLevel: number = 1;
+  maxLevel: number = 2;
 
   constructor(private globalVaiableService: GlobalVariableService, private router: Router) {
     // this.globalVaiableService.setSelectedTa([1]);
@@ -91,7 +92,6 @@ export class DashboardComponent implements OnInit {
   onAddLevel() {
     this.showLevels = true;
     this.currentLevel = this.currentLevel + 1;
-    // debugger
   }
 
 }

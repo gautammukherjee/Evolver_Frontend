@@ -77,13 +77,12 @@ export class FilterSourceNodeLevel2Component implements OnInit {
   }
 
   getSourceNode2() {
-
     this.globalVariableService.resetSourceNode2(); // reset the source node when source node component refresh
     this.filterParams = this.globalVariableService.getFilterParams();
+    this.selectedSourceNodes2 = []
 
     if (this.filterParams.source_node != undefined) {
       this.loading = true;
-
       this.nodeSelectsService.getSourceNode2(this.filterParams)
         .subscribe(
           data => {
@@ -112,8 +111,7 @@ export class FilterSourceNodeLevel2Component implements OnInit {
     } else {
       this.selectedSourceNodes2.splice(this.selectedSourceNodes2.indexOf(sourceNode.source_node), 1);
     }
-    console.log("selectedSourceNodes2: ", this.selectedSourceNodes2.length);
-
+    // console.log("selectedSourceNodes2: ", this.selectedSourceNodes2.length);
 
     // if (this.selectedSourceNodes2.length > 2) {
     //   console.log("when more then one Source is selected");
@@ -123,7 +121,7 @@ export class FilterSourceNodeLevel2Component implements OnInit {
     this.globalVariableService.setSelectedSourceNodes2(this.selectedSourceNodes2);
     this.selectedSourceNodes2 = Array.from(this.globalVariableService.getSelectedSourceNodes2());
     this.filterParams = this.globalVariableService.getFilterParams();
-    console.log("new Filters SOURCE:: ", this.filterParams);
+    console.log("new Filters SOURCE2:: ", this.filterParams);
 
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data   
     // if (from != 'nodeSelectsWarningModal')

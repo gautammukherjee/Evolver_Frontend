@@ -70,6 +70,7 @@ export class FilterDestinationNodeLevel2Component implements OnInit {
 
   getDestinationNode() {
     this.filterParams = this.globalVariableService.getFilterParams();
+    this.selectedDestinationNodes2 = [];
     if (this.filterParams.source_node != undefined) {
       if (this.searchInput.length > 2) {
         this.loading = true;
@@ -107,15 +108,15 @@ export class FilterDestinationNodeLevel2Component implements OnInit {
     }
     console.log("selectedDestinationNodes2: ", this.selectedDestinationNodes2);
 
-    this.globalVariableService.setSelectedDestinationNodes(this.selectedDestinationNodes2);
+    this.globalVariableService.setSelectedDestinationNodes2(this.selectedDestinationNodes2);
     this.selectedDestinationNodes2 = Array.from(this.globalVariableService.getSelectedDestinationNodes2());
     this.filterParams = this.globalVariableService.getFilterParams();
     console.log("new Filters DESTINATION 2: ", this.filterParams);
 
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data
     // if (from != 'nodeSelectsWarningModal')
-    this.proceed();
-    this.enableDisableProceedButton();
+    // this.proceed();
+    // this.enableDisableProceedButton();
   }
 
   collapseMenuItem() {

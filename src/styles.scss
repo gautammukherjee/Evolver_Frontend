@@ -600,20 +600,32 @@ body {
 
 /*----INDICATOR MODAL POPUP---*/
 
-.level1{
-    .fix-sticky{
-        top:170px !important;
+.level1 {
+    .fix-sticky {
+        top: 164px !important;
     }
 }
 
-.level2{
-    .fix-sticky{
-        top:225px !important;
+.level2 {
+    .fix-sticky {
+        top: 210px !important;
     }
 }
 
-.level3{
-    .fix-sticky{
-        top:280px !important;
+.level3 {
+    .fix-sticky {
+        top: 277px !important;
+    }
+}
+
+.hiddenLevels {
+    .fix-sticky {
+        top: 170px !important;
+    }
+}
+
+.fullscreen {
+    .fix-sticky {
+        top: 0px !important;
     }
 }

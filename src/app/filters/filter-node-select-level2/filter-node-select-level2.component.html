@@ -5,7 +5,7 @@
     <div class="search-input">
       <select name="" id="" class="form-control" (change)="selectNode2($event)">
         <!--<option value="node_select2.nnrt_id" [selected]="selectedNodeSelects2.indexOf(node_select2.nnrt_id)>-1 ">{{node_select2.pair_name}}</option>-->
-        <option value="undefined" select>Please choose Pair</option>
+        <option value="" select>Please choose Pair</option>
         <option *ngFor="let node_select2 of node_selects2; let i = index" 
         [value]="node_selects2[i].nnrt_id" [selected]="(node_selects2[i].nnrt_id==selectedNodeSelects2?'selected':'')">
         {{ node_select2.pair_name }}
