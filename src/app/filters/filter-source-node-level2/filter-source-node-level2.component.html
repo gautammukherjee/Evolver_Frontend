@@ -11,11 +11,12 @@
 
     <div class="dropdown-toggle" id="source-node-filter2" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
       <div class="body">
+
         <div class="search-input">
-          <input class="form-control" type="text" placeholder="Search Source level2 (Gene/Disease)" aria-label="Search" />
+          <input class="form-control" type="text" placeholder="Search Source level2 (Gene/Disease)" aria-label="Search" [(ngModel)]="sourceNodeFilter"/>
           <img *ngIf="loading" src="../../assets/images/loader_small.gif" width="20px"/>
-          <!--<span *ngIf="selectedEdgeTypes.length > 0" class="reset-search"
-            (click)="resetEdgeType();">Reset</span>-->
+            <span *ngIf="selectedSourceNodes2.length > 0" class="reset-search"
+              (click)="resetSourceNode();" title="RESET INPUT-1"><i class="bi bi-x-circle"></i></span>
           </div>
       </div>
     </div>
@@ -25,7 +26,7 @@
       <div class="body">
         <div *ngIf="sourceNodes2.length">
           <div class="search-options">
-            <div class="mb-1 form-check" *ngFor="let sourceNode of sourceNodes2">
+            <div class="mb-1 form-check" *ngFor="let sourceNode of sourceNodes2 | SourceNodeFilterPipe:sourceNodeFilter">
               <input class="form-check-input border border-secondary" type="checkbox" name="sourceNodes2"
                  [value]="sourceNode"
                 [checked]="selectedSourceNodes2.indexOf(sourceNode.source_node)>-1 "

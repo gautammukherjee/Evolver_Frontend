@@ -94,7 +94,7 @@ export class NgCytoComponent implements OnChanges {
                 'background-color': 'data(colorCode)',
                 'color': '#000'
             })
-            .style({ "font-size": 12,"font-family": "Times New Roman"})    // big font
+            .style({ "font-size": 12, "font-family": "Times New Roman" })    // big font
 
             .selector(':selected')
             .css({
@@ -409,10 +409,10 @@ export class NgCytoComponent implements OnChanges {
         // console.log("select2: ", this.checkedNodes);
         // this.onGraphSelection.emit();
 
-        // this.checkedNodes = Array.from(this.globalVariableService.getSelectedNodes()); //get the existing node id
-        this.checkedNodes = parseInt(nodeId);  // and append the selecting nodeid
+        this.checkedNodes = Array.from(this.globalVariableService.getSelectedNodes()); //get the existing node id
+        this.checkedNodes.push(parseInt(nodeId));  // and append the selecting nodeid
         this.globalVariableService.setSelectedNodes(this.checkedNodes);
-        console.log("select22: ", this.checkedNodes);
+        // console.log("node id append: ", this.checkedNodes);
         this.onGraphSelection.emit();
 
         // this.node_name = "piyush";

@@ -17,9 +17,9 @@ export class DashboardComponent implements OnInit {
   showLevels: boolean = true;
   currentLevel: number = 1;
   maxLevel: number = 2;
-  isSourceNodes : boolean = false;
+  isSourceNodes: boolean = false;
 
-  constructor(private globalVaiableService: GlobalVariableService, private router: Router) {
+  constructor(private globalVariableService: GlobalVariableService, private router: Router) {
     // this.globalVaiableService.setSelectedTa([1]);
   }
 
@@ -39,8 +39,8 @@ export class DashboardComponent implements OnInit {
     this.doFilterApply.next(undefined);
     this.doUpdateFilterDataApply.next({ clickOn: clickOn });
   }
-  sourceNodeChanged(clickOn: any, e:any) {
-    if(e && e.length > 0){
+  sourceNodeChanged(clickOn: any, e: any) {
+    if (e && e.length > 0) {
       this.isSourceNodes = true;
     }
     // this.doFilterApply.next(undefined);
@@ -97,6 +97,17 @@ export class DashboardComponent implements OnInit {
     this.doFilterApply.next(undefined);
     this.showLevels = true;
     this.currentLevel = this.currentLevel + 1;
+  }
+
+  onSubmit() {
+    this.doFilterApply.next(undefined);
+
+  }
+
+  resetAllFilters() {
+    this.globalVariableService.resetfilters();// On click TA other filter's data will update, so've to reset filter selected data   
+    window.location.reload();
+    // this.proceed();
   }
 
 }

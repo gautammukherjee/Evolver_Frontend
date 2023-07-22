@@ -31,6 +31,7 @@ export class FilterSourceNodeLevel2Component implements OnInit {
   // showSourceBody: boolean = false;
   private warningModalRef: any;
   searchInput: any = null;
+  sourceNodeFilter: string = '';
 
   constructor(
     private nodeSelectsService: NodeSelectsService,
