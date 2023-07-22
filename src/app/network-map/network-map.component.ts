@@ -143,7 +143,7 @@ export class NetworkMapComponent implements OnInit {
 
             //Destination node data
             this.destinationnodeData.push({
-              id: Math.floor(event.destinationnode), name: event.destinationnode_name, colorNode: '#4B5DA1', shapeType: 'triangle', nodeType: 'target'
+              id: Math.floor(event.destinationnode), name: event.destinationnode_name, colorNode: '#4B5DA1', shapeType: 'circle', nodeType: 'target'
             });
 
             this.legendsNodeTypes.push({ node_name: event.sourcenode, color_code: '#4B5DA1' });
