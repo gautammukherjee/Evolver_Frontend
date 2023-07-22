@@ -6,7 +6,7 @@
             <div class="horizonal-filter-bar">
                 <div class="filter-inner">
                     <div class="filter-left-heading" style="font-size:16px;">
-                        Direct Level Association
+                        One Degree
                     </div>
                     <div class="filter-single">
                         <app-filter-node-select (onSelectNode)='nodeChanged($event)'></app-filter-node-select>
@@ -30,7 +30,7 @@
                 <div *ngIf="currentLevel == 2" class="horizonal-filter-bar">
                     <div class="filter-inner">
                         <div class="filter-left-heading" style="font-size:16px;">
-                            Multi Level Association
+                            Two Degree
                         </div>
                         <div class="filter-single">
                             <app-filter-node-select-level2 (onSelectNode2)='nodeChanged2("nodeLevel2Filter")'

@@ -102,6 +102,7 @@ export class EventDescriptionComponent implements OnInit {
             temps["sourcenode_name"] = event.sourcenode_name;
             temps["destinationnode_name"] = event.destinationnode_name;
             temps["level"] = event.level;
+            temps["edgeType_articleType"] = event.edge_type_article_type_ne_ids;
             // temps["edgeTypes"] = this.edgeTypesLists;
             this.masterListsDataDetails.push(temps);
             // console.log("masterListsData Event: ", this.masterListsDataDetails);
