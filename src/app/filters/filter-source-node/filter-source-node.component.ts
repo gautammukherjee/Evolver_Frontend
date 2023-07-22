@@ -70,7 +70,7 @@ export class FilterSourceNodeComponent implements OnInit {
 
   getSourceNode() {
     // console.log("val: ", this.searchInput);
-    if (this.searchInput.length > 2) {
+    if (this.searchInput && this.searchInput.length > 2) {
       this.selectedSourceNodes = [];
       this.loading = true;
       this.filterParams = this.globalVariableService.getFilterParams({ "searchval": this.searchInput });

@@ -60,24 +60,6 @@ export class FilterDestinationNodeComponent implements OnInit {
         this.getResetDestinationNode();
       }
     });
-
-
-
-    this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
-      console.log("event Destination: ", event.clickOn);
-      if (event.clickOn == undefined) {
-        // console.log("Source Level 2:1 ", event.clickOn);
-        this.getResetDestinationNode();
-      } else if (event.clickOn !== undefined && (event.clickOn == 'sourceNodeFilter')) {
-        // this.hideCardBody = true;
-        this.filterParams = this.globalVariableService.getFilterParams();
-        // console.log("Source Level 2:2 ", event.clickOn);
-        // if (this.firstTimeCheck === false) // Node select only one time reload when we choose destination nodes are selected
-        this.getDestinationNode();
-      }
-    });
-    this.getDestinationNode();
-    this.selectedDestinationNodes = Array.from(this.globalVariableService.getSelectedDestinationNodes());
   }
 
   ngOnDestroy() {
@@ -89,10 +71,11 @@ export class FilterDestinationNodeComponent implements OnInit {
   }
 
   getDestinationNode() {
-    this.filterParams = this.globalVariableService.getFilterParams();
-    this.selectedDestinationNodes = []
-    if (this.filterParams.source_node != undefined) {
+    if (this.searchInput.length > 2) {
+      // this.selectedDestinationNodes = [];
       this.loading = true;
+      this.filterParams = this.globalVariableService.getFilterParams({ "searchval": this.searchInput });
+      console.log("filterparamsSearchDestination: ", this.filterParams);
       this.nodeSelectsService.getDestinationNode(this.filterParams)
         .subscribe(
           data => {
@@ -111,9 +94,6 @@ export class FilterDestinationNodeComponent implements OnInit {
             console.log("loading finish")
           }
         );
-    } else {
-      this.destinationNodes = [];
-      this.globalVariableService.resetfilters();
     }
   }
 

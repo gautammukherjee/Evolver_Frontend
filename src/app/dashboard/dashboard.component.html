@@ -47,18 +47,27 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            
+            </div>            
 
             <div class="add-level-handler text-end pe-2 pt-1">
                 <button class="btn btn-light btn-sm" (click)="onAddLevel()"  [disabled]="maxLevel === currentLevel || !isSourceNodes">+ Add Level & Submit</button>
                 <button class="btn btn-light btn-sm ms-2" *ngIf="currentLevel > 1" (click)="onToggleLevel()">{{showLevels == false ? 'Show' : 'Hide'}} Level</button>
+
+                <button class="btn btn-primary border btn-sm ms-2" (click)="resetAllFilters()">Reset</button>&nbsp;
+                <button class="btn btn-info border btn-sm" [disabled]="!isSourceNodes" (click)="onSubmit()">Submit</button>
             </div>
         </div>
         <div class="inner-wrapper">
             
-            <app-filter-submit (onSelectSubmit)='submitChanged($event)'
-                            [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-submit>
+            <!--<app-filter-submit (onSelectSubmit)='submitChanged($event)'
+                            [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-submit>-->
+
+            <!--<div class="heading">
+                <div style="position: absolute;right: 10px;top: 80px;z-index: 1;">
+                    <button class="btn btn-md mr-1 p-2" style="background-color: #0A66C2;color: #FFF;" (click)="resetAllFilters()">Reset</button>&nbsp;
+                    <button class="btn btn-md mr-1 p-2" style="background-color: #BF63A2; color:#fff;" [disabled]="!isSourceNodes" (click)="onSubmit()">Submit</button>
+                </div>
+            </div>-->
 
             <!--<div class="reset-btns-group">
                 <button class="btn btn-primary me-2 btn-md">Reset</button>

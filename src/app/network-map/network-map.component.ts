@@ -64,14 +64,14 @@ export class NetworkMapComponent implements OnInit {
   ) { }
 
 
-  graphSelected() {
+  graphSelected(event: any) {
     //    this.doFilterApply.next({ clickOn: param });
     this.filterParams = this.globalVariableService.getFilterParams();
     console.log("you here you1:: ", this.filterParams);
-    this.getMasterListsMap(this.filterParams);
-    this.globalVariableService.resetNode();
-    this.filterParams = this.globalVariableService.getFilterParams();
-    console.log("you here you2:: ", this.filterParams);
+    this.getMasterListsMap(this.filterParams, event);
+    // this.globalVariableService.resetNode();
+    // this.filterParams = this.globalVariableService.getFilterParams();
+    // console.log("you here you2:: ", this.filterParams);
   }
 
   ngOnInit() {
@@ -80,22 +80,20 @@ export class NetworkMapComponent implements OnInit {
     this.mapTypes = this.filterParams.mapType;
 
     // this.drawChart();
-
     this.ProceedDoFilterApply?.subscribe(data => {  // Calling from details, details working as mediator
       console.log("data: ", data);
       if (data === undefined) { // data=undefined true when apply filter from side panel
         this.filterParams = this.globalVariableService.getFilterParams();
-        this.getMasterListsMap(this.filterParams);
+        this.getMasterListsMap(this.filterParams, null);
         console.log("new Filters2: ", this.filterParams);
       }
-      else if (data.clickOn == 'clickOnEventDetails') { // because graph should not change when click on this component itself
-        this.filterParams = this.globalVariableService.getFilterParams(this.globalVariableService.getFilterParams());
-        console.log("new Filters3: ", this.filterParams);
-        this.getMasterListsMap(this.filterParams);
-      }
-
+      // else if (data.clickOn == 'clickOnEventDetails') { // because graph should not change when click on this component itself
+      //   this.filterParams = this.globalVariableService.getFilterParams(this.globalVariableService.getFilterParams());
+      //   console.log("new Filters3: ", this.filterParams);
+      //   this.getMasterListsMap(this.filterParams, null);
+      // }
     });
-    this.getMasterListsMap(this.filterParams);
+    // this.getMasterListsMap(this.filterParams, null);
   }
 
   ngOnDestroy() {
@@ -105,8 +103,11 @@ export class NetworkMapComponent implements OnInit {
     this.ProceedDoFilterApply?.unsubscribe();
   }
 
-  getMasterListsMap(_filterParams: any) {
-    console.log("inside: ");
+  getMasterListsMap(_filterParams: any, event: any) {
+    // console.log("inside: ", event);
+    if (event == null) { // if not node right click node_id is reset
+      this.globalVariableService.resetNode();
+    }
     if (_filterParams.source_node != undefined) {
       this.loadingMap = true;
 
@@ -382,7 +383,7 @@ export class NetworkMapComponent implements OnInit {
     this.filterParams = this.globalVariableService.getFilterParams();
     console.log("Click Edges:: ", this.filterParams);
     if (this.filterParams.nnrt_id != undefined)
-      this.getMasterListsMap(this.filterParams);
+      this.getMasterListsMap(this.filterParams, null);
     // this.onGraphSelection.emit();
   }
 
@@ -390,7 +391,7 @@ export class NetworkMapComponent implements OnInit {
     this.filterParams = this.globalVariableService.getFilterParams();
     console.log("refresh Map:: ", this.filterParams);
     if (this.filterParams.nnrt_id != undefined)
-      this.getMasterListsMap(this.filterParams);
+      this.getMasterListsMap(this.filterParams, null);
   }
 
   searchConnections = function () {
