@@ -161,3 +161,23 @@ ng2-cytoscape {
     z-index: 9999;
     padding-top: 10px;
 }
+
+.network-map-wrapper{
+    &.full-screen{
+        position: fixed;
+        width:100%;
+        height:100%;
+        z-index: 9999;
+        background-color: #fff;
+        top: 0;
+        left:0;
+        right:0;
+    }
+}
+
+.map-fixed-posBtn{
+    position: fixed;
+    right: 10px;
+    top: 10px;
+    z-index: 99999999999;
+}

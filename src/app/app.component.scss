@@ -1,0 +1,9 @@
+.networkstatus{
+    &.offline{
+        width: 100%;
+        background: red;
+        height: 8px;
+        position: relative;
+        z-index: 9999;
+    }
+}

@@ -56,6 +56,7 @@ export class NetworkMapComponent implements OnInit {
   layout: any = {};
   graphData: any = [];
   doFilterApply: Subject<any> = new Subject();  // ## P= Parent
+  isNetworkMapFullScreen : boolean = false;
   constructor(
     private globalVariableService: GlobalVariableService,
     private nodeSelectsService: NodeSelectsService,
@@ -415,6 +416,10 @@ export class NetworkMapComponent implements OnInit {
     //     li[i].style.display = "none";
     //   }
     // }
+  }
+
+  onNetworkMapFullScrClick() {
+    this.isNetworkMapFullScreen = !this.isNetworkMapFullScreen;
   }
 
 }
