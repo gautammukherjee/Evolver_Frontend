@@ -94,7 +94,7 @@ export class NgCytoComponent implements OnChanges {
                 'background-color': 'data(colorCode)',
                 'color': '#000'
             })
-            .style({ "font-size": 12, "font-family": "Times New Roman" })    // big font
+            .style({ "font-size": 13,"font-family": "system-ui"})    // big font
 
             .selector(':selected')
             .css({
@@ -119,8 +119,8 @@ export class NgCytoComponent implements OnChanges {
                 'curve-style': 'bezier',
                 'target-arrow-shape': 'triangle',
                 'width': 4,
-                'line-color': '#4286f4',
-                'target-arrow-color': '#4286f4'
+                'line-color': '#77BBF2',
+                'target-arrow-color': '#77BBF2'
             })
 
             // .selector('highlight')
