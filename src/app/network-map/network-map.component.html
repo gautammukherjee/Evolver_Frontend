@@ -22,9 +22,9 @@
                     <label class="form-check-label" for="edgeChecked">Show All Targets</label>
                 </div>-->
 
-                <div style="position: absolute;z-index: 5;">
+                <div>
                     <button *ngIf="!nodesCheckLength" class="btn btn-md mr-1" style="background-color: #0A66C2;color: #FFF; margin:10px;" (click)="refreshMap($event)" title="REFRESH MAP"><i class="bi bi-arrow-clockwise"></i></button>
-                    <button *ngIf="!nodesCheckLength" class="btn btn-primary" [ngClass]="isNetworkMapFullScreen == true ? 'map-fixed-posBtn' : ''" (click)="onNetworkMapFullScrClick()">{{isNetworkMapFullScreen ? 'Exit full screen' : 'Full screen'}}</button>
+                    <button *ngIf="!nodesCheckLength" class="btn btn-primary" [ngClass]="isNetworkMapFullScreen == true ? 'map-fixed-posBtn' : ''" (click)="onNetworkMapFullScrClick()"><i *ngIf="isNetworkMapFullScreen" class='bi bi-fullscreen-exit'></i><i *ngIf="!isNetworkMapFullScreen" class="bi bi-arrows-fullscreen"></i></button>
                 </div>
 
                 <div style="height: 90%; width: 100%; float: left; overflow: auto; overflow-y: hidden">
