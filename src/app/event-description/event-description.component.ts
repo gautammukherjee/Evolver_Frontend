@@ -28,7 +28,11 @@ export class EventDescriptionComponent implements OnInit {
   graphData: any = [];
   // diseaseCheck: any;
   // hideCardBody: boolean = true;
-  modalRef: any;
+  loaderEdgeType = false;
+  private modalRef: any;
+  private edgeTypeDescModal: any;
+  @ViewChild('edgeTypeDescModal', { static: false }) edgeTypeDescModal_Detail: ElementRef | any;
+  edgeTypeList: any = [];
   helpContents: any;
   masterListsData: any = [];
   masterListsDataDetails: any = [];
@@ -84,7 +88,7 @@ export class EventDescriptionComponent implements OnInit {
             const regex = /[{}]/g;
             const edgeTypeIds = event.edge_type_ids;
             const edgeTypeIdsPost = edgeTypeIds.replace(regex, '');
-            // console.log("edgeTypeIdsPost: ", edgeTypeIdsPost);
+            console.log("edgeTypeIdsPost: ", edgeTypeIdsPost);//use this variable, gautam
 
             // var edgeHere = this.getEdgeTypes(edgeTypeIdsPost);
             // console.log("edgeHere: ", edgeHere);
@@ -102,8 +106,9 @@ export class EventDescriptionComponent implements OnInit {
             temps["sourcenode_name"] = event.sourcenode_name;
             temps["destinationnode_name"] = event.destinationnode_name;
             temps["level"] = event.level;
-            temps["edgeType_articleType"] = event.edge_type_article_type_ne_ids;
-            // temps["edgeTypes"] = this.edgeTypesLists;
+            temps["edgeTypes"] = "<button class='btn btn-sm btn-primary'>Edge Types</button> &nbsp;";
+            //temps["edgeType_articleType"] = event.edge_type_article_type_ne_ids;
+            temps["edgeTypesID"] = edgeTypeIdsPost;
             this.masterListsDataDetails.push(temps);
             // console.log("masterListsData Event: ", this.masterListsDataDetails);
           },
@@ -149,6 +154,16 @@ export class EventDescriptionComponent implements OnInit {
             //   // }
             // ],
             data: this.masterListsDataDetails,
+            onClickRow: (field: any, row: any, $element: any) => {
+              //edge types
+              if ($element == "edgeTypes") {
+                console.log(field.edgeTypesID)
+                this.loaderEdgeType = true;
+                this.modalRef = this.modalService.open(this.edgeTypeDescModal_Detail, { size: 'lg', keyboard: false, backdrop: 'static' });
+                this.getEdgeTypes(field.edgeTypesID);
+                
+              }
+            },
           });
 
           jQuery('#showEventDescription').bootstrapTable("load", this.masterListsDataDetails);
@@ -176,18 +191,14 @@ export class EventDescriptionComponent implements OnInit {
   //   })
   // }
 
-  // getEdgeTypes(edgeTypeIdsPost: any) {
-  //   return this.nodeSelectsService.getEdgeTypeName({ 'edge_type_ids': edgeTypeIdsPost }).subscribe((p: any) => {
-  //     this.result = p;
-  //     this.edgeHere = this.result.edgeTypeName;
-  //     this.edgeTypesLists = [];
-  //     this.edgeHere.forEach((event: any) => {
-  //       this.edgeTypesLists.push(event.edge_type_name);
-  //     });
-  //     // console.log("edgeHere: ", this.edgeTypesLists);
-  //     return this.edgeTypesLists;
-  //   });
-  // }
+  getEdgeTypes(edgeTypeIdsPost: any) {
+    this.edgeHere = "";
+    this.nodeSelectsService.getEdgeTypeName({ 'edge_type_ids': edgeTypeIdsPost }).subscribe((p: any) => {
+      this.result = p;
+      this.edgeHere = this.result;
+      this.loaderEdgeType = false;
+    });
+  }
 
   // reloadDescription() {
   //   console.log("Event description: ")
