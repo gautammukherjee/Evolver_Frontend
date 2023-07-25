@@ -28,10 +28,17 @@ export class EventDescriptionComponent implements OnInit {
   graphData: any = [];
   // diseaseCheck: any;
   // hideCardBody: boolean = true;
-  loaderEdgeType = false;
   private modalRef: any;
+
+  loaderEdgeType = false;
   private edgeTypeDescModal: any;
   @ViewChild('edgeTypeDescModal', { static: false }) edgeTypeDescModal_Detail: ElementRef | any;
+  
+
+  loaderArticle = false;
+  private articleModal: any;
+  @ViewChild('articleModal', { static: false }) articleModal_Detail: ElementRef | any;
+
   edgeTypeList: any = [];
   helpContents: any;
   masterListsData: any = [];
@@ -39,6 +46,7 @@ export class EventDescriptionComponent implements OnInit {
   edgeTypesLists: any = [];
   public edgeTypes: any = [];
   public edgeHere: any = [];
+  public articleHere: any = [];
 
   constructor(
     private globalVariableService: GlobalVariableService,
@@ -88,7 +96,11 @@ export class EventDescriptionComponent implements OnInit {
             const regex = /[{}]/g;
             const edgeTypeIds = event.edge_type_ids;
             const edgeTypeIdsPost = edgeTypeIds.replace(regex, '');
-            console.log("edgeTypeIdsPost: ", edgeTypeIdsPost);//use this variable, gautam
+            //console.log("event: ", event);//use this variable, gautam
+            
+            const edgeTypeNeIds = event.ne_ids;//<<<<
+            const edgeTypeNeIdsPost = edgeTypeNeIds.replace(regex, '');//<<<<
+            console.log("Line 96:"+edgeTypeNeIdsPost);//<<<<
 
             // var edgeHere = this.getEdgeTypes(edgeTypeIdsPost);
             // console.log("edgeHere: ", edgeHere);
@@ -107,8 +119,10 @@ export class EventDescriptionComponent implements OnInit {
             temps["destinationnode_name"] = event.destinationnode_name;
             temps["level"] = event.level;
             temps["edgeTypes"] = "<button class='btn btn-sm btn-primary'>Edge Types</button> &nbsp;";
+            temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";//<<<<
             //temps["edgeType_articleType"] = event.edge_type_article_type_ne_ids;
             temps["edgeTypesID"] = edgeTypeIdsPost;
+            temps["edgeNeId"] = edgeTypeNeIdsPost;//<<<<
             this.masterListsDataDetails.push(temps);
             // console.log("masterListsData Event: ", this.masterListsDataDetails);
           },
@@ -157,11 +171,17 @@ export class EventDescriptionComponent implements OnInit {
             onClickRow: (field: any, row: any, $element: any) => {
               //edge types
               if ($element == "edgeTypes") {
-                console.log(field.edgeTypesID)
+                console.log(field.edgeTypesID);
                 this.loaderEdgeType = true;
                 this.modalRef = this.modalService.open(this.edgeTypeDescModal_Detail, { size: 'lg', keyboard: false, backdrop: 'static' });
                 this.getEdgeTypes(field.edgeTypesID);
                 
+              }
+              if($element == "edgeNe"){
+                console.log(field.edgeNeId);
+                this.loaderArticle = true;
+                this.modalRef = this.modalService.open(this.articleModal_Detail, { size: 'lg', keyboard: false, backdrop: 'static' });
+                this.getArticles(field.edgeNeId);
               }
             },
           });
@@ -209,5 +229,21 @@ export class EventDescriptionComponent implements OnInit {
   //     this.getEventDescription(this.filterParams);
 
   // }
+
+  getArticles(edgeNeId: any){
+    this.articleHere = "";
+    const edgeNeIdArr = edgeNeId.split(",");
+
+    //console.log(typeof edgeNeIdArr + edgeNeIdArr +edgeNeIdArr[0]);
+    this.nodeSelectsService.getEdgePMIDLists({ 'ne_ids': edgeNeIdArr }).subscribe((p: any) => {
+      this.result = p;
+      console.log(this.result);
+      this.articleHere = this.result.pmidLists;
+      this.loaderArticle = false;
+    });
+
+    
+
+  }
 
 }

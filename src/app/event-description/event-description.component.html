@@ -35,6 +35,8 @@
                                     Level</th>
                                 <th data-field="edgeTypes" data-sortable="true" width="10%" data-filter-control="input">
                                     Edge Type</th>
+                                <th data-field="edgeNe" data-sortable="true" width="10%" data-filter-control="input">
+                                    Articles</th>
                                 <!-- <th data-field="edgeType_articleType" data-sortable="true" width="10%"
                                     data-filter-control="input">
                                     Edge Type
@@ -55,7 +57,7 @@
 <!-- help section goes here -->
 <ng-template #edgeTypeDescModal let-c="close" let-d="dismiss">
     <div class="modal-header blue_bg_hdr  modal-lg">
-        <h4 class="modal-title">Edge Types </h4>
+        <h4 class="modal-title">Edge Type Name(s) </h4>
         <button class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -66,10 +68,36 @@
 
                 <div class="m-1">
                     <div class="alert alert-primary alert-dismissible fade show">
-                        <img class="text-center" src="../../assets/images/loader_big.gif"
-                            *ngIf="loaderEdgeType" />
+                        <img class="text-center" src="../../assets/images/loader_big.gif" *ngIf="loaderEdgeType" />
                         <div *ngFor="let edge of edgeHere">
                             <p>{{edge.edge_type_name}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #articleModal let-c="close" let-d="dismiss">
+    <div class="modal-header blue_bg_hdr  modal-lg">
+        <h4 class="modal-title">Article(s) </h4>
+        <button class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body white_bg without_bord_rad">
+        <div class="row">
+            <div class="col-md-12 bottam-buffer home_tiles">
+
+                <div class="m-1">
+                    <div class="alert alert-primary alert-dismissible fade show">
+                        <img class="text-center" src="../../assets/images/loader_big.gif" *ngIf="loaderArticle" />
+                        <div *ngFor="let article of articleHere">
+                            <p>PMID: {{article.pmid}}</p>
+                            <p>Publication Date: {{article.publication_date}}</p>
+                            <p>Title: {{article.title}}</p>
+                            <hr>
                         </div>
                     </div>
                 </div>
