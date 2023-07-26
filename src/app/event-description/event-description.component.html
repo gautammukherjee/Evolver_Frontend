@@ -1,6 +1,7 @@
 <div class="card-panel-box">
     <div class="customTable" style="border: 1px solid #ddd; min-height:400px;">
-        <div class="text-muted fs-2 text-center mb-4" *ngIf="masterListsData?.length ==0">Please select entities to generate Details!</div>
+        <div class="text-muted fs-2 text-center mb-4" *ngIf="masterListsData?.length ==0">Please select entities to
+            generate Details</div>
         <!--<div class="card-panel-box-heading">
             Event List
         </div>-->
@@ -15,20 +16,32 @@
             <div class="customTable " id="eventListTable">
                 <!-- <div class="text-muted fs-2 text-center mb-4">Please select entities to generate Details</div> -->
                 <div class="overlay" *ngIf="loadingDesc">
-                    <img style="margin:185px 653px;" src="../../assets/images/loader_big.gif" />                
+                    <img style="margin:185px 653px;" src="../../assets/images/loader_big.gif" />
                 </div>
-                <div class="table-responsive custom-fixed-header-table" [ngClass]="toggleLevels == false ? 'hiddenLevels' : currentLevel == '1' ? 'level1' : currentLevel == 2 ? 'level2' : 'level3'">
-                    <table id="showEventDescription" data-toolbar="#toolbar" data-search="true"
-                        data-show-export="true" data-show-columns="true" data-page-size="50" data-filter-control="true"
+                <div class="table-responsive custom-fixed-header-table"
+                    [ngClass]="toggleLevels == false ? 'hiddenLevels' : currentLevel == '1' ? 'level1' : currentLevel == 2 ? 'level2' : 'level3'">
+                    <table id="showEventDescription" data-toolbar="#toolbar" data-search="true" data-show-export="true"
+                        data-show-columns="true" data-page-size="50" data-filter-control="true"
                         data-page-list="[10, 25, 50, 100, All]">
-                    <!--<table id="showEventDescription" data-toolbar="#toolbar" data-search="true" data-page-size="50" data-page-list="[10, 25, 50, 100, All]">-->
+                        <!--<table id="showEventDescription" data-toolbar="#toolbar" data-search="true" data-page-size="50" data-page-list="[10, 25, 50, 100, All]">-->
                         <thead>
                             <tr>
                                 <!-- <th data-field="news_id" data-sortable="true" width="10%">News ID</th> -->
-                                <th data-field="sourcenode_name" data-sortable="true" width="10%" data-filter-control="input">Source Name</th>
-                                <th data-field="destinationnode_name" data-sortable="true" width="10%" data-filter-control="input">Destination Name</th>
-                                <th data-field="level" data-sortable="true" width="10%" data-filter-control="select">Level</th>
-                                <!--<th data-field="edgeTypes" data-sortable="true" width="10%">Edge Type</th>-->
+                                <th data-field="sourcenode_name" data-sortable="true" width="10%"
+                                    data-filter-control="select">Source Name</th>
+                                <th data-field="destinationnode_name" data-sortable="true" width="10%"
+                                    data-filter-control="input">Destination Name</th>
+                                <th data-field="level" data-sortable="true" width="10%" data-filter-control="select">
+                                    Level</th>
+                                <th data-field="edgeTypes" data-sortable="true" width="10%" data-filter-control="input">
+                                    Edge Type</th>
+                                <th data-field="edgeNe" data-sortable="true" width="10%" data-filter-control="input">
+                                    Articles</th>
+                                <!-- <th data-field="edgeType_articleType" data-sortable="true" width="10%"
+                                    data-filter-control="input">
+                                    Edge Type
+                                </th> -->
+
                             </tr>
                         </thead>
                     </table>
@@ -38,13 +51,13 @@
         </div>
     </div>
 
-    
+
 </div>
 
 <!-- help section goes here -->
-<!-- <ng-template #helpDesc let-c="close" let-d="dismiss">
+<ng-template #edgeTypeDescModal let-c="close" let-d="dismiss">
     <div class="modal-header blue_bg_hdr  modal-lg">
-        <h4 class="modal-title">INFO </h4>
+        <h4 class="modal-title">Edge Type Name(s) </h4>
         <button class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -52,10 +65,43 @@
     <div class="modal-body white_bg without_bord_rad">
         <div class="row">
             <div class="col-md-12 bottam-buffer home_tiles">
-                <div class="two-column_popup demo-checkboxes-radio">
-                    <span class="custom-control-description text-dark" [innerHtml]="helpContents"></span>
+
+                <div class="m-1">
+                    <div class="alert alert-primary alert-dismissible fade show">
+                        <img class="text-center" src="../../assets/images/loader_big.gif" *ngIf="loaderEdgeType" />
+                        <div *ngFor="let edge of edgeHere">
+                            <p>{{edge.edge_type_name}}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</ng-template> -->
+</ng-template>
+
+<ng-template #articleModal let-c="close" let-d="dismiss">
+    <div class="modal-header blue_bg_hdr  modal-lg">
+        <h4 class="modal-title">Article(s) </h4>
+        <button class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body white_bg without_bord_rad">
+        <div class="row">
+            <div class="col-md-12 bottam-buffer home_tiles">
+
+                <div class="m-1">
+                    <div class="alert alert-primary alert-dismissible fade show">
+                        <img class="text-center" src="../../assets/images/loader_big.gif" *ngIf="loaderArticle" />
+                        <div *ngFor="let article of articleHere">
+                            <p>PMID: {{article.pmid}}</p>
+                            <p>Publication Date: {{article.publication_date}}</p>
+                            <p>Title: {{article.title}}</p>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

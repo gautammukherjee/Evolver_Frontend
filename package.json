@@ -39,6 +39,7 @@
     "ng-select": "^1.0.2",
     "ng2-cytoscape": "^0.4.0",
     "ng2-select": "^2.0.0",
+    "ngx-online-status": "^2.0.0",
     "observable": "^2.1.4",
     "rxjs": "~7.8.0",
     "rxjs-compat": "^6.6.7",

@@ -22,13 +22,17 @@
                     <label class="form-check-label" for="edgeChecked">Show All Targets</label>
                 </div>-->
 
-                <div style="position: absolute;z-index: 5;">
-                    <button *ngIf="!nodesCheckLength" class="btn btn-md mr-1" style="background-color: #0A66C2;color: #FFF; margin:10px;" (click)="refreshMap($event)">Refresh</button>
+                <div>
+                    <button *ngIf="!nodesCheckLength" class="btn btn-md mr-1" style="background-color: #0A66C2;color: #FFF; margin:10px;" (click)="refreshMap($event)" title="REFRESH MAP"><i class="bi bi-arrow-clockwise"></i></button>
+                    <button *ngIf="!nodesCheckLength" class="btn btn-primary" [ngClass]="isNetworkMapFullScreen == true ? 'map-fixed-posBtn' : ''" (click)="onNetworkMapFullScrClick()"><i *ngIf="isNetworkMapFullScreen" class='bi bi-fullscreen-exit' title="EXIT FULL SCREEN"></i><i *ngIf="!isNetworkMapFullScreen" class="bi bi-arrows-fullscreen" title="FULL SCREEN"></i></button>
                 </div>
 
                 <div style="height: 90%; width: 100%; float: left; overflow: auto; overflow-y: hidden">
                     <!-- <ng2-cytoscape [elements]="graphData" [layout]="layout" (select)="nodeChange($event)"></ng2-cytoscape> -->
-                    <ng2-cytoscape [elements]="graphData" [layout]="layout" (onGraphSelection)='graphSelected("nodeRightClick")'></ng2-cytoscape>
+                    <div class="network-map-wrapper" [ngClass]="isNetworkMapFullScreen == true ? 'full-screen' : ''">
+                        <ng2-cytoscape [elements]="graphData" [layout]="layout" (onGraphSelection)='graphSelected("nodeRightClick")'></ng2-cytoscape>
+                    </div>
+                    
 
                 </div>
 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from './services/users.service';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { GlobalVariableService } from './services/common/global-variable.service';
+import { OnlineStatusService, OnlineStatusType } from 'ngx-online-status';
 
 @Component({
   selector: 'app-root',
@@ -15,9 +16,18 @@ export class AppComponent implements OnInit {
   error = "false";
   errorMessage = "";
   private params: object = {};
+  status: OnlineStatusType = 1;
+  onlineStatusCheck: any = OnlineStatusType;
 
-  constructor(private userService: UserService, private router: Router, private globalVariableService: GlobalVariableService) {
+  constructor(
+    private userService: UserService, 
+    private router: Router, 
+    private globalVariableService: GlobalVariableService,
+    private onlineStatusService: OnlineStatusService) {
     this.result = JSON.parse(sessionStorage.getItem('currentUser') || "null");
+    this.onlineStatusService.status.subscribe((status: OnlineStatusType) => {
+      this.status = status;
+    });
 
     // if (this.userService.isLoggednIn() == false) {
     //   this.autologout();

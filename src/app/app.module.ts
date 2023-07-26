@@ -50,6 +50,8 @@ import { DetailsOfAssocDataComponent } from './details-of-assoc-data/details-of-
 import { PmidCountWithGeneAndDiseaseComponent } from './pmid-count-with-gene-and-disease/pmid-count-with-gene-and-disease.component';
 //import { ChartModule, HIGHCHARTS_MODULES } from 'angular-highcharts';
 import { DistributionByRelationTypeComponent } from './distribution-by-relation-type/distribution-by-relation-type.component';
+// import { DataTablesModule } from 'angular-datatables';
+import { OnlineStatusModule } from 'ngx-online-status';
 
 
 @NgModule({
@@ -98,6 +100,8 @@ import { DistributionByRelationTypeComponent } from './distribution-by-relation-
     BrowserAnimationsModule,
     //SafePipeModule 
     HighchartsChartModule,
+    // DataTablesModule,
+    OnlineStatusModule
   ],
   exports: [
     HeaderComponent,
