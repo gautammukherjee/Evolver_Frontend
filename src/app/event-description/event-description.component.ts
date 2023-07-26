@@ -33,7 +33,7 @@ export class EventDescriptionComponent implements OnInit {
   loaderEdgeType = false;
   private edgeTypeDescModal: any;
   @ViewChild('edgeTypeDescModal', { static: false }) edgeTypeDescModal_Detail: ElementRef | any;
-  
+
 
   loaderArticle = false;
   private articleModal: any;
@@ -47,6 +47,7 @@ export class EventDescriptionComponent implements OnInit {
   public edgeTypes: any = [];
   public edgeHere: any = [];
   public articleHere: any = [];
+  articleList: any = [];
 
   constructor(
     private globalVariableService: GlobalVariableService,
@@ -97,10 +98,10 @@ export class EventDescriptionComponent implements OnInit {
             const edgeTypeIds = event.edge_type_ids;
             const edgeTypeIdsPost = edgeTypeIds.replace(regex, '');
             //console.log("event: ", event);//use this variable, gautam
-            
+
             const edgeTypeNeIds = event.ne_ids;//<<<<
             const edgeTypeNeIdsPost = edgeTypeNeIds.replace(regex, '');//<<<<
-            console.log("Line 96:"+edgeTypeNeIdsPost);//<<<<
+            console.log("Line 96:" + edgeTypeNeIdsPost);//<<<<
 
             // var edgeHere = this.getEdgeTypes(edgeTypeIdsPost);
             // console.log("edgeHere: ", edgeHere);
@@ -175,9 +176,9 @@ export class EventDescriptionComponent implements OnInit {
                 this.loaderEdgeType = true;
                 this.modalRef = this.modalService.open(this.edgeTypeDescModal_Detail, { size: 'lg', keyboard: false, backdrop: 'static' });
                 this.getEdgeTypes(field.edgeTypesID);
-                
+
               }
-              if($element == "edgeNe"){
+              if ($element == "edgeNe") {
                 console.log(field.edgeNeId);
                 this.loaderArticle = true;
                 this.modalRef = this.modalService.open(this.articleModal_Detail, { size: 'lg', keyboard: false, backdrop: 'static' });
@@ -230,19 +231,44 @@ export class EventDescriptionComponent implements OnInit {
 
   // }
 
-  getArticles(edgeNeId: any){
+  getArticles(edgeNeId: any) {
     this.articleHere = "";
     const edgeNeIdArr = edgeNeId.split(",");
 
     //console.log(typeof edgeNeIdArr + edgeNeIdArr +edgeNeIdArr[0]);
+    var pubmedBaseUrl = "https://www.ncbi.nlm.nih.gov/pubmed/";
     this.nodeSelectsService.getEdgePMIDLists({ 'ne_ids': edgeNeIdArr }).subscribe((p: any) => {
       this.result = p;
-      console.log(this.result);
+      //console.log(this.result);
       this.articleHere = this.result.pmidLists;
+
+      this.articleHere.forEach((event: any) => {
+        var temps: any = {};
+        
+        temps["pmid"] = "<a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + event.pmid + "'>" + event.pmid + "</a>"
+        temps["publication_date"] = event.publication_date;
+        temps["title"] = event.title;
+        this.articleList.push(temps);
+      });
+      jQuery('#articles_details').bootstrapTable({
+        bProcessing: true,
+            bServerSide: true,
+            pagination: true,
+            showToggle: true,
+            showColumns: true,
+            search: true,
+            pageSize: 25,
+            striped: true,
+            showFullscreen: true,
+            stickyHeader: true,
+            showExport: true,
+            data: this.articleList
+      });
+
       this.loaderArticle = false;
     });
 
-    
+
 
   }
 

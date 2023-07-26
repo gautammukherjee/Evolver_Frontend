@@ -92,13 +92,31 @@
 
                 <div class="m-1">
                     <div class="alert alert-primary alert-dismissible fade show">
-                        <img class="text-center" src="../../assets/images/loader_big.gif" *ngIf="loaderArticle" />
-                        <div *ngFor="let article of articleHere">
+                        
+                        <!-- <div *ngFor="let article of articleHere">
                             <p>PMID: {{article.pmid}}</p>
                             <p>Publication Date: {{article.publication_date}}</p>
                             <p>Title: {{article.title}}</p>
                             <hr>
-                        </div>
+                        </div> -->
+                        <table id="articles_details" data-toolbar="#toolbar" data-search="true" data-show-export="true"
+                            data-show-columns="true" data-page-size="50" data-filter-control="true"
+                            data-page-list="[10, 25, 50, 100, All]">
+                            <thead>
+                                <tr>
+                                    <th data-field="pmid" data-sortable="true" width="10%" data-filter-control="input">
+                                        PMID
+                                    </th>
+                                    <th data-field="publication_date" data-sortable="true" width="10%" data-filter-control="input">
+                                        Publication Date
+                                    </th>
+                                    <th data-field="title" data-sortable="true" width="10%" data-filter-control="input">
+                                        Title
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <img class="text-center" src="../../assets/images/loader_big.gif" *ngIf="loaderArticle" />
                     </div>
                 </div>
             </div>

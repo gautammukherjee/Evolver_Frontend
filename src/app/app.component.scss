@@ -2,8 +2,11 @@
     &.offline{
         width: 100%;
         background: red;
-        height: 8px;
         position: relative;
         z-index: 9999;
+        text-align: center;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 500;
     }
 }
