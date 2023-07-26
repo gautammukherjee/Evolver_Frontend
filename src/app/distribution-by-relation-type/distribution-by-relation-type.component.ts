@@ -33,6 +33,9 @@ export class DistributionByRelationTypeComponent implements OnInit {
   edgeTypesLists: any = [];
   public edgeTypes: any = [];
   public edgeHere: any = [];
+  resultNodesPopup: any = [];
+  pmidData: any = [];
+  loadingPMIDLists: boolean = false;
 
   constructor(
     private globalVariableService: GlobalVariableService,
@@ -73,10 +76,16 @@ export class DistributionByRelationTypeComponent implements OnInit {
             var temps: any = {};
 
             // temps["news_id"] = event.news_id;
+            temps["source_node_id"] = event.source_node_id;
             temps["source_node_name"] = event.source_node_name;
+            temps["destination_node_id"] = event.destination_node_id;
             temps["destination_node_name"] = event.destination_node_name;
+            temps["edge_type_id"] = event.edge_type_id;
             temps["pmid_count"] = event.count;
-            temps["temp_edge_types_name"] = event.temp_edge_types_name;
+            temps["edge_types_name"] = event.edge_types_name;
+
+            temps["pmidLists"] = "<button class='btn btn-sm btn-primary'>Get PMID</button>";
+
             this.distributionDataDetails.push(temps);
           });
 
@@ -103,25 +112,66 @@ export class DistributionByRelationTypeComponent implements OnInit {
               // columns: [6],
               // visible: [6,'true'],
             },
-            // columns: [
-            //   {
-            //     dataField: 'active_ingredients',
-            //     text: 'Active Ingredients',
-            //     headerStyle: { 'white-space': 'nowrap' }
-            //   }],
-            columns: [
-              // {
-              //   title: 'Title',
-              //   field: 'title',
-              //   class: 'text-left',
-              // },
-              // {
-              //   title: 'Active Ingredients/Brand',
-              //   field: 'active_ingredient',
-              //   class: 'text-left',
-              // }
-            ],
+            columns: [],
             data: this.distributionDataDetails,
+            onClickRow: (field: any, row: any, $element: any) => {
+              if ($element == "pmidLists") {
+
+                // console.log("field: ", field);
+
+                var pubmedURLsDownloadLoader: any;
+                pubmedURLsDownloadLoader = "<div class='overlay'><img style='position:absolute' src='../../assets/images/loader_big.gif' /></div>";
+                $("#pmidListsLoader").html(pubmedURLsDownloadLoader);
+                $("#pmidListsData").html('');
+                ($('#myModalPMID') as any).modal('show');
+
+                this.filterParams = this.globalVariableService.getFilterParams();
+                this.nodeSelectsService.getPMIDListsInRelation({ 'source_node': field.source_node_id, 'destination_node': field.destination_node_id, 'edge_type_id': field.edge_type_id, 'nnrt_id': this.filterParams['nnrt_id'] }).subscribe(
+                  data => {
+                    // const legendsNodeTypes = [];
+                    this.resultNodesPopup = data;
+                    this.pmidData = this.resultNodesPopup.pmidLists;
+                    console.log("pmidData: ", this.pmidData);
+
+                    var pubmedURLsDownload: any;
+                    if (this.pmidData != undefined) {
+                      // var PMIDList = edge.PMID.split(",");
+                      var pubmedBaseUrl = "https://www.ncbi.nlm.nih.gov/pubmed/";
+                      pubmedURLsDownload = "";
+
+                      pubmedURLsDownload = "<div>";
+                      this.pmidData.forEach((PMID: any) => {
+
+                        // const myFormattedDate = this.pipe.transform(PMID.publication_date, 'short');
+                        // console.log("PMID:: ", PMID.edge_type_name);
+                        pubmedURLsDownload += "<div style='font-size: 14px;color:#32404E'>" + PMID.title + "</div>";
+                        pubmedURLsDownload += "<div style='list-style: none; font-size: 14px; color:#32404E'>PMID : <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + PMID.pmid + "'>" + PMID.pmid + "</a></div>";
+                        pubmedURLsDownload += "<div style='font-size: 14px; color:#32404E'>Publication Date : " + PMID.publication_date + "</div>";
+                        pubmedURLsDownload += "<hr style='color:#32404E'/>";
+                      });
+                      pubmedURLsDownload += "<div style='clear: both;'><hr/></div>";
+                      pubmedURLsDownload += "</div>";
+                    } else {
+                      pubmedURLsDownload = "<h4>No PMID Found..</h4>";
+                      pubmedURLsDownload += "<div style='clear: both;'><hr/></div>";
+                    }
+                    // console.log("edgeTypeNameData5: ", pubmedURLsDownload);
+
+                    $("#pmidListsLoader").html('');
+                    $("#pmidListsData").html(pubmedURLsDownload);
+                    ($('#myModalPMID') as any).modal('show');
+                  },
+                  err => {
+                    this.loadingPMIDLists = false;
+                    console.log(err.message);
+                  },
+                  () => {
+                    this.loadingPMIDLists = false;
+                  });
+
+
+              }
+            }
           });
 
           jQuery('#showDistributionRelationData').bootstrapTable("load", this.distributionDataDetails);

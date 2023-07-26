@@ -168,17 +168,21 @@ export class FilterEdgeTypeComponent implements OnInit {
     this.togglecollapseStatus = !this.togglecollapseStatus;
   }
 
-  // selectAll(event: any, geneWarningModal: any) {
-  //   if (this.isAllSelected) {
-  //     this.result.map((element: any) => {
-  //       // console.log("element: ", element);
-  //       this.selectedEdgeTypes.push(element.edge_type_id);
-  //     })
-  //   } else {
-  //     this.selectedEdgeTypes = [];
-  //   }
-  //   this.enableDisableProceedButton();
-  // }
+  selectAll(event: any) {
+    // console.log("is_all: ", this.isAllSelected);
+    if (this.isAllSelected) {
+      this.selectedEdgeTypes=[];
+      this.result.edgeTypeRecords.map((element: any) => {
+        this.selectedEdgeTypes.push(element.edge_type_id);
+      })
+    } else {
+      this.selectedEdgeTypes = [];
+    }
+    this.globalVariableService.setSelectedEdgeTypes(this.selectedEdgeTypes);
+    this.filterParams = this.globalVariableService.getFilterParams();
+    // console.log("select all edge types: ", this.filterParams);
+    // this.enableDisableProceedButton();
+  }
 
   resetEdgeType() {
     this.selectedEdgeTypes = [];

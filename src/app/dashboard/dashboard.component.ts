@@ -18,12 +18,15 @@ export class DashboardComponent implements OnInit {
   currentLevel: number = 1;
   maxLevel: number = 2;
   isSourceNodes: boolean = false;
+  public selectedNodeSelects2: any = [];
 
   constructor(private globalVariableService: GlobalVariableService, private router: Router) {
     // this.globalVaiableService.setSelectedTa([1]);
   }
 
   ngOnInit(): void {
+    // this.selectedNodeSelects2 = Array.from(this.globalVariableService.getSelectedNodeSelects2());
+    // console.log("node selects2 in submit2222: ", this.selectedNodeSelects2);
 
   }
 
@@ -102,6 +105,28 @@ export class DashboardComponent implements OnInit {
   onSubmit() {
     this.doFilterApply.next(undefined);
 
+    // console.log("yes2: ", this.currentLevel);
+    // if (this.currentLevel == 2) {
+    //   // this.selectedNodeSelects2='';
+    //   // const nodeSelects2 = (this.selectedNodeSelects2 != '' ? this.selectedNodeSelects2 : '');
+    //   console.log("node selects2 in submit11: ", this.selectedNodeSelects2);
+
+    //   if (this.selectedNodeSelects2 == "") {
+    //     alert("Please select Node Pair Type");
+    //   } else {
+    //     this.globalVariableService.setSelectedNodeSelects2(this.selectedNodeSelects2);
+    //     this.selectedNodeSelects2 = Array.from(this.globalVariableService.getSelectedNodeSelects2());
+    //     this.doFilterApply.next(undefined);
+    //   }
+    //   // console.log("node selects2 in submit22: ", this.selectedNodeSelects2);
+    //   // if (this.selectedNodeSelects2 != "") {
+    //   //   this.doFilterApply.next(undefined);
+    //   // } else {
+    //   //   alert("Please select Node Pair Type");
+    //   // }
+    // } else {
+    //   this.doFilterApply.next(undefined);
+    // }
   }
 
   resetAllFilters() {

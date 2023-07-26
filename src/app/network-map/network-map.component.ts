@@ -76,7 +76,7 @@ export class NetworkMapComponent implements OnInit {
 
   ngOnInit() {
     this.filterParams = this.globalVariableService.getFilterParams();
-    console.log("you here2:: ", this.filterParams);
+    // console.log("you here2:: ", this.filterParams);
     this.mapTypes = this.filterParams.mapType;
 
     // this.drawChart();
