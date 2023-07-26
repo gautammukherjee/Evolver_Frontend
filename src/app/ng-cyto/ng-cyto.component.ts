@@ -223,11 +223,11 @@ export class NgCytoComponent implements OnChanges {
             // this.showNodeInfo(node[0]._private.data.id); //append the node and reload the graph
         });
 
-        cy.on('cxttap', 'node', (e: any) => {
-            var node = e.target;
-            // console.log("rightclick: ", node[0]._private.data.id);
-            this.showNodeInfo(node[0]._private.data.id); //append the node and reload the graph
-        });
+        // cy.on('cxttap', 'node', (e: any) => {
+        //     var node = e.target;
+        //     // console.log("rightclick: ", node[0]._private.data.id);
+        //     this.showNodeInfo(node[0]._private.data.id); //append the node and reload the graph
+        // });
 
         // cy.on('click', function (e: any) {
         //     if (e.target === cy || e.target.group() == "edges") {

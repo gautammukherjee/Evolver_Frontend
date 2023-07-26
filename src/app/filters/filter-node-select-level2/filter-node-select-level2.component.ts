@@ -148,15 +148,11 @@ export class FilterNodeSelectLevel2Component implements OnInit {
   }
 
   selectNode2(nodeValue: any) {
-    console.log("nodeValue2: ", nodeValue.target.value);
-    // if (event.target.checked) {
-    //   this.selectedNodeSelects2.push(node.nnrt_id);
-    // } else {
-    //   this.selectedNodeSelects2.splice(this.selectedNodeSelects2.indexOf(node.nnrt_id), 1);
-    // }
     this.selectedNodeSelects2 = nodeValue.target.value;
+    // this.globalVariableService.setSelectedNodeSelects2(this.selectedNodeSelects2);
+    // this.selectedNodeSelects2 = Array.from(this.globalVariableService.getSelectedNodeSelects2());
+    console.log("node selects2 in : ", this.selectedNodeSelects2);
 
-    console.log("selectedNodeSelects2: ", this.selectedNodeSelects2);
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data   
 
     // if (from != 'nodeSelectsWarningModal')
@@ -219,9 +215,10 @@ export class FilterNodeSelectLevel2Component implements OnInit {
   proceed() {
     this.globalVariableService.setSelectedNodeSelects2(this.selectedNodeSelects2);
     this.selectedNodeSelects2 = Array.from(this.globalVariableService.getSelectedNodeSelects2());
+    console.log("yes here: ", this.selectedNodeSelects2);
     if (this.seeMoreNodeSelectsModal != undefined)
       this.seeMoreNodeSelectsModal.close();
-    this.onSelectNode2.emit();
+    this.onSelectNode2.emit(this.selectedNodeSelects2);
   }
 
   private enableDisableProceedButton() {

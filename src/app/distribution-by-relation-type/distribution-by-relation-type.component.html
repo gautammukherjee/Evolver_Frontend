@@ -24,8 +24,9 @@
                             <!-- <th data-field="news_id" data-sortable="true" width="10%">News ID</th> -->
                             <th data-field="source_node_name" data-sortable="true" width="10%" data-filter-control="input">Source Name</th>
                             <th data-field="destination_node_name" data-sortable="true" width="10%" data-filter-control="input">Destination Name</th>
-                            <th data-field="temp_edge_types_name" data-sortable="true" width="10%" data-filter-control="input">Edge Type Name</th>
-                            <th data-field="pmid_count" data-sortable="true" width="10%" data-filter-control="select">Distinct PMID Count</th>
+                            <th data-field="edge_types_name" data-sortable="true" width="10%" data-filter-control="input">Edge Type Name</th>
+                            <th data-field="pmid_count" data-sortable="true" width="10%" data-filter-control="select">Distinct PMID Counts</th>
+                            <th data-field="pmidLists">PMID Lists</th>
                         </tr>
                     </thead>
                 </table>
@@ -33,6 +34,24 @@
         </div>
 
     </div>
+
+    <div class="modal overlay right fade" id="myModalPMID" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>-->
+                    <h5 class="modal-title">Title & PMID Lists</h5>
+                </div>
+                <div class="modal-body">
+                    <div id="pmidListsLoader"></div>
+                    <div id="pmidListsData"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <!-- help section goes here -->
@@ -53,3 +72,4 @@
         </div>
     </div>
 </ng-template> -->
+

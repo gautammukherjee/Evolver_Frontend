@@ -69,7 +69,7 @@ export class DistributionByRelGrpComponent implements OnInit {
     console.log(this.data);
     //console.log(this.data[4]['count']);
     for (let i = 0; i < this.data.length; i++) {
-      graphData.push([this.data[i]['temp_edge_types_name'], this.data[i]['count']]);
+      graphData.push([this.data[i]['grouped_edge_types_name'], this.data[i]['count']]);
     }
     console.log(graphData)
     Highcharts.chart('container', {

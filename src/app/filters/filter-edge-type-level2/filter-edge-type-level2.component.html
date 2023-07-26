@@ -28,6 +28,9 @@
                 {{edgeType.edge_type_name}}
               </label>
             </div>
+            <input type="checkbox" name="edgeTypes2" [(ngModel)]="isAllSelected" [value]="edgeTypes2" [checked]=""
+            (change)="selectAll($event);">
+            <span class="custom-control-description text-dark">&nbsp;Select All</span>
           </div>
         </div>
       </div>

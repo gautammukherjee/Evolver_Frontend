@@ -103,5 +103,9 @@ export class NodeSelectsService {
     return this.http.post(this.API_URL + 'getEdgePMIDLists', params, httpOptions);
   }
 
+  getPMIDListsInRelation(params: any) {
+    return this.http.post(this.API_URL + 'getPMIDListsInRelation', params, httpOptions);
+  }
+
 
 }

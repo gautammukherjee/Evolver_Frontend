@@ -150,17 +150,21 @@ export class FilterEdgeTypeLevel2Component implements OnInit {
     this.togglecollapseStatus = !this.togglecollapseStatus;
   }
 
-  // selectAll(event: any, geneWarningModal: any) {
-  //   if (this.isAllSelected) {
-  //     this.result.map((element: any) => {
-  //       // console.log("element: ", element);
-  //       this.selectedEdgeTypes2.push(element.edge_type_id);
-  //     })
-  //   } else {
-  //     this.selectedEdgeTypes2 = [];
-  //   }
-  //   this.enableDisableProceedButton();
-  // }
+  selectAll(event: any) {
+    // console.log("is_all: ", this.isAllSelected);
+    if (this.isAllSelected) {
+      this.selectedEdgeTypes2=[];
+      this.result.edgeTypeRecords.map((element: any) => {
+        this.selectedEdgeTypes2.push(element.edge_type_id);
+      })
+    } else {
+      this.selectedEdgeTypes2 = [];
+    }
+    this.globalVariableService.setSelectedEdgeTypes2(this.selectedEdgeTypes2);
+    this.filterParams = this.globalVariableService.getFilterParams();
+    // console.log("select all edge types2: ", this.filterParams);
+    // this.enableDisableProceedButton();
+  }
 
   resetEdgeType() {
     this.selectedEdgeTypes2 = [];
