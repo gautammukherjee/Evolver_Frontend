@@ -1,6 +1,9 @@
 <div *ngIf="loadingChart" style="position:absolute; margin-left:350px; z-index:999;">
     <img src="../../assets/images/loader_big.gif" />                
 </div>
+<div *ngIf="noDataFound" class="bg-danger" style="color:#fff; text-align: center; font-weight: bold;">
+    Please Choose source node in level 2
+</div>
 <div id="container" style="border: 1px solid #ddd; margin-bottom:10px;">
     <div class="text-muted fs-2 text-center mb-4">Please select entities to generate Relations!</div>
 </div>

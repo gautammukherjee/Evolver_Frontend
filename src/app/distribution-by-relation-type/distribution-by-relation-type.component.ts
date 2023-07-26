@@ -20,7 +20,8 @@ export class DistributionByRelationTypeComponent implements OnInit {
   result: any = [];
   resultNodes: any = [];
 
-  loadingDesc = false;
+  loadingDesc: boolean = false;
+  noDataFound: boolean = false;
   params: any;
   layout: any = {};
   graphData: any = [];
@@ -61,15 +62,14 @@ export class DistributionByRelationTypeComponent implements OnInit {
   }
 
   getDistributionByRelationType(_filterParams: any) {
-    if (_filterParams.source_node != undefined) {
+    if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined) || (_filterParams.nnrt_id2 != undefined && _filterParams.source_node2!=undefined)) {
       this.loadingDesc = true;
-      // console.log("filterparams: ", _filterParams);
+      this.noDataFound = false;
       this.nodeSelectsService.getDistributionRelationType(_filterParams).subscribe(
         data => {
-          console.log("data: ", data);
           this.resultNodes = data;
           this.distributionData = this.resultNodes.distributionData;
-          console.log("distributionData: ", this.distributionData);
+          console.log("distributionData: ", this.distributionData.length);
           this.distributionDataDetails = [];
 
           this.distributionData.forEach((event: any) => {
@@ -83,9 +83,7 @@ export class DistributionByRelationTypeComponent implements OnInit {
             temps["edge_type_id"] = event.edge_type_id;
             temps["pmid_count"] = event.count;
             temps["edge_types_name"] = event.edge_types_name;
-
             temps["pmidLists"] = "<button class='btn btn-sm btn-primary'>Get PMID</button>";
-
             this.distributionDataDetails.push(temps);
           });
 
@@ -116,9 +114,7 @@ export class DistributionByRelationTypeComponent implements OnInit {
             data: this.distributionDataDetails,
             onClickRow: (field: any, row: any, $element: any) => {
               if ($element == "pmidLists") {
-
                 // console.log("field: ", field);
-
                 var pubmedURLsDownloadLoader: any;
                 pubmedURLsDownloadLoader = "<div class='overlay'><img style='position:absolute' src='../../assets/images/loader_big.gif' /></div>";
                 $("#pmidListsLoader").html(pubmedURLsDownloadLoader);
@@ -126,7 +122,10 @@ export class DistributionByRelationTypeComponent implements OnInit {
                 ($('#myModalPMID') as any).modal('show');
 
                 this.filterParams = this.globalVariableService.getFilterParams();
-                this.nodeSelectsService.getPMIDListsInRelation({ 'source_node': field.source_node_id, 'destination_node': field.destination_node_id, 'edge_type_id': field.edge_type_id, 'nnrt_id': this.filterParams['nnrt_id'] }).subscribe(
+
+                var nnrtID = ((this.filterParams['nnrt_id2']==undefined)?this.filterParams['nnrt_id']:this.filterParams['nnrt_id2']);
+                // console.log("nnrtID", nnrtID);
+                this.nodeSelectsService.getPMIDListsInRelation({ 'source_node': field.source_node_id, 'destination_node': field.destination_node_id, 'edge_type_id': field.edge_type_id, 'nnrt_id': nnrtID }).subscribe(
                   data => {
                     // const legendsNodeTypes = [];
                     this.resultNodesPopup = data;
@@ -168,14 +167,11 @@ export class DistributionByRelationTypeComponent implements OnInit {
                   () => {
                     this.loadingPMIDLists = false;
                   });
-
-
               }
             }
           });
 
           jQuery('#showDistributionRelationData').bootstrapTable("load", this.distributionDataDetails);
-
           // jQuery('#showDistributionRelationData').on("search.bs.table", function (e: any) {
           //   jQuery('#showDistributionRelationData').bootstrapTable("load", e.distributionDataDetails);
           // })
@@ -194,6 +190,9 @@ export class DistributionByRelationTypeComponent implements OnInit {
           this.loadingDesc = false;
         }
       );
+    }else if(_filterParams.source_node != undefined){
+      console.log("Please choose source node level 2");
+      this.noDataFound = true;
     }
   }
 

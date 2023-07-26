@@ -16,6 +16,7 @@ export class DistributionByRelGrpComponent implements OnInit {
   graphLoader: boolean = true;
   private filterParams: any;
   loadingChart: boolean = false;
+  noDataFound: boolean = false;
 
   @Input() ProceedDoFilterApply?: Subject<any>; //# Input for ProceedDoFilter is getting from clinical details html 
 
@@ -42,10 +43,11 @@ export class DistributionByRelGrpComponent implements OnInit {
   }
 
   getDistributionByRelGroup(_filterParams: any) {
-    if (_filterParams.source_node != undefined) {
 
+    if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined) || (_filterParams.nnrt_id2 != undefined && _filterParams.source_node2!=undefined)) {
       console.log("new Filters by rel group charts IN: ", this.filterParams);
       this.loadingChart = true;
+      this.noDataFound = false;
 
       this._RDS.distribution_by_relation_grp(this.filterParams).subscribe(
         (response: any) => {
@@ -61,6 +63,9 @@ export class DistributionByRelGrpComponent implements OnInit {
           this.loadingChart = false;
         }
       );
+    }else if(_filterParams.source_node != undefined){
+      console.log("Please choose source node level 2");
+      this.noDataFound = true;
     }
   }
 
