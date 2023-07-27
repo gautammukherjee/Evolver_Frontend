@@ -62,12 +62,12 @@ export class EventDescriptionComponent implements OnInit {
     this.getEventDescription(this.filterParams);
 
     this.ProceedDoFilterApply?.subscribe(data => {  // Calling from details, details working as mediator
-      console.log("eventData: ", data);
+      //console.log("eventData: ", data);
       if (data === undefined) { // data=undefined true when apply filter from side panel
         // this.hideCardBody = true;
         this.filterParams = this.globalVariableService.getFilterParams();
         this.getEventDescription(this.filterParams);
-        console.log("new Filters for articles: ", this.filterParams);
+        //console.log("new Filters for articles: ", this.filterParams);
       }
     });
   }
@@ -81,13 +81,13 @@ export class EventDescriptionComponent implements OnInit {
       // this.diseaseCheck = _filterParams['di_ids']; // if disease_id is checked
       // console.log("checked here Disease in event description: ", this.diseaseCheck);
       // if (this.diseaseCheck !== undefined) {
-      console.log("filterparams: ", _filterParams);
+      //console.log("filterparams: ", _filterParams);
       this.nodeSelectsService.getMasterLists(_filterParams).subscribe(
         data => {
-          console.log("data: ", data);
+          //console.log("data: ", data);
           this.resultNodes = data;
           this.masterListsData = this.resultNodes.masterListsData;
-          console.log("masterListsDataLength: ", this.masterListsData.length);
+          //console.log("masterListsDataLength: ", this.masterListsData.length);
           this.masterListsDataDetails = [];
 
           this.masterListsData.forEach((event: any) => {
@@ -99,9 +99,9 @@ export class EventDescriptionComponent implements OnInit {
             const edgeTypeIdsPost = edgeTypeIds.replace(regex, '');
             //console.log("event: ", event);//use this variable, gautam
 
-            const edgeTypeNeIds = event.ne_ids;//<<<<
-            const edgeTypeNeIdsPost = edgeTypeNeIds.replace(regex, '');//<<<<
-            console.log("Line 96:" + edgeTypeNeIdsPost);//<<<<
+            const edgeTypeNeIds = event.ne_ids;
+            const edgeTypeNeIdsPost = edgeTypeNeIds.replace(regex, '');
+            //console.log(edgeTypeNeIdsPost);
 
             // var edgeHere = this.getEdgeTypes(edgeTypeIdsPost);
             // console.log("edgeHere: ", edgeHere);
@@ -119,11 +119,11 @@ export class EventDescriptionComponent implements OnInit {
             temps["sourcenode_name"] = event.sourcenode_name;
             temps["destinationnode_name"] = event.destinationnode_name;
             temps["level"] = event.level;
-            temps["edgeTypes"] = "<button class='btn btn-sm btn-primary'>Edge Types</button> &nbsp;";
-            temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";//<<<<
+            //temps["edgeTypes"] = "<button class='btn btn-sm btn-primary'>Edge Types</button> &nbsp;";
+            temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";
             //temps["edgeType_articleType"] = event.edge_type_article_type_ne_ids;
             temps["edgeTypesID"] = edgeTypeIdsPost;
-            temps["edgeNeId"] = edgeTypeNeIdsPost;//<<<<
+            temps["edgeNeId"] = edgeTypeNeIdsPost;
             this.masterListsDataDetails.push(temps);
             // console.log("masterListsData Event: ", this.masterListsDataDetails);
           },
@@ -171,24 +171,19 @@ export class EventDescriptionComponent implements OnInit {
             data: this.masterListsDataDetails,
             onClickRow: (field: any, row: any, $element: any) => {
               //edge types
-              if ($element == "edgeTypes") {
-                console.log(field.edgeTypesID);
+              /*if ($element == "edgeTypes") {
                 this.loaderEdgeType = true;
                 this.modalRef = this.modalService.open(this.edgeTypeDescModal_Detail, { size: 'lg', keyboard: false, backdrop: 'static' });
                 this.getEdgeTypes(field.edgeTypesID);
-
-              }
+              }*/
               if ($element == "edgeNe") {
-                console.log(field.edgeNeId);
                 this.loaderArticle = true;
-                this.modalRef = this.modalService.open(this.articleModal_Detail, { size: 'lg', keyboard: false, backdrop: 'static' });
-                this.getArticles(field.edgeNeId);
+                this.modalRef = this.modalService.open(this.articleModal_Detail, { size: 'xl', keyboard: false, backdrop: 'static' });
+                this.ArticlePopup(field.edgeNeId, field.sourcenode_name, field.destinationnode_name, field.edgeTypesID, this.getArticles);
               }
             },
           });
-
           jQuery('#showEventDescription').bootstrapTable("load", this.masterListsDataDetails);
-
         },
         err => {
           console.log(err.message);
@@ -212,15 +207,30 @@ export class EventDescriptionComponent implements OnInit {
   //   })
   // }
 
-  getEdgeTypes(edgeTypeIdsPost: any) {
+
+  //Currently getEdgeTypes() not in use.
+  /*getEdgeTypes(edgeTypeIdsPost: any) {
     this.edgeHere = "";
     this.nodeSelectsService.getEdgeTypeName({ 'edge_type_ids': edgeTypeIdsPost }).subscribe((p: any) => {
       this.result = p;
       this.edgeHere = this.result;
       this.loaderEdgeType = false;
     });
-  }
+  }*/
 
+  /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Commented by Gautam Mukherjee
+  getEdgeTypesInternally() is executing to get edge-types in Article Popup. 
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  getEdgeTypesInternally(edgeTypeIdsPost: any) {
+    this.edgeHere = "";
+    this.nodeSelectsService.getEdgeTypeName({ 'edge_type_ids': edgeTypeIdsPost }).subscribe((p: any) => {
+      this.result = p;
+      this.result.forEach((event: any) => {
+        this.edgeHere += event.edge_type_name+"<br>";
+      });
+    });
+  }
   // reloadDescription() {
   //   console.log("Event description: ")
   //   // this.globalVariableService.resetChartFilter();
@@ -231,41 +241,52 @@ export class EventDescriptionComponent implements OnInit {
 
   // }
 
-  getArticles(edgeNeId: any) {
-    this.articleHere = "";
-    const edgeNeIdArr = edgeNeId.split(",");
 
+  /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Commented by Gautam Mukherjee
+  ArticlePopup() is the main function and getArticles() is the callback function. 
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  ArticlePopup(edgeNeId: any, sourceNode: string, destinationNode: string, edgeTypesID: number, getArticles: any) {
+    this.getEdgeTypesInternally(edgeTypesID);
+    getArticles(edgeNeId, sourceNode, destinationNode, edgeTypesID, this);
+  }
+
+  getArticles(edgeNeId: any, sourceNode: string, destinationNode: string, edgeTypesID: number, t: any) {
+    t.articleHere = [];
+    const edgeNeIdArr = edgeNeId.split(",");
     //console.log(typeof edgeNeIdArr + edgeNeIdArr +edgeNeIdArr[0]);
     var pubmedBaseUrl = "https://www.ncbi.nlm.nih.gov/pubmed/";
-    this.nodeSelectsService.getEdgePMIDLists({ 'ne_ids': edgeNeIdArr }).subscribe((p: any) => {
-      this.result = p;
+    t.nodeSelectsService.getEdgePMIDLists({ 'ne_ids': edgeNeIdArr }).subscribe((p: any) => {
+      t.result = p;
       //console.log(this.result);
-      this.articleHere = this.result.pmidLists;
-
-      this.articleHere.forEach((event: any) => {
+      t.articleHere = t.result.pmidLists;
+      t.articleList = [];
+      t.articleHere.forEach((event: any) => {
         var temps: any = {};
-        
-        temps["pmid"] = "<a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + event.pmid + "'>" + event.pmid + "</a>"
+        temps["source"] = sourceNode;
+        temps["destination"] = destinationNode;
+        temps["pmid"] = "<a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + event.pmid + "'>" + event.pmid + "</a>";
         temps["publication_date"] = event.publication_date;
         temps["title"] = event.title;
-        this.articleList.push(temps);
+        temps["edge_type"] = t.edgeHere;
+        t.articleList.push(temps);
       });
       jQuery('#articles_details').bootstrapTable({
         bProcessing: true,
-            bServerSide: true,
-            pagination: true,
-            showToggle: true,
-            showColumns: true,
-            search: true,
-            pageSize: 25,
-            striped: true,
-            showFullscreen: true,
-            stickyHeader: true,
-            showExport: true,
-            data: this.articleList
+        bServerSide: true,
+        pagination: true,
+        showToggle: true,
+        showColumns: true,
+        search: true,
+        pageSize: 25,
+        striped: true,
+        showFullscreen: true,
+        stickyHeader: true,
+        showExport: true,
+        data: t.articleList
       });
 
-      this.loaderArticle = false;
+      t.loaderArticle = false;
     });
 
 

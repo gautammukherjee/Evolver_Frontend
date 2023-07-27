@@ -4,10 +4,11 @@
             <!--<h4>Network Map for <span style="text-transform: uppercase;"> {{mapTypes}} </span></h4>-->
             <!-- <h4 style="text-align: center;background-color: #7880BA;padding: 10px; color:#fff;">Network Map </h4> -->
 
-            <div class="text-muted fs-2 text-center mb-4" *ngIf="nodesCheckLength">Please select entities to generate the Network Map</div>
-            
+            <div class="text-muted fs-2 text-center mb-4" *ngIf="nodesCheckLength">Please select entities to generate
+                the Network Map</div>
+
             <div class="overlay" *ngIf="loadingMap">
-                <img style="margin:185px 653px;" src="../../assets/images/loader_big.gif" />                
+                <img style="margin:185px 653px;" src="../../assets/images/loader_big.gif" />
             </div>
 
             <!--<div class="table-responsive" *ngIf="nodesCheck">-->
@@ -23,16 +24,24 @@
                 </div>-->
 
                 <div>
-                    <button *ngIf="!nodesCheckLength" class="btn btn-md mr-1" style="background-color: #0A66C2;color: #FFF; margin:10px;" (click)="refreshMap($event)" title="REFRESH MAP"><i class="bi bi-arrow-clockwise"></i></button>
-                    <button *ngIf="!nodesCheckLength" class="btn btn-primary" [ngClass]="isNetworkMapFullScreen == true ? 'map-fixed-posBtn' : ''" (click)="onNetworkMapFullScrClick()"><i *ngIf="isNetworkMapFullScreen" class='bi bi-fullscreen-exit' title="EXIT FULL SCREEN"></i><i *ngIf="!isNetworkMapFullScreen" class="bi bi-arrows-fullscreen" title="FULL SCREEN"></i></button>
+                    <button *ngIf="!nodesCheckLength" class="btn btn-md mr-1"
+                        style="background-color: #0A66C2;color: #FFF; margin:10px;" (click)="refreshMap($event)"
+                        title="REFRESH MAP"><i class="bi bi-arrow-clockwise"></i></button>
+                    <button *ngIf="!nodesCheckLength" class="btn btn-primary"
+                        [ngClass]="isNetworkMapFullScreen == true ? 'map-fixed-posBtn' : ''"
+                        (click)="onNetworkMapFullScrClick()"><i *ngIf="isNetworkMapFullScreen"
+                            class='bi bi-fullscreen-exit' title="EXIT FULL SCREEN"></i><i
+                            *ngIf="!isNetworkMapFullScreen" class="bi bi-arrows-fullscreen"
+                            title="FULL SCREEN"></i></button>
                 </div>
 
-                <div style="height: 90%; width: 100%; float: left; overflow: auto; overflow-y: hidden">
+                <div style="height: 100%; width: 99%; float: left; overflow: auto; overflow-y: hidden">
                     <!-- <ng2-cytoscape [elements]="graphData" [layout]="layout" (select)="nodeChange($event)"></ng2-cytoscape> -->
                     <div class="network-map-wrapper" [ngClass]="isNetworkMapFullScreen == true ? 'full-screen' : ''">
-                        <ng2-cytoscape [elements]="graphData" [layout]="layout" (onGraphSelection)='graphSelected("nodeRightClick")'></ng2-cytoscape>
+                        <ng2-cytoscape [elements]="graphData" [layout]="layout"
+                            (onGraphSelection)='graphSelected("nodeRightClick")'></ng2-cytoscape>
                     </div>
-                    
+
 
                 </div>
 
