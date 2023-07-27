@@ -246,9 +246,9 @@ export class EventDescriptionComponent implements OnInit {
   Commented by Gautam Mukherjee
   ArticlePopup() is the main function and getArticles() is the callback function. 
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-  ArticlePopup(edgeNeId: any, sourceNode: string, destinationNode: string, edgeTypesID: number, getArticles: any) {
+  ArticlePopup(edgeNeId: any, sourceNode: string, destinationNode: string, edgeTypesID: number, getArticles_callback: any) {
     this.getEdgeTypesInternally(edgeTypesID);
-    getArticles(edgeNeId, sourceNode, destinationNode, edgeTypesID, this);
+    getArticles_callback(edgeNeId, sourceNode, destinationNode, edgeTypesID, this);
   }
 
   getArticles(edgeNeId: any, sourceNode: string, destinationNode: string, edgeTypesID: number, t: any) {
