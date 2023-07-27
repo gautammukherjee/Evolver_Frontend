@@ -3,7 +3,7 @@
         <div class="col">
             <div class="text-muted fs-2 text-center mb-4">Please select entities to generate Article Count Graph!</div>
             <img src="./assets/images/loader_big.gif" *ngIf="graphLoader" />
-            <highcharts-chart [Highcharts]="highcharts" [options]="chartOptions" style="width: 100%; display: block"></highcharts-chart>
+            <highcharts-chart [Highcharts]="highcharts" [options]="chartOptions" style="width: 100%; display: block" *ngIf="graphLoader"></highcharts-chart>
         </div>
     </div>
  </div>
