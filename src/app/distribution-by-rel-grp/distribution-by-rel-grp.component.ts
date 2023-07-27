@@ -71,9 +71,12 @@ export class DistributionByRelGrpComponent implements OnInit {
 
   drawColumnChart() {
     let graphData: any[] = [];
+    let categories: any[] = [];
+    
     console.log(this.data);
     //console.log(this.data[4]['count']);
     for (let i = 0; i < this.data.length; i++) {
+      categories.push(this.data[i]['grouped_edge_types_name']);
       graphData.push([this.data[i]['grouped_edge_types_name'], this.data[i]['count']]);
     }
     console.log(graphData)
@@ -88,7 +91,7 @@ export class DistributionByRelGrpComponent implements OnInit {
         //text: 'EvolverAI'
       },
       xAxis: {
-        type: 'category',
+        categories: categories,
         labels: {
           rotation: -45,
           style: {
@@ -98,7 +101,7 @@ export class DistributionByRelGrpComponent implements OnInit {
         }
       },
       yAxis: {
-        min: 0,
+        type: 'logarithmic',
         title: {
           text: 'Article Count'
         },
@@ -110,6 +113,11 @@ export class DistributionByRelGrpComponent implements OnInit {
             fontWeight: 'bold',
             color: 'black'
           }
+        }
+      },
+      plotOptions: {
+        column: {
+          stacking: "normal"
         }
       },
       legend: {

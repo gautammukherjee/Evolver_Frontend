@@ -53,7 +53,6 @@ export class PmidCountWithGeneAndDiseaseComponent implements OnInit {
       this.graphLoader = true;
       this._RDS.pmid_count_gene_disease(params).subscribe(
         (data: any) => {
-
           this.result = data;
           this.pmidCountGraph = this.result.nodeSelectsRecords;
           this.drawAreaChart();
@@ -159,13 +158,8 @@ export class PmidCountWithGeneAndDiseaseComponent implements OnInit {
           name: 'Distinct values of PMID',
           data: this.pmid_Count
         },
-
       ]
-
-
     };
     this.graphLoader = false;
-
   };
-
 }

@@ -11,7 +11,8 @@
     <!--<div class="card-panel-box-detail" [hidden]="hideCardBody">-->
     <div class="card-panel-box-detail">
         <div class="customTable">
-            <div *ngIf="loadingDesc" style="position:absolute; margin-left:350px; z-index:999;">
+
+            <div class="overlay" *ngIf="loadingDesc">
                 <img src="../../assets/images/loader_big.gif" />
             </div>
             <div *ngIf="noDataFound" class="bg-danger" style="color:#fff; text-align: center; font-weight: bold;">
