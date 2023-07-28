@@ -629,3 +629,18 @@ body {
         top: 0px !important;
     }
 }
+
+.networkstatus{
+    height:0;
+    &.offline{
+        width: 100%;
+        background: red;
+        position: relative;
+        z-index: 9999;
+        text-align: center;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 500;
+        height:auto;
+    }
+}
