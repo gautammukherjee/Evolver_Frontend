@@ -173,7 +173,7 @@ export class FilterEdgeTypeComponent implements OnInit {
       this.selectedEdgeTypesByGroup.splice(this.selectedEdgeTypesByGroup.indexOf(edgeType.edge_group_id), 1);
       this.selectedEdgeTypesNames.splice(this.selectedEdgeTypesNames.indexOf(edgeType.edge_group_name), 1);
     }
-    // console.log("selectedEdgeTypesByGroup: ", this.selectedEdgeTypesByGroup);
+    console.log("selectedEdgeTypesByGroup: ", this.selectedEdgeTypesByGroup);
 
     // Pass edge group id and return edge_type_id to mapping with edge and edge group
     this.selectedEdgeTypes = this.edgeTypesFirst.filter((item:any) => (
@@ -189,6 +189,7 @@ export class FilterEdgeTypeComponent implements OnInit {
     console.log("new Filters Edge Types: ", this.filterParams);
 
     // if (from != 'edgeSelectsWarningModal')
+    if (this.selectedEdgeTypesByGroup.length!=0)
     this.proceed();
     this.enableDisableProceedButton();
   }
