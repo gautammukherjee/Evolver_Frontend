@@ -66,12 +66,12 @@ export class FilterDestinationNodeComponent implements OnInit {
     this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
       console.log("event Destination: ", event.clickOn);
       if (event.clickOn == undefined) {
-        // console.log("Source Level 2:1 ", event.clickOn);
+        console.log("Source Level 2:1 ", event.clickOn);
         this.getResetDestinationNode();
-      } else if (event.clickOn !== undefined && (event.clickOn == 'sourceNodeFilter')) {
+      } else if (event.clickOn !== undefined && (event.clickOn == 'edgeTypeFilter')) {
         // this.hideCardBody = true;
         this.filterParams = this.globalVariableService.getFilterParams();
-        // console.log("Source Level 2:2 ", event.clickOn);
+        console.log("Source Level 2:2 ", event.clickOn);
         // if (this.firstTimeCheck === false) // Node select only one time reload when we choose destination nodes are selected
         this.getDestinationNode();
       }

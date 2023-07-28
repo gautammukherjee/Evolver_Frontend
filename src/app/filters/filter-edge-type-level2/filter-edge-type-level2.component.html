@@ -1,47 +1,36 @@
 <div class="sidebar-card">
-  <!--<div class="heading">
-      <h4 class="text-dark">Edge Type Level 2</h4> <img *ngIf="loading" src="../../assets/images/loader_small.gif" />
-  </div>-->
-
   <div class="dropdown">
     <div class="dropdown-toggle" id="edge-type-filter2" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
       <div class="body">
         <div class="search-input">
           <input class="form-control" type="text" value="{{selectedEdgeTypesNames2.join(', ')}}" placeholder="Search Edge Type level 2" aria-label="Search" [(ngModel)]="edgeTypeFilter" />
           <img *ngIf="loading" src="../../assets/images/loader_small.gif" width="20px"/>
-          <!--<span *ngIf="selectedEdgeTypes.length > 0" class="reset-search"
-            (click)="resetEdgeType();">Reset</span>-->
         </div>
       </div>
     </div>
 
-
     <ul class="dropdown-menu" aria-labelledby="edge-type-filter2">
-      <!-- *ngIf="showSourceBody" -->
       <div class="body">
         <div *ngIf="edgeTypes2.length">
           <div class="search-options">
-            <div class="mb-1 form-check" *ngFor="let edgeType of edgeTypes2 | EdgeTypeFilterPipe:edgeTypeFilter">
-              <input class="form-check-input border border-secondary" type="checkbox" name="edgeTypes2"  [value]="edgeType"
-                [checked]="selectedEdgeTypes2.indexOf(edgeType.edge_type_id)>-1 " (change)="selectEdgeType(edgeType,$event)">
-              <label class="form-check-label">
-                {{edgeType.edge_type_name}}
-              </label>
-            </div>
             <input type="checkbox" name="edgeTypes2" [(ngModel)]="isAllSelected" [value]="edgeTypes2" [checked]=""
             (change)="selectAll($event);">
             <span class="custom-control-description text-dark">&nbsp;Select All</span>
+            <div class="mb-1 form-check" *ngFor="let edgeType of edgeTypes2 | EdgeTypeFilterPipe:edgeTypeFilter">
+              <input class="form-check-input border border-secondary" type="checkbox" name="edgeTypes2"  [value]="edgeType"
+                [checked]="selectedEdgeTypesByGroup2.indexOf(edgeType.edge_group_id)>-1 " (change)="selectEdgeType(edgeType,$event)">
+              <label class="form-check-label">
+                {{edgeType.edge_group_name}}
+              </label>
+            </div>            
           </div>
         </div>
-      </div>
-      
+      </div>      
     </ul>
   </div>
 </div>
 
-
-
-<ng-template #edgeSelectsWarningModal let-c="close" let-d="dismiss">
+<!-- <ng-template #edgeSelectsWarningModal let-c="close" let-d="dismiss">
   <div class="modal-header    modal-lg" style="background: #ff0c66 !important;">
     <h4 class="modal-title">Warning</h4>
     &nbsp;
@@ -58,6 +47,6 @@
       <button class="btn btn-hero-info btn-demo" (click)="closePopup()">Okay</button>
     </div>
   </div>
-</ng-template>
+</ng-template> -->
 
 

@@ -72,6 +72,9 @@ export class NodeSelectsService {
   //   }
   // }
 
+  getEdgeTypeFirst() {
+    return this.http.get(this.API_URL + 'getEdgeTypeFirst', httpOptions);
+  }
   getEdgeType() {
     return this.http.get(this.API_URL + 'getEdgeType', httpOptions);
   }
