@@ -248,7 +248,9 @@ export class EventDescriptionComponent implements OnInit {
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
   ArticlePopup(edgeNeId: any, sourceNode: string, destinationNode: string, edgeTypesID: number, getArticles_callback: any) {
     this.getEdgeTypesInternally(edgeTypesID);
+    //if(this.edgeHere!=""){
     getArticles_callback(edgeNeId, sourceNode, destinationNode, edgeTypesID, this);
+    //}
   }
 
   getArticles(edgeNeId: any, sourceNode: string, destinationNode: string, edgeTypesID: number, t: any) {
