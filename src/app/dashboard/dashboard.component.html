@@ -72,18 +72,6 @@
             <!--<app-filter-submit (onSelectSubmit)='submitChanged($event)'
                             [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-submit>-->
 
-            <!--<div class="heading">
-                <div style="position: absolute;right: 10px;top: 80px;z-index: 1;">
-                    <button class="btn btn-md mr-1 p-2" style="background-color: #0A66C2;color: #FFF;" (click)="resetAllFilters()">Reset</button>&nbsp;
-                    <button class="btn btn-md mr-1 p-2" style="background-color: #BF63A2; color:#fff;" [disabled]="!isSourceNodes" (click)="onSubmit()">Submit</button>
-                </div>
-            </div>-->
-
-            <!--<div class="reset-btns-group">
-                <button class="btn btn-primary me-2 btn-md">Reset</button>
-                <button class="btn btn-success btn-md">Submit</button>
-            </div>-->
-
             <div class="left-sidebar d-none" [ngClass]="showSidebar == false ? 'hide' : ''">
                 <!-- Enable this to open side menu toggler -->
                 <!-- <button class="btn btn-primary menu-toggler" (click)="ontoggleSidebar()" placement="right">
@@ -129,14 +117,6 @@
                                     Count</button>
                             </li>
 
-                            <!-- <div class="ms-auto">
-                                <button class="btn btn-md mr-1" style="background-color: #0A66C2;color: #FFF;" >Reset</button>&nbsp;
-                                <button class="btn btn-md mr-1" style="background-color: #BF63A2; color:#fff;">Submit</button>
-                              </div> -->
-                            <!-- <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="tab5-tab" data-bs-toggle="tab" data-bs-target="#tab5" type="button"
-                                    role="tab" aria-controls="tab5" aria-selected="false">Distribution by Relation Type</button>
-                            </li> -->
                         </ul>
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="tab0" role="tabpanel"
@@ -161,8 +141,7 @@
                                 <app-pmid-count-with-gene-and-disease
                                     [ProceedDoFilterApply]="doFilterApply"></app-pmid-count-with-gene-and-disease>
                             </div>
-                            <!-- <div class="tab-pane p-2 fade" id="tab5" role="tabpanel" aria-labelledby="tab5-tab">
-                                
+                            <!-- <div class="tab-pane p-2 fade" id="tab5" role="tabpanel" aria-labelledby="tab5-tab">                              
                             </div> -->
                         </div>
                     </div>
@@ -172,7 +151,6 @@
                 <div style="clear:both;">&nbsp;</div>
                 <div style="clear:both;">&nbsp;</div>
                 <app-footer></app-footer>
-
             </div>
         </div>
     </section>
