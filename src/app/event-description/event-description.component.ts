@@ -228,6 +228,7 @@ export class EventDescriptionComponent implements OnInit {
   getEdgeTypesInternally(edgeTypeIdsPost: any) {
     this.edgeHere = "";
     this.nodeSelectsService.getEdgeTypeName({ 'edge_type_ids': edgeTypeIdsPost }).subscribe((p: any) => {
+      this.edgeHere = "";
       this.result = p;
       this.result.forEach((event: any) => {
         this.edgeHere += event.edge_type_name+"<br>";
