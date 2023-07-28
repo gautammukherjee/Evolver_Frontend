@@ -94,7 +94,7 @@ export class NgCytoComponent implements OnChanges {
                 'background-color': 'data(colorCode)',
                 'color': '#000'
             })
-            .style({ "font-size": 13,"font-family": "system-ui"})    // big font
+            .style({ "font-size": 13, "font-family": "system-ui" })    // big font
 
             .selector(':selected')
             .css({
@@ -166,7 +166,9 @@ export class NgCytoComponent implements OnChanges {
             maxZoom: this.zoom.max,
             style: this.style,
             elements: this.elements,
+            userZoomingEnabled: false,
         });
+        
 
         // cy.svg(true)
         // console.log("cy:: ", cy._private.elements);

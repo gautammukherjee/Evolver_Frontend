@@ -33,19 +33,21 @@
                                     data-filter-control="input">Destination Name</th>
                                 <th data-field="level" data-sortable="true" width="10%" data-filter-control="select">
                                     Level</th>
-                                <th data-field="edgeTypes" data-sortable="true" width="10%" data-filter-control="input">
-                                    Edge Type</th>
-                                <th data-field="edgeNe" data-sortable="true" width="10%" data-filter-control="input">
+                                <!-- <th data-field="edgeTypes" data-sortable="true" width="10%" data-filter-control="input">
+                                    Edge Type</th> -->
+                                <th data-field="edgeNe" data-sortable="true" width="10%">
                                     Articles</th>
-                                <!-- <th data-field="edgeType_articleType" data-sortable="true" width="10%"
-                                    data-filter-control="input">
-                                    Edge Type
-                                </th> -->
-
                             </tr>
                         </thead>
                     </table>
                 </div>
+                
+                <!-- <select class="form-select" style="width: 150px;">
+                    <option value="1,2000" selected>1-2000</option>
+                    <option value="2001,4000">2001-4000</option>
+                    <option value="4001,6000">4001-6000</option>
+                    <option value="6001,8000">6001-8000</option>
+                </select> -->
             </div>
 
         </div>
@@ -80,46 +82,66 @@
 </ng-template>
 
 <ng-template #articleModal let-c="close" let-d="dismiss">
-    <div class="modal-header blue_bg_hdr  modal-lg">
-        <h4 class="modal-title">Article(s) </h4>
-        <button class="close" aria-label="Close" (click)="d('Cross click')">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body white_bg without_bord_rad">
-        <div class="row">
-            <div class="col-md-12 bottam-buffer home_tiles">
+    <div class="modal-content">
+        <div class="modal-header blue_bg_hdr  modal-lg">
+            <h4 class="modal-title">Article(s) </h4>
+            <button class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body white_bg without_bord_rad">
+            <div class="row">
+                <div class="col-md-12 bottam-buffer home_tiles">
 
-                <div class="m-1">
-                    <div class="alert alert-primary alert-dismissible fade show">
-                        
-                        <!-- <div *ngFor="let article of articleHere">
+                    <div class="m-1">
+                        <div class="alert alert-primary alert-dismissible fade show">
+
+                            <!-- <div *ngFor="let article of articleHere">
                             <p>PMID: {{article.pmid}}</p>
                             <p>Publication Date: {{article.publication_date}}</p>
                             <p>Title: {{article.title}}</p>
                             <hr>
                         </div> -->
-                        <table id="articles_details" data-toolbar="#toolbar" data-search="true" data-show-export="true"
-                            data-show-columns="true" data-page-size="50" data-filter-control="true"
-                            data-page-list="[10, 25, 50, 100, All]">
-                            <thead>
-                                <tr>
-                                    <th data-field="pmid" data-sortable="true" width="10%" data-filter-control="input">
-                                        PMID
-                                    </th>
-                                    <th data-field="publication_date" data-sortable="true" width="10%" data-filter-control="input">
-                                        Publication Date
-                                    </th>
-                                    <th data-field="title" data-sortable="true" width="10%" data-filter-control="input">
-                                        Title
-                                    </th>
-                                </tr>
-                            </thead>
-                        </table>
-                        <img class="text-center" src="../../assets/images/loader_big.gif" *ngIf="loaderArticle" />
+                            <table id="articles_details" data-toolbar="#toolbar" data-search="true"
+                                data-show-export="true" data-show-columns="true" data-page-size="50"
+                                data-filter-control="true" data-page-list="[10, 25, 50, 100, All]">
+                                <thead>
+                                    <tr>
+                                        <th data-field="source" data-sortable="true" width="10%"
+                                            data-filter-control="input">
+                                            Source
+                                        </th>
+                                        <th data-field="destination" data-sortable="true" width="10%"
+                                            data-filter-control="input">
+                                            Destination
+                                        </th>
+                                        <th data-field="pmid" data-sortable="true" width="10%"
+                                            data-filter-control="input">
+                                            PMID
+                                        </th>
+                                        <th data-field="publication_date" data-sortable="true" width="10%"
+                                            data-filter-control="input">
+                                            Publication Date
+                                        </th>
+                                        <th data-field="title" data-sortable="true" width="10%"
+                                            data-filter-control="input">
+                                            Title
+                                        </th>
+                                        <th data-field="edge_type" data-sortable="true" width="10%"
+                                            data-filter-control="input">
+                                            Edge Type
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <img class="text-center" src="../../assets/images/loader_big.gif" *ngIf="loaderArticle" />
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+
+
 </ng-template>
