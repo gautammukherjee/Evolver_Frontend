@@ -59,6 +59,7 @@ export class EventDescriptionComponent implements OnInit {
   ngOnInit() {
     this.filterParams = this.globalVariableService.getFilterParams();
     // console.log("new Filters1: ", this.filterParams);
+    this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": 2000});
     this.getEventDescription(this.filterParams);
 
     this.ProceedDoFilterApply?.subscribe(data => {  // Calling from details, details working as mediator
@@ -66,6 +67,7 @@ export class EventDescriptionComponent implements OnInit {
       if (data === undefined) { // data=undefined true when apply filter from side panel
         // this.hideCardBody = true;
         this.filterParams = this.globalVariableService.getFilterParams();
+        this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": 2000});
         this.getEventDescription(this.filterParams);
         //console.log("new Filters for articles: ", this.filterParams);
       }
@@ -73,6 +75,7 @@ export class EventDescriptionComponent implements OnInit {
   }
 
   getEventDescription(_filterParams: any) {
+    //console.log("abc = "+_limit.load_value);
     if (_filterParams.source_node != undefined) {
 
       // $('.overlay').fadeOut(500);
@@ -225,6 +228,7 @@ export class EventDescriptionComponent implements OnInit {
   getEdgeTypesInternally(edgeTypeIdsPost: any) {
     this.edgeHere = "";
     this.nodeSelectsService.getEdgeTypeName({ 'edge_type_ids': edgeTypeIdsPost }).subscribe((p: any) => {
+      this.edgeHere = "";
       this.result = p;
       this.result.forEach((event: any) => {
         this.edgeHere += event.edge_type_name+"<br>";
@@ -293,6 +297,12 @@ export class EventDescriptionComponent implements OnInit {
 
 
 
+  }
+
+  loadNextDataSet(event:any){
+    //console.log(event.target.value);
+    this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": event.target.value, "limitValue": 2000});
+    this.getEventDescription(this.filterParams);
   }
 
 }
