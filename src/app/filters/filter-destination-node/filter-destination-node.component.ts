@@ -68,7 +68,7 @@ export class FilterDestinationNodeComponent implements OnInit {
       if (event.clickOn == undefined) {
         console.log("Source Level 2:1 ", event.clickOn);
         this.getResetDestinationNode();
-      } else if (event.clickOn !== undefined && (event.clickOn == 'edgeTypeFilter')) {
+      } else if (event.clickOn !== undefined && (event.clickOn == 'sourceNodeFilter')) {
         // this.hideCardBody = true;
         this.filterParams = this.globalVariableService.getFilterParams();
         console.log("Source Level 2:2 ", event.clickOn);
