@@ -62,7 +62,9 @@ export class DistributionByRelationTypeComponent implements OnInit {
   }
 
   getDistributionByRelationType(_filterParams: any) {
-    if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined) || (_filterParams.nnrt_id2 != undefined && _filterParams.source_node2!=undefined)) {
+    // if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined) || (_filterParams.nnrt_id2 != undefined && _filterParams.source_node2!=undefined)) {
+    if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined) || ((_filterParams.nnrt_id2 != undefined && _filterParams.nnrt_id2 != "") && _filterParams.source_node2 != undefined)) {
+      console.log("Rel Type IN: ", this.filterParams);
       this.loadingDesc = true;
       this.noDataFound = false;
       this.nodeSelectsService.getDistributionRelationType(_filterParams).subscribe(
@@ -123,9 +125,10 @@ export class DistributionByRelationTypeComponent implements OnInit {
 
                 this.filterParams = this.globalVariableService.getFilterParams();
 
-                var nnrtID = ((this.filterParams['nnrt_id2']==undefined)?this.filterParams['nnrt_id']:this.filterParams['nnrt_id2']);
+                var nnrtID = ((this.filterParams['nnrt_id2'] == undefined) ? this.filterParams['nnrt_id'] : this.filterParams['nnrt_id2']);
                 // console.log("nnrtID", nnrtID);
-                this.nodeSelectsService.getPMIDListsInRelation({ 'source_node': field.source_node_id, 'destination_node': field.destination_node_id, 'edge_type_id': field.edge_type_id, 'nnrt_id': nnrtID }).subscribe(
+                // this.nodeSelectsService.getPMIDListsInRelation({ 'source_node': field.source_node_id, 'destination_node': field.destination_node_id, 'edge_type_id': field.edge_type_id, 'nnrt_id': nnrtID }).subscribe(
+                this.nodeSelectsService.getPMIDListsInRelation({ 'source_node': field.source_node_id, 'destination_node': field.destination_node_id, 'edge_type_id': field.edge_type_id }).subscribe(
                   data => {
                     // const legendsNodeTypes = [];
                     this.resultNodesPopup = data;
@@ -190,7 +193,7 @@ export class DistributionByRelationTypeComponent implements OnInit {
           this.loadingDesc = false;
         }
       );
-    }else if(_filterParams.source_node != undefined){
+    } else if (_filterParams.source_node != undefined) {
       console.log("Please choose source node level 2");
       this.noDataFound = true;
     }

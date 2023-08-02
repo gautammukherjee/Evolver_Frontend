@@ -31,7 +31,7 @@ export class DistributionByRelGrpComponent implements OnInit {
     this.filterParams = this.globalVariableService.getFilterParams();
 
     this.ProceedDoFilterApply?.subscribe(data => {  // Calling from details, details working as mediator
-      console.log("data2: ", data);
+      // console.log("data2: ", data);
       if (data === undefined) { // data=undefined true when apply filter from side panel
         this.filterParams = this.globalVariableService.getFilterParams();
         this.getDistributionByRelGroup(this.filterParams);
@@ -39,12 +39,13 @@ export class DistributionByRelGrpComponent implements OnInit {
       }
     });
     this.getDistributionByRelGroup(this.filterParams);
-
   }
 
   getDistributionByRelGroup(_filterParams: any) {
 
-    if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined) || (_filterParams.nnrt_id2 != undefined && _filterParams.source_node2!=undefined)) {
+    // if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined) || (_filterParams.nnrt_id2 != undefined && _filterParams.source_node2!=undefined)) {
+
+    if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined) || ((_filterParams.nnrt_id2 != undefined && _filterParams.nnrt_id2 != "") && _filterParams.source_node2 != undefined)) {
       console.log("new Filters by rel group charts IN: ", this.filterParams);
       this.loadingChart = true;
       this.noDataFound = false;
@@ -63,7 +64,7 @@ export class DistributionByRelGrpComponent implements OnInit {
           this.loadingChart = false;
         }
       );
-    }else if(_filterParams.source_node != undefined){
+    } else if (_filterParams.source_node != undefined) {
       console.log("Please choose source node level 2");
       this.noDataFound = true;
     }
@@ -72,7 +73,7 @@ export class DistributionByRelGrpComponent implements OnInit {
   drawColumnChart() {
     let graphData: any[] = [];
     let categories: any[] = [];
-    
+
     console.log(this.data);
     //console.log(this.data[4]['count']);
     for (let i = 0; i < this.data.length; i++) {

@@ -15,6 +15,7 @@ export class PmidCountWithGeneAndDiseaseComponent implements OnInit {
   result: any = {};
   errorMsg: string | undefined;
   graphLoader: boolean = false;
+  byDefault: boolean = false;
   private filterParams: any;
   highcharts = Highcharts;
   chartOptions: any;
@@ -22,6 +23,7 @@ export class PmidCountWithGeneAndDiseaseComponent implements OnInit {
   pmid_Count: any = [];
   public graphDateCategory: any = [];
   datCatQuarter: any;
+  noDataFound: boolean = false;
 
   //dateCat: any;
   @Input() ProceedDoFilterApply?: Subject<any>;
@@ -43,18 +45,23 @@ export class PmidCountWithGeneAndDiseaseComponent implements OnInit {
         // this.hideCardBody = true;
         this.filterParams = this.globalVariableService.getFilterParams();
         this.pmidCount(this.filterParams);
-        console.log("new Filters for articles: ", this.filterParams);
+        console.log("new Filters for article count: ", this.filterParams);
       }
     });
   }
 
-  pmidCount(params: any) {
-    if (params.source_node != undefined) {
+  pmidCount(_filterParams: any) {
+
+    if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined) || ((_filterParams.nnrt_id2 != undefined && _filterParams.nnrt_id2 != "") && _filterParams.source_node2 != undefined)) {
+      console.log("Rel group charts IN: ", this.filterParams);
+
       this.graphLoader = true;
-      this._RDS.pmid_count_gene_disease(params).subscribe(
+      this.noDataFound = false;
+      this._RDS.pmid_count_gene_disease(_filterParams).subscribe(
         (data: any) => {
           this.result = data;
           this.pmidCountGraph = this.result.nodeSelectsRecords;
+          // console.log("pmid count: ", this.pmidCountGraph.length);
           this.drawAreaChart();
         },
         (error: any) => {
@@ -65,6 +72,10 @@ export class PmidCountWithGeneAndDiseaseComponent implements OnInit {
           this.graphLoader = false;
         }
       );
+    } 
+    else if (_filterParams.source_node != undefined) {
+      console.log("Please choose source node level 2");
+      this.noDataFound = true;
     }
   }
 

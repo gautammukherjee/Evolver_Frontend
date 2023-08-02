@@ -24,6 +24,7 @@ export class FilterDestinationNodeComponent implements OnInit {
   private params: object = {};
   private result: any = [];
   public loading: boolean = false;
+  public isloading: boolean = false;
   public destinationNodesCheck: boolean = false;
   public enableFilter: boolean = false;;
   public filterText: string = '';
@@ -41,6 +42,10 @@ export class FilterDestinationNodeComponent implements OnInit {
   searchInput: any = null;
   destinationNodeFilter: string = '';
   // public showDestinationBody: boolean = true;
+  notEmptyPost: boolean = true;
+  notscrolly: boolean = true;
+  currentPage: number = 1;
+  itemsPerPage: number = 500;
 
   constructor(
     private nodeSelectsService: NodeSelectsService,
@@ -61,10 +66,9 @@ export class FilterDestinationNodeComponent implements OnInit {
       }
     });
 
-
-
     this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
       console.log("event Destination: ", event.clickOn);
+      this.notEmptyPost = true;
       if (event.clickOn == undefined) {
         console.log("Source Level 2:1 ", event.clickOn);
         this.getResetDestinationNode();
@@ -89,13 +93,15 @@ export class FilterDestinationNodeComponent implements OnInit {
   }
 
   getDestinationNode() {
-    this.filterParams = this.globalVariableService.getFilterParams();
+    this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
+    console.log("filterparamsFirst: ", this.filterParams);
     this.selectedDestinationNodes = []
+    this.currentPage = 1;
     if (this.filterParams.source_node != undefined) {
       this.loading = true;
       this.nodeSelectsService.getDestinationNode(this.filterParams)
         .subscribe(
-          data => {
+          data => {            
             this.result = data;
             this.destinationNodes = this.result.destinationNodeRecords;
             console.log("destinationNodes: ", this.destinationNodes);
@@ -206,5 +212,68 @@ export class FilterDestinationNodeComponent implements OnInit {
   // onDestinationHeaderClick() {
   //   this.showDestinationBody = !this.showDestinationBody;
   // }
+
+  onScroll() {
+    console.log('onScroll Here');
+    if (this.notscrolly && this.notEmptyPost) {
+      // this.spinner.show();
+      this.notscrolly = false;
+      this.currentPage++;
+      this.loadNextPost();
+    }else{
+      console.log('else');
+    }
+  }
+
+  loadNextPost() {
+    // this.toggleLoading();
+    this.isloading = true;
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": startIndex, "limitValue": this.itemsPerPage });
+    console.log("filterparamScroll: ", this.filterParams);
+    this.selectedDestinationNodes = []
+    if (this.filterParams.source_node != undefined) {
+      
+      this.nodeSelectsService.getDestinationNode(this.filterParams)
+        .subscribe(
+          data => {
+            this.loading = true;
+            this.result = data;
+            // this.destinationNodes = this.result.destinationNodeRecords;
+            // console.log("destinationNodes Inside: ", this.destinationNodes);
+
+            console.log("len: ", this.result.destinationNodeRecords.length);
+            if (this.result.destinationNodeRecords.length === 0) {
+              this.notEmptyPost = false;
+            }
+            this.destinationNodes = this.destinationNodes.concat(this.result.destinationNodeRecords);
+            // this.diseases_syns = this.newPost.diseasesSynsRecords;
+            console.log("finalTotal: ", this.destinationNodes);
+            console.log("length: ", this.destinationNodes.length);
+            this.notscrolly = true;
+
+          },
+          err => {
+            this.destinationNodesCheck = true;
+            this.isloading = false;
+            this.loading = false;
+            console.log(err.message)
+          },
+          () => {
+            this.destinationNodesCheck = true;
+            this.isloading = false;
+            this.loading = false;
+            console.log("loading finish")
+          }
+        );
+    } else {
+      this.destinationNodes = [];
+      this.globalVariableService.resetfilters();
+    }
+
+   
+
+  }
+
 
 }

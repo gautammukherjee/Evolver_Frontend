@@ -1,3 +1,7 @@
+<div *ngIf="noDataFound" class="bg-danger" style="color:#fff; text-align: center; font-weight: bold;">
+    Please Choose Pair Type and Source Node for level 2
+</div>
+
 <div class="container2">
     <div class="row" style="border: 1px solid #ddd; min-height:380px;">
         <div class="col">
@@ -5,15 +9,12 @@
             <div class="overlay" *ngIf="graphLoader">
                 <img src="../../assets/images/loader_big.gif" style="margin:185px 653px;" />
             </div>
-            <highcharts-chart [Highcharts]="highcharts" [options]="chartOptions" style="width: 100%; display: block"></highcharts-chart>
+            <highcharts-chart [Highcharts]="highcharts" [options]="chartOptions" style="width: 100%; display: block"
+                *ngIf="pmidCountGraph.length>0"></highcharts-chart>
         </div>
     </div>
- </div>
+</div>
 
-
-
-
-
-<div *ngIf="errorMsg!==''">
+<!-- <div *ngIf="errorMsg!==''">
     {{errorMsg}}
-</div> 
+</div> -->
