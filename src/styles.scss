@@ -603,30 +603,35 @@ body {
 .level1 {
     .fix-sticky {
         top: 164px !important;
+        z-index: auto;
     }
 }
 
 .level2 {
     .fix-sticky {
         top: 210px !important;
+        z-index: auto;
     }
 }
 
 .level3 {
     .fix-sticky {
         top: 277px !important;
+        z-index: auto;
     }
 }
 
 .hiddenLevels {
     .fix-sticky {
         top: 170px !important;
+        z-index: auto;
     }
 }
 
 .fullscreen {
     .fix-sticky {
         top: 0px !important;
+        z-index: auto;
     }
 }
 
