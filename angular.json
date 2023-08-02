@@ -34,6 +34,7 @@
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "./node_modules/bootstrap-table/dist/bootstrap-table.min.css",
               "./src/assets/extrnalJs/jquery.qtip.min.css",
+              "node_modules/datatables.net-dt/css/jquery.dataTables.css",
               "./node_modules/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css",
               "./node_modules/bootstrap-table/dist/extensions/filter-control/bootstrap-table-filter-control.min.css"
             ],
@@ -41,6 +42,7 @@
               "./node_modules/jquery/dist/jquery.min.js",
               "./src/assets/extrnalJs/popper.min.js",
               "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/datatables.net/js/jquery.dataTables.js",
               "./node_modules/bootstrap-table/dist/bootstrap-table.min.js",
               "./node_modules/bootstrap-table/dist/extensions/export/bootstrap-table-export.js",
               "./src/assets/extrnalJs/bootstrap-table/table-export.js",
