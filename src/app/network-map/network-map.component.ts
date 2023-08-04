@@ -152,7 +152,7 @@ export class NetworkMapComponent implements OnInit {
             //Edge data
             this.edgeData.push({
               // data: { source: Math.floor(event.source_id), target: Math.floor(event.target_id), PMID: event.pmidlist, colorCode: "pink", strength: Math.floor(event.edge_weight) },
-              data: { source: Math.floor(event.sourcenode), target: Math.floor(event.destinationnode), neIds: event.ne_ids, colorCode: "#00e600", strength: Math.floor(2) },
+              data: { source: Math.floor(event.sourcenode), target: Math.floor(event.destinationnode), neIds: event.ne_ids, edgeTypeIds: event.edge_type_ids, colorCode: "#00e600", strength: Math.floor(2) },
             });
           });
 

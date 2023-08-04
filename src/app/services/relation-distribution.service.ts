@@ -29,6 +29,10 @@ export class RelationDistributionService {
   pmid_count_gene_disease(params:any){
     return this._http.post<any>(API_URL +'pmid_count_with_gene_disease', params, httpOptions);
   }
+
+  distribution_by_relation_grp_get_edge_type_drilldown(params: any){
+    return this._http.post<any>(API_URL +'distribution_by_relation_grp_get_edge_type_drilldown', params, httpOptions);
+  }
   
 
 }

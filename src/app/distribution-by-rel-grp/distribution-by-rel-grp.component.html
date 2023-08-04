@@ -1,12 +1,17 @@
-<!-- <div *ngIf="loadingChart" style="position:absolute; margin-left:350px; z-index:999;">
+<div *ngIf="loadingChart" style="position:absolute; margin-left:350px; z-index:999;">
     <img src="../../assets/images/loader_big.gif" />                
-</div> -->
+</div>
 <div *ngIf="noDataFound" class="bg-danger" style="color:#fff; text-align: center; font-weight: bold;">
     Please Choose Pair Type and Source Node for level 2
 </div>
-<div id="container" style="border: 1px solid #ddd; margin-bottom:10px;">
+<!-- <div id="container" style="border: 1px solid #ddd; margin-bottom:10px;">
     <div class="text-muted fs-2 text-center mb-4">Please select entities to generate Relations!</div>
-</div>
+</div> -->
+
+<div class="text-muted fs-2 text-center mb-4" *ngIf="loadingMessage">Please select entities to generate Relations!</div>
+<highcharts-chart [Highcharts]="highcharts" [options]="chartOptions" style="width: 100%; display: block">
+    
+</highcharts-chart>
 
 <!--<div *ngIf="errorMsg!==''">
     {{errorMsg}}
