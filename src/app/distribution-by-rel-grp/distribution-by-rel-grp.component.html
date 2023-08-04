@@ -1,5 +1,8 @@
-<div *ngIf="loadingChart" style="position:absolute; margin-left:350px; z-index:999;">
+<!-- <div *ngIf="loadingChart" style="position:absolute; margin-left:350px; z-index:999;">
     <img src="../../assets/images/loader_big.gif" />                
+</div> -->
+<div class="overlay" *ngIf="loadingChart">
+    <img src="../../assets/images/loader_big.gif" style="margin:185px 653px;" />
 </div>
 <div *ngIf="noDataFound" class="bg-danger" style="color:#fff; text-align: center; font-weight: bold;">
     Please Choose Pair Type and Source Node for level 2
