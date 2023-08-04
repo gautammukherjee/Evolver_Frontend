@@ -52,6 +52,7 @@ import { PmidCountWithGeneAndDiseaseComponent } from './pmid-count-with-gene-and
 import { DistributionByRelationTypeComponent } from './distribution-by-relation-type/distribution-by-relation-type.component';
 // import { DataTablesModule } from 'angular-datatables';
 import { OnlineStatusModule } from 'ngx-online-status';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 
 @NgModule({
@@ -101,7 +102,8 @@ import { OnlineStatusModule } from 'ngx-online-status';
     //SafePipeModule 
     HighchartsChartModule,
     // DataTablesModule,
-    OnlineStatusModule
+    OnlineStatusModule,
+    InfiniteScrollModule
   ],
   exports: [
     HeaderComponent,

@@ -6,7 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 import * as moment from "moment";
 
-declare var jQuery: any;
+declare let jQuery: any;
 
 @Component({
   selector: 'app-distribution-by-relation-type',
@@ -62,7 +62,9 @@ export class DistributionByRelationTypeComponent implements OnInit {
   }
 
   getDistributionByRelationType(_filterParams: any) {
-    if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined) || (_filterParams.nnrt_id2 != undefined && _filterParams.source_node2!=undefined)) {
+    // if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined) || (_filterParams.nnrt_id2 != undefined && _filterParams.source_node2!=undefined)) {
+    if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined) || ((_filterParams.nnrt_id2 != undefined && _filterParams.nnrt_id2 != "") && _filterParams.source_node2 != undefined)) {
+      console.log("Rel Type IN: ", this.filterParams);
       this.loadingDesc = true;
       this.noDataFound = false;
       this.nodeSelectsService.getDistributionRelationType(_filterParams).subscribe(
@@ -73,7 +75,7 @@ export class DistributionByRelationTypeComponent implements OnInit {
           this.distributionDataDetails = [];
 
           this.distributionData.forEach((event: any) => {
-            var temps: any = {};
+            let temps: any = {};
 
             // temps["news_id"] = event.news_id;
             temps["source_node_id"] = event.source_node_id;
@@ -83,7 +85,7 @@ export class DistributionByRelationTypeComponent implements OnInit {
             temps["edge_type_id"] = event.edge_type_id;
             temps["pmid_count"] = event.count;
             temps["edge_types_name"] = event.edge_types_name;
-            temps["pmidLists"] = "<button class='btn btn-sm btn-primary'>Get PMID</button>";
+            temps["pmidLists"] = "<button class='btn btn-sm btn-primary'>PMID</button>";
             this.distributionDataDetails.push(temps);
           });
 
@@ -115,7 +117,7 @@ export class DistributionByRelationTypeComponent implements OnInit {
             onClickRow: (field: any, row: any, $element: any) => {
               if ($element == "pmidLists") {
                 // console.log("field: ", field);
-                var pubmedURLsDownloadLoader: any;
+                let pubmedURLsDownloadLoader: any;
                 pubmedURLsDownloadLoader = "<div class='overlay'><img style='position:absolute' src='../../assets/images/loader_big.gif' /></div>";
                 $("#pmidListsLoader").html(pubmedURLsDownloadLoader);
                 $("#pmidListsData").html('');
@@ -123,19 +125,20 @@ export class DistributionByRelationTypeComponent implements OnInit {
 
                 this.filterParams = this.globalVariableService.getFilterParams();
 
-                var nnrtID = ((this.filterParams['nnrt_id2']==undefined)?this.filterParams['nnrt_id']:this.filterParams['nnrt_id2']);
+                let nnrtID = ((this.filterParams['nnrt_id2'] == undefined) ? this.filterParams['nnrt_id'] : this.filterParams['nnrt_id2']);
                 // console.log("nnrtID", nnrtID);
-                this.nodeSelectsService.getPMIDListsInRelation({ 'source_node': field.source_node_id, 'destination_node': field.destination_node_id, 'edge_type_id': field.edge_type_id, 'nnrt_id': nnrtID }).subscribe(
+                // this.nodeSelectsService.getPMIDListsInRelation({ 'source_node': field.source_node_id, 'destination_node': field.destination_node_id, 'edge_type_id': field.edge_type_id, 'nnrt_id': nnrtID }).subscribe(
+                this.nodeSelectsService.getPMIDListsInRelation({ 'source_node': field.source_node_id, 'destination_node': field.destination_node_id, 'edge_type_id': field.edge_type_id }).subscribe(
                   data => {
                     // const legendsNodeTypes = [];
                     this.resultNodesPopup = data;
                     this.pmidData = this.resultNodesPopup.pmidLists;
                     console.log("pmidData: ", this.pmidData);
 
-                    var pubmedURLsDownload: any;
+                    let pubmedURLsDownload: any;
                     if (this.pmidData != undefined) {
                       // var PMIDList = edge.PMID.split(",");
-                      var pubmedBaseUrl = "https://www.ncbi.nlm.nih.gov/pubmed/";
+                      let pubmedBaseUrl = "https://www.ncbi.nlm.nih.gov/pubmed/";
                       pubmedURLsDownload = "";
 
                       pubmedURLsDownload = "<div>";
@@ -190,7 +193,7 @@ export class DistributionByRelationTypeComponent implements OnInit {
           this.loadingDesc = false;
         }
       );
-    }else if(_filterParams.source_node != undefined){
+    } else if (_filterParams.source_node != undefined) {
       console.log("Please choose source node level 2");
       this.noDataFound = true;
     }

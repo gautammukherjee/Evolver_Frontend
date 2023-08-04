@@ -52,13 +52,18 @@ export class NgCytoComponent implements OnChanges {
     edge_name: string = '';
     loading = false;
     private filterParams: any;
-    resultSDGs: any = [];
     dataSDGs = [];
     SDGDetails: any = [];
     nodeName: any;
     resultNodes: any = [];
+    resultEdgeNames: any = [];
     edgeTypeNameData: any = [];
     loadingEdge: boolean = false;
+
+    pubmedURLsDownloadLoader: any;
+    pubmedURLsDownload: any;
+    pubmedEdgeDetails: any;
+    edgeNamesMultiple: any
 
     // searchConnections;
 
@@ -168,7 +173,7 @@ export class NgCytoComponent implements OnChanges {
             elements: this.elements,
             userZoomingEnabled: false,
         });
-        
+
 
         // cy.svg(true)
         // console.log("cy:: ", cy._private.elements);
@@ -307,7 +312,7 @@ export class NgCytoComponent implements OnChanges {
 
         cy.on('tap', 'edge', (e: any) => {
             var edge = e.target._private.data;
-            // console.log("PMID: ", edge);
+            console.log("PMID: ", edge);
 
             var node = e.target;
             var neighborhood = node.neighborhood().add(node);
@@ -319,24 +324,32 @@ export class NgCytoComponent implements OnChanges {
             const regex = /[{}]/g;
             const edgeTypeNeIds = edge.neIds;
             const edgeTypeNeIdsPost = edgeTypeNeIds.replace(regex, '');
-            // console.log("edgeTypeNeIdsPost: ", edgeTypeNeIdsPost);
+            console.log("edgeTypeNeIdsPost: ", edgeTypeNeIdsPost);
 
             // let strArr = edge.edgeTypeNeIds.split(/[)]/);
             // // var strArr = edge.edgeTypeNeIds.split(')\", ');
             // console.log("edgeTypeNeIdsPost1: ", strArr); // gives ["15","16","17"];
+
+
+            //Get the Edge_Type_ids Lists
+            const edgeTypeIds = edge.edgeTypeIds;
+            const edgeTypeIdsPost = edgeTypeIds.replace(regex, '');
+            console.log("edgeTypeIdsPost: ", edgeTypeIdsPost);
 
             //////////////// get the pmid lists here /////////////////////
             // this.resultNodes = [];
             this.loadingEdge = true;
 
             //First reset the edge selection area
-            var pubmedURLsDownloadLoader: any;
-            pubmedURLsDownloadLoader = "<div class='overlay'><img style='position:absolute' src='../../assets/images/loader_big.gif' /></div>";
-            $("#pubmedURLsDownloadLoader").html(pubmedURLsDownloadLoader);
+            this.pubmedURLsDownloadLoader = '';
+            this.pubmedURLsDownloadLoader = "<div class='overlay'><img style='position:absolute' src='../../assets/images/loader_big.gif' /></div>";
+            $("#pubmedURLsDownloadLoader").html(this.pubmedURLsDownloadLoader);
             $("#pubmedURLsDownload").html('');
             $("#pubmedURLs").html('');
+            $("#pubmedEdgeNames").html('');
             ($('#myModalEdge') as any).modal('show');
 
+            //Get the PMID lists
             this.nodeSelectsService.getEdgePMIDLists({ 'ne_ids': edgeTypeNeIdsPost }).subscribe(
                 data => {
                     // const legendsNodeTypes = [];
@@ -344,50 +357,71 @@ export class NgCytoComponent implements OnChanges {
                     this.edgeTypeNameData = this.resultNodes.pmidLists;
                     // console.log("edgeTypeNameData1: ", this.edgeTypeNameData);
 
-                    var pubmedURLsDownload: any;
                     if (this.edgeTypeNameData != undefined) {
                         // var PMIDList = edge.PMID.split(",");
                         var pubmedBaseUrl = "https://www.ncbi.nlm.nih.gov/pubmed/";
-                        pubmedURLsDownload = "";
+                        this.pubmedURLsDownload = "";
 
-                        pubmedURLsDownload = "<div>";
-                        pubmedURLsDownload += "<div style='font-size: 15px; font-weight:bold; text-decoration:underline; color:#32404E'>Title & PMID Lists</div>";
+                        this.pubmedURLsDownload = "<div>";
+                        this.pubmedURLsDownload += "<div style='font-size: 15px; font-weight:bold; text-decoration:underline; color:#32404E'>Title & PMID Lists</div>";
                         this.edgeTypeNameData.forEach((PMID: any) => {
 
                             // const myFormattedDate = this.pipe.transform(PMID.publication_date, 'short');
                             // console.log("PMID:: ", PMID.edge_type_name);
-                            pubmedURLsDownload += "<div style='font-size: 14px;color:#32404E'>" + PMID.title + "</div>";
-                            pubmedURLsDownload += "<div style='list-style: none; font-size: 14px; color:#32404E'>PMID : <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + PMID.pmid + "'>" + PMID.pmid + "</a></div>";
-                            pubmedURLsDownload += "<div style='font-size: 14px; color:#32404E'>Publication Date : " + PMID.publication_date + "</div>";
-                            pubmedURLsDownload += "<hr style='color:#32404E'/>";
+                            this.pubmedURLsDownload += "<div style='font-size: 14px;color:#32404E'>" + PMID.title + "</div>";
+                            this.pubmedURLsDownload += "<div style='list-style: none; font-size: 14px; color:#32404E'>PMID : <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + PMID.pmid + "'>" + PMID.pmid + "</a></div>";
+                            this.pubmedURLsDownload += "<div style='font-size: 14px; color:#32404E'>Publication Date : " + PMID.publication_date + "</div>";
+                            this.pubmedURLsDownload += "<hr style='color:#32404E'/>";
                         });
-                        pubmedURLsDownload += "<div style='clear: both;'><hr/></div>";
-                        pubmedURLsDownload += "</div>";
+                        this.pubmedURLsDownload += "<div style='clear: both;'><hr/></div>";
+                        this.pubmedURLsDownload += "</div>";
                     } else {
-                        pubmedURLsDownload = "<h4>No PMID Found..</h4>";
-                        pubmedURLsDownload += "<div style='clear: both;'><hr/></div>";
+                        this.pubmedURLsDownload = "<h4>No PMID Found..</h4>";
+                        this.pubmedURLsDownload += "<div style='clear: both;'><hr/></div>";
                     }
                     // console.log("edgeTypeNameData5: ", pubmedURLsDownload);
 
-                    var sourceData = e.target._private.source._private.data;
-                    var targetData = e.target._private.target._private.data;
+                    //Get the edge names lists
+                    this.nodeSelectsService.getEdgeTypeName({ 'edge_type_ids': edgeTypeIdsPost }).subscribe(
+                        data => {
+                            this.resultEdgeNames = data;
+                            // console.log("resultEdgeNames: ", this.resultEdgeNames);
 
-                    var pubmedEdgeDetails;
-                    pubmedEdgeDetails = "<div>";
-                    pubmedEdgeDetails += '<div style="color: #BF63A2;"><strong>Source Name</strong></div>';
-                    pubmedEdgeDetails += '<div style="padding-bottom:10px; color: #BF63A2;">' + sourceData.name + '</div>';
-                    pubmedEdgeDetails += '<div style="color: #4B5DA1;"><strong>Target Name</strong></div>';
-                    pubmedEdgeDetails += '<div style="padding-bottom:10px; color: #4B5DA1;">' + targetData.name + '</div>';
-                    // pubmedEdgeDetails += '<div style="color: #00ffff;"><strong>Edge Weight</strong></div>';
-                    // pubmedEdgeDetails += '<div style="padding-bottom:10px;">' + edge.strength + '</div>';
-                    pubmedEdgeDetails += "<hr style='color: #32404E;'/>";
-                    pubmedEdgeDetails += "</div>";
+                            if (this.resultEdgeNames != undefined) {
+                                this.edgeNamesMultiple = "";
+                                this.edgeNamesMultiple = "<div>";
+                                this.edgeNamesMultiple += "<div style='font-size: 15px; font-weight:bold; text-decoration:underline; color:#32404E'>Edge Names</div>";
+                                this.resultEdgeNames.forEach((EDGES: any) => {
+                                    this.edgeNamesMultiple += "<div style='font-size: 14px;color:#32404E'>" + EDGES.edge_type_name + "</div>";
+                                });
+                                this.edgeNamesMultiple += "<div style='clear: both;'><hr/></div>";
+                                this.edgeNamesMultiple += "</div>";
+                            } else {
+                                this.edgeNamesMultiple = "<h4>No EDGES Found..</h4>";
+                                this.edgeNamesMultiple += "<div style='clear: both;'><hr/></div>";
+                            }
 
-                    // console.log("pubmedEdgeDetails: ", pubmedEdgeDetails);
-                    $("#pubmedURLsDownloadLoader").html('');
-                    $("#pubmedURLsDownload").html(pubmedURLsDownload);
-                    $("#pubmedURLs").html(pubmedEdgeDetails);
-                    ($('#myModalEdge') as any).modal('show');
+                            var sourceData = e.target._private.source._private.data;
+                            var targetData = e.target._private.target._private.data;
+
+                            this.pubmedEdgeDetails;
+                            this.pubmedEdgeDetails = "<div>";
+                            this.pubmedEdgeDetails += '<div style="color: #BF63A2;"><strong>Source Name</strong></div>';
+                            this.pubmedEdgeDetails += '<div style="padding-bottom:10px; color: #BF63A2;">' + sourceData.name + '</div>';
+                            this.pubmedEdgeDetails += '<div style="color: #4B5DA1;"><strong>Target Name</strong></div>';
+                            this.pubmedEdgeDetails += '<div style="padding-bottom:10px; color: #4B5DA1;">' + targetData.name + '</div>';
+                            // pubmedEdgeDetails += '<div style="color: #00ffff;"><strong>Edge Weight</strong></div>';
+                            // pubmedEdgeDetails += '<div style="padding-bottom:10px;">' + edge.strength + '</div>';
+                            this.pubmedEdgeDetails += "<hr style='color: #32404E;'/>";
+                            this.pubmedEdgeDetails += "</div>";
+
+                            // console.log("pubmedEdgeDetails: ", pubmedEdgeDetails);
+                            $("#pubmedURLsDownloadLoader").html('');
+                            $("#pubmedURLsDownload").html(this.pubmedURLsDownload);
+                            $("#pubmedURLs").html(this.pubmedEdgeDetails);
+                            $("#pubmedEdgeNames").html(this.edgeNamesMultiple);
+                            ($('#myModalEdge') as any).modal('show');
+                        });
                 },
                 err => {
                     this.loadingEdge = false;
@@ -397,7 +431,6 @@ export class NgCytoComponent implements OnChanges {
                     this.loadingEdge = false;
                 });
         });
-
         //document.getElementById("#btnsave").addEventListener ("click", nodeClickEvent, false);
     }
 
