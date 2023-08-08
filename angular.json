@@ -33,8 +33,7 @@
               "src/styles.scss",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "./node_modules/bootstrap-table/dist/bootstrap-table.min.css",
-              "./src/assets/extrnalJs/jquery.qtip.min.css",
-              
+              "./src/assets/extrnalJs/jquery.qtip.min.css",    
               "./node_modules/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css",
               "./node_modules/bootstrap-table/dist/extensions/filter-control/bootstrap-table-filter-control.min.css"
             ],
@@ -42,7 +41,6 @@
               "./node_modules/jquery/dist/jquery.min.js",
               "./src/assets/extrnalJs/popper.min.js",
               "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
-              
               "./node_modules/bootstrap-table/dist/bootstrap-table.min.js",
               "./node_modules/bootstrap-table/dist/extensions/export/bootstrap-table-export.js",
               "./src/assets/extrnalJs/bootstrap-table/table-export.js",
@@ -50,9 +48,9 @@
               "./node_modules/bootstrap-table/dist/extensions/filter-control/bootstrap-table-filter-control.min.js",
               "./src/assets/extrnalJs/cytoscape-qtip.js",
               "./src/assets/extrnalJs/cytoscape.min.js",
-              "node_modules/dagre/dist/dagre.min.js",
-              "node_modules/cytoscape-dagre/cytoscape-dagre.js",
-              "node_modules/cytoscape-svg/cytoscape-svg.js"
+              "./node_modules/dagre/dist/dagre.min.js",
+              "./node_modules/cytoscape-dagre/cytoscape-dagre.js",
+              "./node_modules/cytoscape-svg/cytoscape-svg.js"
             ],
             "allowedCommonJsDependencies": [
               "lodash",
