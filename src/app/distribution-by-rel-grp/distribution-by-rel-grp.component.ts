@@ -291,7 +291,7 @@ export class DistributionByRelGrpComponent implements OnInit {
         colorByPoint: true,
         type: 'column',
         dataLabels: {
-          enabled: true,
+          //enabled: true,
           crop: false,
           overflow: 'allow',
           rotation: 360,
