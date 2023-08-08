@@ -55,56 +55,45 @@
             <div class="add-level-handler pe-2 pt-1 ml-4 mr-4" style="height: 38px;">
                 <div class="float-start">
                     &nbsp;&nbsp;&nbsp;<button class="btn btn-light btn-sm" (click)="onAddLevel()"
-                        [disabled]="maxLevel === currentLevel || !isSourceNodes">+ Add Level & Submit</button>
+                        [disabled]="maxLevel === currentLevel || !isSourceNodes">+ Add Level</button>
                     <button class="btn btn-light btn-sm ms-2" *ngIf="currentLevel > 1"
                         (click)="onToggleLevel()">{{showLevels == false ? 'Show' : 'Hide'}} Level</button>
                 </div>
                 <div class="float-end">
-                    <button class="btn btn-sm ms-2" style="background-color: #B765A3;color: #fff;" (click)="resetAllFilters()">Reset</button>&nbsp;
-                    <button class="btn btn-sm"  style="background-color: #B765A3;color: #fff; border:1px solid #B765A3;" [disabled]="!isSourceNodes"
-                        (click)="onSubmit()">Submit</button>
+                    <button class="btn btn-sm ms-2" style="background-color: #B765A3;color: #fff;"
+                        (click)="resetAllFilters()">Reset</button>&nbsp;
+                    <button class="btn btn-sm" style="background-color: #B765A3;color: #fff; border:1px solid #B765A3;"
+                        [disabled]="!isSourceNodes" (click)="onSubmit()">Submit</button>
                 </div>
             </div>
         </div>
 
         <div class="inner-wrapper">
 
-            <!--<app-filter-submit (onSelectSubmit)='submitChanged($event)'
-                            [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-submit>-->
 
-            <div class="left-sidebar d-none" [ngClass]="showSidebar == false ? 'hide' : ''">
-                <!-- Enable this to open side menu toggler -->
-                <!-- <button class="btn btn-primary menu-toggler" (click)="ontoggleSidebar()" placement="right">
-                    <img src="../../assets/images/bars-solid.svg" width="18px"/>
-                </button> -->
-                <!--<div class="left-sidebar-inner">
-                    <app-filter-node-select-level2 (onSelectNode2)='nodeChanged2($event)'
-                        [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-node-select-level2>
-                    <app-filter-edge-type-level2 (onSelectEdgeType2)='edgeTypeChanged2($event)'
-                        [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type-level2>
-                </div>-->
-                <!--<app-filter-data-range></app-filter-data-range>-->
-            </div>
 
             <div class="right-article full-width" [ngClass]="showSidebar == false ? 'full-width' : ''">
                 <!--<app-event-chart></app-event-chart>-->
 
                 <div class="tab-slider--nav" style="margin-bottom: -25px;">
                     <div class="custom-nav-tabs">
+
+
                         <ul class="nav nav-tabs ml-2" id="myTab" role="tablist" style="margin-left: 14px;">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="tab0-tab" data-bs-toggle="tab"
                                     data-bs-target="#tab0" type="button" role="tab" aria-controls="tab0"
-                                    aria-selected="true">Map</button>
+                                    aria-selected="true" (click)="onSubmitTab($event, 'map')">Map</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1"
-                                    type="button" role="tab" aria-controls="tab1" aria-selected="true">Details</button>
+                                    type="button" role="tab" aria-controls="tab1" aria-selected="true"
+                                    (click)="onSubmitTab($event,'details')">Details</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2"
-                                    type="button" role="tab" aria-controls="tab2"
-                                    aria-selected="false">Relation</button>
+                                    type="button" role="tab" aria-controls="tab2" aria-selected="false"
+                                    (click)="onSubmitTab($event, 'relation')">Relation</button>
                             </li>
                             <!-- <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button"
@@ -113,37 +102,41 @@
                             </li> -->
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="tab4-tab" data-bs-toggle="tab" data-bs-target="#tab4"
-                                    type="button" role="tab" aria-controls="tab4" aria-selected="false">Article
+                                    type="button" role="tab" aria-controls="tab4" aria-selected="false"
+                                    (click)="onSubmitTab($event, 'articlecount')">Article
                                     Count</button>
                             </li>
-
                         </ul>
+
                         <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active" id="tab0" role="tabpanel"
-                                aria-labelledby="tab0-tab">
+                            <div class="tab-pane fade show active" id="tab0" role="tabpanel" aria-labelledby="tab0-tab">
+                                <!-- <app-filter-submit (onSelectSubmit)='submitChanged($event)'
+                                    [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-submit> -->
                                 <app-network-map [ProceedDoFilterApply]="doFilterApply"></app-network-map>
                             </div>
                             <div class="tab-pane p-2 fade" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-                                <app-event-description [ProceedDoFilterApply]="doFilterApply"
+
+                                <app-event-description [ProceedDoFilterApply]="doFilterApplyTab2"
                                     [toggleLevels]="showLevels" [currentLevel]="currentLevel"></app-event-description>
                                 <!-- <app-details-of-assoc-data [ProceedDoFilterApply]="doFilterApply"></app-details-of-assoc-data> -->
                             </div>
                             <div class="tab-pane p-2 fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
                                 <app-distribution-by-rel-grp
-                                    [ProceedDoFilterApply]="doFilterApply"></app-distribution-by-rel-grp>
+                                    [ProceedDoFilterApply]="doFilterApplyTab3"></app-distribution-by-rel-grp>
                                 <app-distribution-by-relation-type
-                                    [ProceedDoFilterApply]="doFilterApply"></app-distribution-by-relation-type>
+                                    [ProceedDoFilterApply]="doFilterApplyTab3"></app-distribution-by-relation-type>
                             </div>
                             <!-- <div class="tab-pane p-2 fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
                                 <app-event-description [ProceedDoFilterApply]="doFilterApply"></app-event-description>
                             </div> -->
                             <div class="tab-pane p-2 fade" id="tab4" role="tabpanel" aria-labelledby="tab4-tab">
                                 <app-pmid-count-with-gene-and-disease
-                                    [ProceedDoFilterApply]="doFilterApply"></app-pmid-count-with-gene-and-disease>
+                                    [ProceedDoFilterApply]="doFilterApplyTab4"></app-pmid-count-with-gene-and-disease>
                             </div>
                             <!-- <div class="tab-pane p-2 fade" id="tab5" role="tabpanel" aria-labelledby="tab5-tab">                              
                             </div> -->
                         </div>
+
                     </div>
                 </div>
 

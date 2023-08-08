@@ -11,6 +11,9 @@ import { GlobalVariableService } from '../services/common/global-variable.servic
 export class DashboardComponent implements OnInit {
 
   doFilterApply: Subject<any> = new Subject();  // ## P= Parent
+  doFilterApplyTab2: Subject<any> = new Subject();  // ## P= Parent
+  doFilterApplyTab3: Subject<any> = new Subject();  // ## P= Parent
+  doFilterApplyTab4: Subject<any> = new Subject();  // ## P= Parent
   doUpdateFilterDataApply: Subject<any> = new Subject();
   showSidebar: boolean = true;
   viewMode = 'event_list';
@@ -19,6 +22,9 @@ export class DashboardComponent implements OnInit {
   maxLevel: number = 2;
   isSourceNodes: boolean = false;
   public selectedNodeSelects2: any = [];
+  public selectedTabs: any = [];
+
+  private filterParams: any;
 
   constructor(private globalVariableService: GlobalVariableService, private router: Router) {
     // this.globalVaiableService.setSelectedTa([1]);
@@ -40,6 +46,9 @@ export class DashboardComponent implements OnInit {
 
   nodeChanged(clickOn: any) {
     this.doFilterApply.next(undefined);
+    this.doFilterApplyTab2.next(undefined);
+    this.doFilterApplyTab3.next(undefined);
+    this.doFilterApplyTab4.next(undefined);
     this.doUpdateFilterDataApply.next({ clickOn: clickOn });
   }
   sourceNodeChanged(clickOn: any, e: any) {
@@ -60,7 +69,20 @@ export class DashboardComponent implements OnInit {
   }
 
   submitChanged(e: any) {
+    console.log("e: ", e);
     this.doFilterApply.next(e);
+  }
+
+  submitChangedTab2(e: any) {
+    this.doFilterApplyTab2.next(e);
+  }
+
+  submitChangedTab3(e: any) {
+    this.doFilterApplyTab3.next(e);
+  }
+
+  submitChangedTab4(e: any) {
+    this.doFilterApplyTab4.next(e);
   }
 
   graphSelected(param: any) {
@@ -97,13 +119,69 @@ export class DashboardComponent implements OnInit {
   }
 
   onAddLevel() {
-    this.doFilterApply.next(undefined);
+
+    this.filterParams = this.globalVariableService.getFilterParams();
+    console.log("filterparams main level click: ", this.filterParams['tabType']);
+
+    // if (this.filterParams['tabType'] == "main" || this.filterParams['tabType'] == "default") {
+    //   this.doFilterApply.next(undefined);
+    // }
+    // else if (this.filterParams['tabType'] == "details") {
+    //   this.doFilterApplyTab2.next(undefined);
+    // }
+    // else if (this.filterParams['tabType'] == "relation") {
+    //   this.doFilterApplyTab3.next(undefined);
+    // }
+    // else if (this.filterParams['tabType'] == "articlecount") {
+    //   this.doFilterApplyTab4.next(undefined);
+    // }
+
+    // this.doFilterApply.next(undefined);
     this.showLevels = true;
     this.currentLevel = this.currentLevel + 1;
   }
 
   onSubmit() {
-    this.doFilterApply.next(undefined);
+    this.filterParams = this.globalVariableService.getFilterParams();
+    console.log("filterparams main2: ", this.filterParams['tabType']);
+
+    if (this.filterParams['tabType'] == "main" || this.filterParams['tabType'] == "default") {
+      this.doFilterApply.next(undefined);
+    }
+    else if (this.filterParams['tabType'] == "details") {
+      this.doFilterApplyTab2.next(undefined);
+    }
+    else if (this.filterParams['tabType'] == "relation") {
+      this.doFilterApplyTab3.next(undefined);
+    }
+    else if (this.filterParams['tabType'] == "articlecount") {
+      this.doFilterApplyTab4.next(undefined);
+    }
+  }
+
+  onSubmitTab(event: any, tab: any) {
+    if (tab == 'map') {
+      this.globalVariableService.setTabsSelected('map');
+      // this.selectedTabs = Array.from(this.globalVariableService.getTabsSelected());
+      // this.filterParams = this.globalVariableService.getFilterParams();
+      // console.log("filterparams map Type: ", this.filterParams);
+      this.doFilterApply.next(undefined);
+    }
+    else if (tab == 'details') {
+      this.globalVariableService.setTabsSelected('details');
+      // console.log("filterparams details Type: ", this.filterParams);
+      this.doFilterApplyTab2.next(undefined);
+    }
+    else if (tab == 'relation') {
+      this.globalVariableService.setTabsSelected('relation');      
+      // console.log("filterparams relation Type: ", this.filterParams);
+      this.doFilterApplyTab3.next(undefined);
+    }
+    else if (tab == 'articlecount') {
+      this.globalVariableService.setTabsSelected('articlecount');      
+      // console.log("filterparams article Type: ", this.filterParams);
+      this.doFilterApplyTab4.next(undefined);
+    }
 
     // console.log("yes2: ", this.currentLevel);
     // if (this.currentLevel == 2) {

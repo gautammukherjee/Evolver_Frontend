@@ -82,7 +82,7 @@ export class NetworkMapComponent implements OnInit {
 
     // this.drawChart();
     this.ProceedDoFilterApply?.subscribe(data => {  // Calling from details, details working as mediator
-      console.log("data: ", data);
+      console.log("network map data: ", data);
       if (data === undefined) { // data=undefined true when apply filter from side panel
         this.filterParams = this.globalVariableService.getFilterParams();
         this.getMasterListsMap(this.filterParams, null);

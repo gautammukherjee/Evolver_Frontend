@@ -59,7 +59,7 @@ export class EventDescriptionComponent implements OnInit {
   ngOnInit() {
     this.filterParams = this.globalVariableService.getFilterParams();
     // console.log("new Filters1: ", this.filterParams);
-    this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": 2000});
+    this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": 8000});
     this.getEventDescription(this.filterParams);
 
     this.ProceedDoFilterApply?.subscribe(data => {  // Calling from details, details working as mediator
@@ -67,7 +67,7 @@ export class EventDescriptionComponent implements OnInit {
       if (data === undefined) { // data=undefined true when apply filter from side panel
         // this.hideCardBody = true;
         this.filterParams = this.globalVariableService.getFilterParams();
-        this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": 2000});
+        this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": 8000});
         this.getEventDescription(this.filterParams);
         //console.log("new Filters for articles: ", this.filterParams);
       }
@@ -301,7 +301,7 @@ export class EventDescriptionComponent implements OnInit {
 
   loadNextDataSet(event:any){
     //console.log(event.target.value);
-    this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": event.target.value, "limitValue": 2000});
+    this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": event.target.value, "limitValue": 8000});
     this.getEventDescription(this.filterParams);
   }
 

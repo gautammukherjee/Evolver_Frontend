@@ -35,6 +35,7 @@ export class GlobalVariableService {
   selectedNodes = [];
   selectedEdges: any;
   selectedMapsType: any;
+  selectedTabsType: any;
 
 
   selectedChooseDate = [];
@@ -141,6 +142,13 @@ export class GlobalVariableService {
     return this.selectedMapsType;
   }
 
+  setTabsSelected(tabType: any) {
+    this.selectedTabsType = tabType;
+  }
+  getTabsSelected() {
+    return this.selectedTabsType;
+  }
+
   getFilterParams(mergeParam = {}) {  // Use of parameter is for if someone wants to pass filter params custom,
     this.filterParams = {
       from_date: this.getFromDate(),
@@ -158,6 +166,7 @@ export class GlobalVariableService {
       node_id: this.getSelectedNodes().length > 0 ? this.getSelectedNodes() : undefined,
       edge_select: this.getSelectedEdges() != undefined ? this.getSelectedEdges() : 1,
       mapType: this.getMapsSelected() != undefined ? this.getMapsSelected() : 'default',
+      tabType: this.getTabsSelected() != undefined ? this.getTabsSelected() : 'default',
     };
     return Object.assign(mergeParam, this.filterParams);
   }
