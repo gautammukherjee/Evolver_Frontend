@@ -193,6 +193,11 @@ export class DashboardComponent implements OnInit {
       // console.log("filterparams article Type: ", this.filterParams);
       this.doFilterApplyTab4.next(undefined);
     }
+    else if (tab == 'ct') {
+      this.globalVariableService.setTabsSelected('ct');      
+      // console.log("filterparams article Type: ", this.filterParams);
+      // this.doFilterApplyTab4.next(undefined);
+    }
 
     // console.log("yes2: ", this.currentLevel);
     // if (this.currentLevel == 2) {
@@ -226,6 +231,7 @@ export class DashboardComponent implements OnInit {
 
   deleteSecondDegree(){
     this.showLevels = !this.showLevels;
+    this.currentLevel = this.currentLevel - 1;
     this.globalVariableService.resetfiltersForLevel2();
     // this.filterParams = this.globalVariableService.getFilterParams();
     // console.log("filterparams after level 2 delete: ", this.filterParams);

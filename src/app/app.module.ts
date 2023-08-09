@@ -53,6 +53,8 @@ import { DistributionByRelationTypeComponent } from './distribution-by-relation-
 // import { DataTablesModule } from 'angular-datatables';
 import { OnlineStatusModule } from 'ngx-online-status';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { ClinicalTrialsDataAssociatedDiseaseComponent } from './ct/clinical-trials-data-associated-disease/clinical-trials-data-associated-disease.component';
+import { TrialInvestigatorRelsComponent } from './ct/trial-investigator-rels/trial-investigator-rels.component';
 
 
 @NgModule({
@@ -89,7 +91,9 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     DistributionByRelGrpComponent,
     DetailsOfAssocDataComponent,
     PmidCountWithGeneAndDiseaseComponent,
-    DistributionByRelationTypeComponent
+    DistributionByRelationTypeComponent,
+    ClinicalTrialsDataAssociatedDiseaseComponent,
+    TrialInvestigatorRelsComponent
   ],
   imports: [
     BrowserModule,
