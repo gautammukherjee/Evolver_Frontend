@@ -79,8 +79,8 @@ export class FilterDestinationNodeComponent implements OnInit {
         this.getDestinationNode();
       }
     });
-    this.getDestinationNode();
-    this.selectedDestinationNodes = Array.from(this.globalVariableService.getSelectedDestinationNodes());
+    // this.getDestinationNode();
+    // this.selectedDestinationNodes = Array.from(this.globalVariableService.getSelectedDestinationNodes());
   }
 
   ngOnDestroy() {

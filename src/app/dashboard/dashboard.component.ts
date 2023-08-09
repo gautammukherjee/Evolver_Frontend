@@ -45,10 +45,21 @@ export class DashboardComponent implements OnInit {
   }
 
   nodeChanged(clickOn: any) {
-    this.doFilterApply.next(undefined);
-    this.doFilterApplyTab2.next(undefined);
-    this.doFilterApplyTab3.next(undefined);
-    this.doFilterApplyTab4.next(undefined);
+    this.filterParams = this.globalVariableService.getFilterParams();
+    // console.log("filterparams in node change: ", this.filterParams['tabType']);
+
+    if (this.filterParams['tabType'] == "map" || this.filterParams['tabType'] == "default") {
+      this.doFilterApply.next(undefined);
+    }
+    else if (this.filterParams['tabType'] == "details") {
+      this.doFilterApplyTab2.next(undefined);
+    }
+    else if (this.filterParams['tabType'] == "relation") {
+      this.doFilterApplyTab3.next(undefined);
+    }
+    else if (this.filterParams['tabType'] == "articlecount") {
+      this.doFilterApplyTab4.next(undefined);
+    }
     this.doUpdateFilterDataApply.next({ clickOn: clickOn });
   }
   sourceNodeChanged(clickOn: any, e: any) {
@@ -68,22 +79,22 @@ export class DashboardComponent implements OnInit {
     this.doUpdateFilterDataApply.next({ clickOn: clickOn });
   }
 
-  submitChanged(e: any) {
-    console.log("e: ", e);
-    this.doFilterApply.next(e);
-  }
+  // submitChanged(e: any) {
+  //   console.log("e: ", e);
+  //   this.doFilterApply.next(e);
+  // }
 
-  submitChangedTab2(e: any) {
-    this.doFilterApplyTab2.next(e);
-  }
+  // submitChangedTab2(e: any) {
+  //   this.doFilterApplyTab2.next(e);
+  // }
 
-  submitChangedTab3(e: any) {
-    this.doFilterApplyTab3.next(e);
-  }
+  // submitChangedTab3(e: any) {
+  //   this.doFilterApplyTab3.next(e);
+  // }
 
-  submitChangedTab4(e: any) {
-    this.doFilterApplyTab4.next(e);
-  }
+  // submitChangedTab4(e: any) {
+  //   this.doFilterApplyTab4.next(e);
+  // }
 
   graphSelected(param: any) {
     console.log("your Graph:: ", param);

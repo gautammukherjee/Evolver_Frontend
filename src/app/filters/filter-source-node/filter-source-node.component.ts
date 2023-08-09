@@ -45,7 +45,7 @@ export class FilterSourceNodeComponent implements OnInit {
 
   ngOnInit(): void {
     // this.globalVariableService.setSelectedSourceNodes([10810]);
-    // this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
+    this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
     // console.log("selectedSourceNodes: ", this.selectedSourceNodes);
 
     // this.filterParams = this.globalVariableService.getFilterParams();
@@ -54,6 +54,7 @@ export class FilterSourceNodeComponent implements OnInit {
     this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
       console.log("event Source:: ", event.clickOn);
       if (event.clickOn == undefined) {
+        this.selectedSourceNodes = [];
         this.getResetSourceNode();
       }
     });
