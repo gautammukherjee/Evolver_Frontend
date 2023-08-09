@@ -70,13 +70,16 @@ export class FilterEdgeTypeComponent implements OnInit {
     this.filterParams = this.globalVariableService.getFilterParams();
     // console.log("new Filters1: ", this.filterParams);
 
-    this.nodeSelectsService.getEdgeTypeFirst()
-      .subscribe(
-        data => {
+
+
+    this.nodeSelectsService.getEdgeTypeFirst().subscribe(
+        (data:any) => {
           this.result = data;
           this.edgeTypesFirst = this.result.edgeTypeFirstRecords;
           console.log("edge Types First: ", this.edgeTypesFirst);
         });
+
+        
 
     // this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
     //   console.log("eventEdgeType:: ", event);

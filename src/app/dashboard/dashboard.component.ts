@@ -213,4 +213,11 @@ export class DashboardComponent implements OnInit {
     // this.proceed();
   }
 
+  deleteSecondDegree(){
+    this.showLevels = !this.showLevels;
+    this.globalVariableService.resetfiltersForLevel2();
+    // this.filterParams = this.globalVariableService.getFilterParams();
+    // console.log("filterparams after level 2 delete: ", this.filterParams);
+  }
+
 }

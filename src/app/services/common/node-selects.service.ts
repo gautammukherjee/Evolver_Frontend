@@ -3,8 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from './../../../environments/environment';
 
 // import { Observable } from 'rxjs';
-import { Observable, throwError } from 'rxjs';
-// import { of } from 'rxjs';
+import { Observable, of, throwError } from "rxjs";
+// import { Observable, throwError } from 'rxjs';
 // import 'rxjs/add/observable/of';
 // import 'rxjs/add/operator/do';
 // import 'rxjs/add/operator/of';
@@ -21,7 +21,9 @@ const httpOptions = {
 })
 export class NodeSelectsService {
   private API_URL: string = environment.apiUrl;
+  private _node_selects2: any;
   private _edge_types: any;
+  private _edge_types_first: any;
 
   constructor(private http: HttpClient) { }
 
@@ -60,24 +62,37 @@ export class NodeSelectsService {
     return this.http.post(this.API_URL + 'getDestinationNode2', params, httpOptions);
   }
 
+  getEdgeTypeFirst() {
+    if (this._edge_types_first) {
+      return of(this._edge_types_first);
+    } else {
+      return this.http.get(this.API_URL + 'getEdgeTypeFirst', httpOptions).pipe(tap(
+        (data:any) => {
+          this._edge_types_first = data;
+        })
+      )
+    }
+  }
 
-  // getEdgeType() {
-  //   if (this._edge_types) {
-  //     return Observable.of(this._edge_types);
-  //   } else {
-  //     return this.http.get(this.API_URL + 'getEdgeType', httpOptions).do(
-  //       (data) => {
-  //         this._edge_types = data;
-  //       });
-  //   }
+  // getEdgeTypeFirst() { // old
+  //   return this.http.get(this.API_URL + 'getEdgeTypeFirst', httpOptions);
   // }
 
-  getEdgeTypeFirst() {
-    return this.http.get(this.API_URL + 'getEdgeTypeFirst', httpOptions);
-  }
   getEdgeType() {
-    return this.http.get(this.API_URL + 'getEdgeType', httpOptions);
+    if (this._edge_types) {
+      return of(this._edge_types);
+    } else {
+      return this.http.get(this.API_URL + 'getEdgeType', httpOptions).pipe(tap(
+        (data:any) => {
+          this._edge_types = data;
+        })
+      )
+    }
   }
+
+  // getEdgeType() { //old
+  //   return this.http.get(this.API_URL + 'getEdgeType', httpOptions);
+  // }
 
   getMasterLists(params: any) {
     return this.http.post(this.API_URL + 'getMasterLists', params, httpOptions);
