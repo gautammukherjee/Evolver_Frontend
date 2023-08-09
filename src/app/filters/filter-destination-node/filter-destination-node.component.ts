@@ -18,14 +18,13 @@ export class FilterDestinationNodeComponent implements OnInit {
   // public alphabeticallyGroupedGenes = [];
 
   private filterParams: any;
-  public alphabeticallyGroupedDestinationNodes: any = '';
   public selectedDestinationNodes: any = [];
   public destinationNodes: any = [];
   private params: object = {};
   private result: any = [];
   public loading: boolean = false;
   public isloading: boolean = false;
-  public destinationNodesCheck: boolean = false;
+  // public destinationNodesCheck: boolean = false;
   public enableFilter: boolean = false;;
   public filterText: string = '';
   public seeMoreFilterText: string = '';
@@ -107,12 +106,12 @@ export class FilterDestinationNodeComponent implements OnInit {
             console.log("destinationNodes: ", this.destinationNodes);
           },
           err => {
-            this.destinationNodesCheck = true;
+            // this.destinationNodesCheck = true;
             this.loading = false;
             console.log(err.message)
           },
           () => {
-            this.destinationNodesCheck = true;
+            // this.destinationNodesCheck = true;
             this.loading = false;
             console.log("loading finish")
           }
@@ -231,7 +230,7 @@ export class FilterDestinationNodeComponent implements OnInit {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": startIndex, "limitValue": this.itemsPerPage });
     console.log("filterparamScroll: ", this.filterParams);
-    this.selectedDestinationNodes = []
+    // this.selectedDestinationNodes = []
     if (this.filterParams.source_node != undefined) {
       
       this.nodeSelectsService.getDestinationNode(this.filterParams)
@@ -241,26 +240,26 @@ export class FilterDestinationNodeComponent implements OnInit {
             this.result = data;
             // this.destinationNodes = this.result.destinationNodeRecords;
             // console.log("destinationNodes Inside: ", this.destinationNodes);
+            // console.log("len: ", this.result.destinationNodeRecords.length);
 
-            console.log("len: ", this.result.destinationNodeRecords.length);
             if (this.result.destinationNodeRecords.length === 0) {
               this.notEmptyPost = false;
             }
             this.destinationNodes = this.destinationNodes.concat(this.result.destinationNodeRecords);
             // this.diseases_syns = this.newPost.diseasesSynsRecords;
             console.log("finalTotal: ", this.destinationNodes);
-            console.log("length: ", this.destinationNodes.length);
+            // console.log("length: ", this.destinationNodes.length);
             this.notscrolly = true;
 
           },
           err => {
-            this.destinationNodesCheck = true;
+            // this.destinationNodesCheck = true;
             this.isloading = false;
             this.loading = false;
             console.log(err.message)
           },
           () => {
-            this.destinationNodesCheck = true;
+            // this.destinationNodesCheck = true;
             this.isloading = false;
             this.loading = false;
             console.log("loading finish")

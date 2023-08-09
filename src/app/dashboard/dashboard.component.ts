@@ -123,7 +123,7 @@ export class DashboardComponent implements OnInit {
     this.filterParams = this.globalVariableService.getFilterParams();
     console.log("filterparams main level click: ", this.filterParams['tabType']);
 
-    // if (this.filterParams['tabType'] == "main" || this.filterParams['tabType'] == "default") {
+    // if (this.filterParams['tabType'] == "map" || this.filterParams['tabType'] == "default") {
     //   this.doFilterApply.next(undefined);
     // }
     // else if (this.filterParams['tabType'] == "details") {
@@ -145,7 +145,7 @@ export class DashboardComponent implements OnInit {
     this.filterParams = this.globalVariableService.getFilterParams();
     console.log("filterparams main2: ", this.filterParams['tabType']);
 
-    if (this.filterParams['tabType'] == "main" || this.filterParams['tabType'] == "default") {
+    if (this.filterParams['tabType'] == "map" || this.filterParams['tabType'] == "default") {
       this.doFilterApply.next(undefined);
     }
     else if (this.filterParams['tabType'] == "details") {

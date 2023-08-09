@@ -33,8 +33,6 @@
           <div class="search-options" infinite-scroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="50"
             (scrolled)="onScroll()" [scrollWindow]="false">
 
-
-
             <div class="mb-1 form-check"
               *ngFor="let destinationNode of destinationNodes | DestinationNodeFilterPipe:destinationNodeFilter">
               <input class="form-check-input border border-secondary" type="checkbox" name="destinationNodes"

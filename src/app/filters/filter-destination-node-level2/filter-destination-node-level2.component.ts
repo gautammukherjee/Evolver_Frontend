@@ -57,7 +57,7 @@ export class FilterDestinationNodeLevel2Component implements OnInit {
       if (event.clickOn == undefined) {
         this.getResetDestinationNode();
       } else if (event.clickOn !== undefined && (event.clickOn == 'nodeLevel2Filter')) {
-        console.log("here1");
+        // console.log("here1");
         this.getResetDestinationNode();
       }
     });
