@@ -1,11 +1,11 @@
 <div *ngIf="noDataFound" class="bg-danger" style="color:#fff; text-align: center; font-weight: bold;">
-    Please Choose Pair Type and Source Node for level 2
+    Please Choose Pair Type and Source Node for Second Degree
 </div>
 
 <div class="container2">
     <div class="row" style="border: 1px solid #ddd; min-height:380px;">
         <div class="col">
-            <div class="text-muted fs-2 text-center mb-4">Please select entities to generate Article Count Graph!</div>
+            <div class="text-muted fs-2 text-center mb-4" *ngIf="!pmidCountGraph.length">Please select entities to generate Article Count Graph!</div>
             <div class="overlay" *ngIf="graphLoader">
                 <img src="../../assets/images/loader_big.gif" style="margin:185px 653px;" />
             </div>
