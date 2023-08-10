@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./ct_investigator_rels.component.scss']
 })
 export class CTInvestigatorRelsComponent {
-
+  loader: boolean = false;
 }

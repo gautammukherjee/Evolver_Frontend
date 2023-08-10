@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./investigator-by-role.component.scss']
 })
 export class InvestigatorByRoleComponent {
-
+  loader:boolean = false;
 }
