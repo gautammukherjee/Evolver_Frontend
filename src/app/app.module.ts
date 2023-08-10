@@ -53,8 +53,11 @@ import { DistributionByRelationTypeComponent } from './distribution-by-relation-
 // import { DataTablesModule } from 'angular-datatables';
 import { OnlineStatusModule } from 'ngx-online-status';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { ClinicalTrialsDataAssociatedDiseaseComponent } from './ct/clinical-trials-data-associated-disease/clinical-trials-data-associated-disease.component';
-import { TrialInvestigatorRelsComponent } from './ct/trial-investigator-rels/trial-investigator-rels.component';
+import { CTDiseaseAssocComponent } from './ct/ct_disease_assoc/ct_disease_assoc.component';
+import { CTInvestigatorRelsComponent } from './ct/ct_investigator_rels/ct_investigator_rels.component';
+import { InvestigatorByRoleComponent } from './ct/investigator-by-role/investigator-by-role.component';
+import { NctInvestigatorNameComponent } from './ct/nct-investigator-name/nct-investigator-name.component';
+import { InvestigatorByCountryComponent } from './ct/investigator-by-country/investigator-by-country.component';
 
 
 @NgModule({
@@ -92,8 +95,11 @@ import { TrialInvestigatorRelsComponent } from './ct/trial-investigator-rels/tri
     DetailsOfAssocDataComponent,
     PmidCountWithGeneAndDiseaseComponent,
     DistributionByRelationTypeComponent,
-    ClinicalTrialsDataAssociatedDiseaseComponent,
-    TrialInvestigatorRelsComponent
+    CTDiseaseAssocComponent,
+    CTInvestigatorRelsComponent,
+    InvestigatorByRoleComponent,
+    NctInvestigatorNameComponent,
+    InvestigatorByCountryComponent
   ],
   imports: [
     BrowserModule,
