@@ -71,7 +71,7 @@ export class FilterNodeSelectLevel2Component implements OnInit {
         console.log("Click Node Level 2:1 ", event.clickOn);
         this.node_selects2 = [];
         // this.getNodeSelects(event);
-      } else if (event.clickOn !== undefined && event.clickOn == 'sourceNodeFilter') {
+      } else if (event.clickOn !== undefined && (event.clickOn == 'sourceNodeFilter' || event.clickOn == 'deleteLevel2')) {
         console.log("Click Node Level 2:2 ", event.clickOn);
         // if (this.firstTimeCheck === false) // Node select only one time reload when we choose destination nodes are selected
         this.getNodeSelects(event);

@@ -53,11 +53,11 @@ export class FilterSourceNodeLevel2Component implements OnInit {
     // console.log("new Filters source node: ", this.filterParams);
 
     this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
-      console.log("Source Level: ", event.clickOn);
+      console.log("Source Level2: ", event.clickOn);
       if (event.clickOn == undefined) {
         // console.log("Source Level 2:1 ", event.clickOn);
         this.getResetSourceNode();
-      } else if (event.clickOn !== undefined && (event.clickOn == 'sourceNodeFilter' || event.clickOn == 'edgeTypeFilter' || event.clickOn == 'destinationNodeFilter' || event.clickOn == 'nodeLevel2Filter')) {
+      } else if (event.clickOn !== undefined && (event.clickOn == 'sourceNodeFilter' || event.clickOn == 'edgeTypeFilter' || event.clickOn == 'destinationNodeFilter' || event.clickOn == 'nodeLevel2Filter' || event.clickOn == 'deleteLevel2')) {
         // this.hideCardBody = true;
         this.filterParams = this.globalVariableService.getFilterParams();
         // console.log("Source Level 2:2 ", event.clickOn);
