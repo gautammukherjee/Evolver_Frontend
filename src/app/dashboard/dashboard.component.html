@@ -112,7 +112,7 @@
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="tab5-tab" data-bs-toggle="tab" data-bs-target="#tab5"
                                     type="button" role="tab" aria-controls="tab5" aria-selected="false"
-                                    (click)="onSubmitTab($event, 'ct')">CT</button>
+                                    (click)="onSubmitTab($event, 'ct')">Clinical Trial</button>
                             </li>
                         </ul>
 
@@ -143,8 +143,7 @@
                             </div>
 
                             <div class="tab-pane p-2 fade" id="tab5" role="tabpanel" aria-labelledby="tab5-tab">
-                                <app-ct_disease_assoc></app-ct_disease_assoc>
-                                <app-ct_investigator_rels></app-ct_investigator_rels>
+                                <app-ct-index></app-ct-index>
                             </div>
                             <!-- <div class="tab-pane p-2 fade" id="tab5" role="tabpanel" aria-labelledby="tab5-tab">                              
                             </div> -->

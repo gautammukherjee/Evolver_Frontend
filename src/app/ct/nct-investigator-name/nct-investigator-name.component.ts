@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./nct-investigator-name.component.scss']
 })
 export class NctInvestigatorNameComponent {
-
+  loader:boolean = false;
 }

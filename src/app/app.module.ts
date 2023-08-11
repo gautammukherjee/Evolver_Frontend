@@ -58,6 +58,7 @@ import { CTInvestigatorRelsComponent } from './ct/ct_investigator_rels/ct_invest
 import { InvestigatorByRoleComponent } from './ct/investigator-by-role/investigator-by-role.component';
 import { NctInvestigatorNameComponent } from './ct/nct-investigator-name/nct-investigator-name.component';
 import { InvestigatorByCountryComponent } from './ct/investigator-by-country/investigator-by-country.component';
+import { CtIndexComponent } from './ct/ct-index/ct-index.component';
 
 
 @NgModule({
@@ -99,7 +100,8 @@ import { InvestigatorByCountryComponent } from './ct/investigator-by-country/inv
     CTInvestigatorRelsComponent,
     InvestigatorByRoleComponent,
     NctInvestigatorNameComponent,
-    InvestigatorByCountryComponent
+    InvestigatorByCountryComponent,
+    CtIndexComponent
   ],
   imports: [
     BrowserModule,
