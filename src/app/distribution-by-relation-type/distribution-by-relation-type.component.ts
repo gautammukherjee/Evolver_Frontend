@@ -31,6 +31,8 @@ export class DistributionByRelationTypeComponent implements OnInit {
   helpContents: any;
   distributionData: any = [];
   distributionDataDetails: any = [];
+  distributionDataDetailsLevelOne: any = [];
+  distributionDataDetailsLevelTwo: any = [];
   edgeTypesLists: any = [];
   public edgeTypes: any = [];
   public edgeHere: any = [];
@@ -51,7 +53,7 @@ export class DistributionByRelationTypeComponent implements OnInit {
     this.getDistributionByRelationType(this.filterParams);
 
     this.ProceedDoFilterApply?.subscribe(data => {  // Calling from details, details working as mediator
-      console.log("eventData: ", data);
+      console.log("Relation Type: ", data);
       if (data === undefined) { // data=undefined true when apply filter from side panel
         // this.hideCardBody = true;
         this.filterParams = this.globalVariableService.getFilterParams();
@@ -70,8 +72,22 @@ export class DistributionByRelationTypeComponent implements OnInit {
       this.nodeSelectsService.getDistributionRelationType(_filterParams).subscribe(
         data => {
           this.resultNodes = data;
-          this.distributionData = this.resultNodes.distributionData;
-          console.log("distributionData: ", this.distributionData.length);
+
+          //First level data
+          if (_filterParams.nnrt_id2 == undefined || _filterParams.nnrt_id2 == '') {
+            this.distributionDataDetailsLevelOne = this.resultNodes.distributionData;
+            this.distributionData = this.distributionDataDetailsLevelOne;
+          }
+          let firstLevelDataStore = this.distributionDataDetailsLevelOne; //Store the First level data
+          console.log("First Level Data Store: ", firstLevelDataStore);
+
+          //Second level data and Combined data first and second level
+          if (_filterParams.nnrt_id2 != "" && _filterParams.nnrt_id2 != undefined) {
+            this.distributionDataDetailsLevelTwo = this.resultNodes.distributionData;
+            this.distributionData = [].concat(firstLevelDataStore, this.distributionDataDetailsLevelTwo);
+            console.log("Combined Data: ", this.distributionData);
+          }
+
           this.distributionDataDetails = [];
 
           this.distributionData.forEach((event: any) => {
