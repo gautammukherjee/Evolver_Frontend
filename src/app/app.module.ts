@@ -60,7 +60,6 @@ import { NctInvestigatorNameComponent } from './ct/nct-investigator-name/nct-inv
 import { InvestigatorByCountryComponent } from './ct/investigator-by-country/investigator-by-country.component';
 import { CtIndexComponent } from './ct/ct-index/ct-index.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,

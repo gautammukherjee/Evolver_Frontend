@@ -5,8 +5,11 @@
         </div>
 
         <div class="card">
-            <div class="card-header">
+            <div class="card-header" (click)="reloadCTData()">
                 Clinical Trials Data Associated with Disease
+
+                
+
             </div>
             <div class="card-body">
 
@@ -16,12 +19,12 @@
                         data-filter-control="true" data-page-list="[10, 25, 50, 100, All]" style="width:100%;">
                         <thead>
                             <tr>
-                                <th data-field="nct_id" data-sortable="true" data-filter-control="input" width="3%">
+                                <th data-field="nct_id" data-sortable="true" data-filter-control="input" data-visible="true" width="3%">
                                     NCT ID</th>
-                                <th data-field="org_study_id" data-sortable="true" data-filter-control="input"
+                                <th data-field="org_study_id" data-sortable="true" data-visible="true" data-filter-control="input"
                                     width="3%">
                                     Org Study ID</th>
-                                <th data-field="secondary_study_id" data-sortable="true" data-filter-control="input"
+                                <th data-field="secondary_study_id" data-sortable="true" data-show-columns="false" data-filter-control="input"
                                     width="3%">
                                     Secondary Study ID</th>
                                 <th data-field="title" data-sortable="true" data-filter-control="input" width="12%">
@@ -29,16 +32,16 @@
                                 <th data-field="overall_status" data-sortable="true" data-filter-control="input"
                                     width="3%">
                                     Overall Status</th>
-                                <th data-field="phase" data-sortable="true" data-filter-control="input" width="4%">
+                                <th data-field="phase" data-sortable="true" data-visible="false" data-filter-control="input" width="4%">
                                     Phase</th>
-                                <th data-field="Has_Expanded_Access" data-sortable="true" data-filter-control="input"
+                                <th data-field="Has_Expanded_Access" data-visible="false" data-sortable="true" data-filter-control="input"
                                     width="3%">
                                     Has Expanded Access</th>
-                                <th data-field="min_age" data-sortable="true" data-filter-control="input" width="3%">
+                                <th data-field="min_age" data-sortable="true" data-visible="false" data-filter-control="input" width="3%">
                                     Min. Age</th>
-                                <th data-field="max_age" data-sortable="true" data-filter-control="input" width="3%">
+                                <th data-field="max_age" data-sortable="true" data-visible="false" data-filter-control="input" width="3%">
                                     Max. Age</th>
-                                <th data-field="healthy_volunteers" data-sortable="true" data-filter-control="input"
+                                <th data-field="healthy_volunteers" data-sortable="true" data-visible="false" data-filter-control="input"
                                     width="3%">
                                     Healthy Volunteers</th>
                                 <!--<th data-field="title" data-sortable="true" data-filter-control="input">

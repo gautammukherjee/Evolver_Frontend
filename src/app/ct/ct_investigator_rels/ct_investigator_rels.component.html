@@ -5,12 +5,81 @@
         </div>
 
         <div class="card">
-            <div class="card-header">
+            <div class="card-header" (click)="reloadInvestigatorRelsData()">
                 Trial Investigator Relations
             </div>
             <div class="card-body">
-                <h1>Data table comes here</h1>
+
+                <div class="table-responsive-lg custom-fixed-header-table">
+                    <table class="table table-bordered table-hover" id="CT_Investigator_data" data-toolbar="#toolbar"
+                        data-search="true" data-show-export="true" data-show-columns="true" data-page-size="50"
+                        data-filter-control="true" data-page-list="[10, 25, 50, 100, All]" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th data-field="nct_id" data-sortable="true" data-filter-control="input" width="3%">
+                                    NCT ID</th>
+                                <th data-field="org_study_id" data-sortable="true" data-filter-control="input"
+                                    width="3%">
+                                    Name</th>
+                                <th data-field="secondary_study_id" data-sortable="true" data-filter-control="input"
+                                    width="3%">
+                                    Role</th>
+                                <th data-field="title" data-sortable="true" data-filter-control="input" width="12%">
+                                    Affiliation</th>
+                                <th data-field="overall_status" data-sortable="true" data-filter-control="input"
+                                    width="3%">
+                                    Country</th>
+                                <th data-field="phase" data-sortable="true" data-filter-control="input" width="4%">
+                                    Trial Disease Rel->Disease ID</th>
+                                <th data-field="Has_Expanded_Access" data-sortable="true" data-visible="false" data-filter-control="input"
+                                    width="3%">
+                                    Trial Disease Rel->NCT ID</th>
+                                <th data-field="Has_Expanded_Access" data-sortable="true"data-visible="false"  data-filter-control="input"
+                                    width="3%">
+                                    Trial Disease Rel->Node ID</th>
+                                <th data-field="Has_Expanded_Access" data-sortable="true" data-visible="false" data-filter-control="input"
+                                    width="3%">
+                                    Nodes->Node ID</th>
+                                <th data-field="Has_Expanded_Access" data-sortable="true" data-visible="false" data-filter-control="input"
+                                    width="3%">
+                                    Nodes->Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>NCT05065736</td>
+                                <td>CASE4Y21</td>
+                                <td>-</td>
+                                <td>Using a PET Imaging Agent, 18F-Clofarabine (CFA), to Measure Deoxycytidine Kinase
+                                    Activity
+                                    in Metastatic Cancer</td>
+                                <td>Recruiting</td>
+                                <td>Early Phase 1</td>
+                                <td>No</td>
+                                <td>NCT05065736</td>
+                                <td>NCT05065736</td>
+                                <td>NCT05065736</td>
+                            </tr>
+                            <tr>
+                                <td>NCT05065736</td>
+                                <td>CASE4Y21</td>
+                                <td>-</td>
+                                <td>Using a PET Imaging Agent, 18F-Clofarabine (CFA), to Measure Deoxycytidine Kinase
+                                    Activity
+                                    in Metastatic Cancer</td>
+                                <td>Recruiting</td>
+                                <td>Early Phase 1</td>
+                                <td>No</td>
+                                <td>NCT05065736</td>
+                                <td>NCT05065736</td>
+                                <td>NCT05065736</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
         </div>
+
     </div>
 </div>

@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { GlobalVariableService } from 'src/app/services/common/global-variable.service';
 
 declare var jQuery: any;
 
@@ -7,14 +9,25 @@ declare var jQuery: any;
   templateUrl: './ct_disease_assoc.component.html',
   styleUrls: ['./ct_disease_assoc.component.scss']
 })
-export class CTDiseaseAssocComponent {
+export class CTDiseaseAssocComponent implements OnInit {
   loader: boolean = false;
   CTData: any = [];
+  hideCardBody: boolean = true;
+  private filterParams: any;
+
+  constructor(
+    private _router: Router,
+    private _activatedRoute: ActivatedRoute,
+    private globalVariableService: GlobalVariableService,
+  ) { }
+  
   ngOnInit() {
-    this.getCTDataAssocWithDisease();
+    this.hideCardBody = true;
+    this.filterParams = this.globalVariableService.getFilterParams();
+    // this.getCTDataAssocWithDisease(this.filterParams);
   }
 
-  getCTDataAssocWithDisease() {
+  getCTDataAssocWithDisease(_filterParams: any) {
 
     jQuery('#CT_data').bootstrapTable({
       bProcessing: true,
@@ -34,10 +47,21 @@ export class CTDiseaseAssocComponent {
       showExport: true,
 
       //data: this.CTData,
-      onClickRow: (field: any, row: any, $element: any) => {
+      // onClickRow: (field: any, row: any, $element: any) => {
 
-      },
+      // },
     });
     jQuery('#CT_data').bootstrapTable("load");
   }
+
+  reloadCTData() {
+    console.log("ct data: ")
+    // this.globalVariableService.resetChartFilter();
+
+    this.hideCardBody = !this.hideCardBody;
+    this.filterParams = this.globalVariableService.getFilterParams();
+    if (!this.hideCardBody)
+      this.getCTDataAssocWithDisease(this.filterParams);
+  }
+
 }
