@@ -21,6 +21,8 @@ export class EventDescriptionComponent implements OnInit {
   private filterParams: any;
   result: any = [];
   resultNodes: any = [];
+  resultPMID: any = [];
+  pmidCount: any;
 
   loadingDesc = false;
   params: any;
@@ -42,12 +44,18 @@ export class EventDescriptionComponent implements OnInit {
   edgeTypeList: any = [];
   helpContents: any;
   masterListsData: any = [];
+  masterListsDataLoaded: any = [];
+  masterListsDataOnScroll: any = [];
   masterListsDataDetails: any = [];
   edgeTypesLists: any = [];
   public edgeTypes: any = [];
   public edgeHere: any = [];
   public articleHere: any = [];
   articleList: any = [];
+  notEmptyPost: boolean = true;
+  notscrolly: boolean = true;
+  currentPage: number = 1;
+  itemsPerPage: number = 5;
 
   constructor(
     private globalVariableService: GlobalVariableService,
@@ -59,15 +67,16 @@ export class EventDescriptionComponent implements OnInit {
   ngOnInit() {
     this.filterParams = this.globalVariableService.getFilterParams();
     // console.log("new Filters1: ", this.filterParams);
-    this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": 8000});
+    this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
     this.getEventDescription(this.filterParams);
 
     this.ProceedDoFilterApply?.subscribe(data => {  // Calling from details, details working as mediator
       //console.log("eventData: ", data);
+      this.notEmptyPost = true;
       if (data === undefined) { // data=undefined true when apply filter from side panel
         // this.hideCardBody = true;
         this.filterParams = this.globalVariableService.getFilterParams();
-        this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": 8000});
+        this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
         this.getEventDescription(this.filterParams);
         //console.log("new Filters for articles: ", this.filterParams);
       }
@@ -81,21 +90,25 @@ export class EventDescriptionComponent implements OnInit {
       // $('.overlay').fadeOut(500);
       this.loadingDesc = true;
 
-      // this.diseaseCheck = _filterParams['di_ids']; // if disease_id is checked
-      // console.log("checked here Disease in event description: ", this.diseaseCheck);
-      // if (this.diseaseCheck !== undefined) {
       //console.log("filterparams: ", _filterParams);
       this.nodeSelectsService.getMasterLists(_filterParams).subscribe(
         data => {
           //console.log("data: ", data);
           this.resultNodes = data;
           this.masterListsData = this.resultNodes.masterListsData;
-          //console.log("masterListsDataLength: ", this.masterListsData.length);
+          console.log("Load data: ", this.masterListsData);
+        },
+        err => {
+          console.log(err.message);
+          // this.loadingDesc = false;
+        },
+        () => {
+          // this.loadingDesc = false;
           this.masterListsDataDetails = [];
-
+          let j = 0;
           this.masterListsData.forEach((event: any) => {
-            var temps: any = {};
 
+            var temps: any = {};
             //Get the Edge Type Name
             const regex = /[{}]/g;
             const edgeTypeIds = event.edge_type_ids;
@@ -108,92 +121,47 @@ export class EventDescriptionComponent implements OnInit {
 
             // var edgeHere = this.getEdgeTypes(edgeTypeIdsPost);
             // console.log("edgeHere: ", edgeHere);
-            // this.nodeSelectsService.getEdgeTypeName({ 'edge_type_ids': edgeTypeIdsPost }).subscribe((s: any) => {
-            //   this.result = s;
-            //   this.edgeHere = this.result;
-            //   this.edgeTypesLists = [];
-            //   this.edgeHere.forEach((event: any) => {
-            //     this.edgeTypesLists.push(event.edge_type_name);
-            //   });
-            //   console.log("edgeHere: ", this.edgeTypesLists);
-            // });
 
-            // temps["news_id"] = event.news_id;
-            temps["sourcenode_name"] = event.sourcenode_name;
-            temps["destinationnode_name"] = event.destinationnode_name;
-            temps["level"] = event.level;
-            //temps["edgeTypes"] = "<button class='btn btn-sm btn-primary'>Edge Types</button> &nbsp;";
-            temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";
-            //temps["edgeType_articleType"] = event.edge_type_article_type_ne_ids;
-            temps["edgeTypesID"] = edgeTypeIdsPost;
-            temps["edgeNeId"] = edgeTypeNeIdsPost;
-            this.masterListsDataDetails.push(temps);
-            // console.log("masterListsData Event: ", this.masterListsDataDetails);
-          },
-          );
 
-          jQuery('#showEventDescription').bootstrapTable({
-            bProcessing: true,
-            bServerSide: true,
-            pagination: true,
-            // showRefresh: true,
-            showToggle: true,
-            showColumns: true,
-            search: true,
-            pageSize: 25,
-            // pageList: [10, 25, 50, 100, All],
-            striped: true,
-            //showFilter: true,
-            // filter: true,
-            showFullscreen: true,
-            stickyHeader: true,
-            showExport: true,
-            // exportOptions: {
-            //   ignoreColumn: [5],
-            //   // columns: [6],
-            //   // visible: [6,'true'],
-            // },
-            // columns: [
-            //   {
-            //     dataField: 'active_ingredients',
-            //     text: 'Active Ingredients',
-            //     headerStyle: { 'white-space': 'nowrap' }
-            //   }],
-            // columns: [
-            //   // {
-            //   //   title: 'Title',
-            //   //   field: 'title',
-            //   //   class: 'text-left',
-            //   // },
-            //   // {
-            //   //   title: 'Active Ingredients/Brand',
-            //   //   field: 'active_ingredient',
-            //   //   class: 'text-left',
-            //   // }
-            // ],
-            data: this.masterListsDataDetails,
-            onClickRow: (field: any, row: any, $element: any) => {
-              //edge types
-              /*if ($element == "edgeTypes") {
-                this.loaderEdgeType = true;
-                this.modalRef = this.modalService.open(this.edgeTypeDescModal_Detail, { size: 'lg', keyboard: false, backdrop: 'static' });
-                this.getEdgeTypes(field.edgeTypesID);
-              }*/
-              if ($element == "edgeNe") {
-                this.loaderArticle = true;
-                this.modalRef = this.modalService.open(this.articleModal_Detail, { size: 'xl', keyboard: false, backdrop: 'static' });
-                this.ArticlePopup(field.edgeNeId, field.sourcenode_name, field.destinationnode_name, field.edgeTypesID, this.getArticles);
-              }
-            },
+            this.nodeSelectsService.getEdgeTypeName({ 'edge_type_ids': edgeTypeIdsPost }).subscribe((s: any) => {
+              this.result = s;
+              this.edgeHere = this.result;
+              this.edgeTypesLists = [];
+              this.edgeHere.forEach((event: any) => {
+                this.edgeTypesLists.push(event.edge_type_name);
+              });
+
+              temps["edgeTypes"] = this.edgeTypesLists;
+
+              // temps["news_id"] = event.news_id;
+              temps["sourcenode_name"] = event.sourcenode_name;
+              temps["destinationnode_name"] = event.destinationnode_name;
+              temps["level"] = event.level;
+              //temps["edgeTypes"] = "<button class='btn btn-sm btn-primary'>Edge Types</button> &nbsp;";
+              temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";
+              //temps["edgeType_articleType"] = event.edge_type_article_type_ne_ids;
+              temps["edgeTypesID"] = edgeTypeIdsPost;
+              temps["edgeNeId"] = edgeTypeNeIdsPost;
+
+
+              this.nodeSelectsService.getEdgePMIDCount({ 'edge_type_pmid': edgeTypeNeIdsPost }).subscribe((p: any) => {
+                this.resultPMID = p;
+                this.pmidCount = this.resultPMID.pmidCount[0]['pmid_count'];
+                console.log("pmidCount: ", this.resultPMID.pmidCount[0]);
+
+                temps["pmidCount"] = this.pmidCount;
+                this.masterListsDataDetails.push(temps);
+
+                console.log(this.masterListsData.length, "=>", j + 1)
+                if (this.masterListsData.length == j + 1) {
+                  this.loadingDesc = false;
+                  console.log("masterListsData Event: ", this.masterListsDataDetails);
+                  this.bootstrapTableChart();
+                }
+                j++;
+              });
+            });
           });
-          jQuery('#showEventDescription').bootstrapTable("load", this.masterListsDataDetails);
-        },
-        err => {
-          console.log(err.message);
-          this.loadingDesc = false;
-        },
-        () => {
-          this.loadingDesc = false;
         }
       );
     }
@@ -202,6 +170,41 @@ export class EventDescriptionComponent implements OnInit {
     //   this.masterListsData = [];
     //   this.loadingDesc = false;
     // }
+  }
+
+  bootstrapTableChart() {
+    jQuery('#showEventDescription').bootstrapTable({
+      bProcessing: true,
+      bServerSide: true,
+      pagination: true,
+      // showRefresh: true,
+      showToggle: true,
+      showColumns: true,
+      search: true,
+      pageSize: 25,
+      // pageList: [10, 25, 50, 100, All],
+      striped: true,
+      //showFilter: true,
+      // filter: true,
+      showFullscreen: true,
+      stickyHeader: true,
+      showExport: true,
+      data: this.masterListsDataDetails,
+      onClickRow: (field: any, row: any, $element: any) => {
+        //edge types
+        /*if ($element == "edgeTypes") {
+          this.loaderEdgeType = true;
+          this.modalRef = this.modalService.open(this.edgeTypeDescModal_Detail, { size: 'lg', keyboard: false, backdrop: 'static' });
+          this.getEdgeTypes(field.edgeTypesID);
+        }*/
+        if ($element == "edgeNe") {
+          this.loaderArticle = true;
+          this.modalRef = this.modalService.open(this.articleModal_Detail, { size: 'xl', keyboard: false, backdrop: 'static' });
+          this.ArticlePopup(field.edgeNeId, field.sourcenode_name, field.destinationnode_name, field.edgeTypesID, this.getArticles);
+        }
+      },
+    });
+    jQuery('#showEventDescription').bootstrapTable("load", this.masterListsDataDetails);
   }
 
   // getEdgeTypes2(edgeTypeIdsPost: any) {
@@ -231,7 +234,7 @@ export class EventDescriptionComponent implements OnInit {
       this.edgeHere = "";
       this.result = p;
       this.result.forEach((event: any) => {
-        this.edgeHere += event.edge_type_name+"<br>";
+        this.edgeHere += event.edge_type_name + "<br>";
       });
     });
   }
@@ -299,10 +302,116 @@ export class EventDescriptionComponent implements OnInit {
 
   }
 
-  loadNextDataSet(event:any){
-    //console.log(event.target.value);
-    this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": event.target.value, "limitValue": 8000});
-    this.getEventDescription(this.filterParams);
+  onScroll() {
+    console.log('onScroll Here');
+    if (this.notscrolly && this.notEmptyPost) {
+      // this.spinner.show();
+      this.notscrolly = false;
+      this.currentPage++;
+      this.loadNextDataSet();
+    } else {
+      console.log('else');
+    }
   }
+
+  loadNextDataSet() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+
+    this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": startIndex, "limitValue": this.itemsPerPage });
+    this.notscrolly = true;
+    // this.getEventDescription(this.filterParams);
+
+    if (this.filterParams.source_node != undefined) {
+      this.loadingDesc = true;
+
+      this.nodeSelectsService.getMasterLists(this.filterParams).subscribe(
+        data => {
+          //console.log("data: ", data);
+          this.resultNodes = data;
+          if (this.resultNodes.masterListsData.length === 0) {
+            this.notEmptyPost = false;
+          }
+
+          this.masterListsData = this.masterListsData.concat(this.resultNodes.masterListsData);
+          console.log("finalTotal Add: ", this.masterListsData);
+
+          this.notscrolly = true;
+        },
+        err => {
+          console.log(err.message);
+          // this.loadingDesc = false;
+        },
+        () => {
+          // this.loadingDesc = false;
+          this.masterListsDataDetails = [];
+          let j = 0;
+          this.masterListsData.forEach((event: any) => {
+            var temps: any = {};
+            //Get the Edge Type Name
+            const regex = /[{}]/g;
+            const edgeTypeIds = event.edge_type_ids;
+            const edgeTypeIdsPost = edgeTypeIds.replace(regex, '');
+            //console.log("event: ", event);//use this variable, gautam
+
+            const edgeTypeNeIds = event.ne_ids;
+            const edgeTypeNeIdsPost = edgeTypeNeIds.replace(regex, '');
+            //console.log(edgeTypeNeIdsPost);
+
+            this.nodeSelectsService.getEdgeTypeName({ 'edge_type_ids': edgeTypeIdsPost }).subscribe((s: any) => {
+              this.result = s;
+              this.edgeHere = this.result;
+              this.edgeTypesLists = [];
+              this.edgeHere.forEach((event: any) => {
+                this.edgeTypesLists.push(event.edge_type_name);
+              });
+
+              temps["edgeTypes"] = this.edgeTypesLists;
+              // temps["news_id"] = event.news_id;
+              temps["sourcenode_name"] = event.sourcenode_name;
+              temps["destinationnode_name"] = event.destinationnode_name;
+              temps["level"] = event.level;
+              //temps["edgeTypes"] = "<button class='btn btn-sm btn-primary'>Edge Types</button> &nbsp;";
+              temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";
+              //temps["edgeType_articleType"] = event.edge_type_article_type_ne_ids;
+              temps["edgeTypesID"] = edgeTypeIdsPost;
+              temps["edgeNeId"] = edgeTypeNeIdsPost;
+
+              
+
+              // Start For distinct pmid count here
+              this.nodeSelectsService.getEdgePMIDCount({ 'edge_type_pmid': edgeTypeNeIdsPost }).subscribe((p: any) => {
+                this.resultPMID = p;
+                this.pmidCount = this.resultPMID.pmidCount[0]['pmid_count'];
+                console.log("pmidCount Inside: ", this.resultPMID.pmidCount[0]);
+
+                temps["pmidCount"] = this.pmidCount;
+                this.masterListsDataDetails.push(temps);
+
+                console.log(this.masterListsData.length, "=>", j + 1)
+                if (this.masterListsData.length == j + 1) {
+                  this.loadingDesc = false;
+                  console.log("masterListsData Event Added: ", this.masterListsDataDetails);
+                  this.bootstrapTableChart();
+                }
+                j++;
+              });
+              // End here for pmid distinct count
+
+            });
+          });
+        }
+      );
+    }
+
+  }
+
+  // loadNextDataSetOLD(event: any) {
+  //   //console.log(event.target.value);
+  //   this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": event.target.value, "limitValue": 8000 });
+  //   this.getEventDescription(this.filterParams);
+  // }
+
+
+
 
 }
