@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 // import 'rxjs/add/observable/of';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from './../../environments/environment';
-import * as moment from "moment";
+//import * as moment from "moment";
+import moment from "moment";
 
 const API_URL = environment.apiUrl;
 const httpOptions = {

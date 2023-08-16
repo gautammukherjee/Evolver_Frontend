@@ -163,8 +163,8 @@ export class DistributionByRelationTypeComponent implements OnInit {
                         // const myFormattedDate = this.pipe.transform(PMID.publication_date, 'short');
                         // console.log("PMID:: ", PMID.edge_type_name);
                         pubmedURLsDownload += "<div style='font-size: 14px;color:#32404E'>" + PMID.title + "</div>";
-                        pubmedURLsDownload += "<div style='list-style: none; font-size: 14px; color:#32404E'>PMID : <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + PMID.pmid + "'>" + PMID.pmid + "</a></div>";
-                        pubmedURLsDownload += "<div style='font-size: 14px; color:#32404E'>Publication Date : " + PMID.publication_date + "</div>";
+                        pubmedURLsDownload += "<div style='list-style: none; font-size: 14px; color:#32404E'><strong>PMID :</strong> <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + PMID.pmid + "'>" + PMID.pmid + "</a></div>";
+                        pubmedURLsDownload += "<div style='font-size: 14px; color:#32404E'><strong>Publication Date : </strong>" + PMID.publication_date + "</div>";
                         pubmedURLsDownload += "<hr style='color:#32404E'/>";
                       });
                       pubmedURLsDownload += "<div style='clear: both;'><hr/></div>";
