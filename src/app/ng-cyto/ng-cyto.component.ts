@@ -363,16 +363,26 @@ export class NgCytoComponent implements OnChanges {
                         this.pubmedURLsDownload = "";
 
                         this.pubmedURLsDownload = "<div>";
-                        this.pubmedURLsDownload += "<div style='font-size: 15px; font-weight:bold; text-decoration:underline; color:#32404E'>Title & PMID Lists</div>";
+                        this.pubmedURLsDownload += "<div style='font-size: 15px; font-weight:bold; text-decoration:underline; color:#32404E'>Evidence Detail(s)</div>";
+                        this.pubmedURLsDownload += '<table class="table table-bordered border-secondary">';
+                        this.pubmedURLsDownload += "<tr>";
+                        this.pubmedURLsDownload += " <th>PMID</th> <th>Publication Date</th> <th>Evidence</th> ";
+                        this.pubmedURLsDownload += "</tr>";
                         this.edgeTypeNameData.forEach((PMID: any) => {
+                            this.pubmedURLsDownload += "<tr>";
+                            this.pubmedURLsDownload += "<td><a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + PMID.pmid + "'>" + PMID.pmid + "</a></td>";
+                            this.pubmedURLsDownload += "<td>" + PMID.publication_date + "</td>";
+                            this.pubmedURLsDownload += "<td>" + PMID.title + "</td>";
 
                             // const myFormattedDate = this.pipe.transform(PMID.publication_date, 'short');
                             // console.log("PMID:: ", PMID.edge_type_name);
-                            this.pubmedURLsDownload += "<div style='font-size: 14px;color:#32404E'>" + PMID.title + "</div>";
-                            this.pubmedURLsDownload += "<div style='list-style: none; font-size: 14px; color:#32404E'>PMID : <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + PMID.pmid + "'>" + PMID.pmid + "</a></div>";
-                            this.pubmedURLsDownload += "<div style='font-size: 14px; color:#32404E'>Publication Date : " + PMID.publication_date + "</div>";
-                            this.pubmedURLsDownload += "<hr style='color:#32404E'/>";
+
+                            //this.pubmedURLsDownload += "<div style='font-size: 14px;color:#32404E'>" + PMID.title + "</div>";
+                            //this.pubmedURLsDownload += "<div style='list-style: none; font-size: 14px; color:#32404E'>PMID : <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + PMID.pmid + "'>" + PMID.pmid + "</a></div>";
+                            //this.pubmedURLsDownload += "<div style='font-size: 14px; color:#32404E'>Publication Date : " + PMID.publication_date + "</div>";
+                            //this.pubmedURLsDownload += "<hr style='color:#32404E'/>";
                         });
+                        this.pubmedURLsDownload += "</table>";
                         this.pubmedURLsDownload += "<div style='clear: both;'><hr/></div>";
                         this.pubmedURLsDownload += "</div>";
                     } else {
@@ -390,7 +400,7 @@ export class NgCytoComponent implements OnChanges {
                             if (this.resultEdgeNames != undefined) {
                                 this.edgeNamesMultiple = "";
                                 this.edgeNamesMultiple = "<div>";
-                                this.edgeNamesMultiple += "<div style='font-size: 15px; font-weight:bold; text-decoration:underline; color:#32404E'>Edge Names</div>";
+                                this.edgeNamesMultiple += "<div style='font-size: 15px; font-weight:bold; color:#32404E'>Edge Types</div>";
                                 this.resultEdgeNames.forEach((EDGES: any) => {
                                     this.edgeNamesMultiple += "<div style='font-size: 14px;color:#32404E'>" + EDGES.edge_type_name + "</div>";
                                 });
@@ -408,11 +418,11 @@ export class NgCytoComponent implements OnChanges {
                             this.pubmedEdgeDetails = "<div>";
                             this.pubmedEdgeDetails += '<div style="color: #BF63A2;"><strong>Source Name</strong></div>';
                             this.pubmedEdgeDetails += '<div style="padding-bottom:10px; color: #BF63A2;">' + sourceData.name + '</div>';
-                            this.pubmedEdgeDetails += '<div style="color: #4B5DA1;"><strong>Target Name</strong></div>';
+                            this.pubmedEdgeDetails += '<div style="color: #4B5DA1;"><strong>Destination Name</strong></div>';
                             this.pubmedEdgeDetails += '<div style="padding-bottom:10px; color: #4B5DA1;">' + targetData.name + '</div>';
                             // pubmedEdgeDetails += '<div style="color: #00ffff;"><strong>Edge Weight</strong></div>';
                             // pubmedEdgeDetails += '<div style="padding-bottom:10px;">' + edge.strength + '</div>';
-                            this.pubmedEdgeDetails += "<hr style='color: #32404E;'/>";
+                            //this.pubmedEdgeDetails += "<hr style='color: #32404E;'/>";
                             this.pubmedEdgeDetails += "</div>";
 
                             // console.log("pubmedEdgeDetails: ", pubmedEdgeDetails);
