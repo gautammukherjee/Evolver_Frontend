@@ -56,6 +56,7 @@ export class EventDescriptionComponent implements OnInit {
   notscrolly: boolean = true;
   currentPage: number = 1;
   itemsPerPage: number = 5;
+  public isloading: boolean = false;
 
   constructor(
     private globalVariableService: GlobalVariableService,
@@ -85,13 +86,14 @@ export class EventDescriptionComponent implements OnInit {
 
   getEventDescription(_filterParams: any) {
     //console.log("abc = "+_limit.load_value);
-    if (_filterParams.source_node != undefined) {
+    this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
+    if (this.filterParams.source_node != undefined) {
 
       // $('.overlay').fadeOut(500);
       this.loadingDesc = true;
 
       //console.log("filterparams: ", _filterParams);
-      this.nodeSelectsService.getMasterLists(_filterParams).subscribe(
+      this.nodeSelectsService.getMasterLists(this.filterParams).subscribe(
         data => {
           //console.log("data: ", data);
           this.resultNodes = data;
@@ -315,6 +317,7 @@ export class EventDescriptionComponent implements OnInit {
   }
 
   loadNextDataSet() {
+    this.isloading = true;
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
 
     this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": startIndex, "limitValue": this.itemsPerPage });
@@ -322,7 +325,7 @@ export class EventDescriptionComponent implements OnInit {
     // this.getEventDescription(this.filterParams);
 
     if (this.filterParams.source_node != undefined) {
-      this.loadingDesc = true;
+      // this.loadingDesc = true;
 
       this.nodeSelectsService.getMasterLists(this.filterParams).subscribe(
         data => {
@@ -376,8 +379,6 @@ export class EventDescriptionComponent implements OnInit {
               temps["edgeTypesID"] = edgeTypeIdsPost;
               temps["edgeNeId"] = edgeTypeNeIdsPost;
 
-              
-
               // Start For distinct pmid count here
               this.nodeSelectsService.getEdgePMIDCount({ 'edge_type_pmid': edgeTypeNeIdsPost }).subscribe((p: any) => {
                 this.resultPMID = p;
@@ -394,7 +395,21 @@ export class EventDescriptionComponent implements OnInit {
                   this.bootstrapTableChart();
                 }
                 j++;
-              });
+              },
+              err => {
+                // this.destinationNodesCheck = true;
+                this.isloading = false;
+                this.loadingDesc = false;
+                console.log(err.message)
+              },
+              () => {
+                // this.destinationNodesCheck = true;
+                this.isloading = false;
+                this.loadingDesc = false;
+                console.log("loading finish")
+              }
+              );
+
               // End here for pmid distinct count
 
             });
