@@ -305,14 +305,16 @@ export class EventDescriptionComponent implements OnInit {
   }
 
   onScroll() {
-    console.log('onScroll Here');
-    if (this.notscrolly && this.notEmptyPost) {
-      // this.spinner.show();
-      this.notscrolly = false;
-      this.currentPage++;
-      this.loadNextDataSet();
-    } else {
-      console.log('else');
+    if (this.isloading == false) {
+      console.log('onScroll Here');
+      if (this.notscrolly && this.notEmptyPost) {
+        // this.spinner.show();
+        this.notscrolly = false;
+        this.currentPage++;
+        this.loadNextDataSet();
+      } else {
+        console.log('else');
+      }
     }
   }
 
@@ -397,18 +399,18 @@ export class EventDescriptionComponent implements OnInit {
                 }
                 j++;
               },
-              err => {
-                // this.destinationNodesCheck = true;
-                // this.isloading = false;
-                this.loadingDesc = false;
-                console.log(err.message)
-              },
-              () => {
-                // this.destinationNodesCheck = true;
-                // this.isloading = false;
-                this.loadingDesc = false;
-                console.log("loading finish")
-              }
+                err => {
+                  // this.destinationNodesCheck = true;
+                  // this.isloading = false;
+                  this.loadingDesc = false;
+                  console.log(err.message)
+                },
+                () => {
+                  // this.destinationNodesCheck = true;
+                  // this.isloading = false;
+                  this.loadingDesc = false;
+                  console.log("loading finish")
+                }
               );
 
               // End here for pmid distinct count
