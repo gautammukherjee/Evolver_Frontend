@@ -391,6 +391,7 @@ export class EventDescriptionComponent implements OnInit {
                 console.log(this.masterListsData.length, "=>", j + 1)
                 if (this.masterListsData.length == j + 1) {
                   this.loadingDesc = false;
+                  this.isloading = false;
                   console.log("masterListsData Event Added: ", this.masterListsDataDetails);
                   this.bootstrapTableChart();
                 }
@@ -398,13 +399,13 @@ export class EventDescriptionComponent implements OnInit {
               },
               err => {
                 // this.destinationNodesCheck = true;
-                this.isloading = false;
+                // this.isloading = false;
                 this.loadingDesc = false;
                 console.log(err.message)
               },
               () => {
                 // this.destinationNodesCheck = true;
-                this.isloading = false;
+                // this.isloading = false;
                 this.loadingDesc = false;
                 console.log("loading finish")
               }
