@@ -57,7 +57,7 @@ export class EventDescriptionComponent implements OnInit {
   notEmptyPost: boolean = true;
   notscrolly: boolean = true;
   currentPage: number = 1;
-  itemsPerPage: number = 5;
+  itemsPerPage: number = 50;
   public isloading: boolean = false;
 
   constructor(
@@ -323,6 +323,7 @@ export class EventDescriptionComponent implements OnInit {
           this.resultNodes = data;
           if (this.resultNodes.masterListsData.length === 0) {
             this.notEmptyPost = false;
+            this.isloading = false;
           }
 
           this.masterListsData = this.resultNodes.masterListsData;
