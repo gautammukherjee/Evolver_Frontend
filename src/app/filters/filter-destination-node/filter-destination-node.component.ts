@@ -20,10 +20,12 @@ export class FilterDestinationNodeComponent implements OnInit {
   private filterParams: any;
   public selectedDestinationNodes: any = [];
   public destinationNodes: any = [];
+  public destinationNodesAutoSuggest: any = [];
   private params: object = {};
   private result: any = [];
   public loading: boolean = false;
   public isloading: boolean = false;
+  public dbLoading: boolean = false;
   // public destinationNodesCheck: boolean = false;
   public enableFilter: boolean = false;;
   public filterText: string = '';
@@ -45,6 +47,7 @@ export class FilterDestinationNodeComponent implements OnInit {
   notscrolly: boolean = true;
   currentPage: number = 1;
   itemsPerPage: number = 500;
+  showAutoSuggest: boolean = false;
 
   constructor(
     private nodeSelectsService: NodeSelectsService,
@@ -58,12 +61,12 @@ export class FilterDestinationNodeComponent implements OnInit {
     // this.filterParams = this.globalVariableService.getFilterParams();
     // this.getDestinationNode(event, 1);
 
-    this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
-      console.log("event Destination:: ", event.clickOn);
-      if (event.clickOn == undefined) {
-        this.getResetDestinationNode();
-      }
-    });
+    // this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
+    //   console.log("event Destination:: ", event.clickOn);
+    //   if (event.clickOn == undefined) {
+    //     this.getResetDestinationNode();
+    //   }
+    // });
 
     this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
       console.log("event Destination: ", event.clickOn);
@@ -89,6 +92,7 @@ export class FilterDestinationNodeComponent implements OnInit {
 
   public getResetDestinationNode() {
     this.destinationNodes = [];
+    this.searchInput = '';
   }
 
   getDestinationNode() {
@@ -100,7 +104,7 @@ export class FilterDestinationNodeComponent implements OnInit {
       this.loading = true;
       this.nodeSelectsService.getDestinationNode(this.filterParams)
         .subscribe(
-          data => {            
+          data => {
             this.result = data;
             this.destinationNodes = this.result.destinationNodeRecords;
             console.log("destinationNodes: ", this.destinationNodes);
@@ -119,6 +123,37 @@ export class FilterDestinationNodeComponent implements OnInit {
     } else {
       this.destinationNodes = [];
       this.globalVariableService.resetfilters();
+    }
+  }
+
+  getDestinationNodeOnChange() {
+    // this.selectedDestinationNodes = []
+    if (this.searchInput && this.searchInput.length > 2) {
+      console.log("this all desti: ", this.selectedDestinationNodes)
+      this.dbLoading = true;
+      this.filterParams = this.globalVariableService.getFilterParams({ "searchval": this.searchInput });
+      console.log("filterparamsSearchSource: ", this.filterParams);
+      this.nodeSelectsService.getDestinationNode(this.filterParams)
+        .subscribe(
+          data => {
+            this.result = data;
+            this.destinationNodesAutoSuggest = this.result.destinationNodeRecords;
+            console.log("destinationNodesKeyup: ", this.destinationNodesAutoSuggest);
+          },
+          err => {
+            // this.destinationNodesCheck = true;
+            this.dbLoading = false;
+            console.log(err.message)
+          },
+          () => {
+            // this.destinationNodesCheck = true;
+            this.dbLoading = false;
+            console.log("loading finish")
+          }
+        );
+    } else {
+      // this.destinationNodes = [];
+      // this.globalVariableService.resetfilters();
     }
   }
 
@@ -213,26 +248,31 @@ export class FilterDestinationNodeComponent implements OnInit {
   // }
 
   onScroll() {
-    console.log('onScroll Here');
-    if (this.notscrolly && this.notEmptyPost) {
-      // this.spinner.show();
-      this.notscrolly = false;
-      this.currentPage++;
-      this.loadNextPost();
-    }else{
-      console.log('else');
-    }
+    // if (this.searchInput.length == 0) {
+      console.log('onScroll Here');
+      if (this.notscrolly && this.notEmptyPost) {
+        // this.spinner.show();
+        this.notscrolly = false;
+        this.currentPage++;
+        this.loadNextPost();
+      } else {
+        console.log('else');
+      }
+    // }
   }
 
   loadNextPost() {
     // this.toggleLoading();
     this.isloading = true;
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+
+    // this.searchInput.length
+
     this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": startIndex, "limitValue": this.itemsPerPage });
     console.log("filterparamScroll: ", this.filterParams);
     // this.selectedDestinationNodes = []
     if (this.filterParams.source_node != undefined) {
-      
+
       this.nodeSelectsService.getDestinationNode(this.filterParams)
         .subscribe(
           data => {
@@ -270,8 +310,14 @@ export class FilterDestinationNodeComponent implements OnInit {
       this.globalVariableService.resetfilters();
     }
 
-   
 
+
+  }
+
+  autoSuggest() {
+    console.log("yes: ", this.showAutoSuggest)
+    this.showAutoSuggest = !this.showAutoSuggest;
+    console.log("yes2: ", this.showAutoSuggest)
   }
 
 

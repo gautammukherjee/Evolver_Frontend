@@ -38,14 +38,14 @@
                                     <th data-field="level" data-sortable="true" width="10%"
                                         data-filter-control="select">
                                         Level</th>
-                                    <th data-field="edgeTypes" data-sortable="true" width="10%"
+                                    <!-- <th data-field="edgeTypes" data-sortable="true" width="10%"
                                         data-filter-control="input">
-                                        Edge Type</th>
-                                    <th data-field="pmidCount" data-sortable="true" width="10%"
+                                        Edge Type</th> -->
+                                    <!-- <th data-field="pmidCount" data-sortable="true" width="10%"
                                         data-filter-control="input">
-                                        Article Count</th>
+                                        PMID Count</th> -->
                                     <th data-field="edgeNe" data-sortable="true" width="10%">
-                                        Articles</th>
+                                        Articles Count</th>
                                 </tr>
                             </thead>
                         </table>
@@ -63,14 +63,12 @@
 
             <div *ngIf="!notEmptyPost" class="row">
                 <div class="alert alert-warning">
-                    No More Nodes..
+                    No More Records..
                 </div>
             </div>
         </div>
 
-
     </div>
-
     <div class="text-center" *ngIf="isloading"><img src="./assets/images/spinner_small_loader.gif"></div>
 
 </div>

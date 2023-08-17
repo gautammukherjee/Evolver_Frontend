@@ -46,7 +46,9 @@ export class EventDescriptionComponent implements OnInit {
   masterListsData: any = [];
   masterListsDataLoaded: any = [];
   masterListsDataOnScroll: any = [];
-  masterListsDataDetails: any = [];
+  masterListsDataDetailsLoaded: any = [];
+  masterListsDataDetailsExtra: any = [];
+  masterListsDataDetailsCombined: any = [];
   edgeTypesLists: any = [];
   public edgeTypes: any = [];
   public edgeHere: any = [];
@@ -55,7 +57,7 @@ export class EventDescriptionComponent implements OnInit {
   notEmptyPost: boolean = true;
   notscrolly: boolean = true;
   currentPage: number = 1;
-  itemsPerPage: number = 5;
+  itemsPerPage: number = 50;
   public isloading: boolean = false;
   loaderEvidence = false;
 
@@ -107,7 +109,7 @@ export class EventDescriptionComponent implements OnInit {
         },
         () => {
           // this.loadingDesc = false;
-          this.masterListsDataDetails = [];
+          this.masterListsDataDetailsLoaded = [];
           let j = 0;
           this.masterListsData.forEach((event: any) => {
 
@@ -120,50 +122,37 @@ export class EventDescriptionComponent implements OnInit {
 
             const edgeTypeNeIds = event.ne_ids;
             const edgeTypeNeIdsPost = edgeTypeNeIds.replace(regex, '');
-            //console.log(edgeTypeNeIdsPost);
 
-            // var edgeHere = this.getEdgeTypes(edgeTypeIdsPost);
-            // console.log("edgeHere: ", edgeHere);
+            // temps["news_id"] = event.news_id;
+            temps["sourcenode_name"] = event.sourcenode_name;
+            temps["destinationnode_name"] = event.destinationnode_name;
+            temps["level"] = event.level;
+            //temps["edgeTypes"] = "<button class='btn btn-sm btn-primary'>Edge Types</button> &nbsp;";
 
-
-            this.nodeSelectsService.getEdgeTypeName({ 'edge_type_ids': edgeTypeIdsPost }).subscribe((s: any) => {
-              this.result = s;
-              this.edgeHere = this.result;
-              this.edgeTypesLists = [];
-              this.edgeHere.forEach((event: any) => {
-                this.edgeTypesLists.push(event.edge_type_name);
-              });
-
-              temps["edgeTypes"] = this.edgeTypesLists;
-
-              // temps["news_id"] = event.news_id;
-              temps["sourcenode_name"] = event.sourcenode_name;
-              temps["destinationnode_name"] = event.destinationnode_name;
-              temps["level"] = event.level;
-              //temps["edgeTypes"] = "<button class='btn btn-sm btn-primary'>Edge Types</button> &nbsp;";
-              temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";
-              //temps["edgeType_articleType"] = event.edge_type_article_type_ne_ids;
-              temps["edgeTypesID"] = edgeTypeIdsPost;
-              temps["edgeNeId"] = edgeTypeNeIdsPost;
+            //temps["edgeType_articleType"] = event.edge_type_article_type_ne_ids;
+            temps["edgeTypesID"] = edgeTypeIdsPost;
+            temps["edgeNeId"] = edgeTypeNeIdsPost;
 
 
-              this.nodeSelectsService.getEdgePMIDCount({ 'edge_type_pmid': edgeTypeNeIdsPost }).subscribe((p: any) => {
-                this.resultPMID = p;
-                this.pmidCount = this.resultPMID.pmidCount[0]['pmid_count'];
-                console.log("pmidCount: ", this.resultPMID.pmidCount[0]);
+            this.nodeSelectsService.getEdgePMIDCount({ 'edge_type_pmid': edgeTypeNeIdsPost }).subscribe((p: any) => {
+              this.resultPMID = p;
+              this.pmidCount = this.resultPMID.pmidCount[0]['pmid_count'];
+              // console.log("pmidCount: ", this.resultPMID.pmidCount[0]);
 
-                temps["pmidCount"] = this.pmidCount;
-                this.masterListsDataDetails.push(temps);
+              // temps["pmidCount"] = this.pmidCount;
+              temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary bg-warning text-dark'>" + this.pmidCount + "</span></button> &nbsp;";
+              this.masterListsDataDetailsLoaded.push(temps);
+              this.masterListsDataDetailsCombined = this.masterListsDataDetailsLoaded;
 
-                console.log(this.masterListsData.length, "=>", j + 1)
-                if (this.masterListsData.length == j + 1) {
-                  this.loadingDesc = false;
-                  console.log("masterListsData Event: ", this.masterListsDataDetails);
-                  this.bootstrapTableChart();
-                }
-                j++;
-              });
+              console.log(this.masterListsData.length, "=>", j + 1)
+              if (this.masterListsData.length == j + 1) {
+                this.loadingDesc = false;
+                console.log("masterListsData Event Loaded: ", this.masterListsDataDetailsCombined);
+                this.bootstrapTableChart();
+              }
+              j++;
             });
+
           });
         }
       );
@@ -192,7 +181,7 @@ export class EventDescriptionComponent implements OnInit {
       showFullscreen: true,
       stickyHeader: true,
       showExport: true,
-      data: this.masterListsDataDetails,
+      data: this.masterListsDataDetailsCombined,
       onClickRow: (field: any, row: any, $element: any) => {
         //edge types
         /*if ($element == "edgeTypes") {
@@ -207,7 +196,7 @@ export class EventDescriptionComponent implements OnInit {
         }
       },
     });
-    jQuery('#showEventDescription').bootstrapTable("load", this.masterListsDataDetails);
+    jQuery('#showEventDescription').bootstrapTable("load", this.masterListsDataDetailsCombined);
   }
 
   // getEdgeTypes2(edgeTypeIdsPost: any) {
@@ -332,21 +321,21 @@ export class EventDescriptionComponent implements OnInit {
 
 
   onScroll() {
-    if (this.isloading == false) {
+    if (!this.isloading) {
       console.log('onScroll Here');
       if (this.notscrolly && this.notEmptyPost) {
         // this.spinner.show();
         this.notscrolly = false;
         this.currentPage++;
         this.loadNextDataSet();
-      } else {
-        console.log('else');
       }
+    } else {
+      console.log('onScroll Here2', this.isloading);
     }
   }
 
   loadNextDataSet() {
-    this.isloading = true;
+    
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
 
     this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": startIndex, "limitValue": this.itemsPerPage });
@@ -355,6 +344,7 @@ export class EventDescriptionComponent implements OnInit {
 
     if (this.filterParams.source_node != undefined) {
       // this.loadingDesc = true;
+      this.isloading = true;
 
       this.nodeSelectsService.getMasterLists(this.filterParams).subscribe(
         data => {
@@ -362,12 +352,12 @@ export class EventDescriptionComponent implements OnInit {
           this.resultNodes = data;
           if (this.resultNodes.masterListsData.length === 0) {
             this.notEmptyPost = false;
+            this.isloading = false;
           }
 
-          this.masterListsData = this.masterListsData.concat(this.resultNodes.masterListsData);
-          console.log("finalTotal Add: ", this.masterListsData);
+          this.masterListsData = this.resultNodes.masterListsData;
+          console.log("infinite data: ", this.masterListsData);
 
-          this.notscrolly = true;
         },
         err => {
           console.log(err.message);
@@ -375,8 +365,8 @@ export class EventDescriptionComponent implements OnInit {
         },
         () => {
           // this.loadingDesc = false;
-          this.masterListsDataDetails = [];
-          let j = 0;
+          this.masterListsDataDetailsExtra = [];
+          let k = 0;
           this.masterListsData.forEach((event: any) => {
             var temps: any = {};
             //Get the Edge Type Name
@@ -389,60 +379,50 @@ export class EventDescriptionComponent implements OnInit {
             const edgeTypeNeIdsPost = edgeTypeNeIds.replace(regex, '');
             //console.log(edgeTypeNeIdsPost);
 
-            this.nodeSelectsService.getEdgeTypeName({ 'edge_type_ids': edgeTypeIdsPost }).subscribe((s: any) => {
-              this.result = s;
-              this.edgeHere = this.result;
-              this.edgeTypesLists = [];
-              this.edgeHere.forEach((event: any) => {
-                this.edgeTypesLists.push(event.edge_type_name);
-              });
+            // temps["news_id"] = event.news_id;
+            temps["sourcenode_name"] = event.sourcenode_name;
+            temps["destinationnode_name"] = event.destinationnode_name;
+            temps["level"] = event.level;
+            //temps["edgeTypes"] = "<button class='btn btn-sm btn-primary'>Edge Types</button> &nbsp;";
+            //temps["edgeType_articleType"] = event.edge_type_article_type_ne_ids;
+            temps["edgeTypesID"] = edgeTypeIdsPost;
+            temps["edgeNeId"] = edgeTypeNeIdsPost;
 
-              temps["edgeTypes"] = this.edgeTypesLists;
-              // temps["news_id"] = event.news_id;
-              temps["sourcenode_name"] = event.sourcenode_name;
-              temps["destinationnode_name"] = event.destinationnode_name;
-              temps["level"] = event.level;
-              //temps["edgeTypes"] = "<button class='btn btn-sm btn-primary'>Edge Types</button> &nbsp;";
-              temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";
-              //temps["edgeType_articleType"] = event.edge_type_article_type_ne_ids;
-              temps["edgeTypesID"] = edgeTypeIdsPost;
-              temps["edgeNeId"] = edgeTypeNeIdsPost;
+            // Start For distinct pmid count here
+            this.nodeSelectsService.getEdgePMIDCount({ 'edge_type_pmid': edgeTypeNeIdsPost }).subscribe((p: any) => {
+              this.resultPMID = p;
+              this.pmidCount = this.resultPMID.pmidCount[0]['pmid_count'];
+              // console.log("pmidCount Inside: ", this.resultPMID.pmidCount[0]);
 
-              // Start For distinct pmid count here
-              this.nodeSelectsService.getEdgePMIDCount({ 'edge_type_pmid': edgeTypeNeIdsPost }).subscribe((p: any) => {
-                this.resultPMID = p;
-                this.pmidCount = this.resultPMID.pmidCount[0]['pmid_count'];
-                console.log("pmidCount Inside: ", this.resultPMID.pmidCount[0]);
+              // temps["pmidCount"] = this.pmidCount;
+              temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary bg-warning text-dark'>" + this.pmidCount + "</span></button> &nbsp;";
+              this.masterListsDataDetailsExtra.push(temps);
 
-                temps["pmidCount"] = this.pmidCount;
-                this.masterListsDataDetails.push(temps);
+              console.log(this.masterListsData.length, "=>", k + 1)
+              if (this.masterListsData.length == k + 1) {
+                this.loadingDesc = false;
+                this.isloading = false;
+                console.log("new data Added: ", this.masterListsDataDetailsExtra);
 
-                console.log(this.masterListsData.length, "=>", j + 1)
-                if (this.masterListsData.length == j + 1) {
-                  this.loadingDesc = false;
-                  this.isloading = false;
-                  console.log("masterListsData Event Added: ", this.masterListsDataDetails);
-                  this.bootstrapTableChart();
-                }
-                j++;
+                this.masterListsDataDetailsCombined = this.masterListsDataDetailsCombined.concat(this.masterListsDataDetailsExtra);
+                console.log("Total Add: ", this.masterListsDataDetailsCombined);
+                this.notscrolly = true;
+                this.bootstrapTableChart();
+              }
+              k++;
+            },
+              err => {
+                // this.isloading = false;
+                this.loadingDesc = false;
+                console.log(err.message)
               },
-                err => {
-                  // this.destinationNodesCheck = true;
-                  // this.isloading = false;
-                  this.loadingDesc = false;
-                  console.log(err.message)
-                },
-                () => {
-                  // this.destinationNodesCheck = true;
-                  // this.isloading = false;
-                  this.loadingDesc = false;
-                  console.log("loading finish")
-                }
-              );
-
-              // End here for pmid distinct count
-
-            });
+              () => {
+                // this.isloading = false;
+                this.loadingDesc = false;
+                console.log("loading finish")
+              }
+            );
+            // End here for pmid distinct count
           });
         }
       );
@@ -455,8 +435,6 @@ export class EventDescriptionComponent implements OnInit {
   //   this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": event.target.value, "limitValue": 8000 });
   //   this.getEventDescription(this.filterParams);
   // }
-
-
 
 
 }
