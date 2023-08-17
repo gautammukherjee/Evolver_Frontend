@@ -129,5 +129,8 @@ export class NodeSelectsService {
     return this.http.post(this.API_URL + 'getEdgePMIDCount', params, httpOptions);
   }
 
+  getEvidenceData(params:any){
+    return this.http.post(this.API_URL + 'getEvidenceData', params, httpOptions);
+  }
 
 }

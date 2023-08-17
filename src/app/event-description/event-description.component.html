@@ -63,16 +63,16 @@
 
             <div *ngIf="!notEmptyPost" class="row">
                 <div class="alert alert-warning">
-                  No More Nodes..
+                    No More Nodes..
                 </div>
-              </div>
+            </div>
         </div>
 
 
     </div>
 
     <div class="text-center" *ngIf="isloading"><img src="./assets/images/spinner_small_loader.gif"></div>
-    
+
 </div>
 
 <!-- help section goes here -->
@@ -150,6 +150,10 @@
                                             data-filter-control="input">
                                             Edge Type
                                         </th>
+                                        <th data-field="sentence_btn" data-sortable="true" width="10%"
+                                            data-filter-control="input">
+                                            Sentence
+                                        </th>
                                     </tr>
                                 </thead>
                             </table>
@@ -158,6 +162,11 @@
                     </div>
                 </div>
             </div>
+            <div id="evidence_data_container">
+                <img class="text-center" src="../../assets/images/loader_big.gif" *ngIf="loaderEvidence" />
+                <div id="evidence_data" style="display:none; width: 100%;height: auto;background-color:#F0F2F5;"></div>
+            </div>
+            
         </div>
     </div>
 

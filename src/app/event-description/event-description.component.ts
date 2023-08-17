@@ -57,6 +57,7 @@ export class EventDescriptionComponent implements OnInit {
   currentPage: number = 1;
   itemsPerPage: number = 5;
   public isloading: boolean = false;
+  loaderEvidence = false;
 
   constructor(
     private globalVariableService: GlobalVariableService,
@@ -269,7 +270,7 @@ export class EventDescriptionComponent implements OnInit {
     var pubmedBaseUrl = "https://www.ncbi.nlm.nih.gov/pubmed/";
     t.nodeSelectsService.getEdgePMIDLists({ 'ne_ids': edgeNeIdArr }).subscribe((p: any) => {
       t.result = p;
-      //console.log(this.result);
+      console.log(t.result);
       t.articleHere = t.result.pmidLists;
       t.articleList = [];
       t.articleHere.forEach((event: any) => {
@@ -280,6 +281,8 @@ export class EventDescriptionComponent implements OnInit {
         temps["publication_date"] = event.publication_date;
         temps["title"] = event.title;
         temps["edge_type"] = t.edgeHere;
+        temps["ne_id"] = event.ne_id;
+        temps["sentence_btn"] = "<button class='btn btn-sm btn-primary' value='" + event.ne_id + "'>Sentences</button>";
         t.articleList.push(temps);
       });
       jQuery('#articles_details').bootstrapTable({
@@ -294,15 +297,39 @@ export class EventDescriptionComponent implements OnInit {
         showFullscreen: true,
         stickyHeader: true,
         showExport: true,
-        data: t.articleList
+        data: t.articleList,
+        onClickCell: (field: any, value: any, row: any, $element: any) => {
+          //console.log(field);//sentence_btn
+          //console.log(value);//<button class='btn btn-sm btn-primary' value='8785438'>Sentences</button>
+          //console.log(JSON.stringify(row));// ** entire row data
+          //console.log($element);
+          let sentences:any;
+          if(field == "sentence_btn"){
+            t.loaderEvidence = true;
+            console.log(row.ne_id);
+            $("#evidence_data").show();
+            $("#evidence_data").html("");
+            t.nodeSelectsService.getEvidenceData({ 'ne_id': row.ne_id }).subscribe((p: any) => {
+              sentences = p;
+              console.log(JSON.stringify(sentences));
+              if(sentences.evidence_data.length==0){
+                $("#evidence_data").html("<div class='alert alert-danger'>No Evidence found in database!</div>");
+              }else{
+                for(let i=0; i<sentences.evidence_data.length; i++){
+                  $("#evidence_data").append("<p class='m-4'>"+sentences.evidence_data[i].evidence_data+"</p><hr>");
+                }
+              }
+              t.loaderEvidence = false;
+            });
+          }
+        }
       });
 
       t.loaderArticle = false;
     });
 
-
-
   }
+
 
   onScroll() {
     if (this.isloading == false) {
