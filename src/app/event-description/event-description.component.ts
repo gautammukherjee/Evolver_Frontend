@@ -306,7 +306,7 @@ export class EventDescriptionComponent implements OnInit {
   }
 
   loadNextDataSet() {
-    this.isloading = true;
+    
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
 
     this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": startIndex, "limitValue": this.itemsPerPage });
@@ -315,6 +315,7 @@ export class EventDescriptionComponent implements OnInit {
 
     if (this.filterParams.source_node != undefined) {
       // this.loadingDesc = true;
+      this.isloading = true;
 
       this.nodeSelectsService.getMasterLists(this.filterParams).subscribe(
         data => {

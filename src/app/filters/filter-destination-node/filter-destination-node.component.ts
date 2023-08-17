@@ -58,12 +58,12 @@ export class FilterDestinationNodeComponent implements OnInit {
     // this.filterParams = this.globalVariableService.getFilterParams();
     // this.getDestinationNode(event, 1);
 
-    this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
-      console.log("event Destination:: ", event.clickOn);
-      if (event.clickOn == undefined) {
-        this.getResetDestinationNode();
-      }
-    });
+    // this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
+    //   console.log("event Destination:: ", event.clickOn);
+    //   if (event.clickOn == undefined) {
+    //     this.getResetDestinationNode();
+    //   }
+    // });
 
     this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
       console.log("event Destination: ", event.clickOn);
@@ -89,6 +89,7 @@ export class FilterDestinationNodeComponent implements OnInit {
 
   public getResetDestinationNode() {
     this.destinationNodes = [];
+    this.searchInput = '';
   }
 
   getDestinationNode() {
@@ -119,6 +120,36 @@ export class FilterDestinationNodeComponent implements OnInit {
     } else {
       this.destinationNodes = [];
       this.globalVariableService.resetfilters();
+    }
+  }
+
+  getDestinationNodeOnChange() {
+    this.selectedDestinationNodes = []
+    if (this.searchInput && this.searchInput.length > 2) {
+      this.loading = true;
+      this.filterParams = this.globalVariableService.getFilterParams({ "searchval": this.searchInput });
+      console.log("filterparamsSearchSource: ", this.filterParams);
+      this.nodeSelectsService.getDestinationNode(this.filterParams)
+        .subscribe(
+          data => {            
+            this.result = data;
+            this.destinationNodes = this.result.destinationNodeRecords;
+            console.log("destinationNodesKeyup: ", this.destinationNodes);
+          },
+          err => {
+            // this.destinationNodesCheck = true;
+            this.loading = false;
+            console.log(err.message)
+          },
+          () => {
+            // this.destinationNodesCheck = true;
+            this.loading = false;
+            console.log("loading finish")
+          }
+        );
+    } else {
+      // this.destinationNodes = [];
+      // this.globalVariableService.resetfilters();
     }
   }
 
