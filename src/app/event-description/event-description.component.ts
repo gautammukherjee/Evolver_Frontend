@@ -293,6 +293,7 @@ export class EventDescriptionComponent implements OnInit {
           //console.log(JSON.stringify(row));// ** entire row data
           //console.log($element);
           let sentences:any;
+          let html:any;
           if(field == "sentence_btn"){
             t.loaderEvidence = true;
             console.log(row.ne_id);
@@ -300,12 +301,72 @@ export class EventDescriptionComponent implements OnInit {
             $("#evidence_data").html("");
             t.nodeSelectsService.getEvidenceData({ 'ne_id': row.ne_id }).subscribe((p: any) => {
               sentences = p;
-              console.log(JSON.stringify(sentences));
+              //console.log(JSON.stringify(sentences));
               if(sentences.evidence_data.length==0){
                 $("#evidence_data").html("<div class='alert alert-danger'>No Evidence found in database!</div>");
               }else{
+                html = "";
+                let e1_color: string;
+                let e2_color:string;
+                let sentence_text1: string;
+                let sentence_text2: string;
+                let sentence_text3: string;
+                let sentence_text4: string;
+                let sentence_text5: string;
+                
+                
                 for(let i=0; i<sentences.evidence_data.length; i++){
-                  $("#evidence_data").append("<p class='m-4'>"+sentences.evidence_data[i].evidence_data+"</p><hr>");
+                  
+                  if(sentences.evidence_data[i].e1_type_name === "DISEASE_OR_SYMPTOM"){
+                    e1_color = "#118ab2";
+                  }else if(sentences.evidence_data[i].e1_type_name === "FUNCTIONAL_MOLECULE"){
+                    e1_color = "#118ab2";
+                  }else if(sentences.evidence_data[i].e1_type_name === "GENE_OR_GENE_PRODUCT"){
+                    e1_color = "#118ab2";
+                  }else if(sentences.evidence_data[i].e1_type_name === "ANATOMY"){
+                    e1_color = "#118ab2";
+                  }else if(sentences.evidence_data[i].e1_type_name === "MODEL"){
+                    e1_color = "#118ab2";
+                  }else{
+                    e1_color = "#000";
+                  }
+
+                  if(sentences.evidence_data[i].e2_type_name === "DISEASE_OR_SYMPTOM"){
+                    e2_color = "#118ab2";
+                  }else if(sentences.evidence_data[i].e2_type_name === "FUNCTIONAL_MOLECULE"){
+                    e2_color = "#118ab2";
+                  }else if(sentences.evidence_data[i].e2_type_name === "GENE_OR_GENE_PRODUCT"){
+                    e2_color = "#118ab2";
+                  }else if(sentences.evidence_data[i].e2_type_name === "ANATOMY"){
+                    e2_color = "#118ab2";
+                  }else if(sentences.evidence_data[i].e2_type_name === "MODEL"){
+                    e2_color = "#118ab2";
+                  }else{
+                    e2_color = "#000";
+                  }
+
+                  sentence_text1 = sentences.evidence_data[i].sentence;
+                  sentence_text2 = sentence_text1.replace("<E1>", "<mark style='color:#A8E890'>");
+                  sentence_text3 = sentence_text2.replace("</E1>", "</mark>");
+                  sentence_text4 = sentence_text3.replace("<E2>", "<mark style='color:#FF8787'>");
+                  sentence_text5 = sentence_text4.replace("</E2>", "</mark>");
+
+                  //console.log(sentence_text5);
+                  
+
+                  html ="<div class='card m-2'><div class='card-body'>";
+                  html += "<div class='row m-2'>";
+                    html+= "<div class='col'><span style='color:"+e1_color+"'>"+sentences.evidence_data[i].gene_symbol_e1+"</span>("+sentences.evidence_data[i].e1_type_name+")</div>";  
+                    html+= "<div class='col'>"+sentences.evidence_data[i].edge_name+"</div>";
+                    html+= "<div class='col'><span style='color:"+e1_color+"'>"+sentences.evidence_data[i].gene_symbol_e2+"</span>("+sentences.evidence_data[i].e2_type_name+")</div>";
+                    html+= "<div class='col'> Pmid:"+sentences.evidence_data[i].pubmed_id+"</div>";
+                  html+= "</div>";  
+                  html+= "<div>";
+                    html+= "<div class='col'><p class='m-4'>"+sentence_text5+"</p></div>";
+                  html+= "</div>";
+                  html+="</div></div>";
+                  
+                  $("#evidence_data").append(html);
                 }
               }
               t.loaderEvidence = false;
