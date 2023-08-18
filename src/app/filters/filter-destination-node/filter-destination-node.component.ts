@@ -20,11 +20,12 @@ export class FilterDestinationNodeComponent implements OnInit {
   private filterParams: any;
   public selectedDestinationNodes: any = [];
   public destinationNodes: any = [];
-  public destinationNodesAutoSuggest: any = [];
+  public destinationNodesLength: any = [];
+  // public destinationNodesAutoSuggest: any = [];
   private params: object = {};
   private result: any = [];
   public loading: boolean = false;
-  public isloading: boolean = false;
+  // public isloading: boolean = false;
   public dbLoading: boolean = false;
   // public destinationNodesCheck: boolean = false;
   public enableFilter: boolean = false;;
@@ -45,7 +46,7 @@ export class FilterDestinationNodeComponent implements OnInit {
   // public showDestinationBody: boolean = true;
   notEmptyPost: boolean = true;
   notscrolly: boolean = true;
-  currentPage: number = 1;
+  // currentPage: number = 1;
   itemsPerPage: number = 500;
   showAutoSuggest: boolean = false;
 
@@ -93,21 +94,24 @@ export class FilterDestinationNodeComponent implements OnInit {
   public getResetDestinationNode() {
     this.destinationNodes = [];
     this.searchInput = '';
+    this.destinationNodesLength = 0;
   }
 
   getDestinationNode() {
-    this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
+    // this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
+    this.filterParams = this.globalVariableService.getFilterParams();
     console.log("filterparamsFirst: ", this.filterParams);
     this.selectedDestinationNodes = []
-    this.currentPage = 1;
+    this.destinationNodesLength = 0;
+    // this.currentPage = 1;
     if (this.filterParams.source_node != undefined) {
       this.loading = true;
       this.nodeSelectsService.getDestinationNode(this.filterParams)
         .subscribe(
           data => {
             this.result = data;
-            this.destinationNodes = this.result.destinationNodeRecords;
-            console.log("destinationNodes: ", this.destinationNodes);
+            this.destinationNodesLength = this.result.destinationNodeRecords.length;
+            console.log("destinationNodes Length: ", this.destinationNodesLength);
           },
           err => {
             // this.destinationNodesCheck = true;
@@ -128,7 +132,9 @@ export class FilterDestinationNodeComponent implements OnInit {
 
   getDestinationNodeOnChange() {
     // this.selectedDestinationNodes = []
-    if (this.searchInput && this.searchInput.length > 2) {
+    this.filterParams = this.globalVariableService.getFilterParams();
+    // console.log("filterparams: ", this.filterParams);
+    if (this.searchInput && this.searchInput.length > 2 && this.filterParams.source_node != undefined) {
       console.log("this all desti: ", this.selectedDestinationNodes)
       this.dbLoading = true;
       this.filterParams = this.globalVariableService.getFilterParams({ "searchval": this.searchInput });
@@ -137,8 +143,8 @@ export class FilterDestinationNodeComponent implements OnInit {
         .subscribe(
           data => {
             this.result = data;
-            this.destinationNodesAutoSuggest = this.result.destinationNodeRecords;
-            console.log("destinationNodesKeyup: ", this.destinationNodesAutoSuggest);
+            this.destinationNodes = this.result.destinationNodeRecords;
+            console.log("destinationNodesKeyup: ", this.destinationNodes);
           },
           err => {
             // this.destinationNodesCheck = true;
@@ -247,78 +253,78 @@ export class FilterDestinationNodeComponent implements OnInit {
   //   this.showDestinationBody = !this.showDestinationBody;
   // }
 
-  onScroll() {
-    // if (this.searchInput.length == 0) {
-      console.log('onScroll Here');
-      if (this.notscrolly && this.notEmptyPost) {
-        // this.spinner.show();
-        this.notscrolly = false;
-        this.currentPage++;
-        this.loadNextPost();
-      } else {
-        console.log('else');
-      }
-    // }
-  }
+  // onScroll() {
+  //   // if (this.searchInput.length == 0) {
+  //     console.log('onScroll Here');
+  //     if (this.notscrolly && this.notEmptyPost) {
+  //       // this.spinner.show();
+  //       this.notscrolly = false;
+  //       this.currentPage++;
+  //       this.loadNextPost();
+  //     } else {
+  //       console.log('else');
+  //     }
+  //   // }
+  // }
 
-  loadNextPost() {
-    // this.toggleLoading();
-    this.isloading = true;
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+  // loadNextPost() {
+  //   // this.toggleLoading();
+  //   this.isloading = true;
+  //   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
 
-    // this.searchInput.length
+  //   // this.searchInput.length
 
-    this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": startIndex, "limitValue": this.itemsPerPage });
-    console.log("filterparamScroll: ", this.filterParams);
-    // this.selectedDestinationNodes = []
-    if (this.filterParams.source_node != undefined) {
+  //   this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": startIndex, "limitValue": this.itemsPerPage });
+  //   console.log("filterparamScroll: ", this.filterParams);
+  //   // this.selectedDestinationNodes = []
+  //   if (this.filterParams.source_node != undefined) {
 
-      this.nodeSelectsService.getDestinationNode(this.filterParams)
-        .subscribe(
-          data => {
-            this.loading = true;
-            this.result = data;
-            // this.destinationNodes = this.result.destinationNodeRecords;
-            // console.log("destinationNodes Inside: ", this.destinationNodes);
-            // console.log("len: ", this.result.destinationNodeRecords.length);
+  //     this.nodeSelectsService.getDestinationNode(this.filterParams)
+  //       .subscribe(
+  //         data => {
+  //           this.loading = true;
+  //           this.result = data;
+  //           // this.destinationNodes = this.result.destinationNodeRecords;
+  //           // console.log("destinationNodes Inside: ", this.destinationNodes);
+  //           // console.log("len: ", this.result.destinationNodeRecords.length);
 
-            if (this.result.destinationNodeRecords.length === 0) {
-              this.notEmptyPost = false;
-            }
-            this.destinationNodes = this.destinationNodes.concat(this.result.destinationNodeRecords);
-            // this.diseases_syns = this.newPost.diseasesSynsRecords;
-            console.log("finalTotal: ", this.destinationNodes);
-            // console.log("length: ", this.destinationNodes.length);
-            this.notscrolly = true;
+  //           if (this.result.destinationNodeRecords.length === 0) {
+  //             this.notEmptyPost = false;
+  //           }
+  //           this.destinationNodes = this.destinationNodes.concat(this.result.destinationNodeRecords);
+  //           // this.diseases_syns = this.newPost.diseasesSynsRecords;
+  //           console.log("finalTotal: ", this.destinationNodes);
+  //           // console.log("length: ", this.destinationNodes.length);
+  //           this.notscrolly = true;
 
-          },
-          err => {
-            // this.destinationNodesCheck = true;
-            this.isloading = false;
-            this.loading = false;
-            console.log(err.message)
-          },
-          () => {
-            // this.destinationNodesCheck = true;
-            this.isloading = false;
-            this.loading = false;
-            console.log("loading finish")
-          }
-        );
-    } else {
-      this.destinationNodes = [];
-      this.globalVariableService.resetfilters();
-    }
+  //         },
+  //         err => {
+  //           // this.destinationNodesCheck = true;
+  //           this.isloading = false;
+  //           this.loading = false;
+  //           console.log(err.message)
+  //         },
+  //         () => {
+  //           // this.destinationNodesCheck = true;
+  //           this.isloading = false;
+  //           this.loading = false;
+  //           console.log("loading finish")
+  //         }
+  //       );
+  //   } else {
+  //     this.destinationNodes = [];
+  //     this.globalVariableService.resetfilters();
+  //   }
 
 
 
-  }
+  // }
 
-  autoSuggest() {
-    console.log("yes: ", this.showAutoSuggest)
-    this.showAutoSuggest = !this.showAutoSuggest;
-    console.log("yes2: ", this.showAutoSuggest)
-  }
+  // autoSuggest() {
+  //   console.log("yes: ", this.showAutoSuggest)
+  //   this.showAutoSuggest = !this.showAutoSuggest;
+  //   console.log("yes2: ", this.showAutoSuggest)
+  // }
 
 
 }

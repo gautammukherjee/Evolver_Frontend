@@ -5,6 +5,8 @@ import { GlobalVariableService } from 'src/app/services/common/global-variable.s
 import * as Highcharts from 'highcharts';
 import Drilldown from 'highcharts/modules/drilldown';
 Drilldown(Highcharts);
+import highcharts3D from 'highcharts/highcharts-3d';
+highcharts3D(Highcharts);
 import Exporting from 'highcharts/modules/exporting';
 Exporting(Highcharts);
 import { Subject, BehaviorSubject } from 'rxjs';
@@ -39,6 +41,10 @@ export class DistributionByRelGrpComponent implements OnInit {
   private result: any = [];
   public selectedEdgeTypes: any = [];
   public selectedEdgeTypesByGroup: any = [];
+
+  public alpha:number=1;
+  public beta:number=1;
+  public depth:number=1;
 
   @Input() ProceedDoFilterApply?: Subject<any>; //# Input for ProceedDoFilter is getting from clinical details html 
 
@@ -119,7 +125,7 @@ export class DistributionByRelGrpComponent implements OnInit {
             console.log("selected Edge Types", this.selectedEdgeTypes);
             // console.log("selectedEdgeTypesName: ", this.selectedEdgeTypesNames);
 
-            this.filterParams = this.globalVariableService.getFilterParams({ "edge_type_id_selected": this.selectedEdgeTypes});
+            this.filterParams = this.globalVariableService.getFilterParams({ "edge_type_id_selected": this.selectedEdgeTypes });
             this._RDS.distribution_by_relation_grp_get_edge_type_drilldown(this.filterParams).subscribe(
               (response: any) => {
                 this.dataEdgeNames = response.edgeNamesDrillDown;
@@ -240,9 +246,20 @@ export class DistributionByRelGrpComponent implements OnInit {
 
     // });
 
+    this.alpha = 15;
+    this.beta = 15;
+    this.depth = 50;
+
     this.chartOptions = {
       chart: {
-        type: 'column'
+        type: 'column',
+        options3d: {
+          enabled: true,
+          alpha: this.alpha,
+          beta: this.beta,
+          depth: this.depth,
+          viewDistance: 175
+        }
       },
       title: {
         text: 'Distribution by Relation Group'

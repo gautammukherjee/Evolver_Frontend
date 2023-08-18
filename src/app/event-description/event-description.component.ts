@@ -292,56 +292,56 @@ export class EventDescriptionComponent implements OnInit {
           //console.log(value);//<button class='btn btn-sm btn-primary' value='8785438'>Sentences</button>
           //console.log(JSON.stringify(row));// ** entire row data
           //console.log($element);
-          let sentences:any;
-          let html:any;
-          if(field == "sentence_btn"){
+          let sentences: any;
+          let html:string;
+          if (field == "sentence_btn") {
             t.loaderEvidence = true;
             console.log(row.ne_id);
             $("#evidence_data").show();
             $("#evidence_data").html("");
             t.nodeSelectsService.getEvidenceData({ 'ne_id': row.ne_id }).subscribe((p: any) => {
               sentences = p;
-              //console.log(JSON.stringify(sentences));
-              if(sentences.evidence_data.length==0){
+              console.log(JSON.stringify(sentences));
+              if (sentences.evidence_data.length == 0) {
                 $("#evidence_data").html("<div class='alert alert-danger'>No Evidence found in database!</div>");
-              }else{
+              } else {
                 html = "";
                 let e1_color: string;
-                let e2_color:string;
+                let e2_color: string;
                 let sentence_text1: string;
                 let sentence_text2: string;
                 let sentence_text3: string;
                 let sentence_text4: string;
                 let sentence_text5: string;
-                
-                
-                for(let i=0; i<sentences.evidence_data.length; i++){
-                  
-                  if(sentences.evidence_data[i].e1_type_name === "DISEASE_OR_SYMPTOM"){
+
+
+                for (let i = 0; i < sentences.evidence_data.length; i++) {
+
+                  if (sentences.evidence_data[i].e1_type_name === "DISEASE_OR_SYMPTOM") {
                     e1_color = "#118ab2";
-                  }else if(sentences.evidence_data[i].e1_type_name === "FUNCTIONAL_MOLECULE"){
+                  } else if (sentences.evidence_data[i].e1_type_name === "FUNCTIONAL_MOLECULE") {
                     e1_color = "#118ab2";
-                  }else if(sentences.evidence_data[i].e1_type_name === "GENE_OR_GENE_PRODUCT"){
+                  } else if (sentences.evidence_data[i].e1_type_name === "GENE_OR_GENE_PRODUCT") {
                     e1_color = "#118ab2";
-                  }else if(sentences.evidence_data[i].e1_type_name === "ANATOMY"){
+                  } else if (sentences.evidence_data[i].e1_type_name === "ANATOMY") {
                     e1_color = "#118ab2";
-                  }else if(sentences.evidence_data[i].e1_type_name === "MODEL"){
+                  } else if (sentences.evidence_data[i].e1_type_name === "MODEL") {
                     e1_color = "#118ab2";
-                  }else{
+                  } else {
                     e1_color = "#000";
                   }
 
-                  if(sentences.evidence_data[i].e2_type_name === "DISEASE_OR_SYMPTOM"){
+                  if (sentences.evidence_data[i].e2_type_name === "DISEASE_OR_SYMPTOM") {
                     e2_color = "#118ab2";
-                  }else if(sentences.evidence_data[i].e2_type_name === "FUNCTIONAL_MOLECULE"){
+                  } else if (sentences.evidence_data[i].e2_type_name === "FUNCTIONAL_MOLECULE") {
                     e2_color = "#118ab2";
-                  }else if(sentences.evidence_data[i].e2_type_name === "GENE_OR_GENE_PRODUCT"){
+                  } else if (sentences.evidence_data[i].e2_type_name === "GENE_OR_GENE_PRODUCT") {
                     e2_color = "#118ab2";
-                  }else if(sentences.evidence_data[i].e2_type_name === "ANATOMY"){
+                  } else if (sentences.evidence_data[i].e2_type_name === "ANATOMY") {
                     e2_color = "#118ab2";
-                  }else if(sentences.evidence_data[i].e2_type_name === "MODEL"){
+                  } else if (sentences.evidence_data[i].e2_type_name === "MODEL") {
                     e2_color = "#118ab2";
-                  }else{
+                  } else {
                     e2_color = "#000";
                   }
 
@@ -352,23 +352,28 @@ export class EventDescriptionComponent implements OnInit {
                   sentence_text5 = sentence_text4.replace("</E2>", "</mark>");
 
                   //console.log(sentence_text5);
-                  
 
-                  html ="<div class='card m-2'><div class='card-body'>";
+
+                  html = "<div class='card m-2'><div class='card-body'>";
                   html += "<div class='row m-2'>";
-                    html+= "<div class='col'><span style='color:"+e1_color+"'>"+sentences.evidence_data[i].gene_symbol_e1+"</span>("+sentences.evidence_data[i].e1_type_name+")</div>";  
-                    html+= "<div class='col'>"+sentences.evidence_data[i].edge_name+"</div>";
-                    html+= "<div class='col'><span style='color:"+e1_color+"'>"+sentences.evidence_data[i].gene_symbol_e2+"</span>("+sentences.evidence_data[i].e2_type_name+")</div>";
-                    html+= "<div class='col'> Pmid:"+sentences.evidence_data[i].pubmed_id+"</div>";
-                  html+= "</div>";  
-                  html+= "<div>";
-                    html+= "<div class='col'><p class='m-4'>"+sentence_text5+"</p></div>";
-                  html+= "</div>";
-                  html+="</div></div>";
-                  
+                  html += "<div class='col'><span style='color:" + e1_color + "'>" + sentences.evidence_data[i].gene_symbol_e1 + "</span>(" + sentences.evidence_data[i].e1_type_name + ")</div>";
+                  html += "<div class='col'>" + sentences.evidence_data[i].edge_name + "</div>";
+                  html += "<div class='col'><span style='color:" + e1_color + "'>" + sentences.evidence_data[i].gene_symbol_e2 + "</span>(" + sentences.evidence_data[i].e2_type_name + ")</div>";
+                  html += "<div class='col'> Pmid:" + sentences.evidence_data[i].pubmed_id + "</div>";
+                  html += "</div>";
+                  html += "<div>";
+                  html += "<div class='col'><p class='m-4'>" + sentence_text5 + "</p></div>";
+                  html += "</div>";
+                  html += "</div></div>";
+
                   $("#evidence_data").append(html);
-                }
-              }
+
+                  console.log(JSON.stringify(sentences));
+
+                  t.loaderEvidence = false;
+                };//for
+          
+        }
               t.loaderEvidence = false;
             });
           }
@@ -381,10 +386,11 @@ export class EventDescriptionComponent implements OnInit {
   }
 
 
-  onScroll() {
-    if (!this.isloading) {
-      console.log('onScroll Here');
-      if (this.notscrolly && this.notEmptyPost) {
+  onDescScroll() {
+    console.log('onScroll Here');
+    if (!this.isloading && !this.loadingDesc) {
+      if (this.notscrolly && this.notEmptyPost && this.filterParams['tabType'] == "details") {
+        console.log('onScroll Here inside');
         // this.spinner.show();
         this.notscrolly = false;
         this.currentPage++;
@@ -396,7 +402,7 @@ export class EventDescriptionComponent implements OnInit {
   }
 
   loadNextDataSet() {
-    
+
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
 
     this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": startIndex, "limitValue": this.itemsPerPage });
@@ -453,7 +459,7 @@ export class EventDescriptionComponent implements OnInit {
             this.nodeSelectsService.getEdgePMIDCount({ 'edge_type_pmid': edgeTypeNeIdsPost }).subscribe((p: any) => {
               this.resultPMID = p;
               this.pmidCount = this.resultPMID.pmidCount[0]['pmid_count'];
-              // console.log("pmidCount Inside: ", this.resultPMID.pmidCount[0]);
+              console.log("pmidCount Inside: ", this.resultPMID.pmidCount[0]);
 
               // temps["pmidCount"] = this.pmidCount;
               temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary bg-warning text-dark'>" + this.pmidCount + "</span></button> &nbsp;";
@@ -471,17 +477,7 @@ export class EventDescriptionComponent implements OnInit {
                 this.bootstrapTableChart();
               }
               k++;
-            },
-              err => {
-                // this.isloading = false;
-                this.loadingDesc = false;
-                console.log(err.message)
-              },
-              () => {
-                // this.isloading = false;
-                this.loadingDesc = false;
-                console.log("loading finish")
-              }
+            }
             );
             // End here for pmid distinct count
           });

@@ -4,97 +4,47 @@
       data-bs-auto-close="outside">
       <div class="body">
         <div class="search-input">
-          <!-- <form #form="ngForm" class="md-inline-block form-inline  ml-auto mr-0 mr-md-3 my-2 my-md-0"> -->
-          <input type="text" autocomplete="off" class="form-control" placeholder='Search Destination'
-            aria-label="Search" area-describedby="basic-addon2" name="searchInputDB"
-            [(ngModel)]="destinationNodeFilter">
-          <img *ngIf="loading" width="20px" src="../../assets/images/loader_small.gif" />
-          <span *ngIf="selectedDestinationNodes.length > 0" class="reset-search" (click)="resetDestinationNode();"
-            title="RESET INPUT-2"><i class="bi bi-x-circle"></i></span>
-          <!--<input class="form-control" type="text" placeholder="Search" aria-label="Search" [(ngModel)]="destinationNodeFilter" />-->
-          <!--<button style="float:left;margin-top: 10px;position: relative;" class="btn btn-primary" [disabled]="!form.form.valid" (click)="getSourceNode(searchInput.value)">Search</button>-->
-          <!-- </form> -->
+          <form #form="ngForm" class="md-inline-block form-inline  ml-auto mr-0 mr-md-3 my-2 my-md-0">
+            <input type="text" autocomplete="off" class="form-control" placeholder='Search DB' aria-label="Search"
+              area-describedby="basic-addon2" [(ngModel)]="searchInput" name="searchInput"
+              (keyup)="getDestinationNodeOnChange()">
+            <img *ngIf="dbLoading" width="20px" src="../../assets/images/loader_small.gif" />
+            <span *ngIf="selectedDestinationNodes.length > 0" class="reset-search" (click)="resetDestinationNode();"
+              title="RESET INPUT-2"><i class="bi bi-x-circle"></i></span>
+            <!--<input class="form-control" type="text" placeholder="Search" aria-label="Search" [(ngModel)]="destinationNodeFilter" />-->
+            <!--<button style="float:left;margin-top: 10px;position: relative;" class="btn btn-primary" [disabled]="!form.form.valid" (click)="getSourceNode(searchInput.value)">Search</button>-->
+          </form>
         </div>
-
       </div>
     </div>
-    <div style="font-size: 13px;color: white;cursor: pointer; margin-left: 220px;" *ngIf="destinationNodes.length" (click)="autoSuggest()">
-      DB Search</div>
 
-
-    <div [ngStyle]="{'display' : showAutoSuggest == true ? 'none' : 'block'}">
-      <ul class="dropdown-menu" aria-labelledby="destination-node-filter">
-        <!-- *ngIf="showSourceBody" -->
-        <div class="body">
-          <div *ngIf="destinationNodes.length">
-            <div class="search-options" infinite-scroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="50"
-              (scrolled)="onScroll()" [scrollWindow]="false">
-
-              <div class="mb-1 form-check"
-                *ngFor="let destinationNode of destinationNodes | DestinationNodeFilterPipe:destinationNodeFilter">
-                <!-- <div class="mb-1 form-check" *ngFor="let destinationNode of destinationNodes"> -->
-                <input class="form-check-input border border-secondary" type="checkbox" name="destinationNodes"
-                  [value]="destinationNode"
-                  [checked]="selectedDestinationNodes.indexOf(destinationNode.destination_node)>-1 "
-                  (change)="selectDestinationNode(destinationNode,$event)">
-                <label class="form-check-label">
-                  {{destinationNode.syn_node_name}} - <span
-                    class="badge bg-secondary">{{destinationNode.destination_node_name}}</span>
-                </label>
-              </div>
-              <div class="text-center" *ngIf="isloading"><img src="./assets/images/spinner_small_loader.gif"></div>
-              <div *ngIf="!notEmptyPost" class="row">
-                <div class="alert alert-warning">
-                  No More Destination Nodes..
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </ul>
+    <div style="position: absolute;">
+      <img *ngIf="loading" width="20px" src="../../assets/images/loader_small.gif" />
+      <span *ngIf="destinationNodesLength!=0" style="font-size: 13px;color: white;">
+        [Count: {{destinationNodesLength}}]
+      </span>
     </div>
 
-  </div>
-
-  <div class="dropdown">
-    <div [ngStyle]="{'display' : showAutoSuggest == false ? 'none' : 'block'}">
-
-      <ul style="position: absolute;" class="dropdown-menu2" aria-labelledby="destination-node-filter">
-        <div class="body">
-          <div *ngIf="destinationNodes.length">
-            <form #form="ngForm" class="md-inline-block form-inline  ml-auto mr-0 mr-md-3 my-2 my-md-0">
-              <input type="text" autocomplete="off" [(ngModel)]="searchInput" name="searchInput"
-                (keyup)="getDestinationNodeOnChange()" class="form-control" placeholder='DB Search'
-                aria-label="Search in db" area-describedby="basic-addon2 db">
-              <img *ngIf="dbLoading" width="20px" style="position: absolute;right: 10px;top: 13px;"
-                src="../../assets/images/loader_small.gif" />
-            </form>
-          </div>
-
-          <div *ngIf="destinationNodesAutoSuggest.length"
-            style="height: 220px;overflow-y: scroll;background: white;padding: 10px;">
-
-            <div>
-              <span class="reset-search" (click)="autoSuggest();" title="Close"><i
-                  class="bi bi-x-circle"></i></span>
-            </div>
-
-            <div class="mb-1 form-check" *ngFor="let destinationNodeAuto of destinationNodesAutoSuggest">
-              <input class="form-check-input border border-secondary" type="checkbox" name="destinationNodesAutoSuggest"
-                [value]="destinationNodeAuto"
-                [checked]="selectedDestinationNodes.indexOf(destinationNodeAuto.destination_node)>-1 "
-                (change)="selectDestinationNode(destinationNodeAuto,$event)">
+    <ul class="dropdown-menu" aria-labelledby="destination-node-filter">
+      <!-- *ngIf="showSourceBody" -->
+      <div class="body">
+        <div *ngIf="destinationNodes.length">
+          <div class="search-options">
+            <div class="mb-1 form-check" *ngFor="let destinationNode of destinationNodes">
+              <!-- <div class="mb-1 form-check" *ngFor="let destinationNode of destinationNodes"> -->
+              <input class="form-check-input border border-secondary" type="checkbox" name="destinationNodes"
+                [value]="destinationNode"
+                [checked]="selectedDestinationNodes.indexOf(destinationNode.destination_node)>-1 "
+                (change)="selectDestinationNode(destinationNode,$event)">
               <label class="form-check-label">
-                {{destinationNodeAuto.syn_node_name}} - <span
-                  class="badge bg-secondary">{{destinationNodeAuto.destination_node_name}}</span>
+                {{destinationNode.syn_node_name}} - <span
+                  class="badge bg-secondary">{{destinationNode.destination_node_name}}</span>
               </label>
-
             </div>
           </div>
         </div>
-      </ul>
-
-    </div>
+      </div>
+    </ul>
   </div>
 
 </div>
