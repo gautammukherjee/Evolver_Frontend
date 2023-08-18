@@ -57,7 +57,7 @@ export class EventDescriptionComponent implements OnInit {
   notEmptyPost: boolean = true;
   notscrolly: boolean = true;
   currentPage: number = 1;
-  itemsPerPage: number = 50;
+  itemsPerPage: number = 5;
   public isloading: boolean = false;
   loaderEvidence = false;
 
@@ -292,8 +292,8 @@ export class EventDescriptionComponent implements OnInit {
           //console.log(value);//<button class='btn btn-sm btn-primary' value='8785438'>Sentences</button>
           //console.log(JSON.stringify(row));// ** entire row data
           //console.log($element);
-          let sentences:any;
-          if(field == "sentence_btn"){
+          let sentences: any;
+          if (field == "sentence_btn") {
             t.loaderEvidence = true;
             console.log(row.ne_id);
             $("#evidence_data").show();
@@ -301,11 +301,11 @@ export class EventDescriptionComponent implements OnInit {
             t.nodeSelectsService.getEvidenceData({ 'ne_id': row.ne_id }).subscribe((p: any) => {
               sentences = p;
               console.log(JSON.stringify(sentences));
-              if(sentences.evidence_data.length==0){
+              if (sentences.evidence_data.length == 0) {
                 $("#evidence_data").html("<div class='alert alert-danger'>No Evidence found in database!</div>");
-              }else{
-                for(let i=0; i<sentences.evidence_data.length; i++){
-                  $("#evidence_data").append("<p class='m-4'>"+sentences.evidence_data[i].evidence_data+"</p><hr>");
+              } else {
+                for (let i = 0; i < sentences.evidence_data.length; i++) {
+                  $("#evidence_data").append("<p class='m-4'>" + sentences.evidence_data[i].evidence_data + "</p><hr>");
                 }
               }
               t.loaderEvidence = false;
@@ -320,10 +320,11 @@ export class EventDescriptionComponent implements OnInit {
   }
 
 
-  onScroll() {
-    if (!this.isloading) {
-      console.log('onScroll Here');
-      if (this.notscrolly && this.notEmptyPost) {
+  onDescScroll() {
+    console.log('onScroll Here');
+    if (!this.isloading && !this.loadingDesc) {
+      if (this.notscrolly && this.notEmptyPost && this.filterParams['tabType'] == "details") {
+        console.log('onScroll Here inside');
         // this.spinner.show();
         this.notscrolly = false;
         this.currentPage++;
@@ -335,7 +336,7 @@ export class EventDescriptionComponent implements OnInit {
   }
 
   loadNextDataSet() {
-    
+
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
 
     this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": startIndex, "limitValue": this.itemsPerPage });
@@ -392,7 +393,7 @@ export class EventDescriptionComponent implements OnInit {
             this.nodeSelectsService.getEdgePMIDCount({ 'edge_type_pmid': edgeTypeNeIdsPost }).subscribe((p: any) => {
               this.resultPMID = p;
               this.pmidCount = this.resultPMID.pmidCount[0]['pmid_count'];
-              // console.log("pmidCount Inside: ", this.resultPMID.pmidCount[0]);
+              console.log("pmidCount Inside: ", this.resultPMID.pmidCount[0]);
 
               // temps["pmidCount"] = this.pmidCount;
               temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary bg-warning text-dark'>" + this.pmidCount + "</span></button> &nbsp;";
@@ -410,17 +411,7 @@ export class EventDescriptionComponent implements OnInit {
                 this.bootstrapTableChart();
               }
               k++;
-            },
-              err => {
-                // this.isloading = false;
-                this.loadingDesc = false;
-                console.log(err.message)
-              },
-              () => {
-                // this.isloading = false;
-                this.loadingDesc = false;
-                console.log("loading finish")
-              }
+            }
             );
             // End here for pmid distinct count
           });

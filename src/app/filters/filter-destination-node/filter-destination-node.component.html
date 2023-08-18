@@ -18,9 +18,9 @@
 
       </div>
     </div>
-    <div style="font-size: 13px;color: white;cursor: pointer; margin-left: 220px;" *ngIf="destinationNodes.length" (click)="autoSuggest()">
+    <div style="font-size: 13px;color: white;cursor: pointer; margin-left: 220px;" *ngIf="destinationNodes.length"
+      (click)="autoSuggest()">
       DB Search</div>
-
 
     <div [ngStyle]="{'display' : showAutoSuggest == true ? 'none' : 'block'}">
       <ul class="dropdown-menu" aria-labelledby="destination-node-filter">
@@ -75,8 +75,7 @@
             style="height: 220px;overflow-y: scroll;background: white;padding: 10px;">
 
             <div>
-              <span class="reset-search" (click)="autoSuggest();" title="Close"><i
-                  class="bi bi-x-circle"></i></span>
+              <span class="reset-search" (click)="autoSuggest();" title="Close"><i class="bi bi-x-circle"></i></span>
             </div>
 
             <div class="mb-1 form-check" *ngFor="let destinationNodeAuto of destinationNodesAutoSuggest">
