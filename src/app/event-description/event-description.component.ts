@@ -60,7 +60,7 @@ export class EventDescriptionComponent implements OnInit {
   notEmptyPost: boolean = true;
   notscrolly: boolean = true;
   currentPage: number = 1;
-  itemsPerPage: number = 50;
+  itemsPerPage: number = 10;
   public isloading: boolean = false;
   loaderEvidence = false;
 
@@ -142,7 +142,7 @@ export class EventDescriptionComponent implements OnInit {
               // console.log("pmidCount: ", this.resultPMID.pmidCount[0]);
               // temps["pmidCount"] = this.pmidCount;
               temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary bg-warning text-dark'>" + this.pmidCount + "</span></button> &nbsp;";
-              temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Edge Type Article </button> &nbsp;";
+              // temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Edge Type Article </button> &nbsp;";
               this.masterListsDataDetailsLoaded.push(temps);
               this.masterListsDataDetailsCombined = this.masterListsDataDetailsLoaded;
 
@@ -186,15 +186,20 @@ export class EventDescriptionComponent implements OnInit {
       data: this.masterListsDataDetailsCombined,
       onClickRow: (field: any, row: any, $element: any) => {
         //edge types
+        // if ($element == "edgeNeCount") {
+        //   this.loaderEdgeType = true;
+        //   this.modalRef = this.modalService.open(this.edgeTypeDescModal_Detail, { size: 'lg', keyboard: false, backdrop: 'static' });
+        //   this.showPMIDLists(field.edgeNeId, field.sourcenode_name, field.destinationnode_name);
+        // }
+        // if ($element == "edgeNe") {
+        //   this.loaderArticle = true;
+        //   this.modalRef = this.modalService.open(this.articleModal_Detail, { size: 'xl', keyboard: false, backdrop: 'static' });
+        //   this.ArticlePopup(field.edgeNeId, field.sourcenode_name, field.destinationnode_name, field.edgeTypesID, this.getArticles);
+        // }
         if ($element == "edgeNeCount") {
-          this.loaderEdgeType = true;
-          this.modalRef = this.modalService.open(this.edgeTypeDescModal_Detail, { size: 'lg', keyboard: false, backdrop: 'static' });
-          this.showPMIDLists(field.edgeNeId, field.sourcenode_name, field.destinationnode_name);
-        }
-        if ($element == "edgeNe") {
           this.loaderArticle = true;
           this.modalRef = this.modalService.open(this.articleModal_Detail, { size: 'xl', keyboard: false, backdrop: 'static' });
-          this.ArticlePopup(field.edgeNeId, field.sourcenode_name, field.destinationnode_name, field.edgeTypesID, this.getArticles);
+          this.ArticlePopup(field.edgeNeId, field.sourcenode_name, field.destinationnode_name, field.edgeTypesID);
         }
       },
     });
@@ -245,34 +250,34 @@ export class EventDescriptionComponent implements OnInit {
   Commented by Gautam Mukherjee
   ArticlePopup() is the main function and getArticles() is the callback function. 
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-  ArticlePopup(edgeNeId: any, sourceNode: string, destinationNode: string, edgeTypesID: number, getArticles_callback: any) {
-    this.getEdgeTypesInternally(edgeTypesID);
-    //if(this.edgeHere!=""){
-    getArticles_callback(edgeNeId, sourceNode, destinationNode, edgeTypesID, this);
-    //}
-  }
+  // ArticlePopup(edgeNeId: any, sourceNode: string, destinationNode: string, edgeTypesID: number, getArticles_callback: any) {
+  //   this.getEdgeTypesInternally(edgeTypesID);
+  //   //if(this.edgeHere!=""){
+  //   getArticles_callback(edgeNeId, sourceNode, destinationNode, edgeTypesID, this);
+  //   //}
+  // }
 
-  getArticles(edgeNeId: any, sourceNode: string, destinationNode: string, edgeTypesID: number, t: any) {
-    t.articleHere = [];
+  ArticlePopup(edgeNeId: any, sourceNode: string, destinationNode: string, edgeTypesID: number) {
+    this.articleHere = [];
     const edgeNeIdArr = edgeNeId.split(",");
     //console.log(typeof edgeNeIdArr + edgeNeIdArr +edgeNeIdArr[0]);
     var pubmedBaseUrl = "https://www.ncbi.nlm.nih.gov/pubmed/";
-    t.nodeSelectsService.getEdgeTypeSentencePMIDLists({ 'ne_ids': edgeNeIdArr }).subscribe((p: any) => {
-      t.result = p;
-      console.log(t.result);
-      t.articleHere = t.result.pmidListsSentence;
-      t.articleList = [];
-      t.articleHere.forEach((event: any) => {
+    this.nodeSelectsService.getEdgeTypeSentencePMIDLists({ 'ne_ids': edgeNeIdArr }).subscribe((p: any) => {
+      this.result = p;
+      console.log(this.result);
+      this.articleHere = this.result.pmidListsSentence;
+      this.articleList = [];
+      this.articleHere.forEach((event: any) => {
         var temps: any = {};
         temps["source"] = sourceNode;
         temps["destination"] = destinationNode;
         temps["pmid"] = "<a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + event.pmid + "'>" + event.pmid + "</a>";
         temps["publication_date"] = event.publication_date;
         temps["title"] = event.title;
-        temps["edge_type"] = t.edgeHere;
+        temps["edge_type"] = event.edge_type_name
         temps["ne_id"] = event.ne_id;
         temps["sentence_btn"] = "<button class='btn btn-sm btn-primary' value='" + event.ne_id + "'>Sentences</button>";
-        t.articleList.push(temps);
+        this.articleList.push(temps);
       });
       jQuery('#articles_details').bootstrapTable({
         bProcessing: true,
@@ -286,7 +291,7 @@ export class EventDescriptionComponent implements OnInit {
         showFullscreen: true,
         stickyHeader: true,
         showExport: true,
-        data: t.articleList,
+        data: this.articleList,
         onClickCell: (field: any, value: any, row: any, $element: any) => {
           //console.log(field);//sentence_btn
           //console.log(value);//<button class='btn btn-sm btn-primary' value='8785438'>Sentences</button>
@@ -295,11 +300,11 @@ export class EventDescriptionComponent implements OnInit {
           let sentences: any;
           let html: string;
           if (field == "sentence_btn") {
-            t.loaderEvidence = true;
+            this.loaderEvidence = true;
             console.log(row.ne_id);
             $("#evidence_data").show();
             $("#evidence_data").html("");
-            t.nodeSelectsService.getEvidenceData({ 'ne_id': row.ne_id }).subscribe((p: any) => {
+            this.nodeSelectsService.getEvidenceData({ 'ne_id': row.ne_id }).subscribe((p: any) => {
               sentences = p;
               console.log(JSON.stringify(sentences));
               if (sentences.evidence_data.length == 0) {
@@ -313,7 +318,6 @@ export class EventDescriptionComponent implements OnInit {
                 let sentence_text3: string;
                 let sentence_text4: string;
                 let sentence_text5: string;
-
 
                 for (let i = 0; i < sentences.evidence_data.length; i++) {
 
@@ -370,16 +374,15 @@ export class EventDescriptionComponent implements OnInit {
 
                   console.log(JSON.stringify(sentences));
 
-                  t.loaderEvidence = false;
+                  this.loaderEvidence = false;
                 };//for
-              t.loaderEvidence = false;
+              this.loaderEvidence = false;
               }
             });
           }
         }
       });
-
-      t.loaderArticle = false;
+      this.loaderArticle = false;
     });
 
   }
@@ -498,7 +501,7 @@ export class EventDescriptionComponent implements OnInit {
 
               // temps["pmidCount"] = this.pmidCount;
               temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary bg-warning text-dark'>" + this.pmidCount + "</span></button> &nbsp;";
-              temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Edge Type Article </button> &nbsp;";
+              // temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Edge Type Article </button> &nbsp;";
 
               // temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary bg-warning text-dark'>" + this.pmidCount + "</span></button> &nbsp;";
               this.masterListsDataDetailsExtra.push(temps);
