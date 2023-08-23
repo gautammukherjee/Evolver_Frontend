@@ -44,8 +44,10 @@
                                     <!-- <th data-field="pmidCount" data-sortable="true" width="10%"
                                         data-filter-control="input">
                                         PMID Count</th> -->
-                                    <th data-field="edgeNe" data-sortable="true" width="10%">
+                                    <th data-field="edgeNeCount" data-sortable="true" width="10%">
                                         Articles Count</th>
+                                    <th data-field="edgeNe" data-sortable="true" width="10%">
+                                        Get Edge Type Article</th>
                                 </tr>
                             </thead>
                         </table>
@@ -84,13 +86,35 @@
     <div class="modal-body white_bg without_bord_rad">
         <div class="row">
             <div class="col-md-12 bottam-buffer home_tiles">
-
                 <div class="m-1">
                     <div class="alert alert-primary alert-dismissible fade show">
+                        <table id="articles_details_pmid" data-toolbar="#toolbar" data-search="true" data-show-export="true"
+                            data-show-columns="true" data-page-size="50" data-filter-control="true"
+                            data-page-list="[10, 25, 50, 100, All]">
+                            <thead>
+                                <tr>
+                                    <th data-field="source" data-sortable="true" width="10%"
+                                        data-filter-control="input">
+                                        Source
+                                    </th>
+                                    <th data-field="destination" data-sortable="true" width="10%"
+                                        data-filter-control="input">
+                                        Destination
+                                    </th>
+                                    <th data-field="pmid" data-sortable="true" width="10%" data-filter-control="input">
+                                        PMID
+                                    </th>
+                                    <th data-field="publication_date" data-sortable="true" width="10%"
+                                        data-filter-control="input">
+                                        Publication Date
+                                    </th>
+                                    <th data-field="title" data-sortable="true" width="10%" data-filter-control="input">
+                                        Title
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
                         <img class="text-center" src="../../assets/images/loader_big.gif" *ngIf="loaderEdgeType" />
-                        <div *ngFor="let edge of edgeHere">
-                            <p>{{edge.edge_type_name}}</p>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -164,7 +188,7 @@
                 <img class="text-center" src="../../assets/images/loader_big.gif" *ngIf="loaderEvidence" />
                 <div id="evidence_data" style="display:none; width: 100%;height: auto;background-color:#F0F2F5;"></div>
             </div>
-            
+
         </div>
     </div>
 

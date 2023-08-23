@@ -6,6 +6,7 @@ import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 // import { map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+declare var jQuery: any;
 
 @Component({
   selector: 'app-filter-source-node',
@@ -31,6 +32,10 @@ export class FilterSourceNodeComponent implements OnInit {
   // showSourceBody: boolean = false;
   private warningModalRef: any;
   searchInput: any = null;
+  public groupedBySourceNode: any = {};
+  subSynNodeName: any = [];
+  toggled: any = {};
+  visible: boolean = false;
 
   constructor(
     private nodeSelectsService: NodeSelectsService,
@@ -83,6 +88,35 @@ export class FilterSourceNodeComponent implements OnInit {
             this.result = data;
             this.sourceNodes = this.result.sourceNodeRecords;
             console.log("sourceNodes: ", this.sourceNodes);
+            const groupedCategories = this.sourceNodes.reduce((accumulator: any, element: any, index: any) => {
+              const source_node_id = element.source_node;
+              const source_node_name = element.source_node_name;
+              const subcategory_syn_node_name = element.syn_node_name;
+              if (accumulator[source_node_id])
+                return {
+                  ...accumulator,
+                  [source_node_id]: {
+                    ...accumulator[source_node_id],
+                    subCategories: [...accumulator[source_node_id].subCategories, subcategory_syn_node_name],
+                  }
+                };
+              else
+                return {
+                  ...accumulator,
+                  [source_node_id]: {
+                    source_node_name: source_node_name,
+                    subCategories: [subcategory_syn_node_name],
+                  }
+                };
+            }, {});
+
+            this.groupedBySourceNode =
+              Object.keys(groupedCategories).map(source_node_id => ({
+                source_node: source_node_id,
+                source_node_name: groupedCategories[source_node_id].source_node_name,
+                subcategory_syn_node_name: groupedCategories[source_node_id].subCategories,
+              }))
+            console.log("groupedBySourceNode: ", this.groupedBySourceNode);
           },
           err => {
             this.loading = false;
@@ -95,6 +129,34 @@ export class FilterSourceNodeComponent implements OnInit {
         );
     }
   }
+
+  expand() {
+    var header = jQuery(this);
+    //getting the next element
+    var content = header.next();
+    //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
+    content.slideToggle(500, function () {
+      //execute this after slideToggle is done
+      //change text of header based on visibility of content div
+      header.text(function () {
+        //change text based on condition
+        return content.is(":visible") ? "Collapse" : "Expand";
+      });
+    });
+  }
+
+  public toggle(i: number): void {
+    this.toggled[i] = !this.toggled[i];
+  }
+
+  public getClass(toggle: boolean): string {
+    return toggle ? 'fa fa-plus red' : 'fa fa-minus someOtherClass';
+  }
+
+  toggleCollapse(): void {
+    this.visible = !this.visible;
+  }
+
 
   selectSourceNode(sourceNode: any, event: any, warning: any = null) {
     if (event.target.checked) {

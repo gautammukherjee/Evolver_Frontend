@@ -5,8 +5,8 @@
       <div class="body">
         <div class="search-input">
           <form #form="ngForm" class="md-inline-block form-inline  ml-auto mr-0 mr-md-3 my-2 my-md-0">
-            <input type="text" autocomplete="off" class="form-control" placeholder='Search DB' aria-label="Search"
-              area-describedby="basic-addon2" [(ngModel)]="searchInput" name="searchInput"
+            <input type="text" autocomplete="off" class="form-control" placeholder='Search Destination'
+              aria-label="Search" area-describedby="basic-addon2" [(ngModel)]="searchInput" name="searchInput"
               (keyup)="getDestinationNodeOnChange()">
             <img *ngIf="dbLoading" width="20px" src="../../assets/images/loader_small.gif" />
             <span *ngIf="selectedDestinationNodes.length > 0" class="reset-search" (click)="resetDestinationNode();"
@@ -20,19 +20,24 @@
 
     <div style="position: absolute;">
       <img *ngIf="loading" width="20px" src="../../assets/images/loader_small.gif" />
-      <span *ngIf="destinationNodesLength!=0" style="font-size: 13px;color: white;">
+      <!-- <span style="font-size: 13px;color: white;">
         [Count: {{destinationNodesLength}}]
+      </span> -->
+      <span *ngIf="destinationNodesLength!=0">
+        <input type="checkbox" name="destinationNodeAll" [(ngModel)]="isAllSelected" [value]="destinationNodesDB"
+          [checked]="" (change)="selectAll($event);">
+        <span class="custom-control-description text-white">&nbsp;Check All {{destinationNodesLength}} Nodes</span>
       </span>
     </div>
 
     <ul class="dropdown-menu" aria-labelledby="destination-node-filter">
       <!-- *ngIf="showSourceBody" -->
       <div class="body">
-        <div *ngIf="destinationNodes.length">
+        <div *ngIf="destinationNodesDB.length">
           <div class="search-options">
-            <div class="mb-1 form-check" *ngFor="let destinationNode of destinationNodes">
+            <div class="mb-1 form-check" *ngFor="let destinationNode of destinationNodesDB">
               <!-- <div class="mb-1 form-check" *ngFor="let destinationNode of destinationNodes"> -->
-              <input class="form-check-input border border-secondary" type="checkbox" name="destinationNodes"
+              <input class="form-check-input border border-secondary" type="checkbox" name="destinationNodesDB"
                 [value]="destinationNode"
                 [checked]="selectedDestinationNodes.indexOf(destinationNode.destination_node)>-1 "
                 (change)="selectDestinationNode(destinationNode,$event)">
@@ -45,11 +50,11 @@
         </div>
       </div>
     </ul>
+
+
+
   </div>
-
 </div>
-
-
 
 
 <!--<div class="card-panel-box-detail" *ngIf="destinationNodes.length <= 0">

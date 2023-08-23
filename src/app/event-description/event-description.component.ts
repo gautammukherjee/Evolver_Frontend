@@ -20,6 +20,7 @@ export class EventDescriptionComponent implements OnInit {
   @Input() toggleLevels: any;
   private filterParams: any;
   result: any = [];
+  resultPMIDLists: any = [];
   resultNodes: any = [];
   resultPMID: any = [];
   pmidCount: any;
@@ -54,6 +55,8 @@ export class EventDescriptionComponent implements OnInit {
   public edgeHere: any = [];
   public articleHere: any = [];
   articleList: any = [];
+  public articleHerePMID: any = [];
+  articlePMID: any = [];
   notEmptyPost: boolean = true;
   notscrolly: boolean = true;
   currentPage: number = 1;
@@ -133,14 +136,13 @@ export class EventDescriptionComponent implements OnInit {
             temps["edgeTypesID"] = edgeTypeIdsPost;
             temps["edgeNeId"] = edgeTypeNeIdsPost;
 
-
             this.nodeSelectsService.getEdgePMIDCount({ 'edge_type_pmid': edgeTypeNeIdsPost }).subscribe((p: any) => {
               this.resultPMID = p;
               this.pmidCount = this.resultPMID.pmidCount[0]['pmid_count'];
               // console.log("pmidCount: ", this.resultPMID.pmidCount[0]);
-
               // temps["pmidCount"] = this.pmidCount;
-              temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary bg-warning text-dark'>" + this.pmidCount + "</span></button> &nbsp;";
+              temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary bg-warning text-dark'>" + this.pmidCount + "</span></button> &nbsp;";
+              temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Edge Type Article </button> &nbsp;";
               this.masterListsDataDetailsLoaded.push(temps);
               this.masterListsDataDetailsCombined = this.masterListsDataDetailsLoaded;
 
@@ -184,11 +186,11 @@ export class EventDescriptionComponent implements OnInit {
       data: this.masterListsDataDetailsCombined,
       onClickRow: (field: any, row: any, $element: any) => {
         //edge types
-        /*if ($element == "edgeTypes") {
+        if ($element == "edgeNeCount") {
           this.loaderEdgeType = true;
           this.modalRef = this.modalService.open(this.edgeTypeDescModal_Detail, { size: 'lg', keyboard: false, backdrop: 'static' });
-          this.getEdgeTypes(field.edgeTypesID);
-        }*/
+          this.showPMIDLists(field.edgeNeId, field.sourcenode_name, field.destinationnode_name);
+        }
         if ($element == "edgeNe") {
           this.loaderArticle = true;
           this.modalRef = this.modalService.open(this.articleModal_Detail, { size: 'xl', keyboard: false, backdrop: 'static' });
@@ -237,9 +239,7 @@ export class EventDescriptionComponent implements OnInit {
   //   this.filterParams = this.globalVariableService.getFilterParams();
   //   if (!this.hideCardBody)
   //     this.getEventDescription(this.filterParams);
-
   // }
-
 
   /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   Commented by Gautam Mukherjee
@@ -257,10 +257,10 @@ export class EventDescriptionComponent implements OnInit {
     const edgeNeIdArr = edgeNeId.split(",");
     //console.log(typeof edgeNeIdArr + edgeNeIdArr +edgeNeIdArr[0]);
     var pubmedBaseUrl = "https://www.ncbi.nlm.nih.gov/pubmed/";
-    t.nodeSelectsService.getEdgePMIDLists({ 'ne_ids': edgeNeIdArr }).subscribe((p: any) => {
+    t.nodeSelectsService.getEdgeTypeSentencePMIDLists({ 'ne_ids': edgeNeIdArr }).subscribe((p: any) => {
       t.result = p;
       console.log(t.result);
-      t.articleHere = t.result.pmidLists;
+      t.articleHere = t.result.pmidListsSentence;
       t.articleList = [];
       t.articleHere.forEach((event: any) => {
         var temps: any = {};
@@ -293,6 +293,7 @@ export class EventDescriptionComponent implements OnInit {
           //console.log(JSON.stringify(row));// ** entire row data
           //console.log($element);
           let sentences: any;
+          let html: string;
           if (field == "sentence_btn") {
             t.loaderEvidence = true;
             console.log(row.ne_id);
@@ -304,9 +305,74 @@ export class EventDescriptionComponent implements OnInit {
               if (sentences.evidence_data.length == 0) {
                 $("#evidence_data").html("<div class='alert alert-danger'>No Evidence found in database!</div>");
               } else {
+                html = "";
+                let e1_color: string;
+                let e2_color: string;
+                let sentence_text1: string;
+                let sentence_text2: string;
+                let sentence_text3: string;
+                let sentence_text4: string;
+                let sentence_text5: string;
+
+
                 for (let i = 0; i < sentences.evidence_data.length; i++) {
-                  $("#evidence_data").append("<p class='m-4'>" + sentences.evidence_data[i].evidence_data + "</p><hr>");
-                }
+
+                  if (sentences.evidence_data[i].e1_type_name === "DISEASE_OR_SYMPTOM") {
+                    e1_color = "#118ab2";
+                  } else if (sentences.evidence_data[i].e1_type_name === "FUNCTIONAL_MOLECULE") {
+                    e1_color = "#118ab2";
+                  } else if (sentences.evidence_data[i].e1_type_name === "GENE_OR_GENE_PRODUCT") {
+                    e1_color = "#118ab2";
+                  } else if (sentences.evidence_data[i].e1_type_name === "ANATOMY") {
+                    e1_color = "#118ab2";
+                  } else if (sentences.evidence_data[i].e1_type_name === "MODEL") {
+                    e1_color = "#118ab2";
+                  } else {
+                    e1_color = "#000";
+                  }
+
+                  if (sentences.evidence_data[i].e2_type_name === "DISEASE_OR_SYMPTOM") {
+                    e2_color = "#118ab2";
+                  } else if (sentences.evidence_data[i].e2_type_name === "FUNCTIONAL_MOLECULE") {
+                    e2_color = "#118ab2";
+                  } else if (sentences.evidence_data[i].e2_type_name === "GENE_OR_GENE_PRODUCT") {
+                    e2_color = "#118ab2";
+                  } else if (sentences.evidence_data[i].e2_type_name === "ANATOMY") {
+                    e2_color = "#118ab2";
+                  } else if (sentences.evidence_data[i].e2_type_name === "MODEL") {
+                    e2_color = "#118ab2";
+                  } else {
+                    e2_color = "#000";
+                  }
+
+                  sentence_text1 = sentences.evidence_data[i].sentence;
+                  sentence_text2 = sentence_text1.replace("<E1>", "<mark style='color:#A8E890'>");
+                  sentence_text3 = sentence_text2.replace("</E1>", "</mark>");
+                  sentence_text4 = sentence_text3.replace("<E2>", "<mark style='color:#FF8787'>");
+                  sentence_text5 = sentence_text4.replace("</E2>", "</mark>");
+
+                  //console.log(sentence_text5);
+
+
+                  html = "<div class='card m-2'><div class='card-body'>";
+                  html += "<div class='row m-2'>";
+                  html += "<div class='col'><span style='color:" + e1_color + "'>" + sentences.evidence_data[i].gene_symbol_e1 + "</span>(" + sentences.evidence_data[i].e1_type_name + ")</div>";
+                  html += "<div class='col'>" + sentences.evidence_data[i].edge_name + "</div>";
+                  html += "<div class='col'><span style='color:" + e1_color + "'>" + sentences.evidence_data[i].gene_symbol_e2 + "</span>(" + sentences.evidence_data[i].e2_type_name + ")</div>";
+                  html += "<div class='col'> Pmid:" + sentences.evidence_data[i].pubmed_id + "</div>";
+                  html += "</div>";
+                  html += "<div>";
+                  html += "<div class='col'><p class='m-4'>" + sentence_text5 + "</p></div>";
+                  html += "</div>";
+                  html += "</div></div>";
+
+                  $("#evidence_data").append(html);
+
+                  console.log(JSON.stringify(sentences));
+
+                  t.loaderEvidence = false;
+                };//for
+
               }
               t.loaderEvidence = false;
             });
@@ -317,6 +383,42 @@ export class EventDescriptionComponent implements OnInit {
       t.loaderArticle = false;
     });
 
+  }
+
+  showPMIDLists(edgeNeId: any, sourceNode: string, destinationNode: string) {
+    const edgeNeIdArr = edgeNeId.split(",");
+    //console.log(typeof edgeNeIdArr + edgeNeIdArr +edgeNeIdArr[0]);
+    var pubmedBaseUrl = "https://www.ncbi.nlm.nih.gov/pubmed/";
+    this.nodeSelectsService.getEdgePMIDLists({ 'ne_ids': edgeNeIdArr }).subscribe((pmid: any) => {
+      this.loaderEdgeType = false;
+      this.resultPMIDLists = pmid;
+      console.log(this.resultPMIDLists);
+      this.articleHerePMID = this.resultPMIDLists.pmidLists;
+      this.articlePMID = [];
+      this.articleHerePMID.forEach((event: any) => {
+        var temps: any = {};
+        temps["source"] = sourceNode;
+        temps["destination"] = destinationNode;
+        temps["pmid"] = "<a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + event.pmid + "'>" + event.pmid + "</a>";
+        temps["publication_date"] = event.publication_date;
+        temps["title"] = event.title;
+        this.articlePMID.push(temps);
+      });
+      jQuery('#articles_details_pmid').bootstrapTable({
+        bProcessing: true,
+        bServerSide: true,
+        pagination: true,
+        showToggle: true,
+        showColumns: true,
+        search: true,
+        pageSize: 25,
+        striped: true,
+        showFullscreen: true,
+        stickyHeader: true,
+        showExport: true,
+        data: this.articlePMID
+      });
+    });
   }
 
 
@@ -393,10 +495,13 @@ export class EventDescriptionComponent implements OnInit {
             this.nodeSelectsService.getEdgePMIDCount({ 'edge_type_pmid': edgeTypeNeIdsPost }).subscribe((p: any) => {
               this.resultPMID = p;
               this.pmidCount = this.resultPMID.pmidCount[0]['pmid_count'];
-              console.log("pmidCount Inside: ", this.resultPMID.pmidCount[0]);
+              // console.log("pmidCount Inside: ", this.resultPMID.pmidCount[0]);
 
               // temps["pmidCount"] = this.pmidCount;
-              temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary bg-warning text-dark'>" + this.pmidCount + "</span></button> &nbsp;";
+              temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary bg-warning text-dark'>" + this.pmidCount + "</span></button> &nbsp;";
+              temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Edge Type Article </button> &nbsp;";
+
+              // temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary bg-warning text-dark'>" + this.pmidCount + "</span></button> &nbsp;";
               this.masterListsDataDetailsExtra.push(temps);
 
               console.log(this.masterListsData.length, "=>", k + 1)
