@@ -60,7 +60,7 @@ export class EventDescriptionComponent implements OnInit {
   notEmptyPost: boolean = true;
   notscrolly: boolean = true;
   currentPage: number = 1;
-  itemsPerPage: number = 5;
+  itemsPerPage: number = 50;
   public isloading: boolean = false;
   loaderEvidence = false;
 
@@ -372,9 +372,8 @@ export class EventDescriptionComponent implements OnInit {
 
                   t.loaderEvidence = false;
                 };//for
-
-              }
               t.loaderEvidence = false;
+              }
             });
           }
         }

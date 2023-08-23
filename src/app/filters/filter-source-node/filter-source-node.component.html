@@ -56,15 +56,15 @@
                     <li></li>
                 </ul>
               </div>
-            </div> -->           
+            </div> -->
 
 
             <div class="mb-1 form-check" *ngFor="let sourceNode of groupedBySourceNode; let i = index;">
-          
+
 
               <!-- <a class="list-group-item" data-toggle="collapse" data-target="#{{sourceNode.source_node}}"
                 data-parent="#menu"> -->
-                <div (click)="toggle(i)">
+              <!-- <div (click)="toggle(i)"> -->
                 <input class="form-check-input border border-secondary" type="checkbox" name="sourceNodes"
                   [value]="sourceNode" [checked]="selectedSourceNodes.indexOf(sourceNode.source_node)>-1 "
                   (change)="selectSourceNode(sourceNode,$event)">
@@ -72,9 +72,9 @@
                   <span>{{sourceNode.source_node_name}}</span>
                 </label>
                 <i [ngClass]="getClass(toggled[i])"></i>
-              </div>             
+              <!-- </div> -->
 
-              <div class="content" [class.closed]="toggled[i]" id="{{sourceNode.source_node}}" class="">
+              <!-- <div class="content" [class.closed]="toggled[i]" id="{{sourceNode.source_node}}" class=""> -->
                 <div>
                   <div *ngFor="let subSourceNode of sourceNode.subcategory_syn_node_name">
                     <a class="list-group-item small">
@@ -83,7 +83,7 @@
                     </a>
                   </div>
                 </div>
-              </div>
+              <!-- </div> -->
 
             </div>
 
