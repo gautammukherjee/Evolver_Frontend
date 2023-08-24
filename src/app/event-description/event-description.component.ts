@@ -60,7 +60,7 @@ export class EventDescriptionComponent implements OnInit {
   notEmptyPost: boolean = true;
   notscrolly: boolean = true;
   currentPage: number = 1;
-  itemsPerPage: number = 10;
+  itemsPerPage: number = 2;
   public isloading: boolean = false;
   loaderEvidence = false;
 
@@ -300,14 +300,15 @@ export class EventDescriptionComponent implements OnInit {
           let sentences: any;
           let html: string;
           if (field == "sentence_btn") {
-            this.loaderEvidence = true;
             console.log(row.ne_id);
             $("#evidence_data").show();
             $("#evidence_data").html("");
+            this.loaderEvidence = true;
             this.nodeSelectsService.getEvidenceData({ 'ne_id': row.ne_id }).subscribe((p: any) => {
               sentences = p;
               console.log(JSON.stringify(sentences));
               if (sentences.evidence_data.length == 0) {
+                this.loaderEvidence = false;
                 $("#evidence_data").html("<div class='alert alert-danger'>No Evidence found in database!</div>");
               } else {
                 html = "";
@@ -376,7 +377,7 @@ export class EventDescriptionComponent implements OnInit {
 
                   this.loaderEvidence = false;
                 };//for
-              this.loaderEvidence = false;
+                this.loaderEvidence = false;
               }
             });
           }
