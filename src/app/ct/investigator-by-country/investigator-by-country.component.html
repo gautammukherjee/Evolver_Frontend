@@ -1,21 +1,26 @@
+<div class="card-panel-box">
+    <div class="card-panel-box-heading">
+        Trial Investigator Grouped by Country
+    </div>
 <div class="card-panel-box-detail">
     <div class="customTable " id="eventListTable">
-        <div class="overlay" *ngIf="loader">
+        <div class="overlay" *ngIf="loadingCTCountry">
             <img style="margin:185px 653px;" src="../../assets/images/loader_big.gif" />
         </div>
 
         <div class="card">
-            <div class="card-header">
+            <!-- <div class="card-header">
                 Trial Investigator Grouped by Country
-            </div>
+            </div> -->
             <div class="card-body">
                 <!-- <highcharts-chart id="container" *ngIf="isHighcharts" [Highcharts]="Highcharts" [options]="chartOptions"
                     style="width: 100%; height: 400px; display: block;"></highcharts-chart> -->
-                <highcharts-chart id="container" *ngIf="isHighcharts" [Highcharts]="Highcharts" [constructorType]="chartConstructor"
+                <!-- <highcharts-chart id="container" *ngIf="isHighcharts" [Highcharts]="Highcharts" [constructorType]="chartConstructor"
                     [options]="chartOptions" style="width: 100%; height: 400px; display: block;">
-                </highcharts-chart>
+                </highcharts-chart> -->
 
             </div>
         </div>
     </div>
+</div>
 </div>

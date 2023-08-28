@@ -29,10 +29,11 @@ export class GlobalVariableService {
   selectedSourceNodes2 = [];
   selectedDestinationNodes = [];
   selectedDestinationNodes2 = [];
-  selectedAllDestinationNodes: number = 1;
-  selectedAllDestinationNodes2: number = 1;
+  selectedAllDestinationNodes: number = 0;
+  selectedAllDestinationNodes2: number = 0;
   selectedEdgeTypes = [];
   selectedEdgeTypes2 = [];
+  selectedAllForCTDestinationNodes = [];
 
   selectedNodes = [];
   selectedEdges: any;
@@ -118,6 +119,14 @@ export class GlobalVariableService {
     return this.selectedAllDestinationNodes;
   }
 
+  setSelectedAllForCTDestinationNodes(filteredData: any) {
+    this.selectedAllForCTDestinationNodes = filteredData;
+  }
+  getSelectedAllForCTDestinationNodes() {
+    return this.selectedAllForCTDestinationNodes;
+  }
+
+
   setSelectedEdgeTypes(edge_types: any) {
     this.selectedEdgeTypes = edge_types;
   }
@@ -168,7 +177,7 @@ export class GlobalVariableService {
       source_node2: this.getSelectedSourceNodes2().length > 0 ? this.getSelectedSourceNodes2() : undefined,
       destination_node: this.getSelectedDestinationNodes().length > 0 ? this.getSelectedDestinationNodes() : undefined,
       destination_node2: this.getSelectedDestinationNodes2().length > 0 ? this.getSelectedDestinationNodes2() : undefined,
-      destination_node_all: this.getSelectedAllDestinationNodes() != undefined ? this.getSelectedAllDestinationNodes() : 0,
+      destination_node_all: this.getSelectedAllDestinationNodes() == 1 ? this.getSelectedAllDestinationNodes() : 0,
       // destination_node2_all: this.getSelectedAllDestinationNodes2() != undefined ? this.getSelectedAllDestinationNodes2() : 0,
       edge_type_id: this.getSelectedEdgeTypes().length > 0 ? this.getSelectedEdgeTypes() : undefined,
       edge_type_id2: this.getSelectedEdgeTypes2().length > 0 ? this.getSelectedEdgeTypes2() : undefined,
@@ -178,6 +187,7 @@ export class GlobalVariableService {
       edge_select: this.getSelectedEdges() != undefined ? this.getSelectedEdges() : 1,
       mapType: this.getMapsSelected() != undefined ? this.getMapsSelected() : 'default',
       tabType: this.getTabsSelected() != undefined ? this.getTabsSelected() : 'default',
+      destination_node_all_for_ct: this.getSelectedAllForCTDestinationNodes().length > 0 ? this.getSelectedAllForCTDestinationNodes() : undefined
     };
     return Object.assign(mergeParam, this.filterParams);
   }
