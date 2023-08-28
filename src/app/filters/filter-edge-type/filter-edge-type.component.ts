@@ -204,7 +204,7 @@ export class FilterEdgeTypeComponent implements OnInit {
   selectAll() {
     // console.log("is_all: ", this.isAllSelected);
     if (this.isAllSelected) {
-      // console.log("in: ", this.result.edgeTypeRecords);
+      console.log("in: ", this.result.edgeTypeRecords);
       this.selectedEdgeTypesByGroup = [];
       this.result.edgeTypeRecords.map((element: any) => {
         this.selectedEdgeTypesByGroup.push(element.edge_group_id);
