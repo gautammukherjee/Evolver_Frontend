@@ -358,33 +358,51 @@ export class NgCytoComponent implements OnChanges {
                     // console.log("edgeTypeNameData1: ", this.edgeTypeNameData);
 
                     if (this.edgeTypeNameData != undefined) {
+
                         // var PMIDList = edge.PMID.split(",");
                         var pubmedBaseUrl = "https://www.ncbi.nlm.nih.gov/pubmed/";
                         this.pubmedURLsDownload = "";
 
                         this.pubmedURLsDownload = "<div>";
-                        this.pubmedURLsDownload += "<div style='font-size: 15px; font-weight:bold; text-decoration:underline; color:#32404E'>Evidence Detail(s)</div>";
-                        this.pubmedURLsDownload += '<table class="table table-bordered border-secondary">';
-                        this.pubmedURLsDownload += "<tr>";
-                        this.pubmedURLsDownload += " <th>PMID</th> <th>Publication Date</th> <th>Evidence</th> ";
-                        this.pubmedURLsDownload += "</tr>";
                         this.edgeTypeNameData.forEach((PMID: any) => {
-                            this.pubmedURLsDownload += "<tr>";
-                            this.pubmedURLsDownload += "<td><a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + PMID.pmid + "'>" + PMID.pmid + "</a></td>";
-                            this.pubmedURLsDownload += "<td>" + PMID.publication_date + "</td>";
-                            this.pubmedURLsDownload += "<td>" + PMID.title + "</td>";
 
                             // const myFormattedDate = this.pipe.transform(PMID.publication_date, 'short');
                             // console.log("PMID:: ", PMID.edge_type_name);
-
-                            //this.pubmedURLsDownload += "<div style='font-size: 14px;color:#32404E'>" + PMID.title + "</div>";
-                            //this.pubmedURLsDownload += "<div style='list-style: none; font-size: 14px; color:#32404E'>PMID : <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + PMID.pmid + "'>" + PMID.pmid + "</a></div>";
-                            //this.pubmedURLsDownload += "<div style='font-size: 14px; color:#32404E'>Publication Date : " + PMID.publication_date + "</div>";
-                            //this.pubmedURLsDownload += "<hr style='color:#32404E'/>";
+                            this.pubmedURLsDownload += "<div style='list-style: none; font-size: 14px; color:#32404E'><strong>PMID: </strong> <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + PMID.pmid + "'>" + PMID.pmid + "</a></div>";
+                            this.pubmedURLsDownload += "<div style='font-size: 14px;color:#32404E'><strong>Edge Type: </strong>" + PMID.edge_type_name + "</div>";
+                            this.pubmedURLsDownload += "<div style='font-size: 14px;color:#32404E'><strong>Title: </strong>" + PMID.title + "</div>";
+                            this.pubmedURLsDownload += "<div style='font-size: 14px; color:#32404E'><strong>Publication Date : </strong>" + PMID.publication_date + "</div>";
+                            this.pubmedURLsDownload += "<hr style='color:#32404E'/>";
                         });
-                        this.pubmedURLsDownload += "</table>";
                         this.pubmedURLsDownload += "<div style='clear: both;'><hr/></div>";
                         this.pubmedURLsDownload += "</div>";
+
+
+                        // this.pubmedURLsDownload = "<div>";
+                        // this.pubmedURLsDownload += "<div style='font-size: 15px; font-weight:bold; text-decoration:underline; color:#32404E'>Evidence Detail(s)</div>";
+                        // this.pubmedURLsDownload += '<table class="table table-bordered border-secondary">';
+                        // this.pubmedURLsDownload += "<tr>";
+                        // this.pubmedURLsDownload += " <th>PMID</th> <th>Publication Date</th> <th>Evidence</th> ";
+                        // this.pubmedURLsDownload += "</tr>";
+                        // this.edgeTypeNameData.forEach((PMID: any) => {
+                        //     this.pubmedURLsDownload += "<tr>";
+                        //     this.pubmedURLsDownload += "<td><a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + PMID.pmid + "'>" + PMID.pmid + "</a></td>";
+                        //     this.pubmedURLsDownload += "<td>" + PMID.publication_date + "</td>";
+                        //     this.pubmedURLsDownload += "<td>" + PMID.title + "</td>";
+
+                        // const myFormattedDate = this.pipe.transform(PMID.publication_date, 'short');
+                        // console.log("PMID:: ", PMID.edge_type_name);
+
+                        //this.pubmedURLsDownload += "<div style='font-size: 14px;color:#32404E'>" + PMID.title + "</div>";
+                        //this.pubmedURLsDownload += "<div style='list-style: none; font-size: 14px; color:#32404E'>PMID : <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + PMID.pmid + "'>" + PMID.pmid + "</a></div>";
+                        //this.pubmedURLsDownload += "<div style='font-size: 14px; color:#32404E'>Publication Date : " + PMID.publication_date + "</div>";
+                        //this.pubmedURLsDownload += "<hr style='color:#32404E'/>";
+                        // });
+                        // this.pubmedURLsDownload += "</table>";
+                        // this.pubmedURLsDownload += "<div style='clear: both;'><hr/></div>";
+                        // this.pubmedURLsDownload += "</div>";
+
+
                     } else {
                         this.pubmedURLsDownload = "<h4>No PMID Found..</h4>";
                         this.pubmedURLsDownload += "<div style='clear: both;'><hr/></div>";

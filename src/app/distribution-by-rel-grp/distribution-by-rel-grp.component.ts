@@ -156,8 +156,6 @@ export class DistributionByRelGrpComponent implements OnInit {
             //////////////////////// End get the edge type name on the basis of edge group id /////////////////////////////
           }
 
-
-
         }
       );
     } else if (_filterParams.source_node != undefined) {
@@ -167,8 +165,6 @@ export class DistributionByRelGrpComponent implements OnInit {
   }
 
   drawColumnChart() {
-
-
     // Highcharts.chart('container', {
     //   chart: {
     //     type: 'column'
@@ -249,7 +245,6 @@ export class DistributionByRelGrpComponent implements OnInit {
     this.alpha = 15;
     this.beta = 15;
     this.depth = 50;
-
     this.chartOptions = {
       chart: {
         type: 'column',
@@ -300,8 +295,7 @@ export class DistributionByRelGrpComponent implements OnInit {
         }
       },
       legend: {
-        enabled: true,
-
+        enabled: false,
       },
       tooltip: {
         pointFormat: 'Count: <b>{point.y} </b>'
@@ -328,7 +322,6 @@ export class DistributionByRelGrpComponent implements OnInit {
         accessibility: {
           enabled: false
         },
-
         // data: [
         //     {name: 'DISTANT RELATION', y: 145, drilldown: 'DISTANT RELATION'},
         //     {name: 'MUTATION', y: 3, drilldown: 'MUTATION'},
@@ -339,7 +332,6 @@ export class DistributionByRelGrpComponent implements OnInit {
         data: this.graphData
       }],
       drilldown: {
-
         // series: [{id: 'Distant Relation', data: ['Distant Relation', 11]},
         // {id: 'MUTATION', data: [['MUTATION', 1],['MUTATION_LEAD_TO_CAUSES', 12]]},
         // {id: 'ACTIVATION', data: [['ACTIVATION', 11], ['ACTIVATION_LEAD_TO_ACTIVATION', 12], ['ACTIVATION_LEAD_TO_INHIBITION', 13], ['ACTIVATION_LEAD_TO_TREATS', 14], ['ACTIVATION_LEAD_TO_CAUSES', 15]] },

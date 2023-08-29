@@ -14,6 +14,7 @@ export class DashboardComponent implements OnInit {
   doFilterApplyTab2: Subject<any> = new Subject();  // ## P= Parent
   doFilterApplyTab3: Subject<any> = new Subject();  // ## P= Parent
   doFilterApplyTab4: Subject<any> = new Subject();  // ## P= Parent
+  doFilterApplyTab5: Subject<any> = new Subject();  // ## P= Parent
   doUpdateFilterDataApply: Subject<any> = new Subject();
   showSidebar: boolean = true;
   viewMode = 'event_list';
@@ -59,6 +60,9 @@ export class DashboardComponent implements OnInit {
     }
     else if (this.filterParams['tabType'] == "articlecount") {
       this.doFilterApplyTab4.next(undefined);
+    }
+    else if (this.filterParams['tabType'] == "ct") {
+      this.doFilterApplyTab5.next(undefined);
     }
     this.doUpdateFilterDataApply.next({ clickOn: clickOn });
   }
@@ -146,6 +150,9 @@ export class DashboardComponent implements OnInit {
     else if (this.filterParams['tabType'] == "articlecount") {
       this.doFilterApplyTab4.next(undefined);
     }
+    else if (this.filterParams['tabType'] == "ct") {
+      this.doFilterApplyTab5.next(undefined);
+    }
 
     // this.doFilterApply.next(undefined);
     this.showLevels = true;
@@ -167,6 +174,9 @@ export class DashboardComponent implements OnInit {
     }
     else if (this.filterParams['tabType'] == "articlecount") {
       this.doFilterApplyTab4.next(undefined);
+    }
+    else if (this.filterParams['tabType'] == "ct") {
+      this.doFilterApplyTab5.next(undefined);
     }
   }
 
@@ -196,7 +206,7 @@ export class DashboardComponent implements OnInit {
     else if (tab == 'ct') {
       this.globalVariableService.setTabsSelected('ct');      
       // console.log("filterparams article Type: ", this.filterParams);
-      // this.doFilterApplyTab4.next(undefined);
+      this.doFilterApplyTab5.next(undefined);
     }
 
     // console.log("yes2: ", this.currentLevel);

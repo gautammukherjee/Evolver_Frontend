@@ -204,11 +204,14 @@ export class FilterEdgeTypeComponent implements OnInit {
   selectAll() {
     // console.log("is_all: ", this.isAllSelected);
     if (this.isAllSelected) {
-      // console.log("in: ", this.result.edgeTypeRecords);
+      console.log("in1: ", this.result.edgeTypeRecords);
+      console.log("in2: ", this.edgeTypes);
+
       this.selectedEdgeTypesByGroup = [];
-      this.result.edgeTypeRecords.map((element: any) => {
+      // this.result.edgeTypeRecords.map((element: any) => {
+      this.edgeTypes.map((element: any) => {
         this.selectedEdgeTypesByGroup.push(element.edge_group_id);
-        // this.selectedEdgeTypesNames.push(element.edge_group_name);
+        this.selectedEdgeTypesNames.push(element.edge_group_name);
       })
     } else {
       this.selectedEdgeTypesNames = [];

@@ -19,6 +19,7 @@ export class FilterDestinationNodeComponent implements OnInit {
 
   private filterParams: any;
   public selectedDestinationNodes: any = [];
+  public selectedAllForCTDestinationNodes: any = [];
   public selectedAllDestinationNodes: any = [];
   public destinationNodes: any = [];
   public destinationNodesDB: any = [];
@@ -114,6 +115,19 @@ export class FilterDestinationNodeComponent implements OnInit {
             this.result = data;
             // this.destinationNodes = this.result.destinationNodeRecords;
             // console.log("destinationNodes: ", this.destinationNodes);
+            let destinationID: any = [];
+            this.result.destinationNodeRecords.forEach((event: any) => {
+              destinationID.push(event.destination_node);
+            });
+            console.log("destinationID: ", destinationID);
+
+            const distinctData = [...new Set(destinationID.map((x:any) => x))];
+            console.log("destinationNodes res: ", distinctData);
+
+            this.globalVariableService.setSelectedAllForCTDestinationNodes(distinctData);
+            this.selectedAllForCTDestinationNodes = Array.from(this.globalVariableService.getSelectedAllForCTDestinationNodes());
+            this.filterParams = this.globalVariableService.getFilterParams();
+            console.log("new new Filters all select DESTINATION: ", this.filterParams);
 
             this.destinationNodesLength = this.result.destinationNodeRecords.length;
             console.log("destinationNodes Length: ", this.destinationNodesLength);
@@ -170,7 +184,7 @@ export class FilterDestinationNodeComponent implements OnInit {
 
   selectAll(event: any) {
     console.log("is_all: ", this.isAllSelected);
-    this.globalVariableService.setSelectedAllDestinationNodes(this.isAllSelected ? 1 : 0);
+    this.globalVariableService.setSelectedAllDestinationNodes(this.isAllSelected == true ? 1 : 0);
     this.selectedAllDestinationNodes = this.globalVariableService.getSelectedAllDestinationNodes();
 
     console.log("is_all_destination_check: ", this.selectedAllDestinationNodes);
@@ -178,7 +192,7 @@ export class FilterDestinationNodeComponent implements OnInit {
     this.filterParams = this.globalVariableService.getFilterParams();
     console.log("new Filters DESTINATION: ", this.filterParams);
 
-    
+
     // if (this.isAllSelected) {
     //   this.destinationNodes.map((element: any) => {
     //     this.selectedDestinationNodes.push(element.destination_node);

@@ -136,4 +136,29 @@ export class NodeSelectsService {
     return this.http.post(this.API_URL + 'getEvidenceData', params, httpOptions);
   }
 
+  //Clinical trials services start
+  getCTDiseaseAssoc(params: any) {
+    return this.http.post(this.API_URL + 'getCTDiseaseAssoc', params, httpOptions);
+  }
+
+  getCTTrialInvestRels(params: any) {
+    return this.http.post(this.API_URL + 'getCTTrialInvestRels', params, httpOptions);
+  }
+
+  getCTInvestigatorName(params: any) {
+    return this.http.post(this.API_URL + 'getCTInvestigatorName', params, httpOptions);
+  }
+
+  getCTInvestigatorRole(params: any) {
+    return this.http.post(this.API_URL + 'getCTInvestigatorRole', params, httpOptions);
+  }
+
+  getCTInvestigatorCountry(params: any) {
+    return this.http.post(this.API_URL + 'getCTInvestigatorCountry', params, httpOptions);
+  }
+
+  getCTInvestigatorRelsByStats(params: any) {
+    return this.http.post(this.API_URL + 'getCTInvestigatorRelsByStats', params, httpOptions);
+  }
+
 }

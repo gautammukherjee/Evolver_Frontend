@@ -1,10 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, Inject } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+// import { Router, ActivatedRoute } from '@angular/router';
 import { Subject, BehaviorSubject, map, mergeMap } from 'rxjs';
 import { NodeSelectsService } from '../../services/common/node-selects.service';
 import { GlobalVariableService } from 'src/app/services/common/global-variable.service';
 import { DatePipe } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import * as moment from "moment";
 
 declare var jQuery: any;
 
@@ -25,7 +26,7 @@ export class CTDiseaseAssocComponent implements OnInit {
   loader: boolean = false;
   CTData: any = [];
   hideCardBody: boolean = true;
-  loadingDesc = false;
+  loadingCTDisease = false;
   params: any;
   layout: any = {};
   notEmptyPost: boolean = true;
@@ -47,7 +48,7 @@ export class CTDiseaseAssocComponent implements OnInit {
     this.getCTDataAssocWithDisease();
 
     this.ProceedDoFilterApply?.subscribe(data => {  // Calling from details, details working as mediator
-      //console.log("eventData: ", data);      
+      console.log("eventData: ", data);      
       if (data === undefined) { // data=undefined true when apply filter from side panel
         // this.hideCardBody = true;
         this.getCTDataAssocWithDisease();
@@ -55,50 +56,65 @@ export class CTDiseaseAssocComponent implements OnInit {
     });
   }
 
-
   getCTDataAssocWithDisease() {
-
     this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
-    if (this.filterParams.source_node != undefined) {
+    console.log("params in CT: ", this.filterParams);
 
+    if (this.filterParams.source_node != undefined) {
       // $('.overlay').fadeOut(500);
-      this.loadingDesc = true;
+      this.loadingCTDisease = true;
 
       //console.log("filterparams: ", _filterParams);
-      this.nodeSelectsService.getMasterLists(this.filterParams).subscribe(
+      this.nodeSelectsService.getCTDiseaseAssoc(this.filterParams).subscribe(
         data => {
           //console.log("data: ", data);
           this.result = data;
-          this.diseaseAssocData = this.result.masterListsData;
-          console.log("Load data: ", this.diseaseAssocData);
+          this.diseaseAssocData = this.result.CTDATA;
+          console.log("CT data LOAD: ", this.diseaseAssocData);
 
-          // this.loadingDesc = false;
+          // this.loadingCTDisease = false;
           this.diseaseAssocDetailsData = [];
-          let j = 0;
           this.diseaseAssocData.forEach((event: any) => {
-            var temps: any = {};
+            var temps: any = {};            
+            temps["associated_pmids"] = event.associated_pmids;
+            temps["associated_tit_ids"] = event.associated_tit_ids;
+            temps["ct_id"] = event.ct_id;
+            temps["disease_name"] = event.disease_name;            
+            temps["has_expanded_access"] = event.has_expanded_access;
+            temps["nct_id"] = event.nct_id;
+            temps["node_id"] = event.node_id;
+            temps["org_study_id"] = event.org_study_id;
+            temps["secondary_study_id"] = event.secondary_study_id;
+            temps["title"] = event.title;
+            temps["overall_status"] = event.overall_status;
+            temps["phase_name"] = event.phase_name;
+            temps["minimum_age"] = event.minimum_age;
+            temps["maximum_age"] = event.maximum_age;
+            temps["healthy_volunteers"] = event.healthy_volunteers;
+            temps["varification_date"] = event.varification_date;                  
+            temps["last_update_submitted"] = event.last_update_submitted;
+            temps["last_update_submitted_qc"] = event.last_update_submitted_qc;
+            temps["study_first_posted"] = event.study_first_posted;
+            temps["study_first_submitted"] = event.study_first_submitted;
+            temps["study_first_submitted_qc"] = event.study_first_submitted_qc;
+            temps["study_type"] = event.study_type;
+            temps["gender"] = event.gender;
+            temps["trial_design"] = event.trial_design;
+            temps["phase_id"] = event.phase_id;            
 
-            // temps["news_id"] = event.news_id;
-            temps["sourcenode_name"] = event.sourcenode_name;
-            temps["destinationnode_name"] = event.destinationnode_name;
-            temps["level"] = event.level;
-            temps["edgeTypesID"] = event.edgeTypeIdsPost;
-            temps["edgeNeId"] = event.edgeTypeNeIdsPost;
-            temps["pmidCount"] = event.pmidCount;
-            this.diseaseAssocDetailsData.push(temps);
-            this.bootstrapTableChart();
+            this.diseaseAssocDetailsData.push(temps);            
           });
+          this.bootstrapTableChart();
         },
         err => {
           console.log(err.message);
-          // this.loadingDesc = false;
+          this.loadingCTDisease = false;
         },
         () => {
-          // this.loadingDesc = false;
+          this.loadingCTDisease = false;
         }
       );
     }
-
   }
 
   bootstrapTableChart() {
@@ -119,22 +135,22 @@ export class CTDiseaseAssocComponent implements OnInit {
       stickyHeader: true,
       showExport: true,
       data: this.diseaseAssocDetailsData,
-      onClickRow: (field: any, row: any, $element: any) => {
+      // onClickRow: (field: any, row: any, $element: any) => {
 
-      },
+      // },
     });
     jQuery('#CT_data').bootstrapTable("load", this.diseaseAssocDetailsData);
   }
 
 
-  reloadCTData() {
-    console.log("ct data: ")
-    // this.globalVariableService.resetChartFilter();
+  // reloadCTData() {
+  //   console.log("ct data: ")
+  //   // this.globalVariableService.resetChartFilter();
 
-    this.hideCardBody = !this.hideCardBody;
-    this.filterParams = this.globalVariableService.getFilterParams();
-    if (!this.hideCardBody)
-      this.getCTDataAssocWithDisease();
-  }
+  //   this.hideCardBody = !this.hideCardBody;
+  //   this.filterParams = this.globalVariableService.getFilterParams();
+  //   if (!this.hideCardBody)
+  //     this.getCTDataAssocWithDisease();
+  // }
 
 }

@@ -8,14 +8,15 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from "moment";
 
 declare var jQuery: any;
-
-
 @Component({
-  selector: 'app-ct_investigator_rels',
-  templateUrl: './ct_investigator_rels.component.html',
-  styleUrls: ['./ct_investigator_rels.component.scss']
+  selector: 'app-ct-investigator-rels-by-stats',
+  templateUrl: './ct-investigator-rels-by-stats.component.html',
+  styleUrls: ['./ct-investigator-rels-by-stats.component.scss'],
+  providers: [DatePipe]
 })
-export class CTInvestigatorRelsComponent implements OnInit {
+export class CtInvestigatorRelsByStatsComponent {
+
+  
 
   @Input() ProceedDoFilterApply?: Subject<any>; //# Input for ProceedDoFilter is getting from clinical details html
   @Input() currentLevel: any;
@@ -23,12 +24,17 @@ export class CTInvestigatorRelsComponent implements OnInit {
   private filterParams: any;
   result: any = [];
 
-  loadingCTInvestRelData = false;
-  loader: boolean = false;
-  InvestigatorRelData: any = [];
-  InvestigatorRelDetailsData: any = [];
   hideCardBody: boolean = true;
+  loadingCTInvestigatorStats = false;
+  params: any;
+  layout: any = {};
+  notEmptyPost: boolean = true;
+  notscrolly: boolean = true;
+  currentPage: number = 1;
   itemsPerPage: number = 2;
+  // public isloading: boolean = false;
+  ctInvestigatorRelsByStatsData: any = [];
+  ctInvestigatorRelsByStatsDetailsData: any = [];
 
   constructor(
     private globalVariableService: GlobalVariableService,
@@ -38,68 +44,58 @@ export class CTInvestigatorRelsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.getCTDataInvestigatorWithRels();
+    // this.getCTInvestigatorRelsByStats();
 
     this.ProceedDoFilterApply?.subscribe(data => {  // Calling from details, details working as mediator
-      console.log("eventData in CT rel: ", data);
+      console.log("event Data in investigator name: ", data);
       if (data === undefined) { // data=undefined true when apply filter from side panel
-        this.hideCardBody = true;
-        // this.getCTDataInvestigatorWithRels();
+        // this.hideCardBody = true;
+        // this.getCTInvestigatorRelsByStats();
       }
     });
   }
 
-  getCTDataInvestigatorWithRels() {
+  getCTInvestigatorRelsByStats() {
     this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
-    console.log("params in CT in rels: ", this.filterParams);
+    console.log("params in CT investi stats: ", this.filterParams);
 
     if (this.filterParams.source_node != undefined) {
       // $('.overlay').fadeOut(500);
-      this.loadingCTInvestRelData = true;
+      this.loadingCTInvestigatorStats = true;
 
       //console.log("filterparams: ", _filterParams);
-      this.nodeSelectsService.getCTTrialInvestRels(this.filterParams).subscribe(
+      this.nodeSelectsService.getCTInvestigatorRelsByStats(this.filterParams).subscribe(
         data => {
           //console.log("data: ", data);
           this.result = data;
-          this.InvestigatorRelData = this.result.CTRelsDATA;
-          console.log("CT Rels data LOAD: ", this.InvestigatorRelData);
+          this.ctInvestigatorRelsByStatsData = this.result.CTInvestigatorRelsByStatsDATA;
+          console.log("CT investigator Rels By Stats Data: ", this.ctInvestigatorRelsByStatsData);
 
-          // this.loadingCTInvestRelData = false;
-          this.InvestigatorRelDetailsData = [];
-          this.InvestigatorRelData.forEach((event: any) => {
+          // this.loadingCTInvestigatorStats = false;
+          this.ctInvestigatorRelsByStatsDetailsData = [];
+          this.ctInvestigatorRelsByStatsData.forEach((event: any) => {
             var temps: any = {};
-            temps["node_id"] = event.node_id;
-            temps["disease_name"] = event.disease_name;
-            temps["ct_id"] = event.ct_id;
-            temps["nct_id"] = event.nct_id;
             temps["investigator_id"] = event.investigator_id;
             temps["investigator_name"] = event.investigator_name;
-            temps["affiliation"] = event.affiliation;
-            temps["investigator_role_id"] = event.investigator_role_id;
-            temps["role"] = event.role;
-            temps["country_id"] = event.country_id;
-            temps["country_name"] = event.country_name;
-            temps["pmids"] = event.pmids;
-
-            this.InvestigatorRelDetailsData.push(temps);            
+            temps["count_nct_ids"] = event.count_nct_ids;
+            // temps["count_nct_ids"] = event.count_nct_ids;
+            this.ctInvestigatorRelsByStatsDetailsData.push(temps);
           });
-          this.bootstrapTableChartInRels();
+          this.bootstrapTableChartInvestigatorName();
         },
         err => {
           console.log(err.message);
-          this.loadingCTInvestRelData = false;
+          this.loadingCTInvestigatorStats = false;
         },
         () => {
-          this.loadingCTInvestRelData = false;
+          this.loadingCTInvestigatorStats = false;
         }
       );
     }
-
   }
 
-  bootstrapTableChartInRels() {
-    jQuery('#CT_Investigator_data').bootstrapTable({
+  bootstrapTableChartInvestigatorName() {
+    jQuery('#CT_Investigator_name_data').bootstrapTable({
       bProcessing: true,
       bServerSide: true,
       pagination: true,
@@ -115,19 +111,23 @@ export class CTInvestigatorRelsComponent implements OnInit {
       showFullscreen: true,
       stickyHeader: true,
       showExport: true,
-      data: this.InvestigatorRelDetailsData,
+      data: this.ctInvestigatorRelsByStatsDetailsData,
       // onClickRow: (field: any, row: any, $element: any) => {
       // },
     });
-    jQuery('#CT_Investigator_data').bootstrapTable("load", this.InvestigatorRelDetailsData);
+    jQuery('#CT_Investigator_name_data').bootstrapTable("load", this.ctInvestigatorRelsByStatsDetailsData);
   }
 
-  reloadInvestigatorRelsData() {
-    console.log("investigator Rels data: ")
+
+  reloadInvestigatorRelsByStats() {
+    console.log("ct investigator rels by stats data: ")
     // this.globalVariableService.resetChartFilter();
+
     this.hideCardBody = !this.hideCardBody;
     this.filterParams = this.globalVariableService.getFilterParams();
     if (!this.hideCardBody)
-      this.getCTDataInvestigatorWithRels();
+      this.getCTInvestigatorRelsByStats();
   }
+
+
 }

@@ -1,16 +1,26 @@
-<div class="card-panel-box-detail">
-    <div class="customTable " id="eventListTable">
-        <div class="overlay" *ngIf="loader">
-            <img style="margin:185px 653px;" src="../../assets/images/loader_big.gif" />
-        </div>
+<div class="card-panel-box">
+    <div class="card-panel-box-heading">
+        Distinct values of Investigator by Role
+        <i class="bi-arrows-expand" [hidden]="!hideCardBody" (click)="reloadCTDataInvestigatorRole()"
+            style="position: absolute;right: 20px;color: white;"></i>
 
-        <div class="card">
-            <div class="card-header">
-                Distinct values of Investigator by Role
+        <i class="bi-arrows-collapse" [hidden]="hideCardBody" (click)="reloadCTDataInvestigatorRole()"
+            style="position: absolute;right: 20px;color: white;"></i>
+    </div>
+
+    <div class="card-panel-box-detail" [hidden]="hideCardBody">
+        <div class="customTable">
+            <div class="" *ngIf="loadingCTRole">
+                <!-- <span class="bi-gear bi--spin"></span> -->
+                <img width="20px" src="../../assets/images/loader_medium.gif" />
+                &nbsp;Loading...
             </div>
+
             <div class="card-body">
-                <h1>Filter graphs comes here</h1>
+                <figure class="highcharts-figure">
+                    <div id="CT_InvestigatorRoleData"></div>
+                </figure>
             </div>
+            <!-- </div> -->
         </div>
     </div>
-</div>

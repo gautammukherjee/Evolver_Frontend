@@ -60,7 +60,7 @@ export class EventDescriptionComponent implements OnInit {
   notEmptyPost: boolean = true;
   notscrolly: boolean = true;
   currentPage: number = 1;
-  itemsPerPage: number = 5;
+  itemsPerPage: number = 10;
   public isloading: boolean = false;
   loaderEvidence = false;
 
@@ -175,7 +175,7 @@ export class EventDescriptionComponent implements OnInit {
       showToggle: true,
       showColumns: true,
       search: true,
-      pageSize: 25,
+      pageSize: 10,
       // pageList: [10, 25, 50, 100, All],
       striped: true,
       //showFilter: true,
@@ -364,7 +364,9 @@ export class EventDescriptionComponent implements OnInit {
                   html += "<div class='col'><span style='color:" + e1_color + "'>" + sentences.evidence_data[i].gene_symbol_e1 + "</span>(" + sentences.evidence_data[i].e1_type_name + ")</div>";
                   html += "<div class='col'>" + sentences.evidence_data[i].edge_name + "</div>";
                   html += "<div class='col'><span style='color:" + e1_color + "'>" + sentences.evidence_data[i].gene_symbol_e2 + "</span>(" + sentences.evidence_data[i].e2_type_name + ")</div>";
-                  html += "<div class='col'> Pmid:" + sentences.evidence_data[i].pubmed_id + "</div>";
+                  
+                  html += "<div class='col'> PMID: <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + sentences.evidence_data[i].pubmed_id + "'>" + sentences.evidence_data[i].pubmed_id + "</a></div>";
+
                   html += "</div>";
                   html += "<div>";
                   html += "<div class='col'><p class='m-4'>" + sentence_text5 + "</p></div>";
