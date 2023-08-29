@@ -43,13 +43,13 @@ export class NctInvestigatorNameComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getCTInvestigatorName();
+    // this.getCTInvestigatorName();
 
     this.ProceedDoFilterApply?.subscribe(data => {  // Calling from details, details working as mediator
       console.log("event Data in investigator name: ", data);
       if (data === undefined) { // data=undefined true when apply filter from side panel
         // this.hideCardBody = true;
-        this.getCTInvestigatorName();
+        // this.getCTInvestigatorName();
       }
     });
   }
@@ -117,13 +117,13 @@ export class NctInvestigatorNameComponent implements OnInit {
   }
 
 
-  // reloadCTData() {
-  //   console.log("ct data: ")
-  //   // this.globalVariableService.resetChartFilter();
+  reloadInvestigatorName() {
+    console.log("ct investigator name data: ")
+    // this.globalVariableService.resetChartFilter();
 
-  //   this.hideCardBody = !this.hideCardBody;
-  //   this.filterParams = this.globalVariableService.getFilterParams();
-  //   if (!this.hideCardBody)
-  //     this.getCTInvestigatorName();
-  // }
+    this.hideCardBody = !this.hideCardBody;
+    this.filterParams = this.globalVariableService.getFilterParams();
+    if (!this.hideCardBody)
+      this.getCTInvestigatorName();
+  }
 }

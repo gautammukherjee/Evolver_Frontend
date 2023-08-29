@@ -50,13 +50,13 @@ export class InvestigatorByRoleComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getCTDataInvestigatorRole();
+    // this.getCTDataInvestigatorRole();
 
     this.ProceedDoFilterApply?.subscribe(data => {  // Calling from details, details working as mediator
       console.log("eventData: ", data);
       if (data === undefined) { // data=undefined true when apply filter from side panel
         // this.hideCardBody = true;
-        this.getCTDataInvestigatorRole();
+        // this.getCTDataInvestigatorRole();
       }
     });
   }
@@ -114,11 +114,6 @@ export class InvestigatorByRoleComponent implements OnInit {
       title: {
         text: 'Distinct Values of Name'
       },
-      accessibility: {
-        screenReaderSection: {
-          beforeChartFormat: '<{headingTagName}>Piyush{chartTitle}</{headingTagName}><div>{typeDescription}</div><div>{chartSubtitle}</div><div>{chartLongdesc}</div>'
-        }
-      },
       plotOptions: {
         series: {
           dataLabels: {
@@ -142,7 +137,7 @@ export class InvestigatorByRoleComponent implements OnInit {
       responsive: {
         rules: [{
           condition: {
-            maxWidth: 500
+            maxWidth: 400
           },
           chartOptions: {
             plotOptions: {
@@ -160,14 +155,14 @@ export class InvestigatorByRoleComponent implements OnInit {
     });
   }
 
-  // reloadCTData() {
-  //   console.log("ct data: ")
-  //   // this.globalVariableService.resetChartFilter();
+  reloadCTDataInvestigatorRole() {
+    console.log("ct data Investigator Role: ")
+    // this.globalVariableService.resetChartFilter();
 
-  //   this.hideCardBody = !this.hideCardBody;
-  //   this.filterParams = this.globalVariableService.getFilterParams();
-  //   if (!this.hideCardBody)
-  //     this.getCTDataInvestigatorRole();
-  // }
+    this.hideCardBody = !this.hideCardBody;
+    this.filterParams = this.globalVariableService.getFilterParams();
+    if (!this.hideCardBody)
+      this.getCTDataInvestigatorRole();
+  }
 
 }

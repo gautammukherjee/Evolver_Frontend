@@ -36,6 +36,7 @@ export class InvestigatorByCountryComponent implements OnInit {
   ctInvestigatorCountryData: any = [];
   ctInvestigatorCountryDetailsData: any = [];
   graphData: any = [];
+  chartOptions:any;
 
 
   loader: boolean = false;
@@ -66,41 +67,44 @@ export class InvestigatorByCountryComponent implements OnInit {
 
   getCTDataInvestigatorCountry() {
 
+    this.chartWordMap();
+
     this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
     console.log("params in CT in word map: ", this.filterParams);
 
-    if (this.filterParams.source_node != undefined) {
-      this.loadingCTCountry = true;
+    // if (this.filterParams.source_node != undefined) {
+    //   this.loadingCTCountry = true;
 
-      this.nodeSelectsService.getCTInvestigatorCountry(this.filterParams).subscribe(
-        data => {
-          //console.log("data: ", data);
-          this.result = data;
-          this.ctInvestigatorCountryData = this.result.CTInvestigatorCountryDATA;
-          console.log("CT Word Map: ", this.ctInvestigatorCountryData);
+    //   this.nodeSelectsService.getCTInvestigatorCountry(this.filterParams).subscribe(
+    //     data => {
+    //       //console.log("data: ", data);
+    //       this.result = data;
+    //       this.ctInvestigatorCountryData = this.result.CTInvestigatorCountryDATA;
+    //       console.log("CT Word Map: ", this.ctInvestigatorCountryData);
 
-          // this.loadingCTCountry = false;
-          this.ctInvestigatorCountryDetailsData = [];
-          this.ctInvestigatorCountryData.forEach((event: any) => {
-            this.ctInvestigatorCountryDetailsData.push([event.investigator_name, event.count_nct_ids]);
-          });
+    //       // this.loadingCTCountry = false;
+    //       this.ctInvestigatorCountryDetailsData = [];
+    //       this.ctInvestigatorCountryData.forEach((event: any) => {
+    //         this.ctInvestigatorCountryDetailsData.push([event.investigator_name, event.count_nct_ids]);
+    //       });
 
-          console.log("chkData in Word: ", this.ctInvestigatorCountryDetailsData);
-          this.chartWordMap();
-        },
-        err => {
-          console.log(err.message);
-          this.loadingCTCountry = false;
-        },
-        () => {
-          this.loadingCTCountry = false;
-        }
-      );
-    }
+    //       console.log("chkData in Word: ", this.ctInvestigatorCountryDetailsData);
+    //       this.chartWordMap();
+    //     },
+    //     err => {
+    //       console.log(err.message);
+    //       this.loadingCTCountry = false;
+    //     },
+    //     () => {
+    //       this.loadingCTCountry = false;
+    //     }
+    //   );
+    // }
   }
 
   chartWordMap() {
-    // chartOptions: Highcharts.Options = {
+    // this.chartOptions? Highcharts?.Options = {
+    // // this.chartOptions = {
     //   chart: {
     //     map: topology
     //   },
@@ -420,15 +424,15 @@ export class InvestigatorByCountryComponent implements OnInit {
     // }
   }
 
-  // reloadCTData() {
-  //   console.log("ct data: ")
-  //   // this.globalVariableService.resetChartFilter();
+  reloadInvestigatorCountry() {
+    console.log("ct country data: ")
+    // this.globalVariableService.resetChartFilter();
 
-  //   this.hideCardBody = !this.hideCardBody;
-  //   this.filterParams = this.globalVariableService.getFilterParams();
-  //   if (!this.hideCardBody)
-  //     this.getCTDataInvestigatorCountry();
-  // }
+    this.hideCardBody = !this.hideCardBody;
+    this.filterParams = this.globalVariableService.getFilterParams();
+    if (!this.hideCardBody)
+      this.getCTDataInvestigatorCountry();
+  }
 
 
 

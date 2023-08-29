@@ -157,4 +157,8 @@ export class NodeSelectsService {
     return this.http.post(this.API_URL + 'getCTInvestigatorCountry', params, httpOptions);
   }
 
+  getCTInvestigatorRelsByStats(params: any) {
+    return this.http.post(this.API_URL + 'getCTInvestigatorRelsByStats', params, httpOptions);
+  }
+
 }
