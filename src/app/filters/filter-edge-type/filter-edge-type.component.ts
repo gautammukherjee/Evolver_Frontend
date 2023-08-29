@@ -73,13 +73,13 @@ export class FilterEdgeTypeComponent implements OnInit {
 
 
     this.nodeSelectsService.getEdgeTypeFirst().subscribe(
-        (data:any) => {
-          this.result = data;
-          this.edgeTypesFirst = this.result.edgeTypeFirstRecords;
-          console.log("edge Types First: ", this.edgeTypesFirst);
-        });
+      (data: any) => {
+        this.result = data;
+        this.edgeTypesFirst = this.result.edgeTypeFirstRecords;
+        console.log("edge Types First: ", this.edgeTypesFirst);
+      });
 
-        
+
 
     // this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
     //   console.log("eventEdgeType:: ", event);
@@ -107,14 +107,14 @@ export class FilterEdgeTypeComponent implements OnInit {
     return data.map((item: any) => ({ criteria: item[key] || null }));
   }
 
-  findValue(arr:any, key:any){
+  findValue(arr: any, key: any) {
     return arr.find(
-      function(o:any){
-      console.log("o: ", o.edge_group_id);
-      console.log("k: ", key[0]);
-      
-      return o.edge_group_id===key[0]
-    }
+      function (o: any) {
+        console.log("o: ", o.edge_group_id);
+        console.log("k: ", key[0]);
+
+        return o.edge_group_id === key[0]
+      }
     ).edge_type_id;
   }
 
@@ -179,9 +179,9 @@ export class FilterEdgeTypeComponent implements OnInit {
     console.log("selectedEdgeTypesByGroup: ", this.selectedEdgeTypesByGroup);
 
     // Pass edge group id and return edge_type_id to mapping with edge and edge group
-    this.selectedEdgeTypes = this.edgeTypesFirst.filter((item:any) => (
+    this.selectedEdgeTypes = this.edgeTypesFirst.filter((item: any) => (
       this.selectedEdgeTypesByGroup.includes(item.edge_group_id)
-    )).map((item:any) => item.edge_type_id)
+    )).map((item: any) => item.edge_type_id)
     console.log("selected Edge Types", this.selectedEdgeTypes);
     // console.log("selectedEdgeTypesName: ", this.selectedEdgeTypesNames);
 
@@ -192,8 +192,8 @@ export class FilterEdgeTypeComponent implements OnInit {
     console.log("new Filters Edge Types: ", this.filterParams);
 
     // if (from != 'edgeSelectsWarningModal')
-    if (this.selectedEdgeTypesByGroup.length!=0)
-    this.proceed();
+    if (this.selectedEdgeTypesByGroup.length != 0)
+      this.proceed();
     this.enableDisableProceedButton();
   }
 
@@ -201,23 +201,25 @@ export class FilterEdgeTypeComponent implements OnInit {
     this.togglecollapseStatus = !this.togglecollapseStatus;
   }
 
-  selectAll(event: any) {
+  selectAll() {
     // console.log("is_all: ", this.isAllSelected);
-    if (this.isAllSelected) {      
+    if (this.isAllSelected) {
+      // console.log("in: ", this.result.edgeTypeRecords);
       this.selectedEdgeTypesByGroup = [];
       this.result.edgeTypeRecords.map((element: any) => {
         this.selectedEdgeTypesByGroup.push(element.edge_group_id);
-        this.selectedEdgeTypesNames.push(element.edge_group_name);
+        // this.selectedEdgeTypesNames.push(element.edge_group_name);
       })
     } else {
       this.selectedEdgeTypesNames = [];
       this.selectedEdgeTypesByGroup = [];
     }
+    console.log("By Group: ", this.selectedEdgeTypesByGroup);
 
     // Pass edge group id and return edge_type_id to mapping with edge and edge group
-    this.selectedEdgeTypes = this.edgeTypesFirst.filter((item:any) => (
+    this.selectedEdgeTypes = this.edgeTypesFirst.filter((item: any) => (
       this.selectedEdgeTypesByGroup.includes(item.edge_group_id)
-    )).map((item:any) => item.edge_type_id)
+    )).map((item: any) => item.edge_type_id)
     console.log("selected Edge Types2", this.selectedEdgeTypes);
     this.globalVariableService.setSelectedEdgeTypes(this.selectedEdgeTypes);
     this.filterParams = this.globalVariableService.getFilterParams();

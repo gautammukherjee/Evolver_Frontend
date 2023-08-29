@@ -19,7 +19,9 @@ export class FilterDestinationNodeComponent implements OnInit {
 
   private filterParams: any;
   public selectedDestinationNodes: any = [];
+  public selectedAllDestinationNodes: any = [];
   public destinationNodes: any = [];
+  public destinationNodesDB: any = [];
   public destinationNodesLength: any = [];
   // public destinationNodesAutoSuggest: any = [];
   private params: object = {};
@@ -101,7 +103,7 @@ export class FilterDestinationNodeComponent implements OnInit {
     // this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
     this.filterParams = this.globalVariableService.getFilterParams();
     console.log("filterparamsFirst: ", this.filterParams);
-    this.selectedDestinationNodes = []
+    // this.selectedDestinationNodes = []
     this.destinationNodesLength = 0;
     // this.currentPage = 1;
     if (this.filterParams.source_node != undefined) {
@@ -110,6 +112,9 @@ export class FilterDestinationNodeComponent implements OnInit {
         .subscribe(
           data => {
             this.result = data;
+            // this.destinationNodes = this.result.destinationNodeRecords;
+            // console.log("destinationNodes: ", this.destinationNodes);
+
             this.destinationNodesLength = this.result.destinationNodeRecords.length;
             console.log("destinationNodes Length: ", this.destinationNodesLength);
           },
@@ -143,8 +148,8 @@ export class FilterDestinationNodeComponent implements OnInit {
         .subscribe(
           data => {
             this.result = data;
-            this.destinationNodes = this.result.destinationNodeRecords;
-            console.log("destinationNodesKeyup: ", this.destinationNodes);
+            this.destinationNodesDB = this.result.destinationNodeRecords;
+            console.log("destinationNodesKeyup: ", this.destinationNodesDB);
           },
           err => {
             // this.destinationNodesCheck = true;
@@ -161,6 +166,30 @@ export class FilterDestinationNodeComponent implements OnInit {
       // this.destinationNodes = [];
       // this.globalVariableService.resetfilters();
     }
+  }
+
+  selectAll(event: any) {
+    console.log("is_all: ", this.isAllSelected);
+    this.globalVariableService.setSelectedAllDestinationNodes(this.isAllSelected ? 1 : 0);
+    this.selectedAllDestinationNodes = this.globalVariableService.getSelectedAllDestinationNodes();
+
+    console.log("is_all_destination_check: ", this.selectedAllDestinationNodes);
+
+    this.filterParams = this.globalVariableService.getFilterParams();
+    console.log("new Filters DESTINATION: ", this.filterParams);
+
+    
+    // if (this.isAllSelected) {
+    //   this.destinationNodes.map((element: any) => {
+    //     this.selectedDestinationNodes.push(element.destination_node);
+    //   })
+    // } else {
+    //   this.selectedDestinationNodes = [];
+    // }
+    // console.log("select All: ", this.selectedDestinationNodes);
+
+    this.proceed();
+    this.enableDisableProceedButton();
   }
 
   selectDestinationNode(destinationNode: any, event: any, from: any = null) {

@@ -120,6 +120,9 @@ export class NodeSelectsService {
   getEdgePMIDLists(params: any) {
     return this.http.post(this.API_URL + 'getEdgePMIDLists', params, httpOptions);
   }
+  getEdgeTypeSentencePMIDLists(params: any) {
+    return this.http.post(this.API_URL + 'getEdgeTypeSentencePMIDLists', params, httpOptions);
+  }  
 
   getPMIDListsInRelation(params: any) {
     return this.http.post(this.API_URL + 'getPMIDListsInRelation', params, httpOptions);

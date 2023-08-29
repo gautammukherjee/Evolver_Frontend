@@ -42,9 +42,9 @@ export class DistributionByRelGrpComponent implements OnInit {
   public selectedEdgeTypes: any = [];
   public selectedEdgeTypesByGroup: any = [];
 
-  public alpha:number=1;
-  public beta:number=1;
-  public depth:number=1;
+  public alpha: number = 1;
+  public beta: number = 1;
+  public depth: number = 1;
 
   @Input() ProceedDoFilterApply?: Subject<any>; //# Input for ProceedDoFilter is getting from clinical details html 
 
@@ -278,7 +278,11 @@ export class DistributionByRelGrpComponent implements OnInit {
       yAxis: {
         type: 'logarithmic',
         title: {
-          text: 'Article Count'
+          rotation: -90,
+          text: 'Article Count',
+          textAlign: 'left',
+          x: -40,
+          y: 40
         },
         stackLabels: {
           //defer: false,
@@ -311,11 +315,11 @@ export class DistributionByRelGrpComponent implements OnInit {
           //enabled: true,
           crop: false,
           overflow: 'allow',
-          rotation: 360,
+          // rotation: 360,
           //color: '#3066C4',
           align: 'center',
           format: '{point.y}', // one decimal {point.y:.1f}
-          y: 10, // 10 pixels down from the top
+          // y: 10, // 10 pixels down from the top
           style: {
             fontSize: '13px',
             //fontFamily: 'Verdana, sans-serif'
