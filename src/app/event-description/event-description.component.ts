@@ -45,6 +45,7 @@ export class EventDescriptionComponent implements OnInit {
   edgeTypeList: any = [];
   helpContents: any;
   masterListsData: any = [];
+  masterListsDataLength: number = 0;
   masterListsDataLoaded: any = [];
   masterListsDataOnScroll: any = [];
   masterListsDataDetailsLoaded: any = [];
@@ -76,6 +77,7 @@ export class EventDescriptionComponent implements OnInit {
     // console.log("new Filters1: ", this.filterParams);
     this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
     this.getEventDescription(this.filterParams);
+    this.getEventTotalDescription(this.filterParams);
 
     this.ProceedDoFilterApply?.subscribe(data => {  // Calling from details, details working as mediator
       //console.log("eventData: ", data);
@@ -85,16 +87,36 @@ export class EventDescriptionComponent implements OnInit {
         this.filterParams = this.globalVariableService.getFilterParams();
         this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
         this.getEventDescription(this.filterParams);
+        this.getEventTotalDescription(this.filterParams);
         //console.log("new Filters for articles: ", this.filterParams);
       }
     });
+  }
+
+  getEventTotalDescription(_filterParams: any) {
+    //console.log("abc = "+_limit.load_value);
+    this.filterParams = this.globalVariableService.getFilterParams();
+    if (this.filterParams.source_node != undefined) {
+      // $('.overlay').fadeOut(500);
+      // this.loadingDesc = true;
+      this.masterListsDataLength = 0;
+
+      console.log("filterparams for all records: ", _filterParams);
+      this.nodeSelectsService.getAllRecords(this.filterParams).subscribe(
+        data => {
+          //console.log("data: ", data);
+          this.resultNodes = data;
+          this.masterListsDataLength = this.resultNodes.masterListsDataTotal.length;
+          console.log("Total datas: ", this.masterListsDataLength);
+        }
+      )
+    }
   }
 
   getEventDescription(_filterParams: any) {
     //console.log("abc = "+_limit.load_value);
     this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
     if (this.filterParams.source_node != undefined) {
-
       // $('.overlay').fadeOut(500);
       this.loadingDesc = true;
 
@@ -141,7 +163,7 @@ export class EventDescriptionComponent implements OnInit {
               this.pmidCount = this.resultPMID.pmidCount[0]['pmid_count'];
               // console.log("pmidCount: ", this.resultPMID.pmidCount[0]);
               // temps["pmidCount"] = this.pmidCount;
-              temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary bg-warning text-dark'>" + this.pmidCount + "</span></button> &nbsp;";
+              temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary text-white' style='background-color:#B765A3 !important'>" + this.pmidCount + "</span></button> &nbsp;";
               // temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Edge Type Article </button> &nbsp;";
               this.masterListsDataDetailsLoaded.push(temps);
               this.masterListsDataDetailsCombined = this.masterListsDataDetailsLoaded;
@@ -412,6 +434,7 @@ export class EventDescriptionComponent implements OnInit {
               });
             }
           } else {
+            //$($element).parent().next().hide(700);
             if($($element).parent().next().is(":visible")){
               $($element).parent().next().hide(950);
               $($element).children().eq(1).text("Show");
@@ -550,7 +573,7 @@ export class EventDescriptionComponent implements OnInit {
               // console.log("pmidCount Inside: ", this.resultPMID.pmidCount[0]);
 
               // temps["pmidCount"] = this.pmidCount;
-              temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary bg-warning text-dark'>" + this.pmidCount + "</span></button> &nbsp;";
+              temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary text-white' style='background-color:#B765A3 !important'>" + this.pmidCount + "</span></button> &nbsp;";
               // temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Edge Type Article </button> &nbsp;";
 
               // temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary bg-warning text-dark'>" + this.pmidCount + "</span></button> &nbsp;";

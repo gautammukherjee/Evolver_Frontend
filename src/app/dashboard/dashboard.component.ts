@@ -35,6 +35,9 @@ export class DashboardComponent implements OnInit {
     // this.selectedNodeSelects2 = Array.from(this.globalVariableService.getSelectedNodeSelects2());
     // console.log("node selects2 in submit2222: ", this.selectedNodeSelects2);
 
+    this.globalVariableService.resetfilters();// on hard reset when page gets loaded
+    this.filterParams = this.globalVariableService.getFilterParams();
+    console.log("main page filters: ", this.filterParams);
   }
 
   ontoggleSidebar() {

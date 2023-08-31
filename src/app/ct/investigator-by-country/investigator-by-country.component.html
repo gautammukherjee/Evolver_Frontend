@@ -28,9 +28,13 @@
                 <div class="card-body">
                     <!-- <highcharts-chart id="container" *ngIf="isHighcharts" [Highcharts]="Highcharts" [options]="chartOptions"
                     style="width: 100%; height: 400px; display: block;"></highcharts-chart> -->
-                    <highcharts-chart id="container" *ngIf="isHighcharts" [Highcharts]="Highcharts"
+                    <!-- <highcharts-chart id="container" *ngIf="isHighcharts" [Highcharts]="Highcharts"
                         [constructorType]="chartConstructor" [options]="chartOptions"
                         style="width: 100%; height: 400px; display: block;">
+                    </highcharts-chart> -->
+
+                    <highcharts-chart id="container" [Highcharts]="Highcharts" [constructorType]="chartConstructor"
+                        [options]="chartOptions" style="width: 100%; height: 100%;">
                     </highcharts-chart>
 
                     <!-- <div id="container"></div> -->

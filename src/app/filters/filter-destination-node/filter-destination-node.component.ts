@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, ChangeDetectorRef, Input, Pipe, PipeTransform, ElementRef, ViewChild, ViewChildren } from '@angular/core';
 import { NodeSelectsService } from '../../services/common/node-selects.service';
 import { GlobalVariableService } from '../../services/common/global-variable.service';
-import { Subject } from 'rxjs';
+import { Observable, Subject, interval } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -61,6 +61,16 @@ export class FilterDestinationNodeComponent implements OnInit {
   ) {
   }
 
+
+  // debounce function makes sure that your code is only triggered once per user input
+  debounce(func: any, timeout = 1000) {
+    let timer: any;
+    return (...args: any) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    };
+  }
+
   ngOnInit(): void {
     // this.filterParams = this.globalVariableService.getFilterParams();
     // this.getDestinationNode(event, 1);
@@ -76,14 +86,17 @@ export class FilterDestinationNodeComponent implements OnInit {
       console.log("event Destination: ", event.clickOn);
       this.notEmptyPost = true;
       if (event.clickOn == undefined) {
-        console.log("Source Level 2:1 ", event.clickOn);
+        console.log("destination Level 2:1 ", event.clickOn);
         this.getResetDestinationNode();
       } else if (event.clickOn !== undefined && (event.clickOn == 'sourceNodeFilter')) {
         // this.hideCardBody = true;
         this.filterParams = this.globalVariableService.getFilterParams();
-        console.log("Source Level 2:2 ", event.clickOn);
+        console.log("destination Level 2:2 ", event.clickOn);
         // if (this.firstTimeCheck === false) // Node select only one time reload when we choose destination nodes are selected
         this.getDestinationNode();
+        // this.debounce(() => this.getDestinationNode());
+        this.searchInput = '';
+        this.getDestinationNodeOnChange();
       }
     });
     // this.getDestinationNode();
@@ -96,6 +109,7 @@ export class FilterDestinationNodeComponent implements OnInit {
 
   public getResetDestinationNode() {
     this.destinationNodes = [];
+    this.selectedDestinationNodes = [];
     this.searchInput = '';
     this.destinationNodesLength = 0;
   }
@@ -103,34 +117,33 @@ export class FilterDestinationNodeComponent implements OnInit {
   getDestinationNode() {
     // this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
     this.filterParams = this.globalVariableService.getFilterParams();
-    console.log("filterparamsFirst: ", this.filterParams);
     // this.selectedDestinationNodes = []
     this.destinationNodesLength = 0;
     // this.currentPage = 1;
     if (this.filterParams.source_node != undefined) {
-      this.loading = true;
+      this.loading = true;      
+
       this.nodeSelectsService.getDestinationNode(this.filterParams)
         .subscribe(
           data => {
             this.result = data;
-            // this.destinationNodes = this.result.destinationNodeRecords;
-            // console.log("destinationNodes: ", this.destinationNodes);
+            this.destinationNodesLength = this.result.destinationNodeRecords.length;
+            console.log("destinationNodes Length: ", this.destinationNodesLength);
+
+            //Start here for clinical trials destination nodes unique data
             let destinationID: any = [];
             this.result.destinationNodeRecords.forEach((event: any) => {
               destinationID.push(event.destination_node);
             });
             console.log("destinationID: ", destinationID);
-
-            const distinctData = [...new Set(destinationID.map((x:any) => x))];
+            const distinctData = [...new Set(destinationID.map((x: any) => x))];
             console.log("destinationNodes res: ", distinctData);
 
             this.globalVariableService.setSelectedAllForCTDestinationNodes(distinctData);
             this.selectedAllForCTDestinationNodes = Array.from(this.globalVariableService.getSelectedAllForCTDestinationNodes());
             this.filterParams = this.globalVariableService.getFilterParams();
             console.log("new new Filters all select DESTINATION: ", this.filterParams);
-
-            this.destinationNodesLength = this.result.destinationNodeRecords.length;
-            console.log("destinationNodes Length: ", this.destinationNodesLength);
+            //End here for clinical trials destination nodes unique data
           },
           err => {
             // this.destinationNodesCheck = true;
@@ -145,6 +158,7 @@ export class FilterDestinationNodeComponent implements OnInit {
         );
     } else {
       this.destinationNodes = [];
+      this.destinationNodesLength = 0;
       this.globalVariableService.resetfilters();
     }
   }
@@ -152,7 +166,8 @@ export class FilterDestinationNodeComponent implements OnInit {
   getDestinationNodeOnChange() {
     // this.selectedDestinationNodes = []
     this.filterParams = this.globalVariableService.getFilterParams();
-    // console.log("filterparams: ", this.filterParams);
+    console.log("filter params: ", this.filterParams);
+    // this.destinationNodesDB=[];
     if (this.searchInput && this.searchInput.length > 2 && this.filterParams.source_node != undefined) {
       console.log("this all desti: ", this.selectedDestinationNodes)
       this.dbLoading = true;
@@ -176,11 +191,18 @@ export class FilterDestinationNodeComponent implements OnInit {
             console.log("loading finish")
           }
         );
-    } else {
-      // this.destinationNodes = [];
+    } else if (this.filterParams.source_node == undefined) {
+      this.destinationNodesDB = [];
+      this.selectedDestinationNodes = [];
+      console.log("destination else if : ", this.selectedDestinationNodes);
       // this.globalVariableService.resetfilters();
+    } else {
+      this.destinationNodesDB = [];
+      console.log("destination else : ", this.destinationNodesDB);
     }
   }
+
+  processChangeDestination: any = this.debounce(() => this.getDestinationNodeOnChange());
 
   selectAll(event: any) {
     console.log("is_all: ", this.isAllSelected);

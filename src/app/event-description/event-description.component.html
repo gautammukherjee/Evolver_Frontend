@@ -24,6 +24,9 @@
                     </div>
                     <div class="table-responsive custom-fixed-header-table"
                         [ngClass]="toggleLevels == false ? 'hiddenLevels' : currentLevel == '1' ? 'level1' : currentLevel == 2 ? 'level2' : 'level3'">
+                        
+                        <div *ngIf="masterListsDataLength">Total Records: {{masterListsDataLength}}</div>
+                        
                         <table id="showEventDescription" data-toolbar="#toolbar" data-search="true"
                             data-show-export="true" data-show-columns="true" data-page-size="10"
                             data-filter-control="true" data-page-list="[10, 25, 50, 100, All]">
@@ -50,7 +53,7 @@
                                         Get Edge Type Article</th> -->
                                 </tr>
                             </thead>
-                        </table>
+                        </table>                        
                     </div>
                 </div>
                 <!-- Total Records:{{masterListsData.length}} *ngIf="masterListsData.length>1999"-->
@@ -63,7 +66,7 @@
                 </select> -->
             </div>
 
-            <div *ngIf="!notEmptyPost" class="row">
+            <div *ngIf="!notEmptyPost">
                 <div class="alert alert-warning">
                     No More Records..
                 </div>
