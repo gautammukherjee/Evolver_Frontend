@@ -198,7 +198,7 @@ export class GlobalVariableService {
     this.setSelectedSourceNodes2([]);
     this.setSelectedDestinationNodes([]);
     this.setSelectedNodeSelects2(undefined);
-    // this.setSelectedEdgeTypes([]);
+    this.setSelectedEdgeTypes([]);
     this.setSelectedEdgeTypes2([]);
   }
 

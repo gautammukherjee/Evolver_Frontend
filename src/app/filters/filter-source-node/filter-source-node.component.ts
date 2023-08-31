@@ -72,10 +72,18 @@ export class FilterSourceNodeComponent implements OnInit {
   public getResetSourceNode() {
     this.sourceNodes = [];
     this.searchInput = '';
-  }
+  }  
 
+  // debounce function makes sure that your code is only triggered once per user input
+  debounce(func:any, timeout = 500){
+    let timer:any;
+    return (...args:any) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    };
+  }
   getSourceNode() {
-    // console.log("val: ", this.searchInput);
+    console.log("val: ", this.searchInput);
     if (this.searchInput && this.searchInput.length > 2) {
       // this.selectedSourceNodes = [];
       this.loading = true;
@@ -129,21 +137,23 @@ export class FilterSourceNodeComponent implements OnInit {
         );
     }
   }
+  processChange:any = this.debounce(() => this.getSourceNode());
+  //End here for debounce and get the data search from database QUERY
 
-  expand() {
-    var header = jQuery(this);
-    //getting the next element
-    var content = header.next();
-    //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
-    content.slideToggle(500, function () {
-      //execute this after slideToggle is done
-      //change text of header based on visibility of content div
-      header.text(function () {
-        //change text based on condition
-        return content.is(":visible") ? "Collapse" : "Expand";
-      });
-    });
-  }
+  // expand() {
+  //   var header = jQuery(this);
+  //   //getting the next element
+  //   var content = header.next();
+  //   //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
+  //   content.slideToggle(500, function () {
+  //     //execute this after slideToggle is done
+  //     //change text of header based on visibility of content div
+  //     header.text(function () {
+  //       //change text based on condition
+  //       return content.is(":visible") ? "Collapse" : "Expand";
+  //     });
+  //   });
+  // }
 
   public toggle(i: number): void {
     this.toggled[i] = !this.toggled[i];
@@ -156,7 +166,6 @@ export class FilterSourceNodeComponent implements OnInit {
   toggleCollapse(): void {
     this.visible = !this.visible;
   }
-
 
   selectSourceNode(sourceNode: any, event: any, warning: any = null) {
     if (event.target.checked) {

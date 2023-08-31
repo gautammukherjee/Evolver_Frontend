@@ -14,7 +14,7 @@
         <!-- (click)="onSourceHeaderClick()" -->
         <div class="search-input">
           <form #form="ngForm" class="md-inline-block form-inline  ml-auto mr-0 mr-md-3 my-2 my-md-0">
-            <input type="text" autocomplete="off" [(ngModel)]="searchInput" name="searchInput" (keyup)="getSourceNode()"
+            <input type="text" autocomplete="off" [(ngModel)]="searchInput" name="searchInput" (keyup)="processChange()"
               class="form-control" placeholder='Search Source' aria-label="Search" area-describedby="basic-addon2">
 
             <span *ngIf="selectedSourceNodes.length > 0" class="reset-search" style="margin-right:50px;">[Selected:

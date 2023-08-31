@@ -99,7 +99,7 @@ export class FilterNodeSelectLevel2Component implements OnInit {
     // this.diseaseCheck = this.params['di_ids']; // if disease_id is checked
     // this.diseaseCheckCT = this.params['ct_di_ids']; // if disease_id is checked
     // console.log("checked here Gene: ", this.diseaseCheck);
-    // this.selectedNodeSelects2 = [];
+    this.selectedNodeSelects2 = [];
 
     // console.log("node_selects11111: ", this.filterParams);
 

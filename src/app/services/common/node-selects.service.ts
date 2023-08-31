@@ -97,6 +97,9 @@ export class NodeSelectsService {
   getMasterLists(params: any) {
     return this.http.post(this.API_URL + 'getMasterLists', params, httpOptions);
   }
+  getAllRecords(params: any) {
+    return this.http.post(this.API_URL + 'getAllRecords', params, httpOptions);
+  }
 
   getEdgeTypeName(params: any): Observable<any> {
     return this.http.post(this.API_URL + 'getEdgeTypeName', params, httpOptions)
