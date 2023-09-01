@@ -61,7 +61,7 @@ export class EventDescriptionComponent implements OnInit {
   notEmptyPost: boolean = true;
   notscrolly: boolean = true;
   currentPage: number = 1;
-  itemsPerPage: number = 5;
+  itemsPerPage: number = 10;
   public isloading: boolean = false;
   loaderEvidence = false;
 
@@ -573,7 +573,7 @@ export class EventDescriptionComponent implements OnInit {
               // console.log("pmidCount Inside: ", this.resultPMID.pmidCount[0]);
 
               // temps["pmidCount"] = this.pmidCount;
-              temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary text-white' style='background-color:#B765A3 !important'>" + this.pmidCount + "</span></button> &nbsp;";
+              temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary text-white' style='background-color:#B765A3 !important;'>" + this.pmidCount + "</span></button> &nbsp;";
               // temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Edge Type Article </button> &nbsp;";
 
               // temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary bg-warning text-dark'>" + this.pmidCount + "</span></button> &nbsp;";
