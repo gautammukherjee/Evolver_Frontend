@@ -25,14 +25,14 @@
                             [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-destination-node>
                     </div>
                 </div>
-                <div style="width: 2%; position: absolute;right: 0;top: 62px;">
-                    &nbsp;</div>
+                <!-- <div style="width: 2%; position: absolute;right: 0;top: 62px;">
+                    &nbsp;</div> -->
             </div>
 
             <div [ngStyle]="{'display' : showLevels == false ? 'none' : 'block'}">
 
-                <div style="width: 2%; position: absolute;left: 132px;top: 62px;">
-                    <button class="btn btn-sm text-white text-center" *ngIf="currentLevel > 1"
+                <div style="width: 2%; position: relative;margin: -6px;">
+                    <button class="btn btn-sm text-white text-center" style="position: relative;top: 32px;left: 135px;" *ngIf="currentLevel > 1"
                         (click)="deleteSecondDegree('deleteLevel2')" title="Delete Second Degree"><i
                             class="bi bi-trash3"></i></button>                            
                 </div>

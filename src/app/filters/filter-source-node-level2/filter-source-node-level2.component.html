@@ -26,6 +26,10 @@
       <div class="body">
         <div *ngIf="sourceNodes2.length">
           <div class="search-options">
+            <input type="checkbox" name="edgeTypes" [(ngModel)]="isAllSelected" [value]="sourceNodes2" [checked]=""
+              (change)="selectAll();">
+            <span class="custom-control-description text-dark">&nbsp;Select All</span>
+
             <div class="mb-1 form-check" *ngFor="let sourceNode of sourceNodes2 | SourceNodeFilterPipe:sourceNodeFilter">
               <input class="form-check-input border border-secondary" type="checkbox" name="sourceNodes2"
                  [value]="sourceNode"

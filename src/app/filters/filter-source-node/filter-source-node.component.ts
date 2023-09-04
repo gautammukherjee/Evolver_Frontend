@@ -33,6 +33,7 @@ export class FilterSourceNodeComponent implements OnInit {
   private warningModalRef: any;
   searchInput: any = null;
   public groupedBySourceNode: any = {};
+  public finalGroupedBySourceNode: any = {};
   subSynNodeName: any = [];
   toggled: any = {};
   visible: boolean = false;
@@ -66,18 +67,18 @@ export class FilterSourceNodeComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    // this.UpdateFilterDataApply?.unsubscribe();
+    this.UpdateFilterDataApply?.unsubscribe();
   }
 
   public getResetSourceNode() {
     this.sourceNodes = [];
     this.searchInput = '';
-  }  
+  }
 
   // debounce function makes sure that your code is only triggered once per user input
-  debounce(func:any, timeout = 500){
-    let timer:any;
-    return (...args:any) => {
+  debounce(func: any, timeout = 500) {
+    let timer: any;
+    return (...args: any) => {
       clearTimeout(timer);
       timer = setTimeout(() => { func.apply(this, args); }, timeout);
     };
@@ -95,7 +96,10 @@ export class FilterSourceNodeComponent implements OnInit {
           data => {
             this.result = data;
             this.sourceNodes = this.result.sourceNodeRecords;
+            // 1. get the json objects
             console.log("sourceNodes: ", this.sourceNodes);
+
+            // 2. group by source_node name
             const groupedCategories = this.sourceNodes.reduce((accumulator: any, element: any, index: any) => {
               const source_node_id = element.source_node;
               const source_node_name = element.source_node_name;
@@ -117,7 +121,9 @@ export class FilterSourceNodeComponent implements OnInit {
                   }
                 };
             }, {});
+            console.log("groupedCategories: ", groupedCategories);
 
+            // 3. Group according to source name name and get the new json objects
             this.groupedBySourceNode =
               Object.keys(groupedCategories).map(source_node_id => ({
                 source_node: source_node_id,
@@ -125,6 +131,22 @@ export class FilterSourceNodeComponent implements OnInit {
                 subcategory_syn_node_name: groupedCategories[source_node_id].subCategories,
               }))
             console.log("groupedBySourceNode: ", this.groupedBySourceNode);
+
+            //4. Start sorting according to keyword search filter in autosugest json objects
+            let searchField = "source_node_name";
+            let results1 = []; let results2 = [];
+            this.finalGroupedBySourceNode = [];
+            for (var i = 0; i < this.groupedBySourceNode.length; i++) {
+              if ((this.groupedBySourceNode[i][searchField]).toLowerCase() == (this.searchInput).toLowerCase()) {
+                results1.push(this.groupedBySourceNode[i]);
+              } else {
+                results2.push(this.groupedBySourceNode[i]);
+              }
+            }
+
+            this.finalGroupedBySourceNode = results1.concat(results2);
+            console.log("final: ", this.finalGroupedBySourceNode);
+            //End sorting according to filter in autosugest json objects
           },
           err => {
             this.loading = false;
@@ -137,7 +159,8 @@ export class FilterSourceNodeComponent implements OnInit {
         );
     }
   }
-  processChange:any = this.debounce(() => this.getSourceNode());
+
+  processChange: any = this.debounce(() => this.getSourceNode());
   //End here for debounce and get the data search from database QUERY
 
   // expand() {
@@ -229,6 +252,11 @@ export class FilterSourceNodeComponent implements OnInit {
     this.selectedSourceNodes = Array.from(this.globalVariableService.getSelectedSourceNodes());
     if (this.seeMoreNodeSelectsModal != undefined)
       this.seeMoreNodeSelectsModal.close();
+
+    // setTimeout(() => {
+    //   this.onSelectSourceNode.emit(this.selectedSourceNodes);
+    // }, 3000);
+
     this.onSelectSourceNode.emit(this.selectedSourceNodes);
   }
 

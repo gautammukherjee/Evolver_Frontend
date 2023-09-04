@@ -93,8 +93,15 @@ export class FilterDestinationNodeComponent implements OnInit {
         this.filterParams = this.globalVariableService.getFilterParams();
         console.log("destination Level 2:2 ", event.clickOn);
         // if (this.firstTimeCheck === false) // Node select only one time reload when we choose destination nodes are selected
-        this.getDestinationNode();
-        // this.debounce(() => this.getDestinationNode());
+        // this.getDestinationNode();
+
+        setTimeout(() => {
+          this.getDestinationNode();
+        }, 1000);
+
+        // this.debounce(() => {
+        //   return this.getDestinationNode();
+        // });
         this.searchInput = '';
         this.getDestinationNodeOnChange();
       }
@@ -104,7 +111,7 @@ export class FilterDestinationNodeComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    // this.UpdateFilterDataApply?.unsubscribe();
+    this.UpdateFilterDataApply?.unsubscribe();
   }
 
   public getResetDestinationNode() {
@@ -157,6 +164,7 @@ export class FilterDestinationNodeComponent implements OnInit {
           }
         );
     } else {
+      console.log("no checked data")
       this.destinationNodes = [];
       this.destinationNodesLength = 0;
       this.globalVariableService.resetfilters();
@@ -166,19 +174,38 @@ export class FilterDestinationNodeComponent implements OnInit {
   getDestinationNodeOnChange() {
     // this.selectedDestinationNodes = []
     this.filterParams = this.globalVariableService.getFilterParams();
-    console.log("filter params: ", this.filterParams);
+    // console.log("filter params: ", this.filterParams);
     // this.destinationNodesDB=[];
     if (this.searchInput && this.searchInput.length > 2 && this.filterParams.source_node != undefined) {
       console.log("this all desti: ", this.selectedDestinationNodes)
       this.dbLoading = true;
       this.filterParams = this.globalVariableService.getFilterParams({ "searchval": this.searchInput });
-      console.log("filterparamsSearchSource: ", this.filterParams);
+      // console.log("filterparamsSearchSource: ", this.filterParams);
       this.nodeSelectsService.getDestinationNode(this.filterParams)
         .subscribe(
           data => {
             this.result = data;
-            this.destinationNodesDB = this.result.destinationNodeRecords;
-            console.log("destinationNodesKeyup: ", this.destinationNodesDB);
+            // this.destinationNodesDB = this.result.destinationNodeRecords;
+            console.log("destinationNodesKeyup: ", this.result.destinationNodeRecords);
+
+            //Start sorting according to keyword search filter in autosugest json objects
+            let searchField = "destination_node_name";
+            let searchFieldSyn = "syn_node_name";
+            let results1 = []; let results2 = []; let results3 = [];
+            // this.destinationNodesDB = [];
+            for (var i = 0; i < this.result.destinationNodeRecords.length; i++) {
+              if ((this.result.destinationNodeRecords[i][searchField]).toLowerCase() == (this.searchInput).toLowerCase()) {
+                results1.push(this.result.destinationNodeRecords[i]);
+              }else if ((this.result.destinationNodeRecords[i][searchFieldSyn]).toLowerCase() == (this.searchInput).toLowerCase()) {
+                results2.push(this.result.destinationNodeRecords[i]);
+              }else{
+                results3.push(this.result.destinationNodeRecords[i]);
+              }
+            }
+            this.destinationNodesDB = results1.concat(results2).concat(results3);
+            console.log("final: ", this.destinationNodesDB);
+            //End sorting according to filter in autosugest json objects
+
           },
           err => {
             // this.destinationNodesCheck = true;
@@ -205,15 +232,14 @@ export class FilterDestinationNodeComponent implements OnInit {
   processChangeDestination: any = this.debounce(() => this.getDestinationNodeOnChange());
 
   selectAll(event: any) {
-    console.log("is_all: ", this.isAllSelected);
+    // console.log("is_all: ", this.isAllSelected);
     this.globalVariableService.setSelectedAllDestinationNodes(this.isAllSelected == true ? 1 : 0);
     this.selectedAllDestinationNodes = this.globalVariableService.getSelectedAllDestinationNodes();
 
-    console.log("is_all_destination_check: ", this.selectedAllDestinationNodes);
+    // console.log("is_all_destination_check: ", this.selectedAllDestinationNodes);
 
     this.filterParams = this.globalVariableService.getFilterParams();
     console.log("new Filters DESTINATION: ", this.filterParams);
-
 
     // if (this.isAllSelected) {
     //   this.destinationNodes.map((element: any) => {

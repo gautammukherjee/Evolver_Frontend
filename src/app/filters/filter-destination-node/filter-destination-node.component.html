@@ -25,7 +25,7 @@
       <!-- <span style="font-size: 13px;color: white;">
         [Count: {{destinationNodesLength}}]
       </span> -->
-      <span *ngIf="destinationNodesLength!=0">
+      <span *ngIf="destinationNodesLength>0">
         <input type="checkbox" name="destinationNodeAll" [(ngModel)]="isAllSelected" [value]="destinationNodesDB"
           [checked]="" (change)="selectAll($event);">
         <span class="custom-control-description text-white">&nbsp;Select All {{destinationNodesLength}} Nodes</span>

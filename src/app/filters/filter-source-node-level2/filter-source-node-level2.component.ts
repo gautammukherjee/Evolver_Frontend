@@ -59,6 +59,7 @@ export class FilterSourceNodeLevel2Component implements OnInit {
         this.getResetSourceNode();
       } else if (event.clickOn !== undefined && (event.clickOn == 'sourceNodeFilter' || event.clickOn == 'edgeTypeFilter' || event.clickOn == 'destinationNodeFilter' || event.clickOn == 'nodeLevel2Filter' || event.clickOn == 'deleteLevel2')) {
         // this.hideCardBody = true;
+        this.isAllSelected = false;
         this.filterParams = this.globalVariableService.getFilterParams();
         // console.log("Source Level 2:2 ", event.clickOn);
         // if (this.firstTimeCheck === false) // Node select only one time reload when we choose destination nodes are selected
@@ -70,7 +71,7 @@ export class FilterSourceNodeLevel2Component implements OnInit {
   }
 
   ngOnDestroy() {
-    // this.UpdateFilterDataApply?.unsubscribe();
+    this.UpdateFilterDataApply?.unsubscribe();
   }
 
   public getResetSourceNode() {
@@ -127,6 +128,23 @@ export class FilterSourceNodeLevel2Component implements OnInit {
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data   
     // if (from != 'nodeSelectsWarningModal')
     // this.proceed();
+    this.enableDisableProceedButton();
+  }
+
+  selectAll() {
+    console.log("is_all: ", this.isAllSelected);
+
+    this.selectedSourceNodes2 = [];
+    if (this.isAllSelected) {
+      this.sourceNodes2.map((element: any) => {
+        this.selectedSourceNodes2.push(element.source_node);
+      });
+    } else {
+      this.selectedSourceNodes2 = [];
+    }
+    console.log("By selectedSourceNodes2: ", this.selectedSourceNodes2);
+
+    this.proceed();
     this.enableDisableProceedButton();
   }
 
