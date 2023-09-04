@@ -57,6 +57,8 @@ export class NetworkMapComponent implements OnInit {
   graphData: any = [];
   doFilterApply: Subject<any> = new Subject();  // ## P= Parent
   isNetworkMapFullScreen : boolean = false;
+  noDataFoundMap: boolean = false;
+
   constructor(
     private globalVariableService: GlobalVariableService,
     private nodeSelectsService: NodeSelectsService,
@@ -109,8 +111,11 @@ export class NetworkMapComponent implements OnInit {
     if (event == null) { // if not node right click node_id is reset
       this.globalVariableService.resetNode();
     }
-    if (_filterParams.source_node != undefined) {
+
+    // if (_filterParams.source_node != undefined) {
+      if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined) || ((_filterParams.nnrt_id2 != undefined && _filterParams.nnrt_id2 != "") && _filterParams.source_node2 != undefined)) {
       this.loadingMap = true;
+      this.noDataFoundMap = false;
 
       // this.filterParams = this.globalVariableService.getFilterParams();
       console.log("master map for filter: ", _filterParams);
@@ -207,8 +212,9 @@ export class NetworkMapComponent implements OnInit {
           this.loadingMap = false;
         }
       );
-    } else {
+    } else if (_filterParams.source_node != undefined) {
       console.log("go else: ");
+      this.noDataFoundMap = true;
       this.nodeData = [];
       this.edgeData = [];
       this.drawChart();

@@ -10,6 +10,9 @@
             <div class="overlay" *ngIf="loadingMap">
                 <img style="margin:185px 653px;" src="../../assets/images/loader_big.gif" />
             </div>
+            <div *ngIf="noDataFoundMap" class="bg-danger" style="color:#fff; text-align: center; font-weight: bold;">
+                Please Choose Pair Type and Source Node For Second Degree
+            </div>
 
             <!--<div class="table-responsive" *ngIf="nodesCheck">-->
             <div class="table-responsive">
