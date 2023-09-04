@@ -90,10 +90,10 @@
         <div class="row">
             <div class="col-md-12 bottam-buffer home_tiles">
                 <div class="m-1">
-                    <div class="alert alert-primary alert-dismissible fade show">
-                        <table id="articles_details_pmid" data-toolbar="#toolbar" data-search="true" data-show-export="true"
-                            data-show-columns="true" data-page-size="50" data-filter-control="true"
-                            data-page-list="[10, 25, 50, 100, All]">
+                    <div class="fade show">
+                        <table id="articles_details_pmid" data-toolbar="#toolbar" data-search="true"
+                            data-show-export="true" data-show-columns="true" data-page-size="50"
+                            data-filter-control="true" data-page-list="[10, 25, 50, 100, All]">
                             <thead>
                                 <tr>
                                     <th data-field="source" data-sortable="true" width="10%"
@@ -138,7 +138,7 @@
                 <div class="col-md-12 bottam-buffer home_tiles">
 
                     <div class="m-1">
-                        <div class="alert alert-primary alert-dismissible fade show">
+                        <div class="fade show">
 
                             <!-- <div *ngFor="let article of articleHere">
                             <p>PMID: {{article.pmid}}</p>
@@ -175,21 +175,29 @@
                                             data-filter-control="input">
                                             Edge Type
                                         </th>
-                                        <th data-field="sentence_btn" data-sortable="true" width="10%">
+                                        <th data-field="sentence_btn" data-sortable="false" width="10%">
                                             Evidence
                                         </th>
+                                        <!-- <th data-field="display_btn" data-sortable="false" width="10%">
+                                            Display
+                                        </th> -->
                                     </tr>
                                 </thead>
                             </table>
-                            <img class="text-center" src="../../assets/images/loader_big.gif" *ngIf="loaderArticle" />
+                            <div class="text-center" *ngIf="loaderArticle">
+                                <img src="../../assets/images/loader_big.gif" />
+                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="evidence_data_container">
-                <img class="text-center" src="../../assets/images/loader_big.gif" *ngIf="loaderEvidence" />
-                <div id="evidence_data" style="display:none; width: 100%;height: auto;"></div>
+
+            <div class="overlay" *ngIf="loaderEvidence">
+                <img style="margin:185px 653px;" src="../../assets/images/loader_big.gif" />
             </div>
+
+
         </div>
     </div>
 

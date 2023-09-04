@@ -278,6 +278,9 @@ export class EventDescriptionComponent implements OnInit {
   //   getArticles_callback(edgeNeId, sourceNode, destinationNode, edgeTypesID, this);
   //   //}
   // }
+  senetence_display(){
+    console.log("hereeeeee xxx");
+  }
 
   ArticlePopup(edgeNeId: any, sourceNode: string, destinationNode: string, edgeTypesID: number) {
     this.articleHere = [];
@@ -298,7 +301,8 @@ export class EventDescriptionComponent implements OnInit {
         temps["title"] = event.title;
         temps["edge_type"] = event.edge_type_name
         temps["ne_id"] = event.ne_id;
-        temps["sentence_btn"] = "<button class='btn btn-sm btn-primary' value='" + event.ne_id + "'>Sentences</button>";
+        temps["sentence_btn"] = "<button class='btn btn-sm btn-primary' id='" + event.ne_id + "'>Sentences</button><button class='btn bt-sm btn-secondary' style='display:none;background-color:#B765A3;border:1px solid #B765A3;'>Hide</button>";
+        //temps["display_btn"] = "<button class='btn bt-sm btn-secondary'>Hide</button>";
         this.articleList.push(temps);
       });
       jQuery('#articles_details').bootstrapTable({
@@ -318,93 +322,137 @@ export class EventDescriptionComponent implements OnInit {
           //console.log(field);//sentence_btn
           //console.log(value);//<button class='btn btn-sm btn-primary' value='8785438'>Sentences</button>
           //console.log(JSON.stringify(row));// ** entire row data
-          //console.log($element);
-          let sentences: any;
-          let html: string;
-          if (field == "sentence_btn") {
-            console.log(row.ne_id);
-            $("#evidence_data").show();
-            $("#evidence_data").html("");
-            this.loaderEvidence = true;
-            this.nodeSelectsService.getEvidenceData({ 'ne_id': row.ne_id }).subscribe((p: any) => {
-              sentences = p;
-              console.log(JSON.stringify(sentences));
-              if (sentences.evidence_data.length == 0) {
-                this.loaderEvidence = false;
-                $("#evidence_data").html("<div class='alert alert-danger'>No Evidence found in database!</div>");
-              } else {
-                html = "";
-                let e1_color: string;
-                let e2_color: string;
-                let sentence_text1: string;
-                let sentence_text2: string;
-                let sentence_text3: string;
-                let sentence_text4: string;
-                let sentence_text5: string;
 
-                for (let i = 0; i < sentences.evidence_data.length; i++) {
+          console.log("Sentence class container:-" + $($element).parent().next().attr("class"));
+          if ($($element).parent().next().attr("class") === undefined) {
+            //console.log($element);
+            let sentences: any;
+            let html: string;
+            let html_str: string;
+            let html_res: string;
+            
+            
+            if (field == "sentence_btn") {
 
-                  if (sentences.evidence_data[i].e1_type_name === "DISEASE_OR_SYMPTOM") {
-                    e1_color = "#118ab2";
-                  } else if (sentences.evidence_data[i].e1_type_name === "FUNCTIONAL_MOLECULE") {
-                    e1_color = "#118ab2";
-                  } else if (sentences.evidence_data[i].e1_type_name === "GENE_OR_GENE_PRODUCT") {
-                    e1_color = "#118ab2";
-                  } else if (sentences.evidence_data[i].e1_type_name === "ANATOMY") {
-                    e1_color = "#118ab2";
-                  } else if (sentences.evidence_data[i].e1_type_name === "MODEL") {
-                    e1_color = "#118ab2";
-                  } else {
-                    e1_color = "#000";
-                  }
-
-                  if (sentences.evidence_data[i].e2_type_name === "DISEASE_OR_SYMPTOM") {
-                    e2_color = "#118ab2";
-                  } else if (sentences.evidence_data[i].e2_type_name === "FUNCTIONAL_MOLECULE") {
-                    e2_color = "#118ab2";
-                  } else if (sentences.evidence_data[i].e2_type_name === "GENE_OR_GENE_PRODUCT") {
-                    e2_color = "#118ab2";
-                  } else if (sentences.evidence_data[i].e2_type_name === "ANATOMY") {
-                    e2_color = "#118ab2";
-                  } else if (sentences.evidence_data[i].e2_type_name === "MODEL") {
-                    e2_color = "#118ab2";
-                  } else {
-                    e2_color = "#000";
-                  }
-
-                  sentence_text1 = sentences.evidence_data[i].sentence;
-                  sentence_text2 = sentence_text1.replace("<E1>", "<mark style='color:#A8E890'>");
-                  sentence_text3 = sentence_text2.replace("</E1>", "</mark>");
-                  sentence_text4 = sentence_text3.replace("<E2>", "<mark style='color:#FF8787'>");
-                  sentence_text5 = sentence_text4.replace("</E2>", "</mark>");
-
-                  //console.log(sentence_text5);
-
-
-                  html = "<div class='card m-2'><div class='card-body'>";
-                  html += "<div class='row m-2'>";
-                  html += "<div class='col'><span style='color:" + e1_color + "'>" + sentences.evidence_data[i].gene_symbol_e1 + "</span>(" + sentences.evidence_data[i].e1_type_name + ")</div>";
-                  html += "<div class='col'>" + sentences.evidence_data[i].edge_name + "</div>";
-                  html += "<div class='col'><span style='color:" + e1_color + "'>" + sentences.evidence_data[i].gene_symbol_e2 + "</span>(" + sentences.evidence_data[i].e2_type_name + ")</div>";
-
-                  html += "<div class='col'> PMID: <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + sentences.evidence_data[i].pubmed_id + "'>" + sentences.evidence_data[i].pubmed_id + "</a></div>";
-
-                  html += "</div>";
-                  html += "<div>";
-                  html += "<div class='col'><p class='m-4'>" + sentence_text5 + "</p></div>";
-                  html += "</div>";
-                  html += "</div></div>";
-
-                  $("#evidence_data").append(html);
-
-                  console.log(JSON.stringify(sentences));
-
+              //console.log(row.ne_id);
+              
+              this.loaderEvidence = true;
+              this.nodeSelectsService.getEvidenceData({ 'ne_id': row.ne_id }).subscribe((p: any) => {
+                sentences = p;
+                console.log(JSON.stringify(sentences));
+                if (sentences.evidence_data.length == 0) {
                   this.loaderEvidence = false;
-                };//for
-                this.loaderEvidence = false;
-              }
-            });
+                  $($element).parent().after('<tr class="sentence_container"><td colspan="7"><div class="alert alert-danger">No Evidence found in database!</div></td></tr>');
+                  //$($element).children().eq(0).css({ "background-color": "#B765A3", "border": "1px solid #B765A3" });//effect in sentence button
+                  $($element).children().eq(0).hide(500);
+                  $($element).children().eq(1).show(600);
+                  $($element).parent().children().css({"background-color": "#A4A4A4","color":"#fff"});//change color of all tds of row
+                  this.loaderEvidence = false;
+                } else {
+                  html = "";
+                  html_str = "";
+                  html_res = "";
+                  let e1_color: string;
+                  let e2_color: string;
+                  let sentence_text1: string;
+                  let sentence_text2: string;
+                  let sentence_text3: string;
+                  let sentence_text4: string;
+                  let sentence_text5: string;
+
+                  for (let i = 0; i < sentences.evidence_data.length; i++) {
+
+                    if (sentences.evidence_data[i].e1_type_name === "DISEASE_OR_SYMPTOM") {
+                      e1_color = "#118ab2";
+                    } else if (sentences.evidence_data[i].e1_type_name === "FUNCTIONAL_MOLECULE") {
+                      e1_color = "#118ab2";
+                    } else if (sentences.evidence_data[i].e1_type_name === "GENE_OR_GENE_PRODUCT") {
+                      e1_color = "#118ab2";
+                    } else if (sentences.evidence_data[i].e1_type_name === "ANATOMY") {
+                      e1_color = "#118ab2";
+                    } else if (sentences.evidence_data[i].e1_type_name === "MODEL") {
+                      e1_color = "#118ab2";
+                    } else {
+                      e1_color = "#000";
+                    }
+
+                    if (sentences.evidence_data[i].e2_type_name === "DISEASE_OR_SYMPTOM") {
+                      e2_color = "#118ab2";
+                    } else if (sentences.evidence_data[i].e2_type_name === "FUNCTIONAL_MOLECULE") {
+                      e2_color = "#118ab2";
+                    } else if (sentences.evidence_data[i].e2_type_name === "GENE_OR_GENE_PRODUCT") {
+                      e2_color = "#118ab2";
+                    } else if (sentences.evidence_data[i].e2_type_name === "ANATOMY") {
+                      e2_color = "#118ab2";
+                    } else if (sentences.evidence_data[i].e2_type_name === "MODEL") {
+                      e2_color = "#118ab2";
+                    } else {
+                      e2_color = "#000";
+                    }
+
+                    sentence_text1 = sentences.evidence_data[i].sentence;
+                    sentence_text2 = sentence_text1.replace("<E1>", "<mark style='color:#A8E890'>");
+                    sentence_text3 = sentence_text2.replace("</E1>", "</mark>");
+                    sentence_text4 = sentence_text3.replace("<E2>", "<mark style='color:#FF8787'>");
+                    sentence_text5 = sentence_text4.replace("</E2>", "</mark>");
+
+                    console.log(sentence_text5);
+
+
+                    
+
+                    html_str = "<div class='m-2 border border-secondary'>";
+                    html_str += "<div class='row m-1'>";
+                    html_str += "<div class='col'><span style='color:" + e1_color + "'>" + sentences.evidence_data[i].gene_symbol_e1 + "</span>(" + sentences.evidence_data[i].e1_type_name + ")</div>";
+                    html_str += "<div class='col'>" + sentences.evidence_data[i].edge_name + "</div>";
+                    html_str += "<div class='col'><span style='color:" + e1_color + "'>" + sentences.evidence_data[i].gene_symbol_e2 + "</span>(" + sentences.evidence_data[i].e2_type_name + ")</div>";
+                    html_str += "<div class='col'> PMID: <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + sentences.evidence_data[i].pubmed_id + "'>" + sentences.evidence_data[i].pubmed_id + "</a></div>";
+                    html_str += "</div>";
+                    html_str += "<div>";
+
+                    html_str += "<div class='row m-1'>";
+                    html_str += "<div class='col'><p class='m-2'>" + sentence_text5 + "</p></div>";
+                    html_str += "</div>";
+                    html_str += "</div>";
+                    html_str += "</div>";
+
+
+                    html_res += html_str;
+                    this.loaderEvidence = false;
+                  };//for
+                  
+
+                  $($element).parent().after('<tr class="sentence_container"><td colspan="7">' + html_res + '</td></tr>');
+                 // $($element).children().eq(0).css({ "background-color": "#B765A3", "border": "1px solid #B765A3" });//change color of sentence button
+                  $($element).children().eq(0).hide(500);
+                  $($element).children().eq(1).show(600);
+                  $($element).parent().children().css({"background-color": "#A4A4A4","color":"#fff"});//change color of all tds of row
+                  
+                  
+                  this.loaderEvidence = false;
+                }
+              });
+            }
+          } else {
+            //$($element).parent().next().hide(700);
+            if($($element).parent().next().is(":visible")){
+              $($element).parent().next().hide(950);
+              $($element).children().eq(1).text("Show");
+            }else{
+              $($element).parent().next().show(950);
+              $($element).children().eq(1).text("Hide")
+            }
           }
+        },
+        onDblClickCell: (field: any, value: any, row: any, $element: any) => {
+          if($($element).parent().next().is(":visible")){
+            $($element).parent().next().hide(750);
+            $($element).children().eq(1).text("Show");
+          }else{
+            $($element).parent().next().show(750);
+            $($element).children().eq(1).text("Hide")
+          }
+          
         }
       });
       this.loaderArticle = false;
@@ -475,6 +523,7 @@ export class EventDescriptionComponent implements OnInit {
     if (this.filterParams.source_node != undefined) {
       // this.loadingDesc = true;
       this.isloading = true;
+
       this.nodeSelectsService.getMasterLists(this.filterParams).subscribe(
         data => {
           //console.log("data: ", data);
@@ -524,7 +573,7 @@ export class EventDescriptionComponent implements OnInit {
               // console.log("pmidCount Inside: ", this.resultPMID.pmidCount[0]);
 
               // temps["pmidCount"] = this.pmidCount;
-              temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary text-white' style='background-color:#B765A3 !important'>" + this.pmidCount + "</span></button> &nbsp;";
+              temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary text-white' style='background-color:#B765A3 !important;'>" + this.pmidCount + "</span></button> &nbsp;";
               // temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Edge Type Article </button> &nbsp;";
 
               // temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary bg-warning text-dark'>" + this.pmidCount + "</span></button> &nbsp;";
