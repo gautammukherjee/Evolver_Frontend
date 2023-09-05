@@ -128,7 +128,7 @@ export class FilterDestinationNodeComponent implements OnInit {
     this.destinationNodesLength = 0;
     // this.currentPage = 1;
     if (this.filterParams.source_node != undefined) {
-      this.loading = true;      
+      this.loading = true;
 
       this.nodeSelectsService.getDestinationNode(this.filterParams)
         .subscribe(

@@ -78,7 +78,7 @@ export class CtInvestigatorRelsByStatsComponent {
             temps["investigator_id"] = event.investigator_id;
             temps["investigator_name"] = event.investigator_name;
             temps["count_nct_ids"] = event.count_nct_ids;
-            // temps["count_nct_ids"] = event.count_nct_ids;
+            temps["count_pm_ids"] = event.count_pm_ids;
             this.ctInvestigatorRelsByStatsDetailsData.push(temps);
           });
           this.bootstrapTableChartInvestigatorName();
@@ -95,7 +95,7 @@ export class CtInvestigatorRelsByStatsComponent {
   }
 
   bootstrapTableChartInvestigatorName() {
-    jQuery('#CT_Investigator_name_data').bootstrapTable({
+    jQuery('#CT_Investigator_rels_data').bootstrapTable({
       bProcessing: true,
       bServerSide: true,
       pagination: true,
@@ -115,7 +115,7 @@ export class CtInvestigatorRelsByStatsComponent {
       // onClickRow: (field: any, row: any, $element: any) => {
       // },
     });
-    jQuery('#CT_Investigator_name_data').bootstrapTable("load", this.ctInvestigatorRelsByStatsDetailsData);
+    jQuery('#CT_Investigator_rels_data').bootstrapTable("load", this.ctInvestigatorRelsByStatsDetailsData);
   }
 
 

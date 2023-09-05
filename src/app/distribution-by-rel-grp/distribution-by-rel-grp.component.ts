@@ -82,8 +82,7 @@ export class DistributionByRelGrpComponent implements OnInit {
   getDistributionByRelGroup(_filterParams: any) {
 
     // if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined) || (_filterParams.nnrt_id2 != undefined && _filterParams.source_node2!=undefined)) {
-
-    if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined) || ((_filterParams.nnrt_id2 != undefined && _filterParams.nnrt_id2 != "") && _filterParams.source_node2 != undefined)) {
+    if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined && _filterParams.destination_node2 == undefined) || ((_filterParams.source_node2 != undefined || _filterParams.destination_node2 != undefined) && (_filterParams.nnrt_id2 != undefined && _filterParams.nnrt_id2 != ""))) {
       console.log("new Filters by rel group charts IN: ", this.filterParams);
       this.loadingChart = true;
       this.noDataFound = false;
