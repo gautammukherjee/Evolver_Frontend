@@ -244,7 +244,7 @@ export class DashboardComponent implements OnInit {
 
   deleteSecondDegree(clickOn:any){
     this.showLevels = !this.showLevels;
-    this.currentLevel = this.currentLevel - 1;
+    // this.currentLevel = this.currentLevel - 1;
     
     this.doUpdateFilterDataApply.next({ clickOn: clickOn });
     this.globalVariableService.resetfiltersForLevel2();
