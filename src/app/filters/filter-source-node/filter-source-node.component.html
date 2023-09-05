@@ -59,29 +59,40 @@
             </div> -->
 
 
-            <div class="mb-1 form-check" *ngFor="let sourceNode of finalGroupedBySourceNode; let i = index;">
-              <!-- <a class="list-group-item" data-toggle="collapse" data-target="#{{sourceNode.source_node}}"
-                data-parent="#menu"> -->
-              <!-- <div (click)="toggle(i)"> -->
-              <input class="form-check-input border border-secondary" type="checkbox" name="sourceNodes"
-                [value]="sourceNode" [checked]="selectedSourceNodes.indexOf(sourceNode.source_node)>-1 "
-                (change)="selectSourceNode(sourceNode,$event)">
-              <label class="form-check-label">
-                <span>{{sourceNode.source_node_name}}</span>
-              </label>
-              <!-- <i [ngClass]="getClass(toggled[i])"></i> -->
-              <!-- </div> -->
-              <!-- <div class="content" [class.closed]="toggled[i]" id="{{sourceNode.source_node}}" class=""> -->
-              <div>
-                <div *ngFor="let subSourceNode of sourceNode.subcategory_syn_node_name">
-                  <a class="list-group-item small">
-                    <span class="glyphicon glyphicon-chevron-right"></span><span
-                      class="badge bg-secondary">{{subSourceNode}}</span>
-                  </a>
+            <div class="accordion source-node-accordion" id="accordionSource">
+              <div class="accordion-item" *ngFor="let sourceNode of finalGroupedBySourceNode; let i = index;">
+                <h2 class="accordion-header" [id]="'heading'+i">
+                  <button class="accordion-button" [ngClass]="{ 'collapsed': i != 0 }" type="button"
+                    data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+i" aria-expanded="true"
+                    [attr.aria-controls]="'collapse'+i">
+                    <input class="form-check-input border border-secondary" type="checkbox" name="sourceNodes"
+                      [value]="sourceNode" [checked]="selectedSourceNodes.indexOf(sourceNode.source_node)>-1 "
+                      (change)="selectSourceNode(sourceNode,$event)">
+                    <label class="form-check-label">
+                      <span>&nbsp;{{sourceNode.source_node_name}}</span>
+                    </label>
+                  </button>
+                </h2>
+                <div [id]="'collapse'+i" class="accordion-collapse collapse" [ngClass]="{ 'show': i == 0 }"
+                  [attr.aria-labelledby]="'heading'+i" data-bs-parent="#accordionSource">
+                  <div class="accordion-body">
+                    <div class="subcategory-badges">
+                      <div *ngFor="let subSourceNode of sourceNode.subcategory_syn_node_name">
+                        <a class="list-group-item small">
+                          <span class="glyphicon glyphicon-chevron-right"></span><span
+                            class="badge bg-secondary">{{subSourceNode}}</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <!-- </div> -->
             </div>
+
+
+            <!----
+            
+          -->
 
           </div>
         </div>
