@@ -12,8 +12,8 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-                <div class="ml-4">
-                    <div class="header-btn">
+                <div class="ms-4">
+                    <div class="header-btn" [routerLinkActive]="'active'">
                         <a class="nav-link active mr-1 fs-6 px-3 header-btn-a" [routerLink]="['/index']">
                             <strong>
                                 <!-- <i class="bi bi-house"></i> -->
@@ -22,12 +22,12 @@
                         </a>
                     </div>
 
-                    <div class="header-btn">
+                    <div class="header-btn" [routerLinkActive]="'active'">
                         <a class="nav-link active mr-1 fs-6 px-3 header-btn-a"
                             [routerLink]="['/dashboard']"><strong>Knowledge Graph</strong></a>
                     </div>
 
-                    <div class="header-btn">
+                    <div class="header-btn" [routerLinkActive]="'active'">
                         <a class="nav-link active mr-1 fs-6 px-3 header-btn-a"
                             [routerLink]="['/bio_infomatics']"><strong>Gene
                                 Analysis</strong></a>
