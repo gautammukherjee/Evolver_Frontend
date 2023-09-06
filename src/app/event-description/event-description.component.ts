@@ -106,7 +106,7 @@ export class EventDescriptionComponent implements OnInit {
         data => {
           //console.log("data: ", data);
           this.resultNodes = data;
-          this.masterListsDataLength = this.resultNodes.masterListsDataTotal.length;
+          this.masterListsDataLength = this.resultNodes.masterListsDataTotal[0].total;
           console.log("Total datas: ", this.masterListsDataLength);
         }
       )

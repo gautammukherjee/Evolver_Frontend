@@ -93,12 +93,11 @@ export class FilterDestinationNodeComponent implements OnInit {
         this.filterParams = this.globalVariableService.getFilterParams();
         console.log("destination Level 2:2 ", event.clickOn);
         // if (this.firstTimeCheck === false) // Node select only one time reload when we choose destination nodes are selected
-        // this.getDestinationNode();
+        this.getDestinationNode();
 
-        setTimeout(() => {
-          this.getDestinationNode();
-        }, 1000);
-
+        // setTimeout(() => {
+        //   this.getDestinationNode();
+        // }, 1000);
         // this.debounce(() => {
         //   return this.getDestinationNode();
         // });
@@ -128,7 +127,7 @@ export class FilterDestinationNodeComponent implements OnInit {
     this.destinationNodesLength = 0;
     // this.currentPage = 1;
     if (this.filterParams.source_node != undefined) {
-      this.loading = true;
+      this.loading = true;      
 
       this.nodeSelectsService.getDestinationNode(this.filterParams)
         .subscribe(
