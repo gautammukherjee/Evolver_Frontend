@@ -22,6 +22,7 @@ export class EventDescriptionComponent implements OnInit {
   result: any = [];
   resultPMIDLists: any = [];
   resultNodes: any = [];
+  resultNodesTotal: any = [];
   resultPMID: any = [];
   pmidCount: any;
 
@@ -105,9 +106,10 @@ export class EventDescriptionComponent implements OnInit {
       this.nodeSelectsService.getAllRecords(this.filterParams).subscribe(
         data => {
           //console.log("data: ", data);
-          this.resultNodes = data;
-          this.masterListsDataLength = this.resultNodes.masterListsDataTotal[0].total;
-          console.log("Total datas: ", this.masterListsDataLength);
+          this.resultNodesTotal = data;
+          console.log("Total datas1: ", this.resultNodesTotal);
+          this.masterListsDataLength = this.resultNodesTotal.masterListsDataTotal[0].total;
+          console.log("Total datas2: ", this.masterListsDataLength);
         }
       )
     }
@@ -158,7 +160,7 @@ export class EventDescriptionComponent implements OnInit {
             temps["edgeTypesID"] = edgeTypeIdsPost;
             temps["edgeNeId"] = edgeTypeNeIdsPost;
 
-            this.nodeSelectsService.getEdgePMIDCount({ 'edge_type_pmid': edgeTypeNeIdsPost }).subscribe((p: any) => {
+            this.nodeSelectsService.getEdgePMIDCount({ 'edge_type_pmid': edgeTypeNeIdsPost, 'edge_type_id': (event.level == 1? this.filterParams['edge_type_id']:this.filterParams['edge_type_id2']) }).subscribe((p: any) => {
               this.resultPMID = p;
               this.pmidCount = this.resultPMID.pmidCount[0]['pmid_count'];
               // console.log("pmidCount: ", this.resultPMID.pmidCount[0]);
@@ -221,7 +223,7 @@ export class EventDescriptionComponent implements OnInit {
         if ($element == "edgeNeCount") {
           this.loaderArticle = true;
           this.modalRef = this.modalService.open(this.articleModal_Detail, { size: 'xl', keyboard: false, backdrop: 'static' });
-          this.ArticlePopup(field.edgeNeId, field.sourcenode_name, field.destinationnode_name, field.edgeTypesID);
+          this.ArticlePopup(field.edgeNeId, field.sourcenode_name, field.destinationnode_name, field.edgeTypesID, field.level);
         }
       },
     });
@@ -282,18 +284,21 @@ export class EventDescriptionComponent implements OnInit {
     console.log("hereeeeee xxx");
   }
 
-  ArticlePopup(edgeNeId: any, sourceNode: string, destinationNode: string, edgeTypesID: number) {
+  ArticlePopup(edgeNeId: any, sourceNode: string, destinationNode: string, edgeTypesID: number, level:number) {
     this.articleHere = [];
     const edgeNeIdArr = edgeNeId.split(",");
     //console.log(typeof edgeNeIdArr + edgeNeIdArr +edgeNeIdArr[0]);
     var pubmedBaseUrl = "https://www.ncbi.nlm.nih.gov/pubmed/";
-    this.nodeSelectsService.getEdgeTypeSentencePMIDLists({ 'ne_ids': edgeNeIdArr }).subscribe((p: any) => {
+
+    this.nodeSelectsService.getEdgeTypeSentencePMIDLists({ 'ne_ids': edgeNeIdArr, 'edge_type_id': (level == 1? this.filterParams['edge_type_id']:this.filterParams['edge_type_id2']) }).subscribe((p: any) => {
       this.result = p;
       console.log(this.result);
       this.articleHere = this.result.pmidListsSentence;
       this.articleList = [];
+      var i =1;
       this.articleHere.forEach((event: any) => {
         var temps: any = {};
+        temps["id"] = i;
         temps["source"] = sourceNode;
         temps["destination"] = destinationNode;
         temps["pmid"] = "<a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + event.pmid + "'>" + event.pmid + "</a>";
@@ -303,6 +308,7 @@ export class EventDescriptionComponent implements OnInit {
         temps["ne_id"] = event.ne_id;
         temps["sentence_btn"] = "<button class='btn btn-sm btn-primary' id='" + event.ne_id + "'>Sentences</button><button class='btn bt-sm btn-secondary' style='display:none;background-color:#B765A3;border:1px solid #B765A3;'>Hide</button>";
         //temps["display_btn"] = "<button class='btn bt-sm btn-secondary'>Hide</button>";
+        i++
         this.articleList.push(temps);
       });
       jQuery('#articles_details').bootstrapTable({
