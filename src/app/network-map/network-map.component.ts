@@ -233,10 +233,11 @@ export class NetworkMapComponent implements OnInit {
       nodeSpacing: 10,
       spacingFactor: 152,
       fit: true,
-      padding: 20,
+      padding: 30,
       randomize: false,
       componentSpacing: 40,
-      nodeRepulsion: 400000,
+      nodeRepulsion: 2048,
+      // nodeRepulsion: function( node ){ return 2048; },
       edgeElasticity: 100,
       nestingFactor: 5,
       gravity: 1,
@@ -246,7 +247,8 @@ export class NetworkMapComponent implements OnInit {
       minTemp: 1.0,
       animate: false,
       animationThreshold: 250,
-      boundingBox: { x1: 0, y1: 0, w: 1000, h: 1000 }
+      boundingBox: { x1: 0, y1: 0, w: 1000, h: 1000 },
+      nodeDimensionsIncludeLabels: false,
     };
 
     // this.graphData = {
