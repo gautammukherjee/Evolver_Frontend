@@ -162,7 +162,7 @@ export class EventDescriptionComponent implements OnInit {
             temps["edgeTypesID"] = edgeTypeIdsPost;
             temps["edgeNeId"] = edgeTypeNeIdsPost;
 
-            this.nodeSelectsService.getEdgePMIDCount({ 'edge_type_pmid': edgeTypeNeIdsPost, 'edge_type_id': (event.level == 1? this.filterParams['edge_type_id']:this.filterParams['edge_type_id2']) }).subscribe((p: any) => {
+            this.nodeSelectsService.getEdgePMIDCount({ 'edge_type_pmid': edgeTypeNeIdsPost, 'edge_type_id': (event.level == 1 ? this.filterParams['edge_type_id'] : this.filterParams['edge_type_id2']) }).subscribe((p: any) => {
               this.resultPMID = p;
               this.pmidCount = this.resultPMID.pmidCount[0]['pmid_count'];
               // console.log("pmidCount: ", this.resultPMID.pmidCount[0]);
@@ -282,22 +282,22 @@ export class EventDescriptionComponent implements OnInit {
   //   getArticles_callback(edgeNeId, sourceNode, destinationNode, edgeTypesID, this);
   //   //}
   // }
-  senetence_display(){
+  senetence_display() {
     console.log("hereeeeee xxx");
   }
 
-  ArticlePopup(edgeNeId: any, sourceNode: string, destinationNode: string, edgeTypesID: number, level:number) {
+  ArticlePopup(edgeNeId: any, sourceNode: string, destinationNode: string, edgeTypesID: number, level: number) {
     this.articleHere = [];
     const edgeNeIdArr = edgeNeId.split(",");
     //console.log(typeof edgeNeIdArr + edgeNeIdArr +edgeNeIdArr[0]);
     var pubmedBaseUrl = "https://www.ncbi.nlm.nih.gov/pubmed/";
 
-    this.nodeSelectsService.getEdgeTypeSentencePMIDLists({ 'ne_ids': edgeNeIdArr, 'edge_type_id': (level == 1? this.filterParams['edge_type_id']:this.filterParams['edge_type_id2']) }).subscribe((p: any) => {
+    this.nodeSelectsService.getEdgeTypeSentencePMIDLists({ 'ne_ids': edgeNeIdArr, 'edge_type_id': (level == 1 ? this.filterParams['edge_type_id'] : this.filterParams['edge_type_id2']) }).subscribe((p: any) => {
       this.result = p;
       console.log(this.result);
       this.articleHere = this.result.pmidListsSentence;
       this.articleList = [];
-      var i =1;
+      var i = 1;
       this.articleHere.forEach((event: any) => {
         var temps: any = {};
         temps["id"] = i;
@@ -326,35 +326,38 @@ export class EventDescriptionComponent implements OnInit {
         stickyHeader: true,
         showExport: true,
         data: this.articleList,
+        exportOptions: {
+          ignoreColumn: ["sentence_btn"]
+        },
         onClickCell: (field: any, value: any, row: any, $element: any) => {
           //console.log(field);//sentence_btn
           //console.log(value);//<button class='btn btn-sm btn-primary' value='8785438'>Sentences</button>
           //console.log(JSON.stringify(row));// ** entire row data
 
-          console.log("Sentence class container:-" + $($element).parent().next().attr("class"));
+          //console.log("Sentence class container:-" + $($element).parent().next().attr("class"));
           if ($($element).parent().next().attr("class") === undefined) {
             //console.log($element);
             let sentences: any;
             let html: string;
             let html_str: string;
             let html_res: string;
-            
-            
+
+
             if (field == "sentence_btn") {
 
               //console.log(row.ne_id);
-              
+
               this.loaderEvidence = true;
               this.nodeSelectsService.getEvidenceData({ 'ne_id': row.ne_id }).subscribe((p: any) => {
                 sentences = p;
-                console.log(JSON.stringify(sentences));
+                //console.log(JSON.stringify(sentences));
                 if (sentences.evidence_data.length == 0) {
                   this.loaderEvidence = false;
                   $($element).parent().after('<tr class="sentence_container"><td colspan="8"><div class="alert alert-danger">No Evidence found in database!</div></td></tr>');
                   //$($element).children().eq(0).css({ "background-color": "#B765A3", "border": "1px solid #B765A3" });//effect in sentence button
                   $($element).children().eq(0).hide(500);
                   $($element).children().eq(1).show(600);
-                  $($element).parent().children().css({"background-color": "#A4A4A4","color":"#fff"});//change color of all tds of row
+                  $($element).parent().children().css({ "background-color": "#A4A4A4", "color": "#fff" });//change color of all tds of row
                   this.loaderEvidence = false;
                 } else {
                   html = "";
@@ -363,10 +366,10 @@ export class EventDescriptionComponent implements OnInit {
                   let e1_color: string;
                   let e2_color: string;
                   let sentence_text1: string;
-                  let sentence_text2: string;
-                  let sentence_text3: string;
-                  let sentence_text4: string;
-                  let sentence_text5: string;
+                  // let sentence_text2: string;
+                  // let sentence_text3: string;
+                  // let sentence_text4: string;
+                  // let sentence_text5: string;
 
                   for (let i = 0; i < sentences.evidence_data.length; i++) {
 
@@ -399,69 +402,81 @@ export class EventDescriptionComponent implements OnInit {
                     }
 
                     sentence_text1 = sentences.evidence_data[i].sentence;
-                    sentence_text2 = sentence_text1.replace("<E1>", "<mark style='color:#A8E890'>");
-                    sentence_text3 = sentence_text2.replace("</E1>", "</mark>");
-                    sentence_text4 = sentence_text3.replace("<E2>", "<mark style='color:#FF8787'>");
-                    sentence_text5 = sentence_text4.replace("</E2>", "</mark>");
+                    sentence_text1 = sentence_text1.replace("<E1>", "<mark style='color:#A8E890'>");
+                    sentence_text1 = sentence_text1.replace("</E1>", "</mark>");
+                    sentence_text1 = sentence_text1.replace("<E2>", "<mark style='color:#FF8787'>");
+                    sentence_text1 = sentence_text1.replace("</E2>", "</mark>");
 
-                    console.log(sentence_text5);
+                    //console.log(sentence_text1);
 
 
-                    
 
-                    html_str = "<div class='m-2 border border-secondary'>";
-                    html_str += "<div class='row m-1'>";
-                    html_str += "<div class='col'><span style='color:" + e1_color + "'>" + sentences.evidence_data[i].gene_symbol_e1 + "</span>(" + sentences.evidence_data[i].e1_type_name + ")</div>";
-                    html_str += "<div class='col'>" + sentences.evidence_data[i].edge_name + "</div>";
-                    html_str += "<div class='col'><span style='color:" + e1_color + "'>" + sentences.evidence_data[i].gene_symbol_e2 + "</span>(" + sentences.evidence_data[i].e2_type_name + ")</div>";
-                    html_str += "<div class='col'> PMID: <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + sentences.evidence_data[i].pubmed_id + "'>" + sentences.evidence_data[i].pubmed_id + "</a></div>";
-                    html_str += "</div>";
-                    html_str += "<div>";
 
-                    html_str += "<div class='row m-1'>";
-                    html_str += "<div class='col'><p class='m-2'>" + sentence_text5 + "</p></div>";
-                    html_str += "</div>";
-                    html_str += "</div>";
-                    html_str += "</div>";
+                    // html_str = "<div class='m-2 border border-secondary'>";
+                    // html_str += "<div class='row m-1'>";
+                    // html_str += "<div class='col'><span style='color:" + e1_color + "'>" + sentences.evidence_data[i].gene_symbol_e1 + "</span>(" + sentences.evidence_data[i].e1_type_name + ")</div>";
+                    // html_str += "<div class='col'>" + sentences.evidence_data[i].edge_name + "</div>";
+                    // html_str += "<div class='col'><span style='color:" + e1_color + "'>" + sentences.evidence_data[i].gene_symbol_e2 + "</span>(" + sentences.evidence_data[i].e2_type_name + ")</div>";
+                    // html_str += "<div class='col'> PMID: <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + sentences.evidence_data[i].pubmed_id + "'>" + sentences.evidence_data[i].pubmed_id + "</a></div>";
+                    // html_str += "</div>";
+                    // html_str += "<div>";
 
+                    // html_str += "<div class='row m-1'>";
+                    // html_str += "<div class='col'><p class='m-2'>" + sentence_text1 + "</p></div>";
+                    // html_str += "</div>";
+                    // html_str += "</div>";
+                    // html_str += "</div>";
+
+                    html_str = "<table width='100%' border='1' cellpadding='2'>";
+                    html_str += "<tr>";
+                    html_str += "<td width='30%'><span style='color:" + e1_color + "'>" + sentences.evidence_data[i].gene_symbol_e1 + "</span>(" + sentences.evidence_data[i].e1_type_name + ")</td>";
+                    html_str += "<td  width='20%'>" + sentences.evidence_data[i].edge_name + "</td>";
+                    html_str += "<td  width='30%'><span style='color:" + e1_color + "'>" + sentences.evidence_data[i].gene_symbol_e2 + "</span>(" + sentences.evidence_data[i].e2_type_name + ")</td>";
+                    html_str += "<td  width='20%'>PMID: <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + sentences.evidence_data[i].pubmed_id + "'>" + sentences.evidence_data[i].pubmed_id + "</a></td>"
+                    html_str += "</tr>";
+
+                    html_str += "<tr>";
+                    html_str += "<td colspan='4'>" + sentence_text1 + "</td>";
+                    html_str += "</tr>";
+                    html_str += "</table>";
 
                     html_res += html_str;
                     this.loaderEvidence = false;
                   };//for
-                  
+
 
                   $($element).parent().after('<tr class="sentence_container"><td colspan="8">' + html_res + '</td></tr>');
-                 // $($element).children().eq(0).css({ "background-color": "#B765A3", "border": "1px solid #B765A3" });//change color of sentence button
+                  // $($element).children().eq(0).css({ "background-color": "#B765A3", "border": "1px solid #B765A3" });//change color of sentence button
                   $($element).children().eq(0).hide(500);
                   $($element).children().eq(1).show(600);
-                  $($element).parent().children().css({"background-color": "#A4A4A4","color":"#fff"});//change color of all tds of row
-                  
-                  
+                  $($element).parent().children().css({ "background-color": "#A4A4A4", "color": "#fff" });//change color of all tds of row
+
                   this.loaderEvidence = false;
                 }
               });
             }
           } else {
             //$($element).parent().next().hide(700);
-            if($($element).parent().next().is(":visible")){
+            if ($($element).parent().next().is(":visible")) {
               $($element).parent().next().hide(950);
               $($element).children().eq(1).text("Show");
-            }else{
+            } else {
               $($element).parent().next().show(950);
               $($element).children().eq(1).text("Hide")
             }
           }
         },
-        onDblClickCell: (field: any, value: any, row: any, $element: any) => {
-          if($($element).parent().next().is(":visible")){
-            $($element).parent().next().hide(750);
-            $($element).children().eq(1).text("Show");
-          }else{
-            $($element).parent().next().show(750);
-            $($element).children().eq(1).text("Hide")
-          }
-          
-        }
+        // onDblClickCell: (field: any, value: any, row: any, $element: any) => {
+        //   if ($($element).parent().next().is(":visible")) {
+        //     $($element).parent().next().hide(750);
+        //     $($element).children().eq(1).text("Show");
+        //   } else {
+        //     $($element).parent().next().show(750);
+        //     $($element).children().eq(1).text("Hide")
+        //   }
+
+        // }
+        
       });
       this.loaderArticle = false;
     });
