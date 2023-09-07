@@ -350,7 +350,7 @@ export class EventDescriptionComponent implements OnInit {
                 console.log(JSON.stringify(sentences));
                 if (sentences.evidence_data.length == 0) {
                   this.loaderEvidence = false;
-                  $($element).parent().after('<tr class="sentence_container"><td colspan="7"><div class="alert alert-danger">No Evidence found in database!</div></td></tr>');
+                  $($element).parent().after('<tr class="sentence_container"><td colspan="8"><div class="alert alert-danger">No Evidence found in database!</div></td></tr>');
                   //$($element).children().eq(0).css({ "background-color": "#B765A3", "border": "1px solid #B765A3" });//effect in sentence button
                   $($element).children().eq(0).hide(500);
                   $($element).children().eq(1).show(600);
@@ -430,7 +430,7 @@ export class EventDescriptionComponent implements OnInit {
                   };//for
                   
 
-                  $($element).parent().after('<tr class="sentence_container"><td colspan="7">' + html_res + '</td></tr>');
+                  $($element).parent().after('<tr class="sentence_container"><td colspan="8">' + html_res + '</td></tr>');
                  // $($element).children().eq(0).css({ "background-color": "#B765A3", "border": "1px solid #B765A3" });//change color of sentence button
                   $($element).children().eq(0).hide(500);
                   $($element).children().eq(1).show(600);
