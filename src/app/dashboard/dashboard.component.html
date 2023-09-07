@@ -63,17 +63,17 @@
 
             </div>
 
-            <div class="add-level-handler pe-2 pt-1 ml-4 mr-4" style="height: 38px;">
+            <div class="add-level-handler pe-2 pt-1 ml-4 mr-4" style="height: 27px;">
                 <div class="float-start">
-                    &nbsp;&nbsp;&nbsp;<button class="btn btn-light btn-sm" (click)="onAddLevel()"
+                    &nbsp;&nbsp;&nbsp;<button class="btn btn-light btn-sm btn-custom-sm" (click)="onAddLevel()"
                         [disabled]="maxLevel === currentLevel || !isSourceNodes">+ Add Level</button>
-                    <button class="btn btn-light btn-sm ms-2" *ngIf="currentLevel > 1"
+                    <button class="btn btn-light btn-sm ms-2 btn-custom-sm" *ngIf="currentLevel > 1"
                         (click)="onToggleLevel()">{{showLevels == false ? 'Show' : 'Hide'}} Level</button>
                 </div>
                 <div class="float-end">
-                    <button class="btn btn-sm ms-2" style="background-color: #B765A3;color: #fff;"
+                    <button class="btn btn-sm ms-2 btn-custom-sm" style="background-color: #B765A3;color: #fff;"
                         (click)="resetAllFilters()">Reset</button>&nbsp;
-                    <button class="btn btn-sm" style="background-color: #B765A3;color: #fff; border:1px solid #B765A3;"
+                    <button class="btn btn-sm btn-custom-sm" style="background-color: #B765A3;color: #fff; border:1px solid #B765A3;"
                         [disabled]="!isSourceNodes" (click)="onSubmit()">Submit</button>
                 </div>
             </div>

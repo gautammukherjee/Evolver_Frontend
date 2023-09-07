@@ -25,7 +25,7 @@
                     <div class="table-responsive custom-fixed-header-table"
                         [ngClass]="toggleLevels == false ? 'hiddenLevels' : currentLevel == '1' ? 'level1' : currentLevel == 2 ? 'level2' : 'level3'">
                         
-                        <div *ngIf="masterListsDataLength">Total Records: {{masterListsDataLength}}</div>
+                        <div *ngIf="masterListsDataLength" style="margin-bottom: -34px;">Total Records: {{masterListsDataLength}}</div>
                         
                         <table id="showEventDescription" data-toolbar="#toolbar" data-search="true"
                             data-show-export="true" data-show-columns="true" data-page-size="10"
@@ -74,6 +74,8 @@
         </div>
 
     </div>
+
+    <button class="btn btn-primary" (click)="gotoPageTop()">Go to top</button>
     <div class="text-center" *ngIf="isloading"><img src="./assets/images/spinner_small_loader.gif"></div>
 
 </div>
@@ -199,8 +201,10 @@
             <div class="overlay" *ngIf="loaderEvidence">
                 <img style="margin:185px 653px;" src="../../assets/images/loader_big.gif" />
             </div>
+        </div>
 
-
+        <div class="modal-footer">
+            <a class="btn btn-primary " (click)="scrollTop()">Go to top</a>
         </div>
     </div>
 

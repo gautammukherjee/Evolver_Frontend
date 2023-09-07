@@ -89,10 +89,10 @@ h2 {
             margin-right: 5px;
 
             button {
-                padding: 10px 13px;
+                padding: 3px 13px;
                 background-color: #c4d1d9;
                 color: #000;
-                font-size: 15px;
+                font-size: 14px;
 
                 &.active {
                     background-color: #B765A3;
@@ -101,4 +101,8 @@ h2 {
             }
         }
     }
+}
+
+.btn-custom-sm{
+    padding:0px 10px;
 }
