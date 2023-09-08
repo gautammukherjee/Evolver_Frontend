@@ -52,6 +52,7 @@ export class FilterDestinationNodeComponent implements OnInit {
   // currentPage: number = 1;
   itemsPerPage: number = 500;
   showAutoSuggest: boolean = false;
+  distinctDestinationNodesData: any = [];
 
   constructor(
     private nodeSelectsService: NodeSelectsService,
@@ -117,17 +118,19 @@ export class FilterDestinationNodeComponent implements OnInit {
     this.destinationNodes = [];
     this.selectedDestinationNodes = [];
     this.searchInput = '';
-    this.destinationNodesLength = 0;
+    this.destinationNodesLength = [];
+    this.distinctDestinationNodesData = [];
   }
 
   getDestinationNode() {
     // this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
     this.filterParams = this.globalVariableService.getFilterParams();
     // this.selectedDestinationNodes = []
-    this.destinationNodesLength = 0;
+    this.destinationNodesLength = [];
+    this.distinctDestinationNodesData = [];
     // this.currentPage = 1;
     if (this.filterParams.source_node != undefined) {
-      this.loading = true;      
+      this.loading = true;
 
       this.nodeSelectsService.getDestinationNode(this.filterParams)
         .subscribe(
@@ -142,10 +145,10 @@ export class FilterDestinationNodeComponent implements OnInit {
               destinationID.push(event.destination_node);
             });
             console.log("destinationID: ", destinationID);
-            const distinctData = [...new Set(destinationID.map((x: any) => x))];
-            console.log("destinationNodes res: ", distinctData);
+            this.distinctDestinationNodesData = [...new Set(destinationID.map((x: any) => x))];
+            console.log("destinationNodes res: ", this.distinctDestinationNodesData);
 
-            this.globalVariableService.setSelectedAllForCTDestinationNodes(distinctData);
+            this.globalVariableService.setSelectedAllForCTDestinationNodes(this.distinctDestinationNodesData);
             this.selectedAllForCTDestinationNodes = Array.from(this.globalVariableService.getSelectedAllForCTDestinationNodes());
             this.filterParams = this.globalVariableService.getFilterParams();
             console.log("new new Filters all select DESTINATION: ", this.filterParams);
@@ -165,7 +168,8 @@ export class FilterDestinationNodeComponent implements OnInit {
     } else {
       console.log("no checked data")
       this.destinationNodes = [];
-      this.destinationNodesLength = 0;
+      this.destinationNodesLength = [];
+      this.distinctDestinationNodesData = [];
       this.globalVariableService.resetfilters();
     }
   }
@@ -195,9 +199,9 @@ export class FilterDestinationNodeComponent implements OnInit {
             for (var i = 0; i < this.result.destinationNodeRecords.length; i++) {
               if ((this.result.destinationNodeRecords[i][searchField]).toLowerCase() == (this.searchInput).toLowerCase()) {
                 results1.push(this.result.destinationNodeRecords[i]);
-              }else if ((this.result.destinationNodeRecords[i][searchFieldSyn]).toLowerCase() == (this.searchInput).toLowerCase()) {
+              } else if ((this.result.destinationNodeRecords[i][searchFieldSyn]).toLowerCase() == (this.searchInput).toLowerCase()) {
                 results2.push(this.result.destinationNodeRecords[i]);
-              }else{
+              } else {
                 results3.push(this.result.destinationNodeRecords[i]);
               }
             }

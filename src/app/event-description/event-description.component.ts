@@ -62,7 +62,7 @@ export class EventDescriptionComponent implements OnInit {
   notEmptyPost: boolean = true;
   notscrolly: boolean = true;
   currentPage: number = 1;
-  itemsPerPage: number = 10;
+  itemsPerPage: number = 2;
   public isloading: boolean = false;
   loaderEvidence = false;
 
@@ -108,8 +108,8 @@ export class EventDescriptionComponent implements OnInit {
           //console.log("data: ", data);
           this.resultNodesTotal = data;
           console.log("Total datas1: ", this.resultNodesTotal);
-          console.log("Total datas2: ", this.resultNodesTotal.masterListsDataTotal);
-          console.log("Total datas3: ", this.resultNodesTotal.masterListsDataTotal[0]);
+          // console.log("Total datas2: ", this.resultNodesTotal.masterListsDataTotal);
+          // console.log("Total datas3: ", this.resultNodesTotal.masterListsDataTotal[0]);
           this.masterListsDataLength = this.resultNodesTotal.masterListsDataTotal[0].total;
           console.log("Total datas4: ", this.masterListsDataLength);
         }

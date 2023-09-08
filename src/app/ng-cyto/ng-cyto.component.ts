@@ -91,7 +91,7 @@ export class NgCytoComponent implements OnChanges {
             .selector('node')
             .css({
                 'shape': 'data(shapeType)',
-                'width': 'mapData(weight, 40, 80, 20, 60)',
+                'width': 'mapData(weight, 10, 20, 120, 50)',
                 'content': 'data(name)',
                 'text-valign': 'center',
                 'text-outline-width': 0.2,
@@ -99,7 +99,7 @@ export class NgCytoComponent implements OnChanges {
                 'background-color': 'data(colorCode)',
                 'color': '#000'
             })
-            .style({ "font-size": 13, "font-family": "system-ui" })    // big font
+            .style({ "font-size": 14, "font-family": "system-ui" })    // big font
 
             .selector(':selected')
             .css({
@@ -181,8 +181,8 @@ export class NgCytoComponent implements OnChanges {
         // var dim = 12 / cy.zoom();
         // var maxDim = Math.max(dim, 2);
         // cy.nodes().css('font-size', maxDim);
-        cy.fit(cy.$(':selected'), 50);
-
+        // cy.fit(cy.$(':selected'), 50);
+        cy.fit();
         // cy.animation({ zoom: 1.5 }).play().promise().then(() => cy.animation({ fit: 1 }).play().promise())
 
         cy.on('click', 'node', (e: any) => {
