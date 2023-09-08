@@ -128,8 +128,8 @@
 </ng-template>
 
 <ng-template #articleModal let-c="close" let-d="dismiss">
-    <div class="modal-content">
-        <div class="modal-header blue_bg_hdr modal-xl">
+    <div class="modal-content modal-fullscreen" id="articleModal">
+        <div class="modal-header blue_bg_hdr modal-lg">
             <h4 class="modal-title">Article(s) </h4>
             <button class="close" aria-label="Close" (click)="d('Cross click')">
                 <span aria-hidden="true">&times;</span>
@@ -150,11 +150,11 @@
                         </div> -->
                             <table id="articles_details" data-toolbar="#toolbar" data-search="true"
                                 data-show-export="true" data-show-columns="true" data-page-size="50"
-                                data-filter-control="true" data-page-list="[10, 25, 50, 100, All]">
+                                data-filter-control="true" data-page-list="[10, 25, 50, 100, All]" >
                                 <thead>
                                     <tr>
                                         <th data-field="id" data-sortable="true" width="2%">
-                                            Sr No.
+                                            #
                                         </th>
                                         <th data-field="source" data-sortable="true" width="10%"
                                             data-filter-control="input">
@@ -183,9 +183,7 @@
                                         <th data-field="sentence_btn" data-sortable="false" width="10%">
                                             Evidence
                                         </th>
-                                        <!-- <th data-field="display_btn" data-sortable="false" width="10%">
-                                            Display
-                                        </th> -->
+                                        
                                     </tr>
                                 </thead>
                             </table>
