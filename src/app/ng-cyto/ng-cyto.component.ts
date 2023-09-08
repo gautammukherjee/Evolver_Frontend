@@ -99,7 +99,7 @@ export class NgCytoComponent implements OnChanges {
                 'background-color': 'data(colorCode)',
                 'color': '#000'
             })
-            .style({ "font-size": 17, "font-family": "system-ui" })    // big font
+            .style({ "font-size": 14, "font-family": "system-ui" })    // big font
 
             .selector(':selected')
             .css({
