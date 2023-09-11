@@ -164,18 +164,26 @@ export class DistributionByRelGrpComponent implements OnInit {
   }
 
   drawColumnChart() {
-    // Highcharts.chart('container', {
+    // this.alpha = 15;
+    // this.beta = 15;
+    // this.depth = 50;
+    // this.chartOptions = {
     //   chart: {
-    //     type: 'column'
+    //     type: 'column',
+    //     // options3d: {
+    //     //   enabled: true,
+    //     //   alpha: this.alpha,
+    //     //   beta: this.beta,
+    //     //   depth: this.depth,
+    //     //   viewDistance: 175
+    //     // }
     //   },
     //   title: {
     //     text: 'Distribution by Relation Group'
     //   },
-    //   subtitle: {
-    //     //text: 'EvolverAI'
-    //   },
     //   xAxis: {
-    //     categories: categories,
+    //     type: 'category',
+    //     // categories: this.categories,
     //     labels: {
     //       rotation: -45,
     //       style: {
@@ -187,7 +195,11 @@ export class DistributionByRelGrpComponent implements OnInit {
     //   yAxis: {
     //     type: 'logarithmic',
     //     title: {
-    //       text: 'Article Count'
+    //       rotation: -90,
+    //       text: 'Article Count',
+    //       textAlign: 'left',
+    //       x: -40,
+    //       y: 40
     //     },
     //     stackLabels: {
     //       //defer: false,
@@ -205,29 +217,25 @@ export class DistributionByRelGrpComponent implements OnInit {
     //     }
     //   },
     //   legend: {
-    //     enabled: true,
-
+    //     enabled: false,
     //   },
     //   tooltip: {
     //     pointFormat: 'Count: <b>{point.y} </b>'
     //   },
+
     //   series: [{
-    //     name: 'Relation Group',
-    //     colors: [
-    //       '#046EB5'
-    //     ],
-    //     type: 'column',
-    //     data: graphData,
+    //     name: 'Home',
     //     colorByPoint: true,
+    //     type: 'column',
     //     dataLabels: {
-    //       enabled: true,
+    //       //enabled: true,
     //       crop: false,
     //       overflow: 'allow',
-    //       rotation: 360,
+    //       // rotation: 360,
     //       //color: '#3066C4',
     //       align: 'center',
     //       format: '{point.y}', // one decimal {point.y:.1f}
-    //       y: 10, // 10 pixels down from the top
+    //       // y: 10, // 10 pixels down from the top
     //       style: {
     //         fontSize: '13px',
     //         //fontFamily: 'Verdana, sans-serif'
@@ -236,35 +244,147 @@ export class DistributionByRelGrpComponent implements OnInit {
     //     accessibility: {
     //       enabled: false
     //     },
-
+    //     // data: [
+    //     //     {name: 'DISTANT RELATION', y: 145, drilldown: 'DISTANT RELATION'},
+    //     //     {name: 'MUTATION', y: 3, drilldown: 'MUTATION'},
+    //     //     {name: 'ACTIVATION', y: 1, drilldown: 'ACTIVATION'},
+    //     //     {name: 'INHIBITION', y: 1, drilldown: 'INHIBITION'},
+    //     //     {name: 'REGULATES_OR_MODULATE', y: 1, drilldown: 'REGULATES_OR_MODULATE'}
+    //     // ]
+    //     data: this.graphData
     //   }],
+    //   drilldown: {
+    //     // series: [{id: 'Distant Relation', data: ['Distant Relation', 11]},
+    //     // {id: 'MUTATION', data: [['MUTATION', 1],['MUTATION_LEAD_TO_CAUSES', 12]]},
+    //     // {id: 'ACTIVATION', data: [['ACTIVATION', 11], ['ACTIVATION_LEAD_TO_ACTIVATION', 12], ['ACTIVATION_LEAD_TO_INHIBITION', 13], ['ACTIVATION_LEAD_TO_TREATS', 14], ['ACTIVATION_LEAD_TO_CAUSES', 15]] },
+    //     // {id: 'INHIBITION', data: [['INHIBITION', 21],['INHIBITION_LEAD_TO_INHIBITION', 22], ['INHIBITION_LEAD_TO_ACTIVATION', 23], ['INHIBITION_LEAD_TO_CAUSES', 24],['INHIBITION_LEAD_TO_TREATS', 25]]},
+    //     // {id: 'REGULATES_OR_MODULATE', data: [['REGULATES_OR_MODULATE', 31], ['POSSIBLE_SYNONYM', 32]]}]
+    //     series: this.drillDownDataFinal
+    //   }
+    // };
+    // this.graphLoader = false;
 
+    // Highcharts.chart('container', <any>{
+    //   chart: {
+    //     type: 'bar',
+    //   },
+    //   title: {
+    //     text: 'Distribution by Relation Group'
+    //   },
+    //   accessibility: {
+    //     announceNewData: {
+    //       enabled: true
+    //     }
+    //   },
+    //   xAxis: {
+    //     type: 'category',
+    //     // categories: this.categories,
+    //     labels: {
+    //       style: {
+    //         fontSize: '12px',
+    //         fontFamily: 'Verdana, sans-serif'
+    //       },
+    //       overflow: 'justify'
+    //     }
+    //   },
+    //   yAxis: {
+    //     type: 'logarithmic',
+    //     title: {
+    //       text: 'Article Count',
+    //     },
+    //     // stackLabels: {
+    //     //   //defer: false,
+    //     //   crop: false,
+    //     //   enabled: true,
+    //     //   style: {
+    //     //     fontWeight: 'bold',
+    //     //     color: 'black'
+    //     //   }
+    //     // }
+    //   },
+    //   plotOptions: {
+    //     column: {
+    //       stacking: "normal"
+    //     },
+    //     series: {
+    //       borderWidth: 0,
+    //       dataLabels: {
+    //         enabled: true,
+    //         format: '{point.y}'
+    //       }
+    //     }
+    //   },
+    //   legend: {
+    //     enabled: false,
+    //   },
+    //   // tooltip: {
+    //   //   pointFormat: 'Count: <b>{point.y} </b>'
+    //   // },
+
+    //   tooltip: {
+    //     pointFormat: '<span style="color:{point.color}">Count</span>: <b>{point.y}</b>'
+    //   },
+
+    //   series: [{
+    //     name: 'Home',
+    //     colorByPoint: true,
+    //     // type: 'column',
+    //     // dataLabels: {
+    //     //   //enabled: true,
+    //     //   crop: false,
+    //     //   overflow: 'allow',
+    //     //   // rotation: 360,
+    //     //   //color: '#3066C4',
+    //     //   align: 'center',
+    //     //   format: '{point.y}', // one decimal {point.y:.1f}
+    //     //   // y: 10, // 10 pixels down from the top
+    //     //   style: {
+    //     //     fontSize: '11px',
+    //     //     //fontFamily: 'Verdana, sans-serif'
+    //     //   }
+    //     // },
+    //     // accessibility: {
+    //     //   enabled: false
+    //     // },
+    //     // data: [
+    //     //     {name: 'DISTANT RELATION', y: 145, drilldown: 'DISTANT RELATION'},
+    //     //     {name: 'MUTATION', y: 3, drilldown: 'MUTATION'},
+    //     //     {name: 'ACTIVATION', y: 1, drilldown: 'ACTIVATION'},
+    //     //     {name: 'INHIBITION', y: 1, drilldown: 'INHIBITION'},
+    //     //     {name: 'REGULATES_OR_MODULATE', y: 1, drilldown: 'REGULATES_OR_MODULATE'}
+    //     // ]
+    //     data: this.graphData
+    //   }],
+    //   drilldown: {
+    //     // series: [{id: 'Distant Relation', data: ['Distant Relation', 11]},
+    //     // {id: 'MUTATION', data: [['MUTATION', 1],['MUTATION_LEAD_TO_CAUSES', 12]]},
+    //     // {id: 'ACTIVATION', data: [['ACTIVATION', 11], ['ACTIVATION_LEAD_TO_ACTIVATION', 12], ['ACTIVATION_LEAD_TO_INHIBITION', 13], ['ACTIVATION_LEAD_TO_TREATS', 14], ['ACTIVATION_LEAD_TO_CAUSES', 15]] },
+    //     // {id: 'INHIBITION', data: [['INHIBITION', 21],['INHIBITION_LEAD_TO_INHIBITION', 22], ['INHIBITION_LEAD_TO_ACTIVATION', 23], ['INHIBITION_LEAD_TO_CAUSES', 24],['INHIBITION_LEAD_TO_TREATS', 25]]},
+    //     // {id: 'REGULATES_OR_MODULATE', data: [['REGULATES_OR_MODULATE', 31], ['POSSIBLE_SYNONYM', 32]]}]
+    //     series: this.drillDownDataFinal
+    //   }
     // });
 
-    this.alpha = 15;
-    this.beta = 15;
-    this.depth = 50;
-    this.chartOptions = {
+
+    Highcharts.chart('container', <any>{
       chart: {
-        type: 'column',
-        options3d: {
-          enabled: true,
-          alpha: this.alpha,
-          beta: this.beta,
-          depth: this.depth,
-          viewDistance: 175
-        }
+        type: 'bar',
+        plotBorderWidth: 1,
+        marginLeft: 250
       },
       title: {
         text: 'Distribution by Relation Group'
       },
+      accessibility: {
+        announceNewData: {
+          enabled: true
+        }
+      },
       xAxis: {
         type: 'category',
-        // categories: this.categories,
         labels: {
-          rotation: -45,
           style: {
-            fontSize: '13px',
+            fontSize: '11px',
             fontFamily: 'Verdana, sans-serif'
           }
         }
@@ -272,73 +392,38 @@ export class DistributionByRelGrpComponent implements OnInit {
       yAxis: {
         type: 'logarithmic',
         title: {
-          rotation: -90,
           text: 'Article Count',
-          textAlign: 'left',
-          x: -40,
-          y: 40
         },
-        stackLabels: {
-          //defer: false,
-          crop: false,
-          enabled: true,
-          style: {
-            fontWeight: 'bold',
-            color: 'black'
-          }
-        }
+      },
+      legend: {
+        enabled: false
       },
       plotOptions: {
         column: {
           stacking: "normal"
+        },
+        series: {
+          borderWidth: 0,
+          dataLabels: {
+            enabled: true,
+            format: '{point.y}'
+          }
         }
       },
-      legend: {
-        enabled: false,
-      },
       tooltip: {
-        pointFormat: 'Count: <b>{point.y} </b>'
+        pointFormat: '<span style="color:{point.color}">Count</span>: <b>{point.y}</b>'
       },
 
       series: [{
-        name: 'Home',
+        name: "Home",
         colorByPoint: true,
-        type: 'column',
-        dataLabels: {
-          //enabled: true,
-          crop: false,
-          overflow: 'allow',
-          // rotation: 360,
-          //color: '#3066C4',
-          align: 'center',
-          format: '{point.y}', // one decimal {point.y:.1f}
-          // y: 10, // 10 pixels down from the top
-          style: {
-            fontSize: '13px',
-            //fontFamily: 'Verdana, sans-serif'
-          }
-        },
-        accessibility: {
-          enabled: false
-        },
-        // data: [
-        //     {name: 'DISTANT RELATION', y: 145, drilldown: 'DISTANT RELATION'},
-        //     {name: 'MUTATION', y: 3, drilldown: 'MUTATION'},
-        //     {name: 'ACTIVATION', y: 1, drilldown: 'ACTIVATION'},
-        //     {name: 'INHIBITION', y: 1, drilldown: 'INHIBITION'},
-        //     {name: 'REGULATES_OR_MODULATE', y: 1, drilldown: 'REGULATES_OR_MODULATE'}
-        // ]
         data: this.graphData
       }],
       drilldown: {
-        // series: [{id: 'Distant Relation', data: ['Distant Relation', 11]},
-        // {id: 'MUTATION', data: [['MUTATION', 1],['MUTATION_LEAD_TO_CAUSES', 12]]},
-        // {id: 'ACTIVATION', data: [['ACTIVATION', 11], ['ACTIVATION_LEAD_TO_ACTIVATION', 12], ['ACTIVATION_LEAD_TO_INHIBITION', 13], ['ACTIVATION_LEAD_TO_TREATS', 14], ['ACTIVATION_LEAD_TO_CAUSES', 15]] },
-        // {id: 'INHIBITION', data: [['INHIBITION', 21],['INHIBITION_LEAD_TO_INHIBITION', 22], ['INHIBITION_LEAD_TO_ACTIVATION', 23], ['INHIBITION_LEAD_TO_CAUSES', 24],['INHIBITION_LEAD_TO_TREATS', 25]]},
-        // {id: 'REGULATES_OR_MODULATE', data: [['REGULATES_OR_MODULATE', 31], ['POSSIBLE_SYNONYM', 32]]}]
         series: this.drillDownDataFinal
       }
-    };
+    })
+
     this.graphLoader = false;
   }
 }

@@ -167,7 +167,8 @@ export class EventDescriptionComponent implements OnInit {
               this.pmidCount = this.resultPMID.pmidCount[0]['pmid_count'];
               // console.log("pmidCount: ", this.resultPMID.pmidCount[0]);
               // temps["pmidCount"] = this.pmidCount;
-              temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles <span class='custom-badge bg-secondary text-white' style='background-color:#B765A3 !important;font-size: 11px;padding: 1px 4px;border-radius: 5px;'>" + this.pmidCount + "</span></button> &nbsp;";
+              temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";
+              temps["article_count"] = this.pmidCount;
               // temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Edge Type Article </button> &nbsp;";
               this.masterListsDataDetailsLoaded.push(temps);
               this.masterListsDataDetailsCombined = this.masterListsDataDetailsLoaded;
