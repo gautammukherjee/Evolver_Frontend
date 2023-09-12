@@ -16,7 +16,7 @@
             style="position: absolute; top: 10px; right: 72px; font-size: 22px;"></i> -->
 
             <!--<div class="card-panel-box-detail" [hidden]="hideCardBody">-->
-            <div class="card-panel-box-detail">
+            <div class="card-panel-box-detail p-0">
                 <div class="customTable " id="eventListTable">
                     <!-- <div class="text-muted fs-2 text-center mb-4">Please select entities to generate Details</div> -->
                     <div class="overlay text-center" *ngIf="loadingDesc">
@@ -29,7 +29,7 @@
                         
                         <table id="showEventDescription" data-toolbar="#toolbar" data-search="true"
                             data-show-export="true" data-show-columns="true" data-page-size="10"
-                            data-filter-control="true" data-page-list="[10, 25, 50, 100, All]">
+                            data-filter-control="true" data-page-list="[10, 25, 50, 100, All]" class="table-striped">
                             <!--<table id="showEventDescription" data-toolbar="#toolbar" data-search="true" data-page-size="50" data-page-list="[10, 25, 50, 100, All]">-->
                             <thead>
                                 <tr>
