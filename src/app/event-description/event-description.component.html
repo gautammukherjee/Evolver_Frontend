@@ -16,7 +16,7 @@
             style="position: absolute; top: 10px; right: 72px; font-size: 22px;"></i> -->
 
             <!--<div class="card-panel-box-detail" [hidden]="hideCardBody">-->
-            <div class="card-panel-box-detail">
+            <div class="card-panel-box-detail p-0">
                 <div class="customTable " id="eventListTable">
                     <!-- <div class="text-muted fs-2 text-center mb-4">Please select entities to generate Details</div> -->
                     <div class="overlay text-center" *ngIf="loadingDesc">
@@ -25,11 +25,11 @@
                     <div class="table-responsive custom-fixed-header-table table table-striped table-hover"
                         [ngClass]="toggleLevels == false ? 'hiddenLevels' : currentLevel == '1' ? 'level1' : currentLevel == 2 ? 'level2' : 'level3'">
                         
-                        <div *ngIf="masterListsDataLength" style="margin-bottom: -34px;">Total Records: {{masterListsDataLength}}</div>
+                        <div *ngIf="masterListsDataLength" style="margin-bottom: -34px;margin-left:18px;">Total Records: {{masterListsDataLength}}</div>
                         
                         <table id="showEventDescription" data-toolbar="#toolbar" data-search="true"
                             data-show-export="true" data-show-columns="true" data-page-size="10"
-                            data-filter-control="true" data-page-list="[10, 25, 50, 100, All]">
+                            data-filter-control="true" data-page-list="[10, 25, 50, 100, All]" class="table-striped">
                             <!--<table id="showEventDescription" data-toolbar="#toolbar" data-search="true" data-page-size="50" data-page-list="[10, 25, 50, 100, All]">-->
                             <thead>
                                 <tr>
