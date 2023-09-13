@@ -572,9 +572,10 @@ export class NgCytoComponent implements OnChanges {
         });
         //document.getElementById("#btnsave").addEventListener ("click", nodeClickEvent, false);
         $('#download_btn').on("click", function (ev) {
+            debugger;
             var png64 = cy.png();
             $('#png-eg').attr('src', png64);
-            //console.log(png64);
+            console.log(png64);
             var a = $("<a>")
             .attr("href", png64)
             .attr("download", "evolver_map.png")
@@ -582,7 +583,8 @@ export class NgCytoComponent implements OnChanges {
 
             a[0].click();
             a.remove();
-            $('#png-eg').hide();
+            $('#png-eg').removeAttr('src');
+            //$('#png-eg').hide();
         });
     }
 
