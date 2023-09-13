@@ -571,11 +571,11 @@ export class NgCytoComponent implements OnChanges {
                 });
         });
         //document.getElementById("#btnsave").addEventListener ("click", nodeClickEvent, false);
+
+        // --- Map Download Begins ---
         var png64 = cy.png();
         $('#download_btn').on("click", function (ev) {
             //debugger;
-            
-            
             $('#png-eg').attr('src', png64);
             console.log(png64);
             var a = $("<a>")
@@ -588,6 +588,7 @@ export class NgCytoComponent implements OnChanges {
             $('#png-eg').removeAttr('src');
             //$('#png-eg').hide();
         });
+        // --- Map Download Ends ---
     }
 
     public showNodeInfo(nodeId: any) {
