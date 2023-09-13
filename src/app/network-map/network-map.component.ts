@@ -276,7 +276,7 @@ export class NetworkMapComponent implements OnInit {
       piTol: 0.0000001,
 
       nodeSpacing: 120,
-      spacingFactor: 8,
+      spacingFactor: 5,
       /* incremental layout options */
 
       // Node repulsion (non overlapping) multiplier
