@@ -597,7 +597,10 @@ export class EventDescriptionComponent implements OnInit {
               // console.log("pmidCount Inside: ", this.resultPMID.pmidCount[0]);
 
               // temps["pmidCount"] = this.pmidCount;
-              temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary text-white' style='background-color:#B765A3 !important;font-size: 11px;padding: 1px 4px;border-radius: 5px;'>" + this.pmidCount + "</span></button> &nbsp;";
+              temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";
+              temps["article_count"] = this.pmidCount;
+
+              // temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary text-white' style='background-color:#B765A3 !important;font-size: 11px;padding: 1px 4px;border-radius: 5px;'>" + this.pmidCount + "</span></button> &nbsp;";
               // temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Edge Type Article </button> &nbsp;";
 
               // temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary bg-warning text-dark'>" + this.pmidCount + "</span></button> &nbsp;";
