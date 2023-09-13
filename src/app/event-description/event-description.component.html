@@ -25,7 +25,7 @@
                     <div class="table-responsive custom-fixed-header-table table table-striped table-hover"
                         [ngClass]="toggleLevels == false ? 'hiddenLevels' : currentLevel == '1' ? 'level1' : currentLevel == 2 ? 'level2' : 'level3'">
                         
-                        <div *ngIf="masterListsDataLength" style="margin-bottom: -34px;margin-left:18px;">Total Records: {{masterListsDataLength}}</div>
+                        <div *ngIf="masterListsDataLength" style="margin-bottom: -34px;">Total Combination Records: {{masterListsDataLength}}</div>
                         
                         <table id="showEventDescription" data-toolbar="#toolbar" data-search="true"
                             data-show-export="true" data-show-columns="true" data-page-size="10"
