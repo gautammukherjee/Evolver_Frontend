@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, ElementRef, Renderer2, ChangeDetectorRef, Input, Pipe, PipeTransform, ViewChild, ViewChildren } from '@angular/core';
 import { NodeSelectsService } from '../../services/common/node-selects.service';
 import { GlobalVariableService } from '../../services/common/global-variable.service';
-import { Subject } from 'rxjs';
+import { Subject, fromEvent } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 // import { map, startWith } from 'rxjs/operators';
@@ -37,6 +37,8 @@ export class FilterSourceNodeComponent implements OnInit {
   subSynNodeName: any = [];
   toggled: any = {};
   visible: boolean = false;
+
+  clickObservablewithdebounce: Observable<Event> = fromEvent(document, 'click');
 
   constructor(
     private nodeSelectsService: NodeSelectsService,
@@ -191,6 +193,8 @@ export class FilterSourceNodeComponent implements OnInit {
   }
 
   selectSourceNode(sourceNode: any, event: any, warning: any = null) {
+
+
     if (event.target.checked) {
       this.selectedSourceNodes.push(sourceNode.source_node);
     } else {
@@ -210,6 +214,7 @@ export class FilterSourceNodeComponent implements OnInit {
     console.log("new Filters SOURCE:: ", this.filterParams);
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data   
     // if (from != 'nodeSelectsWarningModal')
+
     this.proceed();
     this.enableDisableProceedButton();
   }
@@ -253,9 +258,11 @@ export class FilterSourceNodeComponent implements OnInit {
     if (this.seeMoreNodeSelectsModal != undefined)
       this.seeMoreNodeSelectsModal.close();
 
+    // this.debounce(() => this.onSelectSourceNode.emit(this.selectedSourceNodes));
+
     // setTimeout(() => {
     //   this.onSelectSourceNode.emit(this.selectedSourceNodes);
-    // }, 3000);
+    // }, 1000);
 
     this.onSelectSourceNode.emit(this.selectedSourceNodes);
   }
