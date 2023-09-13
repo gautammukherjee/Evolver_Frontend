@@ -2,24 +2,24 @@
     <app-header></app-header>
 
     <section class="dashboard-main-wrapper">
-        <div class="horizontal-filters-wrapper pt-2 pb-2">
+        <div class="horizontal-filters-wrapper pt-1 pb-1">
             <div class="horizonal-filter-bar">
                 <div class="filter-inner" style="width: 98%;">
                     <div class="filter-left-heading" style="font-size:16px;">
                         First Degree
                     </div>
-                    <div class="filter-single">
+                    <div class="filter-single" style="width:20%;">
                         <app-filter-node-select (onSelectNode)='nodeChanged($event)'></app-filter-node-select>
                     </div>
-                    <div class="filter-single">
+                    <div class="filter-single"  style="width:30%;">
                         <app-filter-source-node (onSelectSourceNode)='sourceNodeChanged("sourceNodeFilter" , $event)'
                             [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node>
                     </div>
-                    <div class="filter-single">
+                    <div class="filter-single" style="width:20%;">
                         <app-filter-edge-type
                             (onSelectEdgeType)='edgeTypeChanged("edgeTypeFilter")'></app-filter-edge-type>
                     </div>
-                    <div class="filter-single">
+                    <div class="filter-single" style="width:30%;">
                         <app-filter-destination-node
                             (onSelectDestinationNode)='destinationNodeChanged("destinationNodeFilter")'
                             [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-destination-node>
@@ -42,19 +42,19 @@
                         <div class="filter-left-heading" style="font-size:16px;">
                             Second Degree
                         </div>
-                        <div class="filter-single">
+                        <div class="filter-single" style="width:20%;">
                             <app-filter-node-select-level2 (onSelectNode2)='nodeChanged2("nodeLevel2Filter")'
                                 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-node-select-level2>
                         </div>
-                        <div class="filter-single">
+                        <div class="filter-single" style="width:30%;">
                             <app-filter-source-node-level2
                                 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node-level2>
                         </div>
-                        <div class="filter-single">
+                        <div class="filter-single" style="width:20%;">
                             <app-filter-edge-type-level2
                                 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type-level2>
                         </div>
-                        <div class="filter-single">
+                        <div class="filter-single" style="width:30%;">
                             <app-filter-destination-node-level2
                                 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-destination-node-level2>
                         </div>
@@ -63,7 +63,7 @@
 
             </div>
 
-            <div class="add-level-handler pe-2 pt-1 ml-4 mr-4" style="height: 27px;">
+            <div class="add-level-handler pe-2 ml-4 mr-4" style="height: 24px;">
                 <div class="float-start">
                     &nbsp;&nbsp;&nbsp;<button class="btn btn-light btn-sm btn-custom-sm" (click)="onAddLevel()"
                         [disabled]="maxLevel === currentLevel || !isSourceNodes">+ Add Level</button>
@@ -72,9 +72,9 @@
                 </div>
                 <div class="float-end">
                     <button class="btn btn-sm ms-2 btn-custom-sm" style="background-color: #B765A3;color: #fff;"
-                        (click)="resetAllFilters()">Reset</button>&nbsp;
+                        (click)="resetAllFilters()"><i class="bi bi-arrow-clockwise" title="Reset"></i></button>&nbsp;
                     <button class="btn btn-sm btn-custom-sm" style="background-color: #B765A3;color: #fff; border:1px solid #B765A3;"
-                        [disabled]="!isSourceNodes" (click)="onSubmit()">Submit</button>
+                        [disabled]="!isSourceNodes" (click)="onSubmit()"><i class="bi bi-search" title="Search" alt="Search"></i></button>
                 </div>
             </div>
         </div>
