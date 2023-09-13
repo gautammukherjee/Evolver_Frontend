@@ -571,9 +571,11 @@ export class NgCytoComponent implements OnChanges {
                 });
         });
         //document.getElementById("#btnsave").addEventListener ("click", nodeClickEvent, false);
+        var png64 = cy.png();
         $('#download_btn').on("click", function (ev) {
-            debugger;
-            var png64 = cy.png();
+            //debugger;
+            
+            
             $('#png-eg').attr('src', png64);
             console.log(png64);
             var a = $("<a>")
