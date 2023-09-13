@@ -26,11 +26,11 @@
                     <label class="form-check-label" for="edgeChecked">Show All Targets</label>
                 </div>-->
 
-                <div>
+                <div class="text-right">
                     <button *ngIf="!nodesCheckLength" class="btn btn-primary btn-sm mr-1 p-1"
                         style="margin:5px;line-height: 15px;" (click)="refreshMap($event)"
                         title="REFRESH MAP"><i class="bi bi-arrow-clockwise"></i></button>
-                    <button *ngIf="!nodesCheckLength" class="btn btn-primary btn-sm p-1" style="line-height: 15px;"
+                    <button *ngIf="!nodesCheckLength" class="btn btn-primary btn-sm p-1" style="margin:5px;line-height: 15px;"
                         [ngClass]="isNetworkMapFullScreen == true ? 'map-fixed-posBtn' : ''"
                         (click)="onNetworkMapFullScrClick()"><i *ngIf="isNetworkMapFullScreen"
                             class='bi bi-fullscreen-exit' title="EXIT FULL SCREEN"></i><i
