@@ -96,10 +96,6 @@ export class FilterDestinationNodeComponent implements OnInit {
         // if (this.firstTimeCheck === false) // Node select only one time reload when we choose destination nodes are selected
         this.getDestinationNode();
 
-        // if (this.filterParams['source_node'] == "" || this.filterParams['source_node'] == undefined) {
-        //   this.distinctDestinationNodesData = [];
-        // }
-
         // setTimeout(() => {
         //   this.getDestinationNode();
         // }, 1000);
