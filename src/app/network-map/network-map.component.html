@@ -26,7 +26,7 @@
                     <label class="form-check-label" for="edgeChecked">Show All Targets</label>
                 </div>-->
 
-                <div class="text-right">
+                <div class="text-right float-end" >
                     <button *ngIf="!nodesCheckLength" class="btn btn-primary btn-sm mr-1 p-1"
                         style="margin:5px;line-height: 15px;" (click)="refreshMap($event)"
                         title="REFRESH MAP"><i class="bi bi-arrow-clockwise"></i></button>
@@ -36,11 +36,15 @@
                             class='bi bi-fullscreen-exit' title="EXIT FULL SCREEN"></i><i
                             *ngIf="!isNetworkMapFullScreen" class="bi bi-arrows-fullscreen"
                             title="FULL SCREEN"></i></button>
-                    <button *ngIf="!nodesCheckLength" class="btn btn-primary btn-sm mr-1 p-1" style="margin:5px;line-height: 15px;" (click)="onDownloadCanvas()">download</button>
+                    <!-- <button *ngIf="!nodesCheckLength" class="btn btn-primary btn-sm mr-1 p-1" style="margin:5px;line-height: 15px;" (click)="onDownloadCanvas()">download</button> -->
                     <button *ngIf="!nodesCheckLength" id="download_btn" class="btn btn-primary btn-sm mr-1 p-1" style="margin:5px;line-height: 15px;" title="Download as .png image">
                         <i class="bi bi-download"></i>
                     </button>
                     <img id="png-eg">
+                    <div *ngIf="!nodesCheckLength" class="float-start p-1 mr-1 bg-primary text-white" style="margin:5px;line-height: 15px;">
+                        <input class="form-check-input" type="checkbox" id="zoomSwitch">&nbsp;
+                        <label class="form-check-label" for="zoomSwitch">Zoom</label>
+                    </div>
                 </div>
 
                 <div style="height: 100%; width: 99%; float: left; overflow: auto; overflow-y: hidden">

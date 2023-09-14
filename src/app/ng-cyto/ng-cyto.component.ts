@@ -173,7 +173,7 @@ export class NgCytoComponent implements OnChanges {
             userZoomingEnabled: false,
         });
 
-
+        
         // cy.svg(true)
         // console.log("cy:: ", cy._private.elements);
 
@@ -589,6 +589,17 @@ export class NgCytoComponent implements OnChanges {
             //$('#png-eg').hide();
         });
         // --- Map Download Ends ---
+        
+        $("#zoomSwitch").on("change",function(){
+            if($("#zoomSwitch").is(":checked")){
+                cy.userZoomingEnabled( true );
+            }else{
+                cy.userZoomingEnabled( false );
+            }
+            //console.log("Zoom in .... out"+cy.userZoomingEnabled);
+        });
+        
+        
     }
 
     public showNodeInfo(nodeId: any) {
