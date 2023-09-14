@@ -26,9 +26,8 @@
                         [ngClass]="toggleLevels == false ? 'hiddenLevels' : currentLevel == '1' ? 'level1' : currentLevel == 2 ? 'level2' : 'level3'">
                         
                         <div *ngIf="masterListsDataLength" style="margin-bottom: -34px;">Total Combination Records: {{masterListsDataLength}}</div>
-                        
                         <table id="showEventDescription" data-toolbar="#toolbar" data-search="true"
-                            data-show-export="true" data-show-columns="true" data-page-size="10"
+                            data-show-export="true" data-export-options='{"fileName": "evolverAI"}' data-show-columns="true" data-page-size="10"
                             data-filter-control="true" data-page-list="[10, 25, 50, 100, All]" class="table-striped">
                             <!--<table id="showEventDescription" data-toolbar="#toolbar" data-search="true" data-page-size="50" data-page-list="[10, 25, 50, 100, All]">-->
                             <thead>
@@ -47,8 +46,8 @@
                                     <!-- <th data-field="pmidCount" data-sortable="true" width="10%"
                                         data-filter-control="input">
                                         PMID Count</th> -->
-                                    <th data-filter-control="select" data-field="article_count" data-sortable="true" width="10%">
-                                            Articles Count</th>
+                                    <!-- <th data-filter-control="select" data-field="article_count" data-sortable="true" width="10%">
+                                            Articles Count</th> -->
                                     <th data-field="edgeNeCount" data-sortable="true" width="10%">
                                         Articles</th>
                                     

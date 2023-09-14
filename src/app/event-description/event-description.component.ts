@@ -131,13 +131,7 @@ export class EventDescriptionComponent implements OnInit {
           this.resultNodes = data;
           this.masterListsData = this.resultNodes.masterListsData;
           console.log("Load data: ", this.masterListsData);
-        },
-        err => {
-          console.log(err.message);
-          // this.loadingDesc = false;
-        },
-        () => {
-          // this.loadingDesc = false;
+
           this.masterListsDataDetailsLoaded = [];
           let j = 0;
           this.masterListsData.forEach((event: any) => {
@@ -161,28 +155,39 @@ export class EventDescriptionComponent implements OnInit {
             //temps["edgeType_articleType"] = event.edge_type_article_type_ne_ids;
             temps["edgeTypesID"] = edgeTypeIdsPost;
             temps["edgeNeId"] = edgeTypeNeIdsPost;
+            temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";
 
-            this.nodeSelectsService.getEdgePMIDCount({ 'edge_type_pmid': edgeTypeNeIdsPost, 'edge_type_id': (event.level == 1 ? this.filterParams['edge_type_id'] : this.filterParams['edge_type_id2']) }).subscribe((p: any) => {
-              this.resultPMID = p;
-              this.pmidCount = this.resultPMID.pmidCount[0]['pmid_count'];
-              // console.log("pmidCount: ", this.resultPMID.pmidCount[0]);
-              // temps["pmidCount"] = this.pmidCount;
-              temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";
-              temps["article_count"] = this.pmidCount;
-              // temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Edge Type Article </button> &nbsp;";
-              this.masterListsDataDetailsLoaded.push(temps);
-              this.masterListsDataDetailsCombined = this.masterListsDataDetailsLoaded;
+            this.masterListsDataDetailsLoaded.push(temps);
+            this.masterListsDataDetailsCombined = this.masterListsDataDetailsLoaded;
 
-              console.log(this.masterListsData.length, "=>", j + 1)
-              if (this.masterListsData.length == j + 1) {
-                this.loadingDesc = false;
-                console.log("masterListsData Event Loaded: ", this.masterListsDataDetailsCombined);
-                this.bootstrapTableChart();
-              }
-              j++;
-            });
+            // this.nodeSelectsService.getEdgePMIDCount({ 'edge_type_pmid': edgeTypeNeIdsPost, 'edge_type_id': (event.level == 1 ? this.filterParams['edge_type_id'] : this.filterParams['edge_type_id2']) }).subscribe((p: any) => {
+            //   this.resultPMID = p;
+            //   this.pmidCount = this.resultPMID.pmidCount[0]['pmid_count'];
+            //   // console.log("pmidCount: ", this.resultPMID.pmidCount[0]);
+            //   // temps["pmidCount"] = this.pmidCount;
+            //   temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";
+            //   temps["article_count"] = this.pmidCount;
+            //   // temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Edge Type Article </button> &nbsp;";
+            //   this.masterListsDataDetailsLoaded.push(temps);
+            //   this.masterListsDataDetailsCombined = this.masterListsDataDetailsLoaded;
 
+            //   console.log(this.masterListsData.length, "=>", j + 1)
+            //   if (this.masterListsData.length == j + 1) {
+            //     this.loadingDesc = false;
+            //     console.log("masterListsData Event Loaded: ", this.masterListsDataDetailsCombined);
+            //     this.bootstrapTableChart();
+            //   }
+            //   j++;
+            // });
           });
+          this.bootstrapTableChart();
+        },
+        err => {
+          console.log(err.message);
+          // this.loadingDesc = false;
+        },
+        () => {
+          this.loadingDesc = false;
         }
       );
     }
@@ -210,6 +215,11 @@ export class EventDescriptionComponent implements OnInit {
       showFullscreen: true,
       stickyHeader: true,
       showExport: true,
+      exportOptions: {
+        ignoreColumn: [3],
+        // columns: [6],
+        // visible: [6,'true'],
+      },
       data: this.masterListsDataDetailsCombined,
       onClickRow: (field: any, row: any, $element: any) => {
         //edge types
@@ -484,41 +494,41 @@ export class EventDescriptionComponent implements OnInit {
 
   }
 
-  showPMIDLists(edgeNeId: any, sourceNode: string, destinationNode: string) {
-    const edgeNeIdArr = edgeNeId.split(",");
-    //console.log(typeof edgeNeIdArr + edgeNeIdArr +edgeNeIdArr[0]);
-    var pubmedBaseUrl = "https://www.ncbi.nlm.nih.gov/pubmed/";
-    this.nodeSelectsService.getEdgePMIDLists({ 'ne_ids': edgeNeIdArr }).subscribe((pmid: any) => {
-      this.loaderEdgeType = false;
-      this.resultPMIDLists = pmid;
-      console.log(this.resultPMIDLists);
-      this.articleHerePMID = this.resultPMIDLists.pmidLists;
-      this.articlePMID = [];
-      this.articleHerePMID.forEach((event: any) => {
-        var temps: any = {};
-        temps["source"] = sourceNode;
-        temps["destination"] = destinationNode;
-        temps["pmid"] = "<a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + event.pmid + "'>" + event.pmid + "</a>";
-        temps["publication_date"] = event.publication_date;
-        temps["title"] = event.title;
-        this.articlePMID.push(temps);
-      });
-      jQuery('#articles_details_pmid').bootstrapTable({
-        bProcessing: true,
-        bServerSide: true,
-        pagination: true,
-        showToggle: true,
-        showColumns: true,
-        search: true,
-        pageSize: 25,
-        striped: true,
-        showFullscreen: true,
-        stickyHeader: true,
-        showExport: true,
-        data: this.articlePMID
-      });
-    });
-  }
+  // showPMIDLists(edgeNeId: any, sourceNode: string, destinationNode: string) {
+  //   const edgeNeIdArr = edgeNeId.split(",");
+  //   //console.log(typeof edgeNeIdArr + edgeNeIdArr +edgeNeIdArr[0]);
+  //   var pubmedBaseUrl = "https://www.ncbi.nlm.nih.gov/pubmed/";
+  //   this.nodeSelectsService.getEdgePMIDLists({ 'ne_ids': edgeNeIdArr }).subscribe((pmid: any) => {
+  //     this.loaderEdgeType = false;
+  //     this.resultPMIDLists = pmid;
+  //     console.log(this.resultPMIDLists);
+  //     this.articleHerePMID = this.resultPMIDLists.pmidLists;
+  //     this.articlePMID = [];
+  //     this.articleHerePMID.forEach((event: any) => {
+  //       var temps: any = {};
+  //       temps["source"] = sourceNode;
+  //       temps["destination"] = destinationNode;
+  //       temps["pmid"] = "<a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + event.pmid + "'>" + event.pmid + "</a>";
+  //       temps["publication_date"] = event.publication_date;
+  //       temps["title"] = event.title;
+  //       this.articlePMID.push(temps);
+  //     });
+  //     jQuery('#articles_details_pmid').bootstrapTable({
+  //       bProcessing: true,
+  //       bServerSide: true,
+  //       pagination: true,
+  //       showToggle: true,
+  //       showColumns: true,
+  //       search: true,
+  //       pageSize: 25,
+  //       striped: true,
+  //       showFullscreen: true,
+  //       stickyHeader: true,
+  //       showExport: true,
+  //       data: this.articlePMID
+  //     });
+  //   });
+  // }
 
 
   onDescScroll() {
@@ -537,9 +547,7 @@ export class EventDescriptionComponent implements OnInit {
   }
 
   loadNextDataSet() {
-
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-
     this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": startIndex, "limitValue": this.itemsPerPage });
     this.notscrolly = true;
     // this.getEventDescription(this.filterParams);
@@ -556,16 +564,9 @@ export class EventDescriptionComponent implements OnInit {
             this.notEmptyPost = false;
             this.isloading = false;
           }
-
           this.masterListsData = this.resultNodes.masterListsData;
           console.log("infinite data: ", this.masterListsData);
 
-        },
-        err => {
-          console.log(err.message);
-          // this.loadingDesc = false;
-        },
-        () => {
           // this.loadingDesc = false;
           this.masterListsDataDetailsExtra = [];
           let k = 0;
@@ -589,39 +590,53 @@ export class EventDescriptionComponent implements OnInit {
             //temps["edgeType_articleType"] = event.edge_type_article_type_ne_ids;
             temps["edgeTypesID"] = edgeTypeIdsPost;
             temps["edgeNeId"] = edgeTypeNeIdsPost;
+            temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";
+            this.masterListsDataDetailsExtra.push(temps);
+            console.log("new data Added: ", this.masterListsDataDetailsExtra);
 
             // Start For distinct pmid count here
-            this.nodeSelectsService.getEdgePMIDCount({ 'edge_type_pmid': edgeTypeNeIdsPost }).subscribe((p: any) => {
-              this.resultPMID = p;
-              this.pmidCount = this.resultPMID.pmidCount[0]['pmid_count'];
-              // console.log("pmidCount Inside: ", this.resultPMID.pmidCount[0]);
+            // this.nodeSelectsService.getEdgePMIDCount({ 'edge_type_pmid': edgeTypeNeIdsPost, 'edge_type_id': (event.level == 1 ? this.filterParams['edge_type_id'] : this.filterParams['edge_type_id2']) }).subscribe((p: any) => {
+            //   this.resultPMID = p;
+            //   this.pmidCount = this.resultPMID.pmidCount[0]['pmid_count'];
+            //   // console.log("pmidCount Inside: ", this.resultPMID.pmidCount[0]);
 
-              // temps["pmidCount"] = this.pmidCount;
-              temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";
-              temps["article_count"] = this.pmidCount;
+            //   // temps["pmidCount"] = this.pmidCount;
+            //   temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";
+            //   temps["article_count"] = this.pmidCount;
 
-              // temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary text-white' style='background-color:#B765A3 !important;font-size: 11px;padding: 1px 4px;border-radius: 5px;'>" + this.pmidCount + "</span></button> &nbsp;";
-              // temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Edge Type Article </button> &nbsp;";
+            //   // temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary text-white' style='background-color:#B765A3 !important;font-size: 11px;padding: 1px 4px;border-radius: 5px;'>" + this.pmidCount + "</span></button> &nbsp;";
+            //   // temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Edge Type Article </button> &nbsp;";
 
-              // temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary bg-warning text-dark'>" + this.pmidCount + "</span></button> &nbsp;";
-              this.masterListsDataDetailsExtra.push(temps);
+            //   // temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary bg-warning text-dark'>" + this.pmidCount + "</span></button> &nbsp;";
+            //   this.masterListsDataDetailsExtra.push(temps);
 
-              console.log(this.masterListsData.length, "=>", k + 1)
-              if (this.masterListsData.length == k + 1) {
-                this.loadingDesc = false;
-                this.isloading = false;
-                console.log("new data Added: ", this.masterListsDataDetailsExtra);
+            //   console.log(this.masterListsData.length, "=>", k + 1)
+            //   if (this.masterListsData.length == k + 1) {
+            //     this.loadingDesc = false;
+            //     this.isloading = false;
+            //     console.log("new data Added: ", this.masterListsDataDetailsExtra);
 
-                this.masterListsDataDetailsCombined = this.masterListsDataDetailsCombined.concat(this.masterListsDataDetailsExtra);
-                console.log("Total Add: ", this.masterListsDataDetailsCombined);
-                this.notscrolly = true;
-                this.bootstrapTableChart();
-              }
-              k++;
-            }
-            );
+            //     this.masterListsDataDetailsCombined = this.masterListsDataDetailsCombined.concat(this.masterListsDataDetailsExtra);
+            //     console.log("Total Add: ", this.masterListsDataDetailsCombined);
+            //     this.notscrolly = true;
+            //     this.bootstrapTableChart();
+            //   }
+            //   k++;
+            // });
             // End here for pmid distinct count
           });
+          this.masterListsDataDetailsCombined = this.masterListsDataDetailsCombined.concat(this.masterListsDataDetailsExtra);
+          console.log("Total Add: ", this.masterListsDataDetailsCombined);
+          this.notscrolly = true;
+          this.bootstrapTableChart();
+        },
+        err => {
+          console.log(err.message);
+          // this.loadingDesc = false;
+        },
+        () => {
+          this.loadingDesc = false;
+          this.isloading = false;
         }
       );
     }
