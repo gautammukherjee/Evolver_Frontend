@@ -274,7 +274,7 @@ export class NgCytoComponent implements OnChanges {
                             } else {
                                 this.edgeNamesMultiple = "<h4>No EDGES Found..</h4>";
                                 this.edgeNamesMultiple += "<div style='clear: both;'><hr/></div>";
-                            }                            
+                            }
 
                             $("#pubmedURLsDownloadLoader").html('');
                             $("#pubmedURLsDownload").html(this.pubmedURLsDownload);
@@ -372,6 +372,9 @@ export class NgCytoComponent implements OnChanges {
                 // })
             }
         })
+
+
+
 
         cy.on('mouseover', 'node', function (event: any) {
             var evtTarget = event.target;
@@ -568,6 +571,24 @@ export class NgCytoComponent implements OnChanges {
                 });
         });
         //document.getElementById("#btnsave").addEventListener ("click", nodeClickEvent, false);
+
+        // --- Map Download Begins ---
+        var png64 = cy.png();
+        $('#download_btn').on("click", function (ev) {
+            //debugger;
+            $('#png-eg').attr('src', png64);
+            console.log(png64);
+            var a = $("<a>")
+            .attr("href", png64)
+            .attr("download", "evolver_map.png")
+            .appendTo("body");
+
+            a[0].click();
+            a.remove();
+            $('#png-eg').removeAttr('src');
+            //$('#png-eg').hide();
+        });
+        // --- Map Download Ends ---
     }
 
     public showNodeInfo(nodeId: any) {

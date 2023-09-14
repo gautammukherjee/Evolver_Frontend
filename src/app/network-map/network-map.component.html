@@ -36,6 +36,11 @@
                             class='bi bi-fullscreen-exit' title="EXIT FULL SCREEN"></i><i
                             *ngIf="!isNetworkMapFullScreen" class="bi bi-arrows-fullscreen"
                             title="FULL SCREEN"></i></button>
+                    <button *ngIf="!nodesCheckLength" class="btn btn-primary btn-sm mr-1 p-1" style="margin:5px;line-height: 15px;" (click)="onDownloadCanvas()">download</button>
+                    <button *ngIf="!nodesCheckLength" id="download_btn" class="btn btn-primary btn-sm mr-1 p-1" style="margin:5px;line-height: 15px;" title="Download as .png image">
+                        <i class="bi bi-download"></i>
+                    </button>
+                    <img id="png-eg">
                 </div>
 
                 <div style="height: 100%; width: 99%; float: left; overflow: auto; overflow-y: hidden">

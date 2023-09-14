@@ -7,7 +7,7 @@ import { NodeSelectsService } from '../services/common/node-selects.service';
 
 var cytoscape = require('cytoscape');
 let fcose = require('cytoscape-fcose');
-cytoscape.use( fcose );
+cytoscape.use(fcose);
 
 import * as $ from "jquery";
 
@@ -60,7 +60,7 @@ export class NetworkMapComponent implements OnInit {
   layout: any = {};
   graphData: any = [];
   doFilterApply: Subject<any> = new Subject();  // ## P= Parent
-  isNetworkMapFullScreen : boolean = false;
+  isNetworkMapFullScreen: boolean = false;
   noDataFoundMap: boolean = false;
 
   constructor(
@@ -117,7 +117,7 @@ export class NetworkMapComponent implements OnInit {
     }
 
     // if (_filterParams.source_node != undefined) {
-      if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined && _filterParams.destination_node2 == undefined) || ((_filterParams.source_node2 != undefined || _filterParams.destination_node2 != undefined) && (_filterParams.nnrt_id2 != undefined && _filterParams.nnrt_id2 != ""))) {
+    if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined && _filterParams.destination_node2 == undefined) || ((_filterParams.source_node2 != undefined || _filterParams.destination_node2 != undefined) && (_filterParams.nnrt_id2 != undefined && _filterParams.nnrt_id2 != ""))) {
       this.loadingMap = true;
       this.noDataFoundMap = false;
 
@@ -149,10 +149,10 @@ export class NetworkMapComponent implements OnInit {
             //Source Node data
             let levelSourceColor;
             let levelTargetColor;
-            if(event.level==1){
+            if (event.level == 1) {
               levelSourceColor = '#BF63A2';
               levelTargetColor = '#85C9E8';
-            }else{
+            } else {
               levelSourceColor = '#8ceb34';
               levelTargetColor = '#c2c435';
             }
@@ -534,6 +534,20 @@ export class NetworkMapComponent implements OnInit {
 
   onNetworkMapFullScrClick() {
     this.isNetworkMapFullScreen = !this.isNetworkMapFullScreen;
+  }
+
+  onDownloadCanvas() {
+    let canvas = document.getElementsByTagName('canvas');
+    // let ctx = canvas[2].getContext('2d');
+    // ctx?.scale(3,3);
+    let canvasUrl = canvas[2]?.toDataURL("image/jpeg", 6.0);
+    const createEl = document.createElement('a');
+    createEl.href = canvasUrl;
+
+    // This is the name of our downloaded file
+    createEl.download = "network-map";
+    createEl.click();
+    createEl.remove();
   }
 
 }
