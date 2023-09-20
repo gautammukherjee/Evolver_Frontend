@@ -145,7 +145,7 @@ export class DashboardComponent implements OnInit {
       this.doFilterApply.next(undefined);
     }
     else if (this.filterParams['tabType'] == "details") {
-      this.doFilterApplyTab2.next(undefined);
+      // this.doFilterApplyTab2.next(undefined);
     }
     else if (this.filterParams['tabType'] == "relation") {
       this.doFilterApplyTab3.next(undefined);

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, Inject } from '@angular/core';
 import { GlobalVariableService } from './../services/common/global-variable.service';
 import { NodeSelectsService } from '../services/common/node-selects.service';
-import { Subject, BehaviorSubject, map, mergeMap } from 'rxjs';
+import { Subject, BehaviorSubject, map, mergeMap, forkJoin } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 import * as moment from "moment";
@@ -21,7 +21,10 @@ export class EventDescriptionComponent implements OnInit {
   private filterParams: any;
   result: any = [];
   resultPMIDLists: any = [];
-  resultNodes: any = [];
+  resultNodesLoadLevelOne: any = [];
+  resultNodesLoadLevelTwo: any = [];
+  resultNodesScrollLevelOne: any = [];
+  resultNodesScrollLevelTwo: any = [];
   resultNodesTotal: any = [];
   resultPMID: any = [];
   pmidCount: any;
@@ -46,9 +49,17 @@ export class EventDescriptionComponent implements OnInit {
   edgeTypeList: any = [];
   helpContents: any;
   masterListsData: any = [];
-  masterListsDataLength: number = 0;
-  masterListsDataLoaded: any = [];
-  masterListsDataOnScroll: any = [];
+
+  masterListsDataDetailsLevelOne: any = [];
+  masterListsDataDetailsLengthLevelOne: number = 0;
+  masterListsDataDetailsLevelTwo: any = [];
+  masterListsDataDetailsLengthLevelTwo: number = 0;
+  masterListsDataDetailsExtraLevelOne: any = [];
+  masterListsDataDetailsExtraLevelTwo: any = [];
+
+  // masterListsDataLength: number = 0;
+  // masterListsDataLoaded: any = [];
+  // masterListsDataOnScroll: any = [];
   masterListsDataDetailsLoaded: any = [];
   masterListsDataDetailsExtra: any = [];
   masterListsDataDetailsCombined: any = [];
@@ -62,9 +73,20 @@ export class EventDescriptionComponent implements OnInit {
   notEmptyPost: boolean = true;
   notscrolly: boolean = true;
   currentPage: number = 1;
-  itemsPerPage: number = 10;
+  itemsPerPage: number = 1000;
   public isloading: boolean = false;
   loaderEvidence = false;
+  noDataFoundDetails: boolean = false;
+
+  firstLoadApiResult: any;
+  secondLoadApiResult: any;
+  firstCompleteApiResult: any;
+  secondCompleteApiResult: any;
+  firstScrollApiResult: any;
+  secondScrollApiResult: any;
+  // firstAPI: any;
+  // secondAPI: any;
+
 
   constructor(
     private globalVariableService: GlobalVariableService,
@@ -78,119 +100,162 @@ export class EventDescriptionComponent implements OnInit {
     // console.log("new Filters1: ", this.filterParams);
     this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
     this.getEventDescription(this.filterParams);
-    this.getEventTotalDescription(this.filterParams);
+    // this.getEventTotalDescription(this.filterParams);
 
     this.ProceedDoFilterApply?.subscribe(data => {  // Calling from details, details working as mediator
       //console.log("eventData: ", data);
       this.notEmptyPost = true;
+      this.currentPage = 1;
       if (data === undefined) { // data=undefined true when apply filter from side panel
         // this.hideCardBody = true;
         this.filterParams = this.globalVariableService.getFilterParams();
         this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
         this.getEventDescription(this.filterParams);
-        this.getEventTotalDescription(this.filterParams);
+        // this.getEventTotalDescription(this.filterParams);
         //console.log("new Filters for articles: ", this.filterParams);
       }
     });
   }
 
-  getEventTotalDescription(_filterParams: any) {
-    //console.log("abc = "+_limit.load_value);
-    this.filterParams = this.globalVariableService.getFilterParams();
-    if (this.filterParams.source_node != undefined) {
-      // $('.overlay').fadeOut(500);
-      // this.loadingDesc = true;
-      this.masterListsDataLength = 0;
+  // getEventTotalDescription(_filterParams: any) {
+  //   this.filterParams = this.globalVariableService.getFilterParams();
+  //   const firstAPIsFull = this.nodeSelectsService.getMasterListsRevampLevelOne(this.filterParams);
+  //   const secondAPIFull = this.nodeSelectsService.getMasterListsRevampLevelTwo(this.filterParams);
 
-      console.log("filterparams for all records: ", _filterParams);
-      this.nodeSelectsService.getAllRecords(this.filterParams).subscribe(
-        data => {
-          //console.log("data: ", data);
-          this.resultNodesTotal = data;
-          console.log("Total datas1: ", this.resultNodesTotal);
-          // console.log("Total datas2: ", this.resultNodesTotal.masterListsDataTotal);
-          // console.log("Total datas3: ", this.resultNodesTotal.masterListsDataTotal[0]);
-          this.masterListsDataLength = this.resultNodesTotal.masterListsDataTotal[0].total;
-          console.log("Total datas4: ", this.masterListsDataLength);
-        }
-      )
-    }
-  }
+  //   // if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined && _filterParams.destination_node2 == undefined) || ((_filterParams.source_node2 != undefined || _filterParams.destination_node2 != undefined) && (_filterParams.nnrt_id2 != undefined && _filterParams.nnrt_id2 != ""))) {
+  //   if (this.filterParams.source_node != undefined) {
+  //     // this.loadingDesc = true;
+  //     this.masterListsDataLength = 0;
+
+  //     console.log("filterparams for all records: ", _filterParams);
+  //     this.nodeSelectsService.getAllRecords(this.filterParams).subscribe(
+  //       data => {
+  //         //console.log("data: ", data);
+  //         this.resultNodesTotal = data;
+  //         console.log("Total datas1: ", this.resultNodesTotal);
+  //         this.masterListsDataLength = this.resultNodesTotal.masterListsDataTotal[0].total;
+  //       }
+  //     )
+  //   }
+  // }
 
   getEventDescription(_filterParams: any) {
     //console.log("abc = "+_limit.load_value);
-    this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
-    if (this.filterParams.source_node != undefined) {
-      // $('.overlay').fadeOut(500);
+
+    if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined && _filterParams.destination_node2 == undefined) ||
+      ((_filterParams.source_node2 != undefined && _filterParams.nnrt_id2 != undefined)
+        || (_filterParams.destination_node2 != undefined && _filterParams.nnrt_id2 != undefined))) {
       this.loadingDesc = true;
+      this.noDataFoundDetails = false;
 
-      //console.log("filterparams: ", _filterParams);
-      this.nodeSelectsService.getMasterLists(this.filterParams).subscribe(
-        data => {
-          //console.log("data: ", data);
-          this.resultNodes = data;
-          this.masterListsData = this.resultNodes.masterListsData;
-          console.log("Load data: ", this.masterListsData);
-        },
-        err => {
-          console.log(err.message);
-          // this.loadingDesc = false;
-        },
-        () => {
-          // this.loadingDesc = false;
-          this.masterListsDataDetailsLoaded = [];
-          let j = 0;
-          this.masterListsData.forEach((event: any) => {
+      this.filterParams = this.globalVariableService.getFilterParams();
+      console.log("new data complete: ", this.filterParams);
 
-            var temps: any = {};
-            //Get the Edge Type Name
-            const regex = /[{}]/g;
-            const edgeTypeIds = event.edge_type_ids;
-            const edgeTypeIdsPost = edgeTypeIds.replace(regex, '');
-            //console.log("event: ", event);//use this variable, gautam
-
-            const edgeTypeNeIds = event.ne_ids;
-            const edgeTypeNeIdsPost = edgeTypeNeIds.replace(regex, '');
-
-            // temps["news_id"] = event.news_id;
-            temps["sourcenode_name"] = event.sourcenode_name;
-            temps["destinationnode_name"] = event.destinationnode_name;
-            temps["level"] = event.level;
-            //temps["edgeTypes"] = "<button class='btn btn-sm btn-primary'>Edge Types</button> &nbsp;";
-
-            //temps["edgeType_articleType"] = event.edge_type_article_type_ne_ids;
-            temps["edgeTypesID"] = edgeTypeIdsPost;
-            temps["edgeNeId"] = edgeTypeNeIdsPost;
-
-            this.nodeSelectsService.getEdgePMIDCount({ 'edge_type_pmid': edgeTypeNeIdsPost, 'edge_type_id': (event.level == 1 ? this.filterParams['edge_type_id'] : this.filterParams['edge_type_id2']) }).subscribe((p: any) => {
-              this.resultPMID = p;
-              this.pmidCount = this.resultPMID.pmidCount[0]['pmid_count'];
-              // console.log("pmidCount: ", this.resultPMID.pmidCount[0]);
-              // temps["pmidCount"] = this.pmidCount;
-              temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";
-              temps["article_count"] = this.pmidCount;
-              // temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Edge Type Article </button> &nbsp;";
-              this.masterListsDataDetailsLoaded.push(temps);
-              this.masterListsDataDetailsCombined = this.masterListsDataDetailsLoaded;
-
-              console.log(this.masterListsData.length, "=>", j + 1)
-              if (this.masterListsData.length == j + 1) {
-                this.loadingDesc = false;
-                console.log("masterListsData Event Loaded: ", this.masterListsDataDetailsCombined);
-                this.bootstrapTableChart();
-              }
-              j++;
-            });
-
-          });
+      ///////////////// Start To get the complete data for level 1 and level 2 /////////////////////////////
+      if (_filterParams.nnrt_id != undefined) {
+        const firstAPIsFull = this.nodeSelectsService.getMasterListsRevampLevelOneCount(this.filterParams);
+        let combinedDataAPIFull;
+        if (_filterParams.nnrt_id2 != undefined) {
+          const secondAPIFull = this.nodeSelectsService.getMasterListsRevampLevelTwoCount(this.filterParams);
+          combinedDataAPIFull = [firstAPIsFull, secondAPIFull];
+        } else {
+          combinedDataAPIFull = [firstAPIsFull];
         }
-      );
+
+        forkJoin(combinedDataAPIFull) //we can use more that 2 api request 
+          .subscribe(
+            result => {
+              console.log("you full data here: ", result);
+              //this will return list of array of the result
+              this.firstCompleteApiResult = result[0];
+              this.secondCompleteApiResult = result[1];
+              console.log("first Complete Api Result: ", this.firstCompleteApiResult);
+              console.log("second Complete Api Result: ", this.secondCompleteApiResult);
+              this.masterListsDataDetailsLengthLevelOne = this.firstCompleteApiResult.masterListsData[0].count;
+              if (this.secondCompleteApiResult != undefined) {
+                this.masterListsDataDetailsLengthLevelTwo = this.secondCompleteApiResult.masterListsData[0].count;
+              }
+            });
+      }
+      ///////////////// End To get the complete data for level 1 and level 2 /////////////////////////////
+
+
+      //First Degree Data
+      if (_filterParams.nnrt_id != undefined) {
+        this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
+        console.log("new data limit: ", this.filterParams);
+
+        const firstAPIs = this.nodeSelectsService.getMasterListsRevampLevelOne(this.filterParams);
+        let combinedDataAPI;
+        if (_filterParams.nnrt_id2 != undefined) {
+          const secondAPI = this.nodeSelectsService.getMasterListsRevampLevelTwo(this.filterParams);
+          combinedDataAPI = [firstAPIs, secondAPI];
+        } else {
+          combinedDataAPI = [firstAPIs];
+        }
+
+        forkJoin(combinedDataAPI) //we can use more that 2 api request 
+          .subscribe(
+            result => {
+              console.log("you load here: ", result);
+              //this will return list of array of the result
+              this.firstLoadApiResult = result[0];
+              this.secondLoadApiResult = result[1];
+              console.log("first Load Api Result: ", this.firstLoadApiResult);
+              console.log("second Load Api Result: ", this.secondLoadApiResult);
+
+              ////////// **************** Merging the data into one place *******************////////////////              
+              this.masterListsDataDetailsLevelOne = this.firstLoadApiResult.masterListsData;
+              this.masterListsData = this.masterListsDataDetailsLevelOne;
+              console.log("First Level Data: ", this.masterListsData);
+              let firstLevelDataStore = this.masterListsDataDetailsLevelOne; //Store the First level data
+
+              //Second Degree Data
+              if (this.secondLoadApiResult != undefined) {
+                //Second level data and Combined data first and second level
+                this.masterListsDataDetailsLevelTwo = this.secondLoadApiResult.masterListsData;
+                console.log("Second Level Data: ", this.masterListsDataDetailsLevelTwo);
+
+                this.masterListsData = [].concat(firstLevelDataStore, this.masterListsDataDetailsLevelTwo);
+                console.log("Combined Data Load: ", this.masterListsData);
+              }
+              this.loadingDesc = false;
+              ////////// **************** End Merging the data into one place *******************////////////////
+
+              this.masterListsDataDetailsLoaded = [];
+              // let j = 0;
+              this.masterListsData.forEach((event: any) => {
+                var temps: any = {};
+                //Get the Edge Type Name
+                const regex = /[{}]/g;
+                const edgeTypeIds = event.edge_type_ids;
+                const edgeTypeIdsPost = edgeTypeIds.replace(regex, '');
+                //console.log("event: ", event);//use this variable, gautam
+                const edgeTypeNeIds = event.ne_ids;
+                const edgeTypeNeIdsPost = edgeTypeNeIds.replace(regex, '');
+                // temps["news_id"] = event.news_id;
+                temps["sourcenode_name"] = event.sourcenode_name;
+                temps["destinationnode_name"] = event.destinationnode_name;
+                temps["level"] = event.level;
+                //temps["edgeTypes"] = "<button class='btn btn-sm btn-primary'>Edge Types</button> &nbsp;";
+                //temps["edgeType_articleType"] = event.edge_type_article_type_ne_ids;
+                temps["pmidCount"] = event.pmids;
+                temps["edgeTypesID"] = edgeTypeIdsPost;
+                temps["edgeNeId"] = edgeTypeNeIdsPost;
+                temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";
+                this.masterListsDataDetailsLoaded.push(temps);
+              });
+              this.masterListsDataDetailsCombined = this.masterListsDataDetailsLoaded;
+              console.log("Total Combined Load Data: ", this.masterListsDataDetailsCombined);
+              this.bootstrapTableChart();
+            });
+      }
     }
-    // }
-    // else {
-    //   this.masterListsData = [];
-    //   this.loadingDesc = false;
-    // }
+    else if (_filterParams.source_node != undefined) {
+      this.noDataFoundDetails = true;
+      // this.masterListsData = [];
+      // this.loadingDesc = false;
+    }
   }
 
   bootstrapTableChart() {
@@ -202,7 +267,7 @@ export class EventDescriptionComponent implements OnInit {
       showToggle: true,
       showColumns: true,
       search: true,
-      pageSize: 10,
+      pageSize: 50,
       // pageList: [10, 25, 50, 100, All],
       striped: true,
       //showFilter: true,
@@ -210,6 +275,11 @@ export class EventDescriptionComponent implements OnInit {
       showFullscreen: true,
       stickyHeader: true,
       showExport: true,
+      exportOptions: {
+        ignoreColumn: [3],
+        // columns: [6],
+        // visible: [6,'true'],
+      },
       data: this.masterListsDataDetailsCombined,
       onClickRow: (field: any, row: any, $element: any) => {
         //edge types
@@ -232,23 +302,6 @@ export class EventDescriptionComponent implements OnInit {
     });
     jQuery('#showEventDescription').bootstrapTable("load", this.masterListsDataDetailsCombined);
   }
-
-  // getEdgeTypes2(edgeTypeIdsPost: any) {
-  //   return this.getEdgeTypes(edgeTypeIdsPost).subscribe(s => {
-  //     this.result = s;
-  //   })
-  // }
-
-
-  //Currently getEdgeTypes() not in use.
-  /*getEdgeTypes(edgeTypeIdsPost: any) {
-    this.edgeHere = "";
-    this.nodeSelectsService.getEdgeTypeName({ 'edge_type_ids': edgeTypeIdsPost }).subscribe((p: any) => {
-      this.result = p;
-      this.edgeHere = this.result;
-      this.loaderEdgeType = false;
-    });
-  }*/
 
   /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   Commented by Gautam Mukherjee
@@ -343,9 +396,7 @@ export class EventDescriptionComponent implements OnInit {
             let html_str: string;
             let html_res: string;
 
-
             if (field == "sentence_btn") {
-
               //console.log(row.ne_id);
 
               this.loaderEvidence = true;
@@ -367,10 +418,6 @@ export class EventDescriptionComponent implements OnInit {
                   let e1_color: string;
                   let e2_color: string;
                   let sentence_text1: string;
-                  // let sentence_text2: string;
-                  // let sentence_text3: string;
-                  // let sentence_text4: string;
-                  // let sentence_text5: string;
 
                   for (let i = 0; i < sentences.evidence_data.length; i++) {
 
@@ -409,25 +456,6 @@ export class EventDescriptionComponent implements OnInit {
                     sentence_text1 = sentence_text1.replace("</E2>", "</mark>");
 
                     //console.log(sentence_text1);
-
-
-
-
-                    // html_str = "<div class='m-2 border border-secondary'>";
-                    // html_str += "<div class='row m-1'>";
-                    // html_str += "<div class='col'><span style='color:" + e1_color + "'>" + sentences.evidence_data[i].gene_symbol_e1 + "</span>(" + sentences.evidence_data[i].e1_type_name + ")</div>";
-                    // html_str += "<div class='col'>" + sentences.evidence_data[i].edge_name + "</div>";
-                    // html_str += "<div class='col'><span style='color:" + e1_color + "'>" + sentences.evidence_data[i].gene_symbol_e2 + "</span>(" + sentences.evidence_data[i].e2_type_name + ")</div>";
-                    // html_str += "<div class='col'> PMID: <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + sentences.evidence_data[i].pubmed_id + "'>" + sentences.evidence_data[i].pubmed_id + "</a></div>";
-                    // html_str += "</div>";
-                    // html_str += "<div>";
-
-                    // html_str += "<div class='row m-1'>";
-                    // html_str += "<div class='col'><p class='m-2'>" + sentence_text1 + "</p></div>";
-                    // html_str += "</div>";
-                    // html_str += "</div>";
-                    // html_str += "</div>";
-
                     html_str = "<table width='100%' border='1' cellpadding='2'>";
                     html_str += "<tr>";
                     html_str += "<td width='30%'><span style='color:" + e1_color + "'>" + sentences.evidence_data[i].gene_symbol_e1 + "</span>(" + sentences.evidence_data[i].e1_type_name + ")</td>";
@@ -444,7 +472,6 @@ export class EventDescriptionComponent implements OnInit {
                     html_res += html_str;
                     this.loaderEvidence = false;
                   };//for
-
 
                   $($element).parent().after('<tr class="sentence_container"><td colspan="8">' + html_res + '</td></tr>');
                   // $($element).children().eq(0).css({ "background-color": "#B765A3", "border": "1px solid #B765A3" });//change color of sentence button
@@ -467,59 +494,47 @@ export class EventDescriptionComponent implements OnInit {
             }
           }
         },
-        // onDblClickCell: (field: any, value: any, row: any, $element: any) => {
-        //   if ($($element).parent().next().is(":visible")) {
-        //     $($element).parent().next().hide(750);
-        //     $($element).children().eq(1).text("Show");
-        //   } else {
-        //     $($element).parent().next().show(750);
-        //     $($element).children().eq(1).text("Hide")
-        //   }
-
-        // }
-        
       });
       this.loaderArticle = false;
     });
 
   }
 
-  showPMIDLists(edgeNeId: any, sourceNode: string, destinationNode: string) {
-    const edgeNeIdArr = edgeNeId.split(",");
-    //console.log(typeof edgeNeIdArr + edgeNeIdArr +edgeNeIdArr[0]);
-    var pubmedBaseUrl = "https://www.ncbi.nlm.nih.gov/pubmed/";
-    this.nodeSelectsService.getEdgePMIDLists({ 'ne_ids': edgeNeIdArr }).subscribe((pmid: any) => {
-      this.loaderEdgeType = false;
-      this.resultPMIDLists = pmid;
-      console.log(this.resultPMIDLists);
-      this.articleHerePMID = this.resultPMIDLists.pmidLists;
-      this.articlePMID = [];
-      this.articleHerePMID.forEach((event: any) => {
-        var temps: any = {};
-        temps["source"] = sourceNode;
-        temps["destination"] = destinationNode;
-        temps["pmid"] = "<a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + event.pmid + "'>" + event.pmid + "</a>";
-        temps["publication_date"] = event.publication_date;
-        temps["title"] = event.title;
-        this.articlePMID.push(temps);
-      });
-      jQuery('#articles_details_pmid').bootstrapTable({
-        bProcessing: true,
-        bServerSide: true,
-        pagination: true,
-        showToggle: true,
-        showColumns: true,
-        search: true,
-        pageSize: 25,
-        striped: true,
-        showFullscreen: true,
-        stickyHeader: true,
-        showExport: true,
-        data: this.articlePMID
-      });
-    });
-  }
-
+  // showPMIDLists(edgeNeId: any, sourceNode: string, destinationNode: string) {
+  //   const edgeNeIdArr = edgeNeId.split(",");
+  //   //console.log(typeof edgeNeIdArr + edgeNeIdArr +edgeNeIdArr[0]);
+  //   var pubmedBaseUrl = "https://www.ncbi.nlm.nih.gov/pubmed/";
+  //   this.nodeSelectsService.getEdgePMIDLists({ 'ne_ids': edgeNeIdArr }).subscribe((pmid: any) => {
+  //     this.loaderEdgeType = false;
+  //     this.resultPMIDLists = pmid;
+  //     console.log(this.resultPMIDLists);
+  //     this.articleHerePMID = this.resultPMIDLists.pmidLists;
+  //     this.articlePMID = [];
+  //     this.articleHerePMID.forEach((event: any) => {
+  //       var temps: any = {};
+  //       temps["source"] = sourceNode;
+  //       temps["destination"] = destinationNode;
+  //       temps["pmid"] = "<a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + event.pmid + "'>" + event.pmid + "</a>";
+  //       temps["publication_date"] = event.publication_date;
+  //       temps["title"] = event.title;
+  //       this.articlePMID.push(temps);
+  //     });
+  //     jQuery('#articles_details_pmid').bootstrapTable({
+  //       bProcessing: true,
+  //       bServerSide: true,
+  //       pagination: true,
+  //       showToggle: true,
+  //       showColumns: true,
+  //       search: true,
+  //       pageSize: 25,
+  //       striped: true,
+  //       showFullscreen: true,
+  //       stickyHeader: true,
+  //       showExport: true,
+  //       data: this.articlePMID
+  //     });
+  //   });
+  // }
 
   onDescScroll() {
     console.log('onScroll Here');
@@ -537,9 +552,8 @@ export class EventDescriptionComponent implements OnInit {
   }
 
   loadNextDataSet() {
-
+    console.log("currentPage: ", this.currentPage);
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-
     this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": startIndex, "limitValue": this.itemsPerPage });
     this.notscrolly = true;
     // this.getEventDescription(this.filterParams);
@@ -548,94 +562,102 @@ export class EventDescriptionComponent implements OnInit {
       // this.loadingDesc = true;
       this.isloading = true;
 
-      this.nodeSelectsService.getMasterLists(this.filterParams).subscribe(
-        data => {
-          //console.log("data: ", data);
-          this.resultNodes = data;
-          if (this.resultNodes.masterListsData.length === 0) {
-            this.notEmptyPost = false;
-            this.isloading = false;
-          }
+      //First Degree Data
+      if (this.filterParams.nnrt_id != "") {
+        this.isloading = true;
+        const firstScrollAPIs = this.nodeSelectsService.getMasterListsRevampLevelOne(this.filterParams);
 
-          this.masterListsData = this.resultNodes.masterListsData;
-          console.log("infinite data: ", this.masterListsData);
-
-        },
-        err => {
-          console.log(err.message);
-          // this.loadingDesc = false;
-        },
-        () => {
-          // this.loadingDesc = false;
-          this.masterListsDataDetailsExtra = [];
-          let k = 0;
-          this.masterListsData.forEach((event: any) => {
-            var temps: any = {};
-            //Get the Edge Type Name
-            const regex = /[{}]/g;
-            const edgeTypeIds = event.edge_type_ids;
-            const edgeTypeIdsPost = edgeTypeIds.replace(regex, '');
-            //console.log("event: ", event);//use this variable, gautam
-
-            const edgeTypeNeIds = event.ne_ids;
-            const edgeTypeNeIdsPost = edgeTypeNeIds.replace(regex, '');
-            //console.log(edgeTypeNeIdsPost);
-
-            // temps["news_id"] = event.news_id;
-            temps["sourcenode_name"] = event.sourcenode_name;
-            temps["destinationnode_name"] = event.destinationnode_name;
-            temps["level"] = event.level;
-            //temps["edgeTypes"] = "<button class='btn btn-sm btn-primary'>Edge Types</button> &nbsp;";
-            //temps["edgeType_articleType"] = event.edge_type_article_type_ne_ids;
-            temps["edgeTypesID"] = edgeTypeIdsPost;
-            temps["edgeNeId"] = edgeTypeNeIdsPost;
-
-            // Start For distinct pmid count here
-            this.nodeSelectsService.getEdgePMIDCount({ 'edge_type_pmid': edgeTypeNeIdsPost }).subscribe((p: any) => {
-              this.resultPMID = p;
-              this.pmidCount = this.resultPMID.pmidCount[0]['pmid_count'];
-              // console.log("pmidCount Inside: ", this.resultPMID.pmidCount[0]);
-
-              // temps["pmidCount"] = this.pmidCount;
-              temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";
-              temps["article_count"] = this.pmidCount;
-
-              // temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary text-white' style='background-color:#B765A3 !important;font-size: 11px;padding: 1px 4px;border-radius: 5px;'>" + this.pmidCount + "</span></button> &nbsp;";
-              // temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Edge Type Article </button> &nbsp;";
-
-              // temps["edgeNe"] = "<button class='btn btn-sm btn-primary'>Articles <span class='badge bg-secondary bg-warning text-dark'>" + this.pmidCount + "</span></button> &nbsp;";
-              this.masterListsDataDetailsExtra.push(temps);
-
-              console.log(this.masterListsData.length, "=>", k + 1)
-              if (this.masterListsData.length == k + 1) {
-                this.loadingDesc = false;
-                this.isloading = false;
-                console.log("new data Added: ", this.masterListsDataDetailsExtra);
-
-                this.masterListsDataDetailsCombined = this.masterListsDataDetailsCombined.concat(this.masterListsDataDetailsExtra);
-                console.log("Total Add: ", this.masterListsDataDetailsCombined);
-                this.notscrolly = true;
-                this.bootstrapTableChart();
-              }
-              k++;
-            }
-            );
-            // End here for pmid distinct count
-          });
+        let combinedScrollDataAPI;
+        if (this.filterParams.nnrt_id2 != undefined) {
+          const secondScrollAPI = this.nodeSelectsService.getMasterListsRevampLevelTwo(this.filterParams);
+          combinedScrollDataAPI = [firstScrollAPIs, secondScrollAPI];
+        } else {
+          combinedScrollDataAPI = [firstScrollAPIs];
         }
-      );
-    }
 
+        forkJoin(combinedScrollDataAPI) //we can use more that 2 api request 
+          .subscribe(
+            result => {
+              console.log("you scroll here: ", result);
+              //this will return list of array of the result
+              this.firstScrollApiResult = result[0];
+              this.secondScrollApiResult = result[1];
+              console.log("first Scroll Api Result: ", this.firstScrollApiResult);
+              console.log("second Scroll Api Result: ", this.secondScrollApiResult);
+
+              if (this.secondScrollApiResult != undefined) {
+                if (this.firstScrollApiResult.masterListsData.length === 0 && this.secondScrollApiResult.masterListsData.length === 0) {
+                  this.notEmptyPost = false;
+                  this.isloading = false;
+                }
+              } else {
+                if (this.firstScrollApiResult.masterListsData.length === 0) {
+                  this.notEmptyPost = false;
+                  this.isloading = false;
+                }
+              }
+
+              ////////// **************** Merging the data into one place *******************////////////////
+              this.masterListsDataDetailsExtraLevelOne = this.firstScrollApiResult.masterListsData;
+              this.masterListsData = this.masterListsDataDetailsExtraLevelOne;
+              console.log("First Level Scroll Data Store: ", this.masterListsData);
+              let firstLevelExtraDataStore = this.masterListsDataDetailsExtraLevelOne; //Store the First level data
+
+              //Second Degree Data
+              if (this.secondScrollApiResult != undefined) {
+                //Second level data and Combined data first and second level
+                this.masterListsDataDetailsExtraLevelTwo = this.secondScrollApiResult.masterListsData;
+                console.log("Second Level Extra Data: ", this.masterListsDataDetailsExtraLevelTwo);
+
+                this.masterListsData = [].concat(firstLevelExtraDataStore, this.masterListsDataDetailsExtraLevelTwo);
+                console.log("Combined Scroll Data: ", this.masterListsData);
+              }
+              this.loadingDesc = false;
+              ////////// **************** End Merging the data into one place *******************////////////////
+
+              this.masterListsDataDetailsExtra = [];
+              this.masterListsData.forEach((event: any) => {
+                var temps: any = {};
+                //Get the Edge Type Name
+                const regex = /[{}]/g;
+                const edgeTypeIds = event.edge_type_ids;
+                const edgeTypeIdsPost = edgeTypeIds.replace(regex, '');
+                //console.log("event: ", event);//use this variable, gautam
+                const edgeTypeNeIds = event.ne_ids;
+                const edgeTypeNeIdsPost = edgeTypeNeIds.replace(regex, '');
+                //console.log(edgeTypeNeIdsPost);
+                // temps["news_id"] = event.news_id;
+                temps["sourcenode_name"] = event.sourcenode_name;
+                temps["destinationnode_name"] = event.destinationnode_name;
+                temps["level"] = event.level;
+                //temps["edgeTypes"] = "<button class='btn btn-sm btn-primary'>Edge Types</button> &nbsp;";
+                //temps["edgeType_articleType"] = event.edge_type_article_type_ne_ids;
+                temps["pmidCount"] = event.pmids;
+                temps["edgeTypesID"] = edgeTypeIdsPost;
+                temps["edgeNeId"] = edgeTypeNeIdsPost;
+                temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";
+                this.masterListsDataDetailsExtra.push(temps);
+              });
+              console.log("New data Scroll Added: ", this.masterListsDataDetailsExtra);
+              this.masterListsDataDetailsCombined = this.masterListsDataDetailsCombined.concat(this.masterListsDataDetailsExtra);
+              console.log("Total Combined Scroll Data: ", this.masterListsDataDetailsCombined);
+              this.notscrolly = true;
+              this.bootstrapTableChart();
+              this.loadingDesc = false;
+              this.isloading = false;
+            });
+      }
+    }
   }
 
   scrollTop() {
-    document.querySelector("#articleModal")?.parentElement?.parentElement?.parentElement?.scrollTo({top : 0})
+    document.querySelector("#articleModal")?.parentElement?.parentElement?.parentElement?.scrollTo({ top: 0 })
   }
 
-  gotoPageTop(){
-    window.scrollTo({top : 0});
+  gotoPageTop() {
+    window.scrollTo({ top: 0 });
   }
-  
+
   // loadNextDataSetOLD(event: any) {
   //   //console.log(event.target.value);
   //   this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": event.target.value, "limitValue": 8000 });
