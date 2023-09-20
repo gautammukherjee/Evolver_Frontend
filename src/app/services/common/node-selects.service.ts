@@ -97,6 +97,18 @@ export class NodeSelectsService {
   getMasterLists(params: any) {
     return this.http.post(this.API_URL + 'getMasterLists', params, httpOptions);
   }
+  getMasterListsRevampLevelOne(params: any) {
+    return this.http.post(this.API_URL + 'getMasterListsRevampLevelOne', params, httpOptions);
+  }
+  getMasterListsRevampLevelTwo(params: any) {
+    return this.http.post(this.API_URL + 'getMasterListsRevampLevelTwo', params, httpOptions);
+  }
+  getMasterListsRevampLevelOneCount(params: any) {
+    return this.http.post(this.API_URL + 'getMasterListsRevampLevelOneCount', params, httpOptions);
+  }
+  getMasterListsRevampLevelTwoCount(params: any) {
+    return this.http.post(this.API_URL + 'getMasterListsRevampLevelTwoCount', params, httpOptions);
+  }
   getAllRecords(params: any) {
     return this.http.post(this.API_URL + 'getAllRecords', params, httpOptions);
   }

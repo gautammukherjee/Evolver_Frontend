@@ -1,10 +1,12 @@
 <div class="search-options" infinite-scroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="50"
     (scrolled)="onDescScroll()">
-
+    <!-- <div class="search-options"> -->
     <div class="card-panel-box">
-
         <div class="customTable" style="border: 0px solid #ddd; min-height:400px;">
-            <div class="text-muted fs-2 text-center mb-4" *ngIf="masterListsData?.length == 0">Please select entities to
+            <div class="text-muted fs-2 text-center mb-4"
+                *ngIf="(masterListsDataDetailsLengthLevelOne==0 && masterListsDataDetailsLengthLevelTwo == 0)">Please
+                select
+                entities to
                 generate Details</div>
             <!--<div class="card-panel-box-heading">
             Event List
@@ -22,13 +24,24 @@
                     <div class="overlay text-center" *ngIf="loadingDesc">
                         <img style="margin:185px 653px;" src="../../assets/images/loader_big.gif" />
                     </div>
+                    <div *ngIf="noDataFoundDetails" class="bg-danger"
+                        style="color:#fff; text-align: center; font-weight: bold;">
+                        Please Choose Pair Type For Second Degree
+                    </div>
                     <div class="table-responsive custom-fixed-header-table table table-striped table-hover"
                         [ngClass]="toggleLevels == false ? 'hiddenLevels' : currentLevel == '1' ? 'level1' : currentLevel == 2 ? 'level2' : 'level3'">
-                        
-                        <div *ngIf="masterListsDataLength" style="margin-bottom: -34px;">Total Combination Records: {{masterListsDataLength}}</div>
+
+                        <div>
+                            <span *ngIf="firstCompleteApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">First level Records:
+                                {{masterListsDataDetailsLengthLevelOne}}</span>
+                            <br /><span *ngIf="secondCompleteApiResult!=undefined && masterListsDataDetailsLengthLevelTwo > 0">Second level Records:
+                                {{masterListsDataDetailsLengthLevelTwo}}</span>
+                        </div>
+
                         <table id="showEventDescription" data-toolbar="#toolbar" data-search="true"
-                            data-show-export="true" data-export-options='{"fileName": "evolverAI"}' data-show-columns="true" data-page-size="10"
-                            data-filter-control="true" data-page-list="[10, 25, 50, 100, All]" class="table-striped">
+                            data-show-export="true" data-export-options='{"fileName": "evolverAI"}'
+                            data-show-columns="true" data-page-size="10" data-filter-control="true"
+                            data-page-list="[10, 25, 50, 100]" class="table-striped">
                             <!--<table id="showEventDescription" data-toolbar="#toolbar" data-search="true" data-page-size="50" data-page-list="[10, 25, 50, 100, All]">-->
                             <thead>
                                 <tr>
@@ -43,19 +56,19 @@
                                     <!-- <th data-field="edgeTypes" data-sortable="true" width="10%"
                                         data-filter-control="input">
                                         Edge Type</th> -->
-                                    <!-- <th data-field="pmidCount" data-sortable="true" width="10%"
-                                        data-filter-control="input">
-                                        PMID Count</th> -->
+                                    <th data-field="pmidCount" data-sortable="true" width="10%"
+                                        data-filter-control="select">
+                                        PMID Count</th>
                                     <!-- <th data-filter-control="select" data-field="article_count" data-sortable="true" width="10%">
                                             Articles Count</th> -->
                                     <th data-field="edgeNeCount" data-sortable="true" width="10%">
                                         Articles</th>
-                                    
+
                                     <!-- <th data-field="edgeNe" data-sortable="true" width="10%">
                                         Get Edge Type Article</th> -->
                                 </tr>
                             </thead>
-                        </table>                        
+                        </table>
                     </div>
                 </div>
                 <!-- Total Records:{{masterListsData.length}} *ngIf="masterListsData.length>1999"-->
@@ -152,7 +165,7 @@
                         </div> -->
                             <table id="articles_details" data-toolbar="#toolbar" data-search="true"
                                 data-show-export="true" data-show-columns="true" data-page-size="50"
-                                data-filter-control="true" data-page-list="[10, 25, 50, 100, All]" >
+                                data-filter-control="true" data-page-list="[10, 25, 50, 100, All]">
                                 <thead>
                                     <tr>
                                         <th data-field="id" data-sortable="true" width="2%">
@@ -185,7 +198,7 @@
                                         <th data-field="sentence_btn" data-sortable="false" width="10%">
                                             Evidence
                                         </th>
-                                        
+
                                     </tr>
                                 </thead>
                             </table>

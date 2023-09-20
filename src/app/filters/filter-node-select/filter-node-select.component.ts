@@ -171,7 +171,7 @@ export class FilterNodeSelectComponent implements OnInit {
 
   resetNode() {
     this.selectedNodeSelects = [];
-    this.globalVariableService.setSelectedNodeSelects(this.selectedNodeSelects);
+    this.globalVariableService.setSelectedNodeSelects(undefined);
     this.selectedNodeSelects = Array.from(this.globalVariableService.getSelectedNodeSelects());
     // this.proceed();
   }

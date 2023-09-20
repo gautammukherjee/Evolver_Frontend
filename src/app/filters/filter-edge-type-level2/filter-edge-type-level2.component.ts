@@ -75,9 +75,10 @@ export class FilterEdgeTypeLevel2Component implements OnInit {
         });
 
     this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
-      console.log("Edge Level: ", event.clickOn);
-      if (event.clickOn !== undefined && (event.clickOn == 'sourceNodeFilter' || event.clickOn == 'deleteLevel2')) {
+      console.log("Edge Level2: ", event.clickOn);
+      if (event.clickOn !== undefined && (event.clickOn == 'sourceNodeFilter' || event.clickOn == 'edgeTypeFilter' || event.clickOn == 'destinationNodeFilter' || event.clickOn == 'nodeLevel2Filter' || event.clickOn == 'deleteLevel2')) {
         // console.log("Edge Level 2:2 ", event.clickOn);
+        this.globalVariableService.setSelectedEdgeTypes2([]);
         this.getEdgeType2(event);
       }
     });

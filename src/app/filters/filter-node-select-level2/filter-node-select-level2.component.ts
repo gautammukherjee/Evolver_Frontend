@@ -71,9 +71,10 @@ export class FilterNodeSelectLevel2Component implements OnInit {
         console.log("Click Node Level 2:1 ", event.clickOn);
         this.node_selects2 = [];
         // this.getNodeSelects(event);
-      } else if (event.clickOn !== undefined && (event.clickOn == 'sourceNodeFilter' || event.clickOn == 'deleteLevel2')) {
+      } else if (event.clickOn !== undefined && (event.clickOn == 'sourceNodeFilter' || event.clickOn == 'deleteLevel2' || event.clickOn == 'edgeTypeFilter' || event.clickOn == 'destinationNodeFilter')) {
         console.log("Click Node Level 2:2 ", event.clickOn);
         // if (this.firstTimeCheck === false) // Node select only one time reload when we choose destination nodes are selected
+        this.globalVariableService.setSelectedNodeSelects2(undefined);
         this.getNodeSelects(event);
       }
     });
@@ -101,7 +102,7 @@ export class FilterNodeSelectLevel2Component implements OnInit {
     // console.log("checked here Gene: ", this.diseaseCheck);
     this.selectedNodeSelects2 = [];
 
-    // console.log("node_selects11111: ", this.filterParams);
+    console.log("node_selects11111: ", this.filterParams);
 
     if (this.filterParams.source_node != undefined) {
       this.loading = true;
@@ -178,7 +179,7 @@ export class FilterNodeSelectLevel2Component implements OnInit {
 
   resetNode() {
     this.selectedNodeSelects2 = [];
-    this.globalVariableService.setSelectedNodeSelects2(this.selectedNodeSelects2);
+    this.globalVariableService.setSelectedNodeSelects2(undefined);
     this.selectedNodeSelects2 = Array.from(this.globalVariableService.getSelectedNodeSelects2());
     // this.proceed();
   }
