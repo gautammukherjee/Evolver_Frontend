@@ -415,7 +415,7 @@ body {
             margin-top: 75px;
             border-radius: 20px;
             margin-left: 330px;
-            min-height: 100vh;
+            min-height: calc(100vh - 148px);
             position: relative;
             transition: all 0.5s;
 

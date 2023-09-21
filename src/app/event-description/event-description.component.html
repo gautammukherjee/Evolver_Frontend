@@ -1,5 +1,5 @@
-<div class="search-options position-relative" infinite-scroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="50"
-    (scrolled)="onDescScroll()">
+<div class="event-desc-wrapper search-options" infinite-scroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="50"
+    (scrolled)="onDescScroll()" [scrollWindow]="false">
     <!-- <div class="search-options"> -->
     <div class="card-panel-box">
         <div class="customTable" style="border: 0px solid #ddd; min-height:400px;">
@@ -91,7 +91,7 @@
     </div>
 
     <!-- <button class="btn btn-primary" (click)="gotoPageTop()">Go to top</button> -->
-    <div class="text-center position-absolute w-100" style="bottom:30px" *ngIf="isloading"><img src="./assets/images/spinner_small_loader.gif"></div>
+    <div class="text-center" *ngIf="isloading"><img src="./assets/images/spinner_small_loader.gif"></div>
 
 </div>
 
