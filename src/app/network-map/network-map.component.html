@@ -15,7 +15,8 @@
             </div>
 
             <!--<div class="table-responsive" *ngIf="nodesCheck">-->
-            <div class="table-responsive position-relative">
+            <div class="table-responsive position-relative"
+                [ngClass]="isNetworkMapFullScreen == true ? 'network-map-full-screen' : ''">
                 <!--<div class="form-check" style="margin-left: 12px;">
                     <input type="radio" class="form-check-input" name="edgeSelect" id="edgeUnchecked" value="1"
                         (change)="clickedEdges($event)" checked>
@@ -26,30 +27,38 @@
                     <label class="form-check-label" for="edgeChecked">Show All Targets</label>
                 </div>-->
 
-                <div class="map-zoom-btngrp" >
-                    <button *ngIf="!nodesCheckLength" class="btn btn-primary btn-sm mr-1 p-1"
-                        style="margin:5px;line-height: 15px;" (click)="refreshMap($event)"
-                        title="REFRESH MAP"><i class="bi bi-arrow-clockwise"></i></button>
-                    <button *ngIf="!nodesCheckLength" class="btn btn-primary btn-sm p-1" style="margin:5px;line-height: 15px;"
-                        [ngClass]="isNetworkMapFullScreen == true ? 'map-fixed-posBtn' : ''"
+                <div class="map-zoom-btngrp">
+                    <div [ngClass]="isNetworkMapFullScreen == true ? 'd-none' : ''">
+                        <img id="png-eg">
+                        <button *ngIf="!nodesCheckLength" class="btn btn-primary btn-sm mr-1 p-1"
+                            style="margin:5px;line-height: 15px;" (click)="refreshMap($event)" title="REFRESH MAP"><i
+                                class="bi bi-arrow-clockwise"></i></button>
+                        <!-- <button *ngIf="!nodesCheckLength" class="btn btn-primary btn-sm mr-1 p-1" style="margin:5px;line-height: 15px;" (click)="onDownloadCanvas()">download</button> -->
+                        <button *ngIf="!nodesCheckLength" id="download_btn" class="btn btn-primary btn-sm mr-1 p-1"
+                            style="margin:5px;line-height: 15px;" title="Download as .png image">
+                            <i class="bi bi-download"></i>
+                        </button>
+                    </div>
+                    <div *ngIf="!nodesCheckLength"
+                        class="btn btn-sm float-start p-1 mr-1 bg-primary text-white btn-map-zoom"
+                        [ngClass]="isNetworkMapFullScreen == true ? 'fixed-full-screen-zoom' : ''"
+                        style="margin:5px;line-height: 15px;">
+                        <input class="form-check-input mt-0" type="checkbox" id="zoomSwitch">&nbsp;
+                        <label class="form-check-label" for="zoomSwitch">Zoom</label>
+                    </div>
+                    <button *ngIf="!nodesCheckLength" class="btn btn-primary btn-sm p-1"
+                        style="margin:5px;line-height: 15px;"
+                        [ngClass]="isNetworkMapFullScreen == true ? 'exit-map-fullscreen-fixed-posBtn' : ''"
                         (click)="onNetworkMapFullScrClick()"><i *ngIf="isNetworkMapFullScreen"
                             class='bi bi-fullscreen-exit' title="EXIT FULL SCREEN"></i><i
                             *ngIf="!isNetworkMapFullScreen" class="bi bi-arrows-fullscreen"
                             title="FULL SCREEN"></i></button>
-                    <!-- <button *ngIf="!nodesCheckLength" class="btn btn-primary btn-sm mr-1 p-1" style="margin:5px;line-height: 15px;" (click)="onDownloadCanvas()">download</button> -->
-                    <button *ngIf="!nodesCheckLength" id="download_btn" class="btn btn-primary btn-sm mr-1 p-1" style="margin:5px;line-height: 15px;" title="Download as .png image">
-                        <i class="bi bi-download"></i>
-                    </button>
-                    <img id="png-eg">
-                    <div *ngIf="!nodesCheckLength" class="btn btn-sm float-start p-1 mr-1 bg-primary text-white" style="margin:5px;line-height: 15px;">
-                        <input class="form-check-input mt-0" type="checkbox" id="zoomSwitch">&nbsp;
-                        <label class="form-check-label" for="zoomSwitch">Zoom</label>
-                    </div>
                 </div>
 
                 <div style="height: 100%; width: 99%; float: left; overflow: auto; overflow-y: hidden">
                     <!-- <ng2-cytoscape [elements]="graphData" [layout]="layout" (select)="nodeChange($event)"></ng2-cytoscape> -->
-                    <div class="network-map-wrapper" [ngClass]="isNetworkMapFullScreen == true ? 'full-screen' : ''">
+                    <!-- [ngClass]="isNetworkMapFullScreen == true ? 'full-screen' : ''" -->
+                    <div class="network-map-wrapper">
                         <ng2-cytoscape [elements]="graphData" [layout]="layout"
                             (onGraphSelection)='graphSelected("nodeRightClick")'></ng2-cytoscape>
                     </div>
