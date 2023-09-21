@@ -1,6 +1,6 @@
-<div class="search-options" infinite-scroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="50"
-    (scrolled)="onDescScroll()">
-    <!-- <div class="search-options"> -->
+<!-- <div class="search-options event-desc-wrapper" infinite-scroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="50"
+    (scrolled)="onDescScroll()" [scrollWindow]="false"> -->
+<div class="search-options">
     <div class="card-panel-box">
         <div class="customTable" style="border: 0px solid #ddd; min-height:400px;">
             <div class="text-muted fs-2 text-center mb-4"
@@ -32,22 +32,24 @@
                         [ngClass]="toggleLevels == false ? 'hiddenLevels' : currentLevel == '1' ? 'level1' : currentLevel == 2 ? 'level2' : 'level3'">
 
                         <div>
-                            <span *ngIf="firstCompleteApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">First level Records:
-                                {{masterListsDataDetailsLengthLevelOne}}</span>
-                            <br /><span *ngIf="secondCompleteApiResult!=undefined && masterListsDataDetailsLengthLevelTwo > 0">Second level Records:
-                                {{masterListsDataDetailsLengthLevelTwo}}</span>
+                            <span class="float-start bg-primary text-white p-1 mr-2"
+                                *ngIf="firstCompleteApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">First Level Combinations
+                                <span class="badge bg-danger text-white">{{masterListsDataDetailsLengthLevelOne}}</span></span>
+                            <span class="float-start bg-primary text-white p-1"
+                                *ngIf="secondCompleteApiResult!=undefined && masterListsDataDetailsLengthLevelTwo > 0">Second Level Combinations
+                                <span class="badge bg-danger text-white">{{masterListsDataDetailsLengthLevelTwo}}</span></span>
                         </div>
 
                         <table id="showEventDescription" data-toolbar="#toolbar" data-search="true"
                             data-show-export="true" data-export-options='{"fileName": "evolverAI"}'
-                            data-show-columns="true" data-page-size="10" data-filter-control="true"
-                            data-page-list="[10, 25, 50, 100]" class="table-striped">
+                            data-show-columns="true" data-page-size="100" data-filter-control="true"
+                            data-page-list="[10, 25, 50, 100, all]" class="table-striped">
                             <!--<table id="showEventDescription" data-toolbar="#toolbar" data-search="true" data-page-size="50" data-page-list="[10, 25, 50, 100, All]">-->
                             <thead>
                                 <tr>
                                     <!-- <th data-field="news_id" data-sortable="true" width="10%">News ID</th> -->
                                     <th data-field="sourcenode_name" data-sortable="true" width="10%"
-                                        data-filter-control="select">Source</th>
+                                        data-filter-control="input">Source</th>
                                     <th data-field="destinationnode_name" data-sortable="true" width="10%"
                                         data-filter-control="input">Destination</th>
                                     <th data-field="level" data-sortable="true" width="10%"
@@ -86,12 +88,18 @@
                     No More Records..
                 </div>
             </div>
+
+            <div class="text-center" *ngIf="isloading"><img src="./assets/images/spinner_small_loader.gif"></div>
+            <div class="text-center">
+                <button *ngIf="!isloading && notEmptyPost && firstCompleteApiResult!=undefined" (click)="onDescScroll()"
+                    class="loadMoreBtn">Load More</button>
+            </div>
+
         </div>
 
     </div>
 
     <!-- <button class="btn btn-primary" (click)="gotoPageTop()">Go to top</button> -->
-    <div class="text-center" *ngIf="isloading"><img src="./assets/images/spinner_small_loader.gif"></div>
 
 </div>
 

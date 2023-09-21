@@ -267,7 +267,7 @@ export class EventDescriptionComponent implements OnInit {
       showToggle: true,
       showColumns: true,
       search: true,
-      pageSize: 50,
+      pageSize: 100,
       // pageList: [10, 25, 50, 100, All],
       striped: true,
       //showFilter: true,
@@ -276,7 +276,7 @@ export class EventDescriptionComponent implements OnInit {
       stickyHeader: true,
       showExport: true,
       exportOptions: {
-        ignoreColumn: [3],
+        ignoreColumn: [4],
         // columns: [6],
         // visible: [6,'true'],
       },
@@ -560,7 +560,7 @@ export class EventDescriptionComponent implements OnInit {
 
     if (this.filterParams.source_node != undefined) {
       // this.loadingDesc = true;
-      this.isloading = true;
+      // this.isloading = true;
 
       //First Degree Data
       if (this.filterParams.nnrt_id != "") {
