@@ -131,40 +131,41 @@ export class FilterDestinationNodeComponent implements OnInit {
     // this.currentPage = 1;
     if (this.filterParams.source_node != undefined) {
       this.loading = true;
+      setTimeout(() => {
+        this.nodeSelectsService.getDestinationNode(this.filterParams)
+          .subscribe(
+            data => {
+              this.result = data;
+              this.destinationNodesLength = this.result.destinationNodeRecords.length;
+              console.log("destinationNodes Length: ", this.destinationNodesLength);
 
-      this.nodeSelectsService.getDestinationNode(this.filterParams)
-        .subscribe(
-          data => {
-            this.result = data;
-            this.destinationNodesLength = this.result.destinationNodeRecords.length;
-            console.log("destinationNodes Length: ", this.destinationNodesLength);
+              //Start here for clinical trials destination nodes unique data
+              let destinationID: any = [];
+              this.result.destinationNodeRecords.forEach((event: any) => {
+                destinationID.push(event.destination_node);
+              });
+              console.log("destinationID: ", destinationID);
+              this.distinctDestinationNodesData = [...new Set(destinationID.map((x: any) => x))];
+              console.log("destinationNodes res: ", this.distinctDestinationNodesData);
 
-            //Start here for clinical trials destination nodes unique data
-            let destinationID: any = [];
-            this.result.destinationNodeRecords.forEach((event: any) => {
-              destinationID.push(event.destination_node);
-            });
-            console.log("destinationID: ", destinationID);
-            this.distinctDestinationNodesData = [...new Set(destinationID.map((x: any) => x))];
-            console.log("destinationNodes res: ", this.distinctDestinationNodesData);
-
-            this.globalVariableService.setSelectedAllForCTDestinationNodes(this.distinctDestinationNodesData);
-            this.selectedAllForCTDestinationNodes = Array.from(this.globalVariableService.getSelectedAllForCTDestinationNodes());
-            this.filterParams = this.globalVariableService.getFilterParams();
-            console.log("new new Filters all select DESTINATION: ", this.filterParams);
-            //End here for clinical trials destination nodes unique data
-          },
-          err => {
-            // this.destinationNodesCheck = true;
-            this.loading = false;
-            console.log(err.message)
-          },
-          () => {
-            // this.destinationNodesCheck = true;
-            this.loading = false;
-            console.log("loading finish")
-          }
-        );
+              this.globalVariableService.setSelectedAllForCTDestinationNodes(this.distinctDestinationNodesData);
+              this.selectedAllForCTDestinationNodes = Array.from(this.globalVariableService.getSelectedAllForCTDestinationNodes());
+              this.filterParams = this.globalVariableService.getFilterParams();
+              console.log("new new Filters all select DESTINATION: ", this.filterParams);
+              //End here for clinical trials destination nodes unique data
+            },
+            err => {
+              // this.destinationNodesCheck = true;
+              this.loading = false;
+              console.log(err.message)
+            },
+            () => {
+              // this.destinationNodesCheck = true;
+              this.loading = false;
+              console.log("loading finish")
+            }
+          );
+      }, 1000);
     } else {
       console.log("no checked data")
       this.destinationNodes = [];
