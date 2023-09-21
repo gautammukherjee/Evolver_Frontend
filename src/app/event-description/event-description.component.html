@@ -32,12 +32,16 @@
                         [ngClass]="toggleLevels == false ? 'hiddenLevels' : currentLevel == '1' ? 'level1' : currentLevel == 2 ? 'level2' : 'level3'">
 
                         <div>
-                            <span class="float-start bg-primary text-white p-1 mr-2"
-                                *ngIf="firstCompleteApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">First Level Combinations
-                                <span class="badge bg-danger text-white">{{masterListsDataDetailsLengthLevelOne}}</span></span>
-                            <span class="float-start bg-primary text-white p-1"
-                                *ngIf="secondCompleteApiResult!=undefined && masterListsDataDetailsLengthLevelTwo > 0">Second Level Combinations
-                                <span class="badge bg-danger text-white">{{masterListsDataDetailsLengthLevelTwo}}</span></span>
+                            <div class="float-start bg-primary text-white rounded p-1 m-1"
+                                *ngIf="firstCompleteApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">
+                                First Level Combinations
+                                <span class="badge text-white" style="background-color: #B765A3;">{{masterListsDataDetailsLengthLevelOne}}</span>
+                            </div>
+                            <div class="float-start bg-primary text-white rounded p-1 m-1"
+                                *ngIf="secondCompleteApiResult!=undefined && masterListsDataDetailsLengthLevelTwo > 0">
+                                Second Level Combinations
+                                <span class="badge text-white" style="background-color: #B765A3;">{{masterListsDataDetailsLengthLevelTwo}}</span>
+                            </div>
                         </div>
 
                         <table id="showEventDescription" data-toolbar="#toolbar" data-search="true"
