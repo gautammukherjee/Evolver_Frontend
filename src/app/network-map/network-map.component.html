@@ -4,7 +4,8 @@
             <!--<h4>Network Map for <span style="text-transform: uppercase;"> {{mapTypes}} </span></h4>-->
             <!-- <h4 style="text-align: center;background-color: #7880BA;padding: 10px; color:#fff;">Network Map </h4> -->
 
-            <div class="text-muted fs-2 text-center mb-4" style="margin-top: 160px;" *ngIf="nodesCheckLength">Please select entities to generate
+            <div class="text-muted fs-2 text-center mb-4" style="margin-top: 160px;" *ngIf="nodesCheckLength">Please
+                select entities to generate
                 the Network Map</div>
 
             <div class="overlay" *ngIf="loadingMap">
@@ -19,14 +20,18 @@
 
                 <div>
                     <span class="float-start text-white p-1 mr-2" style="background-color: #6C7572; border-radius:5px;"
-                        *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">First Degree Combinations
+                        *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">First Degree
+                        Combinations
                         <span class="badge bg-primary text-white">{{masterListsDataDetailsLengthLevelOne}}</span></span>
-                        <span class="float-start text-white p-1 mr-2" style="background-color: #6C7572; border-radius:5px;"
-                        *ngIf="secondLoadApiResult!=undefined && masterListsDataDetailsLengthLevelTwo > 0">Second Degree Combinations
+                    <span class="float-start text-white p-1 mr-2" style="background-color: #6C7572; border-radius:5px;"
+                        *ngIf="secondLoadApiResult!=undefined && masterListsDataDetailsLengthLevelTwo > 0">Second Degree
+                        Combinations
                         <span class="badge bg-primary text-white">{{masterListsDataDetailsLengthLevelTwo}}</span></span>
                 </div>
-                
-                <!--<div class="form-check" style="margin-left: 12px;">
+                <div class="table-responsive position-relative"
+                    [ngClass]="isNetworkMapFullScreen == true ? 'network-map-full-screen' : ''">
+
+                    <!--<div class="form-check" style="margin-left: 12px;">
                     <input type="radio" class="form-check-input" name="edgeSelect" id="edgeUnchecked" value="1"
                         (change)="clickedEdges($event)" checked>
                     <label class="form-check-label" for="edgeUnchecked">Edge Type Selected</label>
@@ -36,84 +41,92 @@
                     <label class="form-check-label" for="edgeChecked">Show All Targets</label>
                 </div>-->
 
-                <div class="map-zoom-btngrp" >
-                    <button *ngIf="!nodesCheckLength" class="btn btn-primary btn-sm mr-1 p-1"
-                        style="margin:5px;line-height: 15px;" (click)="refreshMap($event)"
-                        title="REFRESH MAP"><i class="bi bi-arrow-clockwise"></i></button>
-                    <button *ngIf="!nodesCheckLength" class="btn btn-primary btn-sm p-1" style="margin:5px;line-height: 15px;"
-                        [ngClass]="isNetworkMapFullScreen == true ? 'map-fixed-posBtn' : ''"
-                        (click)="onNetworkMapFullScrClick()"><i *ngIf="isNetworkMapFullScreen"
-                            class='bi bi-fullscreen-exit' title="EXIT FULL SCREEN"></i><i
-                            *ngIf="!isNetworkMapFullScreen" class="bi bi-arrows-fullscreen"
-                            title="FULL SCREEN"></i></button>
-                    <!-- <button *ngIf="!nodesCheckLength" class="btn btn-primary btn-sm mr-1 p-1" style="margin:5px;line-height: 15px;" (click)="onDownloadCanvas()">download</button> -->
-                    <button *ngIf="!nodesCheckLength" id="download_btn" class="btn btn-primary btn-sm mr-1 p-1" style="margin:5px;line-height: 15px;" title="Download as .png image">
-                        <i class="bi bi-download"></i>
-                    </button>
-                    <img id="png-eg">
-                    <div *ngIf="!nodesCheckLength" class="btn btn-sm float-start p-1 mr-1 bg-primary text-white" style="margin:5px;line-height: 15px;">
-                        <input class="form-check-input mt-0" type="checkbox" id="zoomSwitch">&nbsp;
-                        <label class="form-check-label" for="zoomSwitch">Zoom</label>
+                    <div class="map-zoom-btngrp">
+                        <div [ngClass]="isNetworkMapFullScreen == true ? 'd-none' : ''">
+                            <img id="png-eg">
+                            <button *ngIf="!nodesCheckLength" class="btn btn-primary btn-sm mr-1 p-1"
+                                style="margin:5px;line-height: 15px;" (click)="refreshMap($event)"
+                                title="REFRESH MAP"><i class="bi bi-arrow-clockwise"></i></button>
+                            <!-- <button *ngIf="!nodesCheckLength" class="btn btn-primary btn-sm mr-1 p-1" style="margin:5px;line-height: 15px;" (click)="onDownloadCanvas()">download</button> -->
+                            <button *ngIf="!nodesCheckLength" id="download_btn" class="btn btn-primary btn-sm mr-1 p-1"
+                                style="margin:5px;line-height: 15px;" title="Download as .png image">
+                                <i class="bi bi-download"></i>
+                            </button>
+                        </div>
+                        <div *ngIf="!nodesCheckLength"
+                            class="btn btn-sm float-start p-1 mr-1 bg-primary text-white btn-map-zoom"
+                            [ngClass]="isNetworkMapFullScreen == true ? 'fixed-full-screen-zoom' : ''"
+                            style="margin:5px;line-height: 15px;">
+                            <input class="form-check-input mt-0" type="checkbox" id="zoomSwitch">&nbsp;
+                            <label class="form-check-label" for="zoomSwitch">Zoom</label>
+                        </div>
+                        <button *ngIf="!nodesCheckLength" class="btn btn-primary btn-sm p-1"
+                            style="margin:5px;line-height: 15px;"
+                            [ngClass]="isNetworkMapFullScreen == true ? 'exit-map-fullscreen-fixed-posBtn' : ''"
+                            (click)="onNetworkMapFullScrClick()"><i *ngIf="isNetworkMapFullScreen"
+                                class='bi bi-fullscreen-exit' title="EXIT FULL SCREEN"></i><i
+                                *ngIf="!isNetworkMapFullScreen" class="bi bi-arrows-fullscreen"
+                                title="FULL SCREEN"></i></button>
                     </div>
-                </div>
 
-                <div style="height: 100%; width: 99%; float: left; overflow: auto; overflow-y: hidden">
-                    <!-- <ng2-cytoscape [elements]="graphData" [layout]="layout" (select)="nodeChange($event)"></ng2-cytoscape> -->
-                    <div class="network-map-wrapper" [ngClass]="isNetworkMapFullScreen == true ? 'full-screen' : ''">
-                        <ng2-cytoscape [elements]="graphData" [layout]="layout"
-                            (onGraphSelection)='graphSelected("nodeRightClick")'></ng2-cytoscape>
+                    <div style="height: 100%; width: 99%; float: left; overflow: auto; overflow-y: hidden">
+                        <!-- <ng2-cytoscape [elements]="graphData" [layout]="layout" (select)="nodeChange($event)"></ng2-cytoscape> -->
+                        <!-- [ngClass]="isNetworkMapFullScreen == true ? 'full-screen' : ''" -->
+                        <div class="network-map-wrapper">
+                            <ng2-cytoscape [elements]="graphData" [layout]="layout"
+                                (onGraphSelection)='graphSelected("nodeRightClick")'></ng2-cytoscape>
+                        </div>
+
+
                     </div>
 
-
-                </div>
-
-                <!-- <div class="modal overlay right fade" id="myModalNode" tabindex="-1" role="dialog">
+                    <!-- <div class="modal overlay right fade" id="myModalNode" tabindex="-1" role="dialog">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header"> -->
-                                <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                         aria-hidden="true">&times;</span></button>-->
-                                <!-- <h5 class="modal-title">Node Details</h5>
+                    <!-- <h5 class="modal-title">Node Details</h5>
                             </div>
                             <div class="modal-body">
                                 <div id="nodeDetails"></div> -->
-                                <!--<div [innerHTML]="nodeDetails"></div>-->
-                            <!-- </div>
+                    <!--<div [innerHTML]="nodeDetails"></div>-->
+                    <!-- </div>
                         </div>
                     </div>
                 </div> -->
-                <!-- modal Node -->
+                    <!-- modal Node -->
 
-                <div class="modal overlay right fade" id="myModalEdge" tabindex="-1" role="dialog">
-                    <div class="modal-dialog" role="document" style="width: 500px;">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <div class="modal overlay right fade" id="myModalEdge" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document" style="width: 500px;">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>-->
-                                <h5 class="modal-title">Details</h5>
-                            </div>
-                            <div class="modal-body">
-                                <div id="pubmedURLsDownloadLoader"></div>
-                                <!-- <div id="pubmedURLs">&nbsp;</div> -->
-                                <!-- <div id="pubmedEdgeNames"></div> -->
-                                <div id="pubmedURLsDownload"></div>
-                                
+                                    <h5 class="modal-title">Details</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="pubmedURLsDownloadLoader"></div>
+                                    <!-- <div id="pubmedURLs">&nbsp;</div> -->
+                                    <!-- <div id="pubmedEdgeNames"></div> -->
+                                    <div id="pubmedURLsDownload"></div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!--<div class="footer" style="width: 10px; margin-left: 10px;" *ngFor="let legendsNodeType of legendsNodeTypes">
+                    <!--<div class="footer" style="width: 10px; margin-left: 10px;" *ngFor="let legendsNodeType of legendsNodeTypes">
                     <div class="dot" [style.background]="legendsNodeType.color_code"><span>{{legendsNodeType.node_name}}</span></div>
                 </div>-->
 
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- <ng-template #showNode let-c="close" let-d="dismiss">
+    <!-- <ng-template #showNode let-c="close" let-d="dismiss">
     <div class="modal-header blue_bg_hdr  modal-lg">
         <div class="customTable" style="min-height: 0px;">
             <h4>Selected Node Name
