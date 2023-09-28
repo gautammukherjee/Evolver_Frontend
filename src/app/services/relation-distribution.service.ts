@@ -33,6 +33,28 @@ export class RelationDistributionService {
   distribution_by_relation_grp_get_edge_type_drilldown(params: any){
     return this._http.post<any>(API_URL +'distribution_by_relation_grp_get_edge_type_drilldown', params, httpOptions);
   }
+
+  //Revamp
+  pmid_count_gene_disease_revamp_level_one(params:any){
+    return this._http.post<any>(API_URL +'pmid_count_gene_disease_revamp_level_one', params, httpOptions);
+  }
+  pmid_count_gene_disease_revamp_level_two(params:any){
+    return this._http.post<any>(API_URL +'pmid_count_gene_disease_revamp_level_two', params, httpOptions);
+  }
+  distribution_by_relation_grp_level_one(params: any){
+    //console.log("in service -- 2");
+    return this._http.post<any>(API_URL +'distribution_by_relation_grp_level_one', params, httpOptions);
+  }
+  distribution_by_relation_grp_level_two(params: any){
+    return this._http.post<any>(API_URL +'distribution_by_relation_grp_level_two', params, httpOptions);
+  }
+
+  distribution_by_relation_grp_get_edge_type_drilldown_level_one(params: any){
+    return this._http.post<any>(API_URL +'distribution_by_relation_grp_get_edge_type_drilldown_level_one', params, httpOptions);
+  }
+  distribution_by_relation_grp_get_edge_type_drilldown_level_two(params: any){
+    return this._http.post<any>(API_URL +'distribution_by_relation_grp_get_edge_type_drilldown_level_two', params, httpOptions);
+  }
   
 
 }

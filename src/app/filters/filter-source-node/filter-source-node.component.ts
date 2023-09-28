@@ -34,6 +34,7 @@ export class FilterSourceNodeComponent implements OnInit {
   searchInput: any = null;
   public groupedBySourceNode: any = {};
   public finalGroupedBySourceNode: any = {};
+  public finalGroupedBySourceBeforeNode: any = {};
   subSynNodeName: any = [];
   toggled: any = {};
   visible: boolean = false;
@@ -96,11 +97,13 @@ export class FilterSourceNodeComponent implements OnInit {
           data => {
             this.result = data;
             this.sourceNodes = this.result.sourceNodeRecords;
+            
             // 1. get the json objects
             console.log("sourceNodes: ", this.sourceNodes);
 
-            // 2. group by source_node name
-            const groupedCategories = this.sourceNodes.reduce((accumulator: any, element: any, index: any) => {
+            ///////////////////////////////////////////////////////
+            // 2. Group by source_node name
+            const groupedSourceNodes = this.sourceNodes.reduce((accumulator: any, element: any, index: any) => {
               const source_node_id = element.source_node;
               const source_node_name = element.source_node_name;
               const subcategory_syn_node_name = element.syn_node_name;
@@ -121,31 +124,44 @@ export class FilterSourceNodeComponent implements OnInit {
                   }
                 };
             }, {});
-            console.log("groupedCategories: ", groupedCategories);
+            console.log("groupedSourceNodes: ", groupedSourceNodes);
 
+            //////////////////////////////////////////////////////////////////////////
             // 3. Group according to source name name and get the new json objects
             this.groupedBySourceNode =
-              Object.keys(groupedCategories).map(source_node_id => ({
+              Object.keys(groupedSourceNodes).map(source_node_id => ({
                 source_node: source_node_id,
-                source_node_name: groupedCategories[source_node_id].source_node_name,
-                subcategory_syn_node_name: groupedCategories[source_node_id].subCategories,
+                source_node_name: groupedSourceNodes[source_node_id].source_node_name,
+                subcategory_syn_node_name: groupedSourceNodes[source_node_id].subCategories,
               }))
             console.log("groupedBySourceNode: ", this.groupedBySourceNode);
 
+            ///////////////////////////////////////////////////////////////////////////////////////
             //4. Start sorting according to keyword search filter in autosugest json objects
             let searchField = "source_node_name";
-            let results1 = []; let results2 = [];
-            this.finalGroupedBySourceNode = [];
+            let results1 = []; let results2 = []; let results3 = [];
+            this.finalGroupedBySourceBeforeNode = [];
             for (var i = 0; i < this.groupedBySourceNode.length; i++) {
-              if ((this.groupedBySourceNode[i][searchField]).toLowerCase() == (this.searchInput).toLowerCase()) {
+              if ((this.groupedBySourceNode[i][searchField]).toLowerCase() == (this.searchInput).toLowerCase()) {// To check the node_name equality
                 results1.push(this.groupedBySourceNode[i]);
-              } else {
-                results2.push(this.groupedBySourceNode[i]);
+              }
+              else {
+                // console.log("subcatcount: ", this.groupedBySourceNode[i].subcategory_syn_node_name.length);
+                for (var j = 0; j < this.groupedBySourceNode[i].subcategory_syn_node_name.length; j++) {
+                  if ((this.groupedBySourceNode[i].subcategory_syn_node_name[j]).toLowerCase() == (this.searchInput).toLowerCase()) { // To check the syn_node_name equality
+                    results2.push(this.groupedBySourceNode[i]);
+                  }
+                }
+                results3.push(this.groupedBySourceNode[i]);
               }
             }
+            this.finalGroupedBySourceBeforeNode = results1.concat(results2, results3);
+            console.log("Final data: ", this.finalGroupedBySourceBeforeNode);
 
-            this.finalGroupedBySourceNode = results1.concat(results2);
-            console.log("final: ", this.finalGroupedBySourceNode);
+            const key = 'source_node';
+            this.finalGroupedBySourceNode = [...new Map(this.finalGroupedBySourceBeforeNode.map((item: any) =>
+              [item[key], item])).values()];
+              console.log("Final unique data: ", this.finalGroupedBySourceNode);
             //End sorting according to filter in autosugest json objects
           },
           err => {

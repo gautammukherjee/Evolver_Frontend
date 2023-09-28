@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, Inject } from '@angular/core';
 import { GlobalVariableService } from 'src/app/services/common/global-variable.service';
-import { Subject, BehaviorSubject } from 'rxjs';
+import { Subject, BehaviorSubject, forkJoin } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NodeSelectsService } from '../services/common/node-selects.service';
@@ -63,6 +63,19 @@ export class NetworkMapComponent implements OnInit {
   isNetworkMapFullScreen: boolean = false;
   noDataFoundMap: boolean = false;
 
+  masterListsDataDetailsLevelOne: any = [];
+  masterListsDataDetailsLengthLevelOne: number = 0;
+  remainedCountForFirstLevel: number = 0;
+  masterListsDataDetailsLevelTwo: any = [];
+  masterListsDataDetailsLengthLevelTwo: number = 0;
+  remainedCountForSecondLevel: number = 0;
+
+  firstLoadApiResult: any;
+  secondLoadApiResult: any;
+  firstCompleteApiResult: any;
+  secondCompleteApiResult: any;
+
+
   constructor(
     private globalVariableService: GlobalVariableService,
     private nodeSelectsService: NodeSelectsService,
@@ -117,114 +130,202 @@ export class NetworkMapComponent implements OnInit {
     }
 
     // if (_filterParams.source_node != undefined) {
-    if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined && _filterParams.destination_node2 == undefined) || ((_filterParams.source_node2 != undefined || _filterParams.destination_node2 != undefined) && (_filterParams.nnrt_id2 != undefined && _filterParams.nnrt_id2 != ""))) {
+    if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined && _filterParams.destination_node2 == undefined) ||
+      (_filterParams.source_node2 != undefined && _filterParams.nnrt_id2 != undefined)) {
       this.loadingMap = true;
       this.noDataFoundMap = false;
 
-      // this.filterParams = this.globalVariableService.getFilterParams();
+      this.filterParams = this.globalVariableService.getFilterParams();
       console.log("master map for filter: ", _filterParams);
 
-      this.nodeSelectsService.getMasterLists(_filterParams).subscribe(
-        data => {
-          this.nodeData = [];
-          this.sourcenodeData = [];
-          this.sourceId = [];
-          this.destinationnodeData = [];
-          this.edgeData = [];
-          this.groupedNodeType = [];
-          this.legendsNodeTypes = [];
-
-          this.resultNodes = data;
-          this.masterListsData = this.resultNodes.masterListsData;
-          console.log("masterListsData: ", this.masterListsData);
-          // console.log("masterListsDataLengtH: ", this.masterListsData.length);
-          if (this.masterListsData.length > 0) {
-            this.nodesCheckLength = false;
-          } else {
-            this.nodesCheckLength = true;
-          }
-          // console.log("bdbdd: ", this.nodesCheckLength);
-
-          this.masterListsData.forEach((event: any) => {
-            //Source Node data
-            let levelSourceColor;
-            let levelTargetColor;
-            if (event.level == 1) {
-              levelSourceColor = '#BF63A2';
-              levelTargetColor = '#85C9E8';
-            } else {
-              levelSourceColor = '#8ceb34';
-              levelTargetColor = '#c2c435';
-            }
-            this.sourcenodeData.push({
-              id: Math.floor(event.sourcenode), name: event.sourcenode_name, neIds: event.ne_ids, edgeTypeIds: event.edge_type_ids, colorNode: levelSourceColor, shapeType: 'round-hexagon', nodeType: 'source'
-            });
-
-            //Destination node data
-            this.destinationnodeData.push({
-              id: Math.floor(event.destinationnode), name: event.destinationnode_name, neIds: event.ne_ids, edgeTypeIds: event.edge_type_ids, colorNode: levelTargetColor, shapeType: 'sphere', nodeType: 'target'
-            });
-
-            this.legendsNodeTypes.push({ node_name: event.sourcenode, color_code: '#85C9E8' });
-
-            //Edge data
-            this.edgeData.push({
-              // data: { source: Math.floor(event.source_id), target: Math.floor(event.target_id), PMID: event.pmidlist, colorCode: "pink", strength: Math.floor(event.edge_weight) },
-              data: { source: Math.floor(event.sourcenode), target: Math.floor(event.destinationnode), neIds: event.ne_ids, edgeTypeIds: event.edge_type_ids, colorCode: "#00e600", strength: Math.floor(2) },
-            });
-          });
-
-          console.log("sourcenodeData: ", this.sourcenodeData);
-          console.log("destinationnodeData: ", this.destinationnodeData);
-
-          //Source id
-          const key = 'id';
-          const arrayUniqueBySourceId = [...new Map(this.sourcenodeData.map((item: any) =>
-            [item[key], item])).values()];
-          console.log("arrayUniqueBySourceId: ", arrayUniqueBySourceId);
-
-          //Destination id
-          const key2 = 'id';
-          const arrayUniqueByDestinationId = [...new Map(this.destinationnodeData.map((item: any) =>
-            [item[key2], item])).values()];
-          console.log("arrayUniqueByDestinationId: ", arrayUniqueByDestinationId);
-
-          this.results = [...arrayUniqueByDestinationId, ...arrayUniqueBySourceId];
-          console.log("new Results:::: ", this.results);
-
-          const key3 = 'id';
-          const arrayUniqueResultsData = [...new Map(this.results.map((item: any) =>
-            [item[key3], item])).values()];
-          console.log("arrayUniqueResultsData: ", arrayUniqueResultsData);
-
-          arrayUniqueResultsData.forEach((event: any) => {
-            //Node data
-            this.nodeData.push({
-              // data: { id: Math.floor(event.node_id), name: event.node, node_type: event.nodetype, weight: 100, colorCode: event.colourcode, shapeType: 'octagon' },
-              data: { id: Math.floor(event.id), name: event.name.toLowerCase(), neIds: event.neIds, edgeTypeIds: event.edgeTypeIds, node_type: event.nodeType, weight: 100, colorCode: event.colorNode, shapeType: event.shapeType }
-            });
-          });
-
-          console.log("nodeData: ", this.nodeData);
-          console.log("edgeData: ", this.edgeData);
-          // console.log("legendsNodeTypes:: ", this.legendsNodeTypes);
-
-          const x = this.legendsNodeTypes.reduce(
-            (accumulator: any, current: any) => accumulator.some((x: any) => x.node_name === current.node_name) ? accumulator : [...accumulator, current], []
-          )
-
-          this.legendsNodeTypes = x;
-          console.log("legendsNodeTypes: ", this.legendsNodeTypes);
-          this.drawChart();
-        },
-        err => {
-          this.loadingMap = false;
-          console.log(err.message);
-        },
-        () => {
-          this.loadingMap = false;
+      ////////////***********/ Start To get the complete data for level 1 and level 2 ************ /////////////////////////
+      if (_filterParams.nnrt_id != undefined) {
+        const firstAPIsFull = this.nodeSelectsService.getMasterListsMapRevampLevelOneCount(this.filterParams);
+        let combinedDataAPIFull;
+        if (_filterParams.nnrt_id2 != undefined) {
+          const secondAPIFull = this.nodeSelectsService.getMasterListsMapRevampLevelTwoCount(this.filterParams);
+          combinedDataAPIFull = [firstAPIsFull, secondAPIFull];
+        } else {
+          combinedDataAPIFull = [firstAPIsFull];
         }
-      );
+
+        forkJoin(combinedDataAPIFull) //we can use more that 2 api request 
+          .subscribe(
+            result => {
+              //this will return list of array of the result
+              this.firstCompleteApiResult = result[0];
+              this.secondCompleteApiResult = result[1];
+              console.log("first Complete Api Result: ", this.firstCompleteApiResult);
+              console.log("second Complete Api Result: ", this.secondCompleteApiResult);
+              this.masterListsDataDetailsLengthLevelOne = this.firstCompleteApiResult.masterListsData[0].count;
+              
+              //To check wheter the first level data is less than 1000 then deduct the first level value from 1000
+              this.remainedCountForFirstLevel = (((1000 - this.masterListsDataDetailsLengthLevelOne) <= 0) ? 0 : (1000 - this.masterListsDataDetailsLengthLevelOne));
+              // console.log("remainedCountForFirstLevel: ", this.remainedCountForFirstLevel);
+
+              if (this.secondCompleteApiResult != undefined) {
+                this.masterListsDataDetailsLengthLevelTwo = this.secondCompleteApiResult.masterListsData[0].count;
+                
+                //To check wheter the second level data is less than 1000 then deduct the second level value from 1000
+                this.remainedCountForSecondLevel = (((1000 - this.masterListsDataDetailsLengthLevelTwo) <= 0) ? 0 : (1000 - this.masterListsDataDetailsLengthLevelTwo));
+                // console.log("remainedCountForSecondLevel: ", this.remainedCountForSecondLevel);
+              }
+
+              //First Degree Data
+              this.filterParams = this.globalVariableService.getFilterParams({ "limitValue": this.remainedCountForSecondLevel }); // second level varriable set the limit into first level
+              console.log("new Filter Params level1: ", this.filterParams);
+              const firstAPIs = this.nodeSelectsService.getMasterListsMapRevampLevelOne(this.filterParams);
+              let combinedDataAPI;
+              if (_filterParams.nnrt_id2 != undefined) {
+                this.filterParams = this.globalVariableService.getFilterParams({ "limitValue": this.remainedCountForFirstLevel }); // first level varriable set the limit into second level
+                console.log("new Filter Params Level2: ", this.filterParams);
+
+                const secondAPI = this.nodeSelectsService.getMasterListsMapRevampLevelTwo(this.filterParams);
+                combinedDataAPI = [firstAPIs, secondAPI];
+              } else {
+                combinedDataAPI = [firstAPIs];
+              }
+
+              forkJoin(combinedDataAPI) //we can use more that 2 api request 
+                .subscribe(
+                  result => {
+                    console.log("you load here: ", result);
+                    //this will return list of array of the result
+                    this.firstLoadApiResult = result[0];
+                    this.secondLoadApiResult = result[1];
+                    console.log("first Load Api Result: ", this.firstLoadApiResult);
+                    console.log("second Load Api Result: ", this.secondLoadApiResult);
+
+                    ////////// **************** Merging the data into one place *******************////////////////              
+                    this.masterListsDataDetailsLevelOne = this.firstLoadApiResult.masterListsData;
+                    this.masterListsData = this.masterListsDataDetailsLevelOne;
+                    console.log("First Level Data: ", this.masterListsData);
+                    let firstLevelDataStore = this.masterListsDataDetailsLevelOne; //Store the First level data
+
+                    //Second Degree Data
+                    if (this.secondLoadApiResult != undefined) {
+                      //Second level data and Combined data first and second level
+                      this.masterListsDataDetailsLevelTwo = this.secondLoadApiResult.masterListsData;
+                      console.log("Second Level Data: ", this.masterListsDataDetailsLevelTwo);
+
+                      this.masterListsData = [].concat(firstLevelDataStore, this.masterListsDataDetailsLevelTwo);
+                      console.log("Combined Data Load: ", this.masterListsData);
+                    }
+
+                    //Start here to after combined to data get unique like before
+                    this.nodeData = [];
+                    this.sourcenodeData = [];
+                    this.sourceId = [];
+                    this.destinationnodeData = [];
+                    this.edgeData = [];
+                    this.groupedNodeType = [];
+                    this.legendsNodeTypes = [];
+
+                    // this.masterListsData = this.resultNodes.masterListsData;
+                    // console.log("masterListsData: ", this.masterListsData);
+                    console.log("masterListsDataLengtH: ", this.masterListsData.length);
+
+                    if (this.masterListsData.length > 0) {
+                      this.nodesCheckLength = false;
+                    } else {
+                      this.nodesCheckLength = true;
+                    }
+
+                    this.masterListsData.forEach((event: any) => {
+                      //Source Node data
+                      let levelSourceColor;
+                      let levelTargetColor;
+                      if (event.level == 1) {
+                        levelSourceColor = '#BF63A2';
+                        levelTargetColor = '#85C9E8';
+                      } else {
+                        levelSourceColor = '#8ceb34';
+                        levelTargetColor = '#c2c435';
+                      }
+                      this.sourcenodeData.push({
+                        id: Math.floor(event.sourcenode), name: event.sourcenode_name, neIds: event.ne_ids, edgeTypeIds: event.edge_type_ids, colorNode: levelSourceColor, shapeType: 'round-hexagon', nodeType: 'source'
+                      });
+
+                      //Destination node data
+                      this.destinationnodeData.push({
+                        id: Math.floor(event.destinationnode), name: event.destinationnode_name, neIds: event.ne_ids, edgeTypeIds: event.edge_type_ids, colorNode: levelTargetColor, shapeType: 'sphere', nodeType: 'target'
+                      });
+
+                      this.legendsNodeTypes.push({ node_name: event.sourcenode, color_code: '#85C9E8' });
+
+                      //Edge data
+                      this.edgeData.push({
+                        // data: { source: Math.floor(event.source_id), target: Math.floor(event.target_id), PMID: event.pmidlist, colorCode: "pink", strength: Math.floor(event.edge_weight) },
+                        data: { source: Math.floor(event.sourcenode), target: Math.floor(event.destinationnode), neIds: event.ne_ids, edgeTypeIds: event.edge_type_ids, colorCode: "#00e600", strength: Math.floor(2) },
+                      });
+                    });
+                    console.log("sourcenodeData: ", this.sourcenodeData);
+                    console.log("destinationnodeData: ", this.destinationnodeData);
+
+                    //Source id
+                    const key = 'id';
+                    const arrayUniqueBySourceId = [...new Map(this.sourcenodeData.map((item: any) =>
+                      [item[key], item])).values()];
+                    console.log("arrayUniqueBySourceId: ", arrayUniqueBySourceId);
+
+                    //Destination id
+                    const key2 = 'id';
+                    const arrayUniqueByDestinationId = [...new Map(this.destinationnodeData.map((item: any) =>
+                      [item[key2], item])).values()];
+                    console.log("arrayUniqueByDestinationId: ", arrayUniqueByDestinationId);
+
+                    this.results = [...arrayUniqueByDestinationId, ...arrayUniqueBySourceId];
+                    console.log("new Results:::: ", this.results);
+
+                    const key3 = 'id';
+                    const arrayUniqueResultsData = [...new Map(this.results.map((item: any) =>
+                      [item[key3], item])).values()];
+                    console.log("arrayUniqueResultsData: ", arrayUniqueResultsData);
+
+                    arrayUniqueResultsData.forEach((event: any) => {
+                      //Node data
+                      this.nodeData.push({
+                        // data: { id: Math.floor(event.node_id), name: event.node, node_type: event.nodetype, weight: 100, colorCode: event.colourcode, shapeType: 'octagon' },
+                        data: { id: Math.floor(event.id), name: event.name.toLowerCase(), neIds: event.neIds, edgeTypeIds: event.edgeTypeIds, node_type: event.nodeType, weight: 100, colorCode: event.colorNode, shapeType: event.shapeType }
+                      });
+                    });
+
+                    console.log("nodeData: ", this.nodeData);
+                    console.log("edgeData: ", this.edgeData);
+                    // console.log("legendsNodeTypes:: ", this.legendsNodeTypes);
+
+                    const x = this.legendsNodeTypes.reduce(
+                      (accumulator: any, current: any) => accumulator.some((x: any) => x.node_name === current.node_name) ? accumulator : [...accumulator, current], []
+                    )
+
+                    this.legendsNodeTypes = x;
+                    console.log("legendsNodeTypes: ", this.legendsNodeTypes);
+                    this.drawChart();
+                    //End here
+
+                  },
+                  err => {
+                    this.loadingMap = false;
+                    console.log(err.message);
+                  },
+                  () => {
+                    this.loadingMap = false;
+                  });
+            });
+        ////////////***********/ End To get the complete data for level 1 and level 2 ************ /////////////////////////
+      }
+
+      // this.nodeSelectsService.getMasterLists(_filterParams).subscribe(
+      //   data => {
+      //   },
+      //   err => {
+      //     this.loadingMap = false;
+      //     console.log(err.message);
+      //   },
+      //   () => {
+      //     this.loadingMap = false;
+      //   }
+      // );
     } else if (_filterParams.source_node != undefined) {
       console.log("go else: ");
       this.noDataFoundMap = true;

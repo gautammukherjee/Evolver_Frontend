@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
 })
 export class FilterSourceNodeLevel2Component implements OnInit {
 
-  @Output() onSelectSourceNode: EventEmitter<any> = new EventEmitter();
+  @Output() onSelectSourceNode2: EventEmitter<any> = new EventEmitter();
   @Input() UpdateFilterDataApply?: Subject<any>;
   private filterParams: any;
   public selectedSourceNodes2: any = [];
@@ -32,6 +32,10 @@ export class FilterSourceNodeLevel2Component implements OnInit {
   private warningModalRef: any;
   searchInput: any = null;
   sourceNodeFilter: string = '';
+  public groupedBySourceNode2: any = {};
+  public finalGroupedBySourceNode2: any = {};
+  public finalGroupedBySourceBeforeNode2: any = {};
+
 
   constructor(
     private nodeSelectsService: NodeSelectsService,
@@ -61,7 +65,7 @@ export class FilterSourceNodeLevel2Component implements OnInit {
         // this.hideCardBody = true;
         this.isAllSelected = false;
         this.filterParams = this.globalVariableService.getFilterParams();
-        // console.log("Source Level 2:2 ", event.clickOn);
+        console.log("Source Level 2:2 ", event.clickOn);
         // if (this.firstTimeCheck === false) // Node select only one time reload when we choose destination nodes are selected
         this.getSourceNode2();
       }
@@ -76,6 +80,102 @@ export class FilterSourceNodeLevel2Component implements OnInit {
 
   public getResetSourceNode() {
     this.sourceNodes2 = [];
+  }
+
+  getSourceNode22() {
+    console.log("val: ", this.searchInput);
+
+    // this.selectedSourceNodes = [];
+    this.loading = true;
+    this.filterParams = this.globalVariableService.getFilterParams({ "searchval": this.searchInput });
+    console.log("filterparamsSearchSource: ", this.filterParams);
+
+    this.selectedSourceNodes2 = [];
+    if (this.filterParams.source_node != undefined) {
+      this.loading = true;
+      this.nodeSelectsService.getSourceNode2(this.filterParams)
+        .subscribe(
+          data => {
+            this.result = data;
+            this.sourceNodes2 = this.result.sourceNodeRecords2;
+
+            // 1. get the json objects
+            console.log("sourceNodes2: ", this.sourceNodes2);
+
+            ///////////////////////////////////////////////////////
+            // 2. Group by source_node name
+            const groupedSourceNodes2 = this.sourceNodes2.reduce((accumulator: any, element: any, index: any) => {
+              const source_node_id = element.source_node;
+              const source_node_name = element.source_node_name;
+              const subcategory_syn_node_name = element.syn_node_name;
+              if (accumulator[source_node_id])
+                return {
+                  ...accumulator,
+                  [source_node_id]: {
+                    ...accumulator[source_node_id],
+                    subCategories: [...accumulator[source_node_id].subCategories, subcategory_syn_node_name],
+                  }
+                };
+              else
+                return {
+                  ...accumulator,
+                  [source_node_id]: {
+                    source_node_name: source_node_name,
+                    subCategories: [subcategory_syn_node_name],
+                  }
+                };
+            }, {});
+            console.log("groupedSourceNodes2: ", groupedSourceNodes2);
+
+            //////////////////////////////////////////////////////////////////////////
+            // 3. Group according to source name name and get the new json objects
+            this.groupedBySourceNode2 =
+              Object.keys(groupedSourceNodes2).map(source_node_id => ({
+                source_node: source_node_id,
+                source_node_name: groupedSourceNodes2[source_node_id].source_node_name,
+                subcategory_syn_node_name: groupedSourceNodes2[source_node_id].subCategories,
+              }))
+            console.log("groupedBySourceNode2: ", this.groupedBySourceNode2);
+
+            ///////////////////////////////////////////////////////////////////////////////////////
+            //4. Start sorting according to keyword search filter in autosugest json objects
+            let searchField = "source_node_name";
+            let results1 = []; let results2 = []; let results3 = [];
+            this.finalGroupedBySourceBeforeNode2 = [];
+            for (var i = 0; i < this.groupedBySourceNode2.length; i++) {
+              if ((this.groupedBySourceNode2[i][searchField]).toLowerCase() == (this.searchInput).toLowerCase()) {// To check the node_name equality
+                results1.push(this.groupedBySourceNode2[i]);
+              }
+              else {
+                // console.log("subcatcount: ", this.groupedBySourceNode[i].subcategory_syn_node_name.length);
+                for (var j = 0; j < this.groupedBySourceNode2[i].subcategory_syn_node_name.length; j++) {
+                  if ((this.groupedBySourceNode2[i].subcategory_syn_node_name[j]).toLowerCase() == (this.searchInput).toLowerCase()) { // To check the syn_node_name equality
+                    results2.push(this.groupedBySourceNode2[i]);
+                  }
+                }
+                results3.push(this.groupedBySourceNode2[i]);
+              }
+            }
+            this.finalGroupedBySourceBeforeNode2 = results1.concat(results2, results3);
+            console.log("Final data: ", this.finalGroupedBySourceBeforeNode2);
+
+            const key = 'source_node';
+            this.finalGroupedBySourceNode2 = [...new Map(this.finalGroupedBySourceBeforeNode2.map((item: any) =>
+              [item[key], item])).values()];
+            console.log("Final unique data2: ", this.finalGroupedBySourceNode2);
+            //End sorting according to filter in autosugest json objects
+          },
+          err => {
+            this.loading = false;
+            console.log(err.message)
+          },
+          () => {
+            this.loading = false;
+            console.log("loading finish")
+          }
+        );
+    }
+
   }
 
   getSourceNode2() {
@@ -103,7 +203,7 @@ export class FilterSourceNodeLevel2Component implements OnInit {
         );
     } else {
       this.sourceNodes2 = [];
-      this.globalVariableService.resetfilters();
+      // this.globalVariableService.resetfilters();
     }
   }
 
@@ -127,7 +227,7 @@ export class FilterSourceNodeLevel2Component implements OnInit {
 
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data   
     // if (from != 'nodeSelectsWarningModal')
-    // this.proceed();
+    this.proceed();
     this.enableDisableProceedButton();
   }
 
@@ -186,7 +286,7 @@ export class FilterSourceNodeLevel2Component implements OnInit {
     this.selectedSourceNodes2 = Array.from(this.globalVariableService.getSelectedSourceNodes2());
     if (this.seeMoreNodeSelectsModal != undefined)
       this.seeMoreNodeSelectsModal.close();
-    this.onSelectSourceNode.emit();
+    this.onSelectSourceNode2.emit();
   }
 
   private enableDisableProceedButton() {

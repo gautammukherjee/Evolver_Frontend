@@ -1,6 +1,6 @@
 <div class="row" style="margin-bottom: 20px;">
     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-        <div class="customTable" style="border: 1px solid #ddd;">
+        <div class="customTable" style="border: 1px solid #ddd; padding: 5px;">
             <!--<h4>Network Map for <span style="text-transform: uppercase;"> {{mapTypes}} </span></h4>-->
             <!-- <h4 style="text-align: center;background-color: #7880BA;padding: 10px; color:#fff;">Network Map </h4> -->
 
@@ -11,11 +11,21 @@
                 <img style="margin:185px 653px;" src="../../assets/images/loader_big.gif" />
             </div>
             <div *ngIf="noDataFoundMap" class="bg-danger" style="color:#fff; text-align: center; font-weight: bold;">
-                Please Choose Pair Type For Second Degree
+                Please Choose Pair Type and Source for Second Degree
             </div>
 
             <!--<div class="table-responsive" *ngIf="nodesCheck">-->
             <div class="table-responsive position-relative">
+
+                <div>
+                    <span class="float-start text-white p-1 mr-2" style="background-color: #6C7572; border-radius:5px;"
+                        *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">First Degree Combinations
+                        <span class="badge bg-primary text-white">{{masterListsDataDetailsLengthLevelOne}}</span></span>
+                        <span class="float-start text-white p-1 mr-2" style="background-color: #6C7572; border-radius:5px;"
+                        *ngIf="secondLoadApiResult!=undefined && masterListsDataDetailsLengthLevelTwo > 0">Second Degree Combinations
+                        <span class="badge bg-primary text-white">{{masterListsDataDetailsLengthLevelTwo}}</span></span>
+                </div>
+                
                 <!--<div class="form-check" style="margin-left: 12px;">
                     <input type="radio" class="form-check-input" name="edgeSelect" id="edgeUnchecked" value="1"
                         (change)="clickedEdges($event)" checked>

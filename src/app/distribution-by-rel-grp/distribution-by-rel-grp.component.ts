@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RelationDistributionService } from '../services/relation-distribution.service';
 import { GlobalVariableService } from 'src/app/services/common/global-variable.service';
@@ -9,8 +9,9 @@ import highcharts3D from 'highcharts/highcharts-3d';
 highcharts3D(Highcharts);
 import Exporting from 'highcharts/modules/exporting';
 Exporting(Highcharts);
-import { Subject, BehaviorSubject } from 'rxjs';
+import { Subject, BehaviorSubject, forkJoin } from 'rxjs';
 import { NodeSelectsService } from '../services/common/node-selects.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-distribution-by-rel-grp',
@@ -21,6 +22,7 @@ export class DistributionByRelGrpComponent implements OnInit {
   data: any;
   errorMsg: string | undefined;
   graphLoader: boolean = true;
+  graphLoaderDrill: boolean = false;
   private filterParams: any;
   loadingChart: boolean = false;
   loadingMessage: boolean = true;
@@ -29,22 +31,40 @@ export class DistributionByRelGrpComponent implements OnInit {
   highcharts = Highcharts;
   chartOptions: any;
   dataEdgeNames: any = [];
-
+  dataEdgeNamesFull: any = [];
+  dataEdgeNamesFinal: any = [];
 
   categories: any = [];
+  categories2: any = [];
   graphData: any = [];
   drillDownData: any = [];
-  drillDownDataFinal: any = [];
+
+  firstLoadApiResult: any;
+  secondLoadApiResult: any;
+  firstLoadDrillApiResult: any;
+  secondLoadDrillApiResult: any;
+  masterListsDataEdgeGraph: any = [];
+  masterListsDataEdgeGraphs: any = [];
+  masterListsDataEdgeGraphFinal: any = [];
+  masterListsDataDetailsLevelOne: any = [];
+  masterListsDataDetailsLevelTwo: any = [];
+  masterListsDrillDataDetailsLevelOne: any = [];
+  masterListsDrillDataDetailsLevelTwo: any = [];
+
 
   public edgeTypesFirst: any = [];
   // public edgeTypes: any = [];
   private result: any = [];
   public selectedEdgeTypes: any = [];
   public selectedEdgeTypesByGroup: any = [];
+  public selectedEdgeTypesByGroups: any = [];
 
   public alpha: number = 1;
   public beta: number = 1;
   public depth: number = 1;
+  private modalRef: any;
+
+  @ViewChild('showPopupEvent', { static: false }) show_popup_event: ElementRef | any;
 
   @Input() ProceedDoFilterApply?: Subject<any>; //# Input for ProceedDoFilter is getting from clinical details html 
 
@@ -54,6 +74,7 @@ export class DistributionByRelGrpComponent implements OnInit {
     private _RDS: RelationDistributionService,
     private globalVariableService: GlobalVariableService,
     private nodeSelectsService: NodeSelectsService,
+    private modalService: NgbModal,
   ) { }
 
   ngOnInit(): void {
@@ -82,81 +103,86 @@ export class DistributionByRelGrpComponent implements OnInit {
   getDistributionByRelGroup(_filterParams: any) {
 
     // if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined) || (_filterParams.nnrt_id2 != undefined && _filterParams.source_node2!=undefined)) {
-    if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined && _filterParams.destination_node2 == undefined) || ((_filterParams.source_node2 != undefined || _filterParams.destination_node2 != undefined) && (_filterParams.nnrt_id2 != undefined && _filterParams.nnrt_id2 != ""))) {
+    if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined && _filterParams.destination_node2 == undefined) ||
+      (_filterParams.source_node2 != undefined && _filterParams.nnrt_id2 != undefined)) {
       console.log("new Filters by rel group charts IN: ", this.filterParams);
       this.loadingChart = true;
       this.noDataFound = false;
 
-      this._RDS.distribution_by_relation_grp(this.filterParams).subscribe(
-        (response: any) => {
-          this.data = response.nodeSelectsRecords;
-        },
-        (error: any) => {
-          console.error(error)
-          this.errorMsg = error;
-          // this.loadingChart = false;
-        },
-        () => {
-          // this.loadingChart = false;
+      if (_filterParams.nnrt_id != undefined) {
 
-          //HERE add the data
-          this.graphData = [];
-          this.categories = [];
-
-          this.drillDownData = [];
-          this.drillDownDataFinal = [];
-
-          console.log("relGroupData: ", this.data);
-          //console.log(this.data[4]['count']);
-          for (let i = 0; i < this.data.length; i++) {
-            this.categories.push(this.data[i]['grouped_edge_types_name']);
-            // graphData.push([this.data[i]['grouped_edge_types_name'], this.data[i]['count']]);
-            this.graphData.push({ name: this.data[i]['grouped_edge_types_name'], y: this.data[i]['count'], drilldown: this.data[i]['edge_group_id'] });
-
-            ////////////////// Here get the edge type name on the basis of edge group id ///////////////////////
-
-            // Pass edge group id and return edge_type_id to mapping with edge and edge group
-            this.selectedEdgeTypesByGroup.push(this.data[i]['edge_group_id']);
-
-            this.selectedEdgeTypes = this.edgeTypesFirst.filter((item: any) => (
-              this.selectedEdgeTypesByGroup.includes(item.edge_group_id)
-            )).map((item: any) => item.edge_type_id)
-            console.log("selected Edge Types", this.selectedEdgeTypes);
-            // console.log("selectedEdgeTypesName: ", this.selectedEdgeTypesNames);
-
-            this.filterParams = this.globalVariableService.getFilterParams({ "edge_type_id_selected": this.selectedEdgeTypes });
-            this._RDS.distribution_by_relation_grp_get_edge_type_drilldown(this.filterParams).subscribe(
-              (response: any) => {
-                this.dataEdgeNames = response.edgeNamesDrillDown;
-                console.log("names: ", this.dataEdgeNames);
-
-                for (let j = 0; j < this.dataEdgeNames.length; j++) {
-                  this.drillDownData.push([this.dataEdgeNames[j]['edge_types_name'], this.dataEdgeNames[j]['count']]);
-                }
-
-                this.drillDownDataFinal.push({ id: this.data[i]['edge_group_id'], data: this.drillDownData });
-                // console.log("drillDownDataFinal1: ", this.drillDownDataFinal);
-                this.drillDownData = [];
-
-                if (this.data.length == i + 1) {
-                  this.loadingChart = false;
-                  this.loadingMessage = false;
-                  console.log("graphdataHere: ", this.graphData)
-                  console.log("drillDownDataFinal2: ", this.drillDownDataFinal)
-                  this.drawColumnChart();
-                } else {
-                  console.log("else here");
-                }
-              }
-            );
-
-            this.selectedEdgeTypesByGroup = [];
-            // this.drillDownDataFinal = [];
-            //////////////////////// End get the edge type name on the basis of edge group id /////////////////////////////
-          }
-
+        const firstAPIs = this._RDS.distribution_by_relation_grp_level_one(this.filterParams);
+        let combinedDataAPI;
+        if (_filterParams.nnrt_id2 != undefined) {
+          const secondAPI = this._RDS.distribution_by_relation_grp_level_two(this.filterParams);
+          combinedDataAPI = [firstAPIs, secondAPI];
+        } else {
+          combinedDataAPI = [firstAPIs];
         }
-      );
+
+        forkJoin(combinedDataAPI) //we can use more that 2 api request 
+          .subscribe(
+            result => {
+              console.log("you load here: ", result);
+              //this will return list of array of the result
+              this.firstLoadApiResult = result[0];
+              this.secondLoadApiResult = result[1];
+              console.log("first Load Api Result: ", this.firstLoadApiResult);
+              console.log("second Load Api Result: ", this.secondLoadApiResult);
+
+              ////////// **************** Merging the data into one place *******************////////////////              
+              this.masterListsDataDetailsLevelOne = this.firstLoadApiResult.nodeSelectsRecords;
+              this.masterListsDataEdgeGraph = this.masterListsDataDetailsLevelOne;
+              console.log("First Level Data: ", this.masterListsDataEdgeGraph);
+              let firstLevelDataStore = this.masterListsDataDetailsLevelOne; //Store the First level data
+
+              //Second Degree Data
+              if (this.secondLoadApiResult != undefined) {
+                //Second level data and Combined data first and second level
+                this.masterListsDataDetailsLevelTwo = this.secondLoadApiResult.nodeSelectsRecords2;
+                console.log("Second Level Data: ", this.masterListsDataDetailsLevelTwo);
+                this.masterListsDataEdgeGraph = [].concat(firstLevelDataStore, this.masterListsDataDetailsLevelTwo);
+                console.log("Combined Data Load: ", this.masterListsDataEdgeGraph);
+              }
+
+              this.masterListsDataEdgeGraphs = [];
+              this.masterListsDataEdgeGraph.forEach((event: any) => {
+                this.masterListsDataEdgeGraphs.push({
+                  pmids: event.pmids,
+                  edge_group_id: event.edge_group_id,
+                  grouped_edge_types_name: event.grouped_edge_types_name,
+                });
+              });
+              console.log("masterListsDataEdgeGraphs: ", this.masterListsDataEdgeGraphs);
+
+              ////////////////// Here get the edge type name on the basis of edge group id ///////////////////////
+              //Combined the two array with unique edge_group_id and sum the pmid values
+              this.masterListsDataEdgeGraphFinal = this.masterListsDataEdgeGraphs.reduce((acc2: any, ele2: any) => {
+                const existingEdgeGroupCount = acc2.find((xx: any) => xx.edge_group_id === ele2.edge_group_id);
+                if (!existingEdgeGroupCount) return acc2.concat(ele2);
+                return (existingEdgeGroupCount.pmids += ele2.pmids, acc2);
+              }, [])
+              console.log("response: ", this.masterListsDataEdgeGraphFinal);
+
+              this.loadingChart = false;
+              this.graphData = [];
+              for (let i = 0; i < this.masterListsDataEdgeGraphFinal.length; i++) {
+                this.categories.push(this.masterListsDataEdgeGraphFinal[i]['grouped_edge_types_name']);
+                // graphData.push([this.masterListsDataEdgeGraphFinal[i]['grouped_edge_types_name'], this.masterListsDataEdgeGraphFinal[i]['pmids']]);
+                this.graphData.push({ name: this.masterListsDataEdgeGraphFinal[i]['grouped_edge_types_name'], y: this.masterListsDataEdgeGraphFinal[i]['pmids'], edge_group_id: this.masterListsDataEdgeGraphFinal[i]['edge_group_id'] });
+              }
+              this.loadingMessage = false;
+              console.log("graphdataHere: ", this.graphData);
+              this.drawColumnChart();
+
+            },
+            (error: any) => {
+              console.error(error)
+              this.errorMsg = error;
+              // this.loadingChart = false;
+            },
+          );
+      }
     } else if (_filterParams.source_node != undefined) {
       console.log("Please choose source node level 2");
       this.noDataFound = true;
@@ -164,208 +190,6 @@ export class DistributionByRelGrpComponent implements OnInit {
   }
 
   drawColumnChart() {
-    // this.alpha = 15;
-    // this.beta = 15;
-    // this.depth = 50;
-    // this.chartOptions = {
-    //   chart: {
-    //     type: 'column',
-    //     // options3d: {
-    //     //   enabled: true,
-    //     //   alpha: this.alpha,
-    //     //   beta: this.beta,
-    //     //   depth: this.depth,
-    //     //   viewDistance: 175
-    //     // }
-    //   },
-    //   title: {
-    //     text: 'Distribution by Relation Group'
-    //   },
-    //   xAxis: {
-    //     type: 'category',
-    //     // categories: this.categories,
-    //     labels: {
-    //       rotation: -45,
-    //       style: {
-    //         fontSize: '13px',
-    //         fontFamily: 'Verdana, sans-serif'
-    //       }
-    //     }
-    //   },
-    //   yAxis: {
-    //     type: 'logarithmic',
-    //     title: {
-    //       rotation: -90,
-    //       text: 'Article Count',
-    //       textAlign: 'left',
-    //       x: -40,
-    //       y: 40
-    //     },
-    //     stackLabels: {
-    //       //defer: false,
-    //       crop: false,
-    //       enabled: true,
-    //       style: {
-    //         fontWeight: 'bold',
-    //         color: 'black'
-    //       }
-    //     }
-    //   },
-    //   plotOptions: {
-    //     column: {
-    //       stacking: "normal"
-    //     }
-    //   },
-    //   legend: {
-    //     enabled: false,
-    //   },
-    //   tooltip: {
-    //     pointFormat: 'Count: <b>{point.y} </b>'
-    //   },
-
-    //   series: [{
-    //     name: 'Home',
-    //     colorByPoint: true,
-    //     type: 'column',
-    //     dataLabels: {
-    //       //enabled: true,
-    //       crop: false,
-    //       overflow: 'allow',
-    //       // rotation: 360,
-    //       //color: '#3066C4',
-    //       align: 'center',
-    //       format: '{point.y}', // one decimal {point.y:.1f}
-    //       // y: 10, // 10 pixels down from the top
-    //       style: {
-    //         fontSize: '13px',
-    //         //fontFamily: 'Verdana, sans-serif'
-    //       }
-    //     },
-    //     accessibility: {
-    //       enabled: false
-    //     },
-    //     // data: [
-    //     //     {name: 'DISTANT RELATION', y: 145, drilldown: 'DISTANT RELATION'},
-    //     //     {name: 'MUTATION', y: 3, drilldown: 'MUTATION'},
-    //     //     {name: 'ACTIVATION', y: 1, drilldown: 'ACTIVATION'},
-    //     //     {name: 'INHIBITION', y: 1, drilldown: 'INHIBITION'},
-    //     //     {name: 'REGULATES_OR_MODULATE', y: 1, drilldown: 'REGULATES_OR_MODULATE'}
-    //     // ]
-    //     data: this.graphData
-    //   }],
-    //   drilldown: {
-    //     // series: [{id: 'Distant Relation', data: ['Distant Relation', 11]},
-    //     // {id: 'MUTATION', data: [['MUTATION', 1],['MUTATION_LEAD_TO_CAUSES', 12]]},
-    //     // {id: 'ACTIVATION', data: [['ACTIVATION', 11], ['ACTIVATION_LEAD_TO_ACTIVATION', 12], ['ACTIVATION_LEAD_TO_INHIBITION', 13], ['ACTIVATION_LEAD_TO_TREATS', 14], ['ACTIVATION_LEAD_TO_CAUSES', 15]] },
-    //     // {id: 'INHIBITION', data: [['INHIBITION', 21],['INHIBITION_LEAD_TO_INHIBITION', 22], ['INHIBITION_LEAD_TO_ACTIVATION', 23], ['INHIBITION_LEAD_TO_CAUSES', 24],['INHIBITION_LEAD_TO_TREATS', 25]]},
-    //     // {id: 'REGULATES_OR_MODULATE', data: [['REGULATES_OR_MODULATE', 31], ['POSSIBLE_SYNONYM', 32]]}]
-    //     series: this.drillDownDataFinal
-    //   }
-    // };
-    // this.graphLoader = false;
-
-    // Highcharts.chart('container', <any>{
-    //   chart: {
-    //     type: 'bar',
-    //   },
-    //   title: {
-    //     text: 'Distribution by Relation Group'
-    //   },
-    //   accessibility: {
-    //     announceNewData: {
-    //       enabled: true
-    //     }
-    //   },
-    //   xAxis: {
-    //     type: 'category',
-    //     // categories: this.categories,
-    //     labels: {
-    //       style: {
-    //         fontSize: '12px',
-    //         fontFamily: 'Verdana, sans-serif'
-    //       },
-    //       overflow: 'justify'
-    //     }
-    //   },
-    //   yAxis: {
-    //     type: 'logarithmic',
-    //     title: {
-    //       text: 'Article Count',
-    //     },
-    //     // stackLabels: {
-    //     //   //defer: false,
-    //     //   crop: false,
-    //     //   enabled: true,
-    //     //   style: {
-    //     //     fontWeight: 'bold',
-    //     //     color: 'black'
-    //     //   }
-    //     // }
-    //   },
-    //   plotOptions: {
-    //     column: {
-    //       stacking: "normal"
-    //     },
-    //     series: {
-    //       borderWidth: 0,
-    //       dataLabels: {
-    //         enabled: true,
-    //         format: '{point.y}'
-    //       }
-    //     }
-    //   },
-    //   legend: {
-    //     enabled: false,
-    //   },
-    //   // tooltip: {
-    //   //   pointFormat: 'Count: <b>{point.y} </b>'
-    //   // },
-
-    //   tooltip: {
-    //     pointFormat: '<span style="color:{point.color}">Count</span>: <b>{point.y}</b>'
-    //   },
-
-    //   series: [{
-    //     name: 'Home',
-    //     colorByPoint: true,
-    //     // type: 'column',
-    //     // dataLabels: {
-    //     //   //enabled: true,
-    //     //   crop: false,
-    //     //   overflow: 'allow',
-    //     //   // rotation: 360,
-    //     //   //color: '#3066C4',
-    //     //   align: 'center',
-    //     //   format: '{point.y}', // one decimal {point.y:.1f}
-    //     //   // y: 10, // 10 pixels down from the top
-    //     //   style: {
-    //     //     fontSize: '11px',
-    //     //     //fontFamily: 'Verdana, sans-serif'
-    //     //   }
-    //     // },
-    //     // accessibility: {
-    //     //   enabled: false
-    //     // },
-    //     // data: [
-    //     //     {name: 'DISTANT RELATION', y: 145, drilldown: 'DISTANT RELATION'},
-    //     //     {name: 'MUTATION', y: 3, drilldown: 'MUTATION'},
-    //     //     {name: 'ACTIVATION', y: 1, drilldown: 'ACTIVATION'},
-    //     //     {name: 'INHIBITION', y: 1, drilldown: 'INHIBITION'},
-    //     //     {name: 'REGULATES_OR_MODULATE', y: 1, drilldown: 'REGULATES_OR_MODULATE'}
-    //     // ]
-    //     data: this.graphData
-    //   }],
-    //   drilldown: {
-    //     // series: [{id: 'Distant Relation', data: ['Distant Relation', 11]},
-    //     // {id: 'MUTATION', data: [['MUTATION', 1],['MUTATION_LEAD_TO_CAUSES', 12]]},
-    //     // {id: 'ACTIVATION', data: [['ACTIVATION', 11], ['ACTIVATION_LEAD_TO_ACTIVATION', 12], ['ACTIVATION_LEAD_TO_INHIBITION', 13], ['ACTIVATION_LEAD_TO_TREATS', 14], ['ACTIVATION_LEAD_TO_CAUSES', 15]] },
-    //     // {id: 'INHIBITION', data: [['INHIBITION', 21],['INHIBITION_LEAD_TO_INHIBITION', 22], ['INHIBITION_LEAD_TO_ACTIVATION', 23], ['INHIBITION_LEAD_TO_CAUSES', 24],['INHIBITION_LEAD_TO_TREATS', 25]]},
-    //     // {id: 'REGULATES_OR_MODULATE', data: [['REGULATES_OR_MODULATE', 31], ['POSSIBLE_SYNONYM', 32]]}]
-    //     series: this.drillDownDataFinal
-    //   }
-    // });
-
-
     Highcharts.chart('container', <any>{
       chart: {
         type: 'bar',
@@ -407,23 +231,174 @@ export class DistributionByRelGrpComponent implements OnInit {
           dataLabels: {
             enabled: true,
             format: '{point.y}'
+          },
+          cursor: 'pointer',
+          point: {
+            events: {
+              click: (event: any) => {
+                // console.log(event.point);
+                this.modalRef = this.modalService.open(this.show_popup_event, { size: 'lg', keyboard: false, backdrop: 'static' });
+                this.onRegionSelection(event);
+              }
+            }
+          },
+        }
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{point.color}">Count</span>: <b>{point.y}</b>'
+      },
+      series: [{
+        colorByPoint: true,
+        data: this.graphData
+      }],
+    });
+
+    this.graphLoader = false;
+  }
+
+  onRegionSelection(event: any) {
+
+    this.selectedEdgeTypesByGroups = [];
+    this.graphLoaderDrill = true;
+
+    this.selectedEdgeTypesByGroups.push(event.point.options.edge_group_id);
+    console.log(this.selectedEdgeTypesByGroups);
+
+    this.selectedEdgeTypes = this.edgeTypesFirst.filter((item: any) => (
+      this.selectedEdgeTypesByGroups.includes(item.edge_group_id)
+    )).map((item: any) => item.edge_type_id)
+    console.log("selected Edge Types2", this.selectedEdgeTypes);
+
+    // start here to get the drill down api
+    this.filterParams = this.globalVariableService.getFilterParams({ "edge_type_id_selected": this.selectedEdgeTypes });
+
+    const firstDrillAPIs = this._RDS.distribution_by_relation_grp_get_edge_type_drilldown_level_one(this.filterParams);
+    let combinedDataDrillAPI;
+    if (this.filterParams.nnrt_id2 != undefined) {
+      const secondDrillAPIs = this._RDS.distribution_by_relation_grp_get_edge_type_drilldown_level_two(this.filterParams);
+      combinedDataDrillAPI = [firstDrillAPIs, secondDrillAPIs];
+    } else {
+      combinedDataDrillAPI = [firstDrillAPIs];
+    }
+
+    forkJoin(combinedDataDrillAPI) //we can use more that 2 api request 
+      .subscribe(
+        result => {
+          console.log("you load here: ", result);
+          //this will return list of array of the result
+          this.firstLoadDrillApiResult = result[0];
+          this.secondLoadDrillApiResult = result[1];
+          console.log("first Load Drill Api Result: ", this.firstLoadDrillApiResult);
+          console.log("second Load Drill Api Result: ", this.secondLoadDrillApiResult);
+
+          ////////// **************** Merging the data into one place *******************////////////////              
+          this.masterListsDrillDataDetailsLevelOne = this.firstLoadDrillApiResult.edgeNamesDrillDown;
+          this.dataEdgeNames = this.masterListsDrillDataDetailsLevelOne;
+          console.log("First Level Data Drill: ", this.dataEdgeNames);
+          let firstLevelDrillDataStore = this.masterListsDrillDataDetailsLevelOne; //Store the First level data
+
+          //Second Degree Data
+          if (this.secondLoadDrillApiResult != undefined) {
+            //Second level data and Combined data first and second level
+            this.masterListsDrillDataDetailsLevelTwo = this.secondLoadDrillApiResult.edgeNamesDrillDown2;
+            console.log("Second Level Data Drill: ", this.masterListsDrillDataDetailsLevelTwo);
+            this.dataEdgeNames = [].concat(firstLevelDrillDataStore, this.masterListsDrillDataDetailsLevelTwo);
+          }
+          console.log("Combined Data Load Drill: ", this.dataEdgeNames);
+
+          this.dataEdgeNamesFull = [];
+          this.dataEdgeNames.forEach((event: any) => {
+            this.dataEdgeNamesFull.push({
+              pmids: event.pmids,
+              edge_type_id: event.edge_type_id,
+              edge_types_name: event.edge_types_name,
+              label: event.label,
+            });
+          });
+          console.log("dataEdgeNamesFull: ", this.dataEdgeNamesFull);
+
+          ////////////////// Here get the edge type name on the basis of edge edge_type_id ///////////////////////
+          //Combined the two array with unique edge_type_id and sum the pmids values
+          this.dataEdgeNamesFinal = this.dataEdgeNamesFull.reduce((acc2: any, ele2: any) => {
+            const existingEdgeCount = acc2.find((xx: any) => xx.edge_type_id === ele2.edge_type_id);
+            if (!existingEdgeCount) return acc2.concat(ele2);
+            return (existingEdgeCount.pmids += ele2.pmids, acc2);
+          }, [])
+          console.log("response Drill: ", this.dataEdgeNamesFinal);
+
+          this.drillDownData = [];
+          for (let i = 0; i < this.dataEdgeNamesFinal.length; i++) {
+            this.categories2.push(this.dataEdgeNamesFinal[i]['edge_types_name']);
+            this.drillDownData.push({ name: this.dataEdgeNamesFinal[i]['edge_types_name'], y: this.dataEdgeNamesFinal[i]['pmids'], label: this.dataEdgeNamesFinal[i]['label'] });
+          }
+
+          this.loadingChart = false;
+          console.log("drillDownData: ", this.drillDownData)
+          this.drawColumnChartDrillDown();
+        },
+        err => {
+          console.log(err.message);
+          this.graphLoaderDrill = false;
+        },
+        () => {
+          this.graphLoaderDrill = false;
+        });
+
+  }
+
+  drawColumnChartDrillDown() {
+    Highcharts.chart('container2', <any>{
+      chart: {
+        type: 'bar',
+        plotBorderWidth: 1,
+        marginLeft: 200
+      },
+      title: {
+        text: 'Distribution by Relation Group'
+      },
+      accessibility: {
+        announceNewData: {
+          enabled: true
+        }
+      },
+      xAxis: {
+        type: 'category',
+        labels: {
+          style: {
+            fontSize: '11px',
+            fontFamily: 'Verdana, sans-serif'
+          }
+        }
+      },
+      yAxis: {  
+        type: 'logarithmic',
+        title: {
+          text: 'Article Count',
+        }
+      },
+      legend: {
+        enabled: false
+      },
+      plotOptions: {
+        column: {
+          stacking: "normal"
+        },
+        series: {
+          borderWidth: 0,
+          dataLabels: {
+            enabled: true,
+            format: '{point.y}'
           }
         }
       },
       tooltip: {
         pointFormat: '<span style="color:{point.color}">Count</span>: <b>{point.y}</b>'
       },
-
       series: [{
-        name: "Home",
         colorByPoint: true,
-        data: this.graphData
+        data: this.drillDownData
       }],
-      drilldown: {
-        series: this.drillDownDataFinal
-      }
-    })
-
-    this.graphLoader = false;
+    });
   }
+
 }

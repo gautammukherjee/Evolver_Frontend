@@ -27,3 +27,31 @@
     {{errorMsg}}
 </div>-->
 </div>
+
+<ng-template #showPopupEvent let-c="close" let-d="dismiss">
+    <div class="modal-content modal-fullscreen" id="showPopupEvent">
+        <div class="modal-header blue_bg_hdr modal-lg">
+            <h4 class="modal-title">Edges(s) </h4>
+            <button class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body white_bg without_bord_rad">
+            <div class="row">
+                <div class="col-md-12 bottam-buffer home_tiles">
+
+                    <div class="m-1">
+                        <div class="fade show">
+                            <div id="container2"></div>
+                            <div class="text-center" *ngIf="graphLoaderDrill">
+                                <img src="../../assets/images/loader_big.gif" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</ng-template>

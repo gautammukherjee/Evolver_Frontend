@@ -17,7 +17,7 @@
                     </div>
                     <div class="filter-single" style="width:20%;">
                         <app-filter-edge-type
-                            (onSelectEdgeType)='edgeTypeChanged("edgeTypeFilter")'></app-filter-edge-type>
+                            (onSelectEdgeType)='edgeTypeChanged("edgeTypeFilter")' [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type>
                     </div>
                     <div class="filter-single" style="width:30%;">
                         <app-filter-destination-node
@@ -47,11 +47,11 @@
                                 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-node-select-level2>
                         </div>
                         <div class="filter-single" style="width:30%;">
-                            <app-filter-source-node-level2
+                            <app-filter-source-node-level2 (onSelectSourceNode2)='sourceNodeChanged2("sourceNode2Filter" , $event)'
                                 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node-level2>
                         </div>
                         <div class="filter-single" style="width:20%;">
-                            <app-filter-edge-type-level2
+                            <app-filter-edge-type-level2 (onSelectEdgeType2)='edgeTypeChanged2("edgeType2Filter")'
                                 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type-level2>
                         </div>
                         <div class="filter-single" style="width:30%;">
@@ -141,8 +141,8 @@
                             <div class="tab-pane p-2 fade" id="tab4" role="tabpanel" aria-labelledby="tab4-tab">
                                 <app-distribution-by-rel-grp
                                     [ProceedDoFilterApply]="doFilterApplyTab4"></app-distribution-by-rel-grp>
-                                <app-pmid-count-with-gene-and-disease
-                                    [ProceedDoFilterApply]="doFilterApplyTab4"></app-pmid-count-with-gene-and-disease>
+                                <!-- <app-pmid-count-with-gene-and-disease
+                                    [ProceedDoFilterApply]="doFilterApplyTab4"></app-pmid-count-with-gene-and-disease> -->
                             </div>
 
                             <div class="tab-pane p-2 fade" id="tab5" role="tabpanel" aria-labelledby="tab5-tab">
@@ -154,8 +154,8 @@
                                     [ProceedDoFilterApply]="doFilterApplyTab5"></app-nct-investigator-name>
                                 <app-ct-investigator-rels-by-stats
                                     [ProceedDoFilterApply]="doFilterApplyTab5"></app-ct-investigator-rels-by-stats>
-                                <app-investigator-by-role
-                                    [ProceedDoFilterApply]="doFilterApplyTab5"></app-investigator-by-role>
+                                <!-- <app-investigator-by-role
+                                    [ProceedDoFilterApply]="doFilterApplyTab5"></app-investigator-by-role> -->
                                 <!-- <app-investigator-by-country
                                     [ProceedDoFilterApply]="doFilterApplyTab5"></app-investigator-by-country> -->
                             </div>

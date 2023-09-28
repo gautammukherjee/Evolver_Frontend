@@ -109,6 +109,21 @@ export class NodeSelectsService {
   getMasterListsRevampLevelTwoCount(params: any) {
     return this.http.post(this.API_URL + 'getMasterListsRevampLevelTwoCount', params, httpOptions);
   }
+
+  //network map
+  getMasterListsMapRevampLevelOne(params: any) {
+    return this.http.post(this.API_URL + 'getMasterListsMapRevampLevelOne', params, httpOptions);
+  }
+  getMasterListsMapRevampLevelTwo(params: any) {
+    return this.http.post(this.API_URL + 'getMasterListsMapRevampLevelTwo', params, httpOptions);
+  }
+  getMasterListsMapRevampLevelOneCount(params: any) {
+    return this.http.post(this.API_URL + 'getMasterListsMapRevampLevelOneCount', params, httpOptions);
+  }
+  getMasterListsMapRevampLevelTwoCount(params: any) {
+    return this.http.post(this.API_URL + 'getMasterListsMapRevampLevelTwoCount', params, httpOptions);
+  }
+
   getAllRecords(params: any) {
     return this.http.post(this.API_URL + 'getAllRecords', params, httpOptions);
   }

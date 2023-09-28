@@ -72,3 +72,49 @@
 .example-full-width {
     width: 100%;
 }
+
+.source-node-accordion2 {
+    button {
+        padding: 7px 10px;
+        font-size: 13px;
+
+        &:focus {
+            box-shadow: none;
+        }
+
+        &::after {
+            width: 10px;
+            height: 10px;
+            background-size: 10px;
+        }
+
+        input[type=checkbox]{
+            width:15px;
+            height: 15px;
+            min-width:15px;
+            min-height: 15px;
+            margin-right: 5px;
+
+            &:focus{
+                box-shadow: none;
+            }
+        }
+    }
+
+    .accordion-body {
+        padding: 7px 10px;
+        font-size: 13px;
+
+        .subcategory-badges {
+            display: flex;
+            flex-wrap: wrap;
+            column-gap: 5px;
+
+            .badge {
+                white-space: break-spaces;
+                margin-bottom: 3px;
+                line-height: initial;
+            }
+        }
+    }
+}

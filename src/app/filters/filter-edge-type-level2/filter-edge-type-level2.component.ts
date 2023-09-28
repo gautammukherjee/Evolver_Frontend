@@ -76,13 +76,24 @@ export class FilterEdgeTypeLevel2Component implements OnInit {
 
     this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
       console.log("Edge Level2: ", event.clickOn);
-      if (event.clickOn !== undefined && (event.clickOn == 'sourceNodeFilter' || event.clickOn == 'edgeTypeFilter' || event.clickOn == 'destinationNodeFilter' || event.clickOn == 'nodeLevel2Filter' || event.clickOn == 'deleteLevel2')) {
-        // console.log("Edge Level 2:2 ", event.clickOn);
-        this.globalVariableService.setSelectedEdgeTypes2([]);
+      if (event.clickOn == undefined) {
+        // this.hideCardBody = true;
+        this.selectedEdgeTypes2 = []; // Reinitialized, because when data updated on click TA, it should empty locally
+        this.selectedEdgeTypesByGroup2 = [];
+        this.selectedEdgeTypesNames2 = [];
+        this.isAllSelected = false;
+        this.getEdgeType2(event);
+      } else if (event.clickOn !== undefined && (event.clickOn == 'sourceNodeFilter' || event.clickOn == 'edgeTypeFilter' || event.clickOn == 'destinationNodeFilter' || event.clickOn == 'nodeLevel2Filter' || event.clickOn == 'sourceNode2Filter' || event.clickOn == 'deleteLevel2')) {
+        console.log("Edge Level 2:2 ", event.clickOn);
+        // this.hideCardBody = true;
+        this.selectedEdgeTypes2 = [];
+        this.globalVariableService.setSelectedEdgeTypes2(this.selectedEdgeTypes2);
+        this.selectedEdgeTypesByGroup2 = [];
+        this.selectedEdgeTypesNames2 = [];
+        this.isAllSelected = false;
         this.getEdgeType2(event);
       }
     });
-
     this.getEdgeType2(event);
     this.selectedEdgeTypes2 = Array.from(this.globalVariableService.getSelectedEdgeTypes2());
   }
@@ -96,43 +107,43 @@ export class FilterEdgeTypeLevel2Component implements OnInit {
     this.selectedEdgeTypesNames2 = []
     this.selectedEdgeTypesByGroup2 = []
 
-    if (this.filterParams.source_node != undefined) {
-      this.loading = true;
-      // this.firstTimeCheck = true;
-      this.nodeSelectsService.getEdgeType()
-        .subscribe(
-          data => {
-            this.result = data;
-            this.edgeTypes2 = this.result.edgeTypeRecords;
-            // console.log("edgeTypes2: ", this.edgeTypes2);
+    // if (this.filterParams.source_node2 != undefined) {
+    this.loading = true;
+    // this.firstTimeCheck = true;
+    this.nodeSelectsService.getEdgeType()
+      .subscribe(
+        data => {
+          this.result = data;
+          this.edgeTypes2 = this.result.edgeTypeRecords;
+          // console.log("edgeTypes2: ", this.edgeTypes2);
 
-            // if (event !== undefined && event.type == 'load') { // i.e No Genes selected previously
-            //   for (let i = 0; i < this.result.edgeTypeRecords.length && i < 1; i++) {
-            //     // this.selectedEdgeTypes2.push(this.result.edgeTypeRecords[i].edge_type_id);
-            //     this.selectedEdgeTypes2 = [];
-            //   }
-            //   console.log("selected Edge Types: ", this.selectedEdgeTypes2);
-            //   // this.globalVariableService.setSelectedEdgeTypes2(this.selectedEdgeTypes2);
-            // } else {
-            //   this.selectedEdgeTypes2 = Array.from(this.globalVariableService.getSelectedEdgeTypes2());
-            // }
-          },
-          err => {
-            this.edgeTypesCheck = true;
-            this.loading = false;
-            console.log(err.message)
-          },
-          () => {
-            this.edgeTypesCheck = true;
-            this.loading = false;
-            console.log("loading finish")
-          }
-        );
-    }
-    else {
-      this.edgeTypes2 = [];
-      this.globalVariableService.resetfilters();
-    }
+          // if (event !== undefined && event.type == 'load') { // i.e No Genes selected previously
+          //   for (let i = 0; i < this.result.edgeTypeRecords.length && i < 1; i++) {
+          //     // this.selectedEdgeTypes2.push(this.result.edgeTypeRecords[i].edge_type_id);
+          //     this.selectedEdgeTypes2 = [];
+          //   }
+          //   console.log("selected Edge Types: ", this.selectedEdgeTypes2);
+          //   // this.globalVariableService.setSelectedEdgeTypes2(this.selectedEdgeTypes2);
+          // } else {
+          //   this.selectedEdgeTypes2 = Array.from(this.globalVariableService.getSelectedEdgeTypes2());
+          // }
+        },
+        err => {
+          this.edgeTypesCheck = true;
+          this.loading = false;
+          console.log(err.message)
+        },
+        () => {
+          this.edgeTypesCheck = true;
+          this.loading = false;
+          console.log("loading finish")
+        }
+      );
+    // }
+    // else {
+    //   this.edgeTypes2 = [];
+    //   this.globalVariableService.resetEdgeTypeNode2();
+    // }
   }
 
   selectEdgeType(edgeType: any, event: any, from: any = null) {
@@ -147,9 +158,9 @@ export class FilterEdgeTypeLevel2Component implements OnInit {
     // console.log("selectedEdgeTypesByGroup2: ", this.selectedEdgeTypesByGroup2);
 
     // Pass edge group id and return edge_type_id to mapping with edge and edge group
-    this.selectedEdgeTypes2 = this.edgeTypesFirst2.filter((item:any) => (
+    this.selectedEdgeTypes2 = this.edgeTypesFirst2.filter((item: any) => (
       this.selectedEdgeTypesByGroup2.includes(item.edge_group_id)
-    )).map((item:any) => item.edge_type_id)
+    )).map((item: any) => item.edge_type_id)
     console.log("selected Edge Types2", this.selectedEdgeTypes2);
     // console.log("selectedEdgeTypesName2: ", this.selectedEdgeTypesNames2);
 
@@ -159,7 +170,7 @@ export class FilterEdgeTypeLevel2Component implements OnInit {
     console.log("new Filters Edge Types2: ", this.filterParams);
 
     // if (from != 'edgeSelectsWarningModal')
-    //   this.proceed();
+    this.proceed();
     this.enableDisableProceedButton();
   }
 
@@ -168,7 +179,7 @@ export class FilterEdgeTypeLevel2Component implements OnInit {
   }
 
   selectAll(event: any) {
-    if (this.isAllSelected) {      
+    if (this.isAllSelected) {
       this.selectedEdgeTypesByGroup2 = [];
       this.result.edgeTypeRecords.map((element: any) => {
         this.selectedEdgeTypesByGroup2.push(element.edge_group_id);
@@ -180,14 +191,17 @@ export class FilterEdgeTypeLevel2Component implements OnInit {
     }
 
     // Pass edge group id and return edge_type_id to mapping with edge and edge group
-    this.selectedEdgeTypes2 = this.edgeTypesFirst2.filter((item:any) => (
+    this.selectedEdgeTypes2 = this.edgeTypesFirst2.filter((item: any) => (
       this.selectedEdgeTypesByGroup2.includes(item.edge_group_id)
-    )).map((item:any) => item.edge_type_id)
+    )).map((item: any) => item.edge_type_id)
     console.log("selected Edge Types2", this.selectedEdgeTypes2);
     this.globalVariableService.setSelectedEdgeTypes2(this.selectedEdgeTypes2);
     this.filterParams = this.globalVariableService.getFilterParams();
     console.log("select all edge types All2: ", this.filterParams);
     // this.enableDisableProceedButton();
+
+    this.proceed();
+    this.enableDisableProceedButton();
   }
 
   resetEdgeType() {

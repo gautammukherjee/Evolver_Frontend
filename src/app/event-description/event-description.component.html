@@ -26,18 +26,18 @@
                     </div>
                     <div *ngIf="noDataFoundDetails" class="bg-danger"
                         style="color:#fff; text-align: center; font-weight: bold;">
-                        Please Choose Pair Type For Second Degree
+                        Please Choose Pair Type and Source for Second Degree
                     </div>
                     <div class="table-responsive custom-fixed-header-table table table-striped table-hover"
                         [ngClass]="toggleLevels == false ? 'hiddenLevels' : currentLevel == '1' ? 'level1' : currentLevel == 2 ? 'level2' : 'level3'">
 
                         <div>
-                            <span class="float-start bg-primary text-white p-1 mr-2"
-                                *ngIf="firstCompleteApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">First Level Combinations
-                                <span class="badge bg-danger text-white">{{masterListsDataDetailsLengthLevelOne}}</span></span>
-                            <span class="float-start bg-primary text-white p-1"
-                                *ngIf="secondCompleteApiResult!=undefined && masterListsDataDetailsLengthLevelTwo > 0">Second Level Combinations
-                                <span class="badge bg-danger text-white">{{masterListsDataDetailsLengthLevelTwo}}</span></span>
+                            <span class="float-start text-white p-1 mr-2" style="background-color: #6C7572; border-radius:5px;"
+                                *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">First Degree Combinations
+                                <span class="badge bg-primary text-white">{{masterListsDataDetailsLengthLevelOne}}</span></span>
+                            <span class="float-start text-white p-1" style="background-color: #6C7572; border-radius:5px;"
+                                *ngIf="secondLoadApiResult!=undefined && masterListsDataDetailsLengthLevelTwo > 0">Second Degree Combinations
+                                <span class="badge bg-primary text-white">{{masterListsDataDetailsLengthLevelTwo}}</span></span>
                         </div>
 
                         <table id="showEventDescription" data-toolbar="#toolbar" data-search="true"
@@ -53,13 +53,13 @@
                                     <th data-field="destinationnode_name" data-sortable="true" width="10%"
                                         data-filter-control="input">Destination</th>
                                     <th data-field="level" data-sortable="true" width="10%"
-                                        data-filter-control="select">
+                                        data-filter-control="select" data-tableexport-value = "Level">
                                         Level</th>
                                     <!-- <th data-field="edgeTypes" data-sortable="true" width="10%"
                                         data-filter-control="input">
                                         Edge Type</th> -->
                                     <th data-field="pmidCount" data-sortable="true" width="10%"
-                                        data-filter-control="select">
+                                        data-filter-control="select" data-tableexport-value = "PMID Count">
                                         PMID Count</th>
                                     <!-- <th data-filter-control="select" data-field="article_count" data-sortable="true" width="10%">
                                             Articles Count</th> -->

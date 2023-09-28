@@ -37,8 +37,17 @@ export class FilterDestinationNodeLevel2Component implements OnInit {
   mouseOverON: any = undefined;
   otherMouseOverONElem: any = undefined;
   public disableProceed: boolean = true;
-  searchInput: any = null;
+  searchInput2: any = null;
+  public dbLoading2: boolean = false;
+  public destinationNodesDB2: any = [];
+  public destinationNodesLength2: any = [];
   // public showDestinationBody: boolean = true;
+
+  public groupedByDestinationNode2: any = {};
+  public finalGroupedByDestinationBeforeNode2: any = {};
+  distinctDestinationNodesData2: any = [];
+  public selectedAllForCTDestinationNodes2: any = [];
+  public selectedAllDestinationNodes2: any = [];
 
   constructor(
     private nodeSelectsService: NodeSelectsService,
@@ -48,17 +57,31 @@ export class FilterDestinationNodeLevel2Component implements OnInit {
   ) {
   }
 
+  // debounce function makes sure that your code is only triggered once per user input
+  debounce(func: any, timeout = 1000) {
+    let timer: any;
+    return (...args: any) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    };
+  }
+
   ngOnInit(): void {
     // this.filterParams = this.globalVariableService.getFilterParams();
     // this.getDestinationNode2(event, 1);
 
     this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
-      console.log("Destination level2:: ", event.clickOn);
+      console.log("Destination level2:1 ", event.clickOn);
       if (event.clickOn == undefined) {
         this.getResetDestinationNode();
-      } else if (event.clickOn !== undefined && (event.clickOn == 'sourceNodeFilter' || event.clickOn == 'edgeTypeFilter' || event.clickOn == 'destinationNodeFilter' || event.clickOn == 'nodeLevel2Filter' || event.clickOn == 'deleteLevel2')) {
+      } else if (event.clickOn !== undefined && (event.clickOn == 'sourceNodeFilter' || event.clickOn == 'edgeTypeFilter' || event.clickOn == 'destinationNodeFilter' || event.clickOn == 'nodeLevel2Filter' || event.clickOn == 'sourceNode2Filter' || event.clickOn == 'edgeType2Filter' || event.clickOn == 'deleteLevel2')) {
         // console.log("here1");
-        this.getResetDestinationNode();
+        console.log("destination Level2:2 ", event.clickOn);
+        // this.getResetDestinationNode();
+        this.getDestinationNode2();
+
+        this.searchInput2 = '';
+        this.getDestinationNode2OnChange();
       }
     });
   }
@@ -68,44 +91,201 @@ export class FilterDestinationNodeLevel2Component implements OnInit {
   }
 
   public getResetDestinationNode() {
-    this.selectedDestinationNodes2 = []
     this.destinationNodes2 = [];
+    this.destinationNodesDB2 = [];
+    this.selectedDestinationNodes2 = [];
+    this.globalVariableService.setSelectedDestinationNodes(this.selectedDestinationNodes2);
     this.globalVariableService.resetDestinationNode2();
-    this.searchInput = '';
+    this.searchInput2 = '';
+    this.destinationNodesLength2 = [];
+    this.distinctDestinationNodesData2 = [];
   }
 
   getDestinationNode2() {
-    this.filterParams = this.globalVariableService.getFilterParams();
-    // this.selectedDestinationNodes2 = [];
-    if (this.filterParams.source_node != undefined) {
-      if (this.searchInput.length > 2) {
-        this.loading = true;
-        this.filterParams = this.globalVariableService.getFilterParams({ "searchval": this.searchInput });
-        console.log("filterparamsSearchDestination: ", this.filterParams);
-        this.nodeSelectsService.getDestinationNode2(this.filterParams)
-          .subscribe(
-            data => {
-              this.result = data;
-              this.destinationNodes2 = this.result.destinationNodeRecords2;
-              console.log("destinationNodes2: ", this.destinationNodes2);
-            },
-            err => {
-              this.destinationNodesCheck = true;
-              this.loading = false;
-              console.log(err.message)
-            },
-            () => {
-              this.destinationNodesCheck = true;
-              this.loading = false;
-              console.log("loading finish")
-            }
-          );
-      }
+    // this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
+    this.filterParams = this.globalVariableService.getFilterParams();    
+    // this.selectedDestinationNodes = []
+    this.destinationNodesLength2 = [];
+    this.distinctDestinationNodesData2 = [];
+    // this.currentPage = 1;
+    if (this.filterParams.source_node2 != undefined) {
+      this.loading = true;
+
+      this.nodeSelectsService.getDestinationNode2(this.filterParams)
+        .subscribe(
+          data => {
+            this.result = data;
+            this.destinationNodesLength2 = this.result.destinationNodeRecords2.length;
+            console.log("destinationNodes Length2: ", this.destinationNodesLength2);
+
+            //Start here for clinical trials destination nodes unique data
+            let destinationID: any = [];
+            this.result.destinationNodeRecords2.forEach((event: any) => {
+              destinationID.push(event.destination_node);
+            });
+            console.log("destinationID: ", destinationID);
+            this.distinctDestinationNodesData2 = [...new Set(destinationID.map((x: any) => x))];
+            console.log("destinationNodes res: ", this.distinctDestinationNodesData2);
+
+            this.globalVariableService.setSelectedAllForCTDestinationNodes2(this.distinctDestinationNodesData2);
+            this.selectedAllForCTDestinationNodes2 = Array.from(this.globalVariableService.getSelectedAllForCTDestinationNodes2());
+            this.filterParams = this.globalVariableService.getFilterParams();
+            console.log("new new Filters all select DESTINATION2: ", this.filterParams);
+            //End here for clinical trials destination nodes unique data
+          },
+          err => {
+            // this.destinationNodesCheck = true;
+            this.loading = false;
+            console.log(err.message)
+          },
+          () => {
+            // this.destinationNodesCheck = true;
+            this.loading = false;
+            console.log("loading finish")
+          }
+        );
+
     } else {
-      this.globalVariableService.resetfilters();
+      console.log("no checked data");
+      this.destinationNodes2 = [];
+      this.destinationNodesLength2 = [];
+      this.distinctDestinationNodesData2 = [];
+      this.globalVariableService.resetDestinationNode2();
+      // this.globalVariableService.resetEdgeTypeNode2();
     }
   }
 
+  getDestinationNode2OnChange() {
+    // this.selectedDestinationNodes = []
+    this.filterParams = this.globalVariableService.getFilterParams();    
+    // console.log("filter params: ", this.filterParams);
+    // this.destinationNodesDB=[];
+    if (this.searchInput2 && this.searchInput2.length > 2 && this.filterParams.source_node2 != undefined) {
+      console.log("this all desti2: ", this.selectedDestinationNodes2)
+      this.dbLoading2 = true;
+      this.filterParams = this.globalVariableService.getFilterParams({ "searchval": this.searchInput2 });
+      // console.log("filterparamsSearchSource: ", this.filterParams);
+      this.nodeSelectsService.getDestinationNode2(this.filterParams)
+        .subscribe(
+          data => {
+            this.result = data;
+            this.destinationNodesDB2 = this.result.destinationNodeRecords2;
+            console.log("destinationNodesKeyup2: ", this.destinationNodesDB2);
+
+            ///////////////////////////////////////////////////////
+            // 2. Group by destination_node name
+            const groupedDestinationNodes = this.destinationNodesDB2.reduce((accumulator: any, element: any, index: any) => {
+              const destination_node_id = element.destination_node;
+              const destination_node_name = element.destination_node_name;
+              const subcategory_syn_node_name = element.syn_node_name;
+              if (accumulator[destination_node_id])
+                return {
+                  ...accumulator,
+                  [destination_node_id]: {
+                    ...accumulator[destination_node_id],
+                    subCategories: [...accumulator[destination_node_id].subCategories, subcategory_syn_node_name],
+                  }
+                };
+              else
+                return {
+                  ...accumulator,
+                  [destination_node_id]: {
+                    destination_node_name: destination_node_name,
+                    subCategories: [subcategory_syn_node_name],
+                  }
+                };
+            }, {});
+            console.log("groupedDestinationNodes2: ", groupedDestinationNodes);
+
+            //////////////////////////////////////////////////////////////////////////
+            // 3. Group according to destination name name and get the new json objects
+            this.groupedByDestinationNode2 =
+              Object.keys(groupedDestinationNodes).map(destination_node_id => ({
+                destination_node: destination_node_id,
+                destination_node_name: groupedDestinationNodes[destination_node_id].destination_node_name,
+                subcategory_syn_node_name: groupedDestinationNodes[destination_node_id].subCategories,
+              }))
+            console.log("groupedByDestinationNode2: ", this.groupedByDestinationNode2);
+
+            ///////////////////////////////////////////////////////////////////////////////////////
+            //4. Start sorting according to keyword search filter in autosugest json objects
+            let searchField = "destination_node_name";
+            let results1 = []; let results2 = []; let results3 = [];
+            this.finalGroupedByDestinationBeforeNode2 = [];
+            for (var i = 0; i < this.groupedByDestinationNode2.length; i++) {
+              if ((this.groupedByDestinationNode2[i][searchField]).toLowerCase() == (this.searchInput2).toLowerCase()) {// To check the node_name equality
+                results1.push(this.groupedByDestinationNode2[i]);
+              }
+              else {
+                // console.log("subcatcount: ", this.groupedBySourceNode[i].subcategory_syn_node_name.length);
+                for (var j = 0; j < this.groupedByDestinationNode2[i].subcategory_syn_node_name.length; j++) {
+                  if ((this.groupedByDestinationNode2[i].subcategory_syn_node_name[j]).toLowerCase() == (this.searchInput2).toLowerCase()) { // To check the syn_node_name equality
+                    results2.push(this.groupedByDestinationNode2[i]);
+                  }
+                }
+                results3.push(this.groupedByDestinationNode2[i]);
+              }
+            }
+            this.finalGroupedByDestinationBeforeNode2 = results1.concat(results2, results3);
+            console.log("Final data: ", this.finalGroupedByDestinationBeforeNode2);
+
+            const key = 'destination_node';
+            this.destinationNodesDB2 = [...new Map(this.finalGroupedByDestinationBeforeNode2.map((item: any) =>
+              [item[key], item])).values()];
+            console.log("Final unique data: ", this.destinationNodesDB2);
+            //End sorting according to filter in autosugest json objects
+          },
+          err => {
+            // this.destinationNodesCheck = true;
+            this.dbLoading2 = false;
+            console.log(err.message)
+          },
+          () => {
+            // this.destinationNodesCheck = true;
+            this.dbLoading2 = false;
+            console.log("loading finish")
+          }
+        );
+    } else if (this.filterParams.source_node2 == undefined) {
+      this.destinationNodesDB2 = [];
+      this.selectedDestinationNodes2 = [];
+      this.globalVariableService.setSelectedDestinationNodes2(this.selectedDestinationNodes2);
+      // console.log("destination else if : ", this.selectedDestinationNodes);
+      // this.globalVariableService.resetfilters();
+    } else {
+      this.destinationNodesDB2 = [];
+      this.selectedDestinationNodes2 = [];
+      this.globalVariableService.setSelectedDestinationNodes2(this.selectedDestinationNodes2);
+      // console.log("destination else2 : ", this.destinationNodesDB);
+      console.log("destination else : ", this.selectedDestinationNodes2);
+    }
+    console.log("filter in destination2: ", this.filterParams);
+  }
+
+  processChangeDestination2: any = this.debounce(() => this.getDestinationNode2OnChange());
+
+  selectAll(event: any) {
+    // console.log("is_all: ", this.isAllSelected);
+    this.globalVariableService.setSelectedAllDestinationNodes2(this.isAllSelected == true ? 1 : 0);
+    this.selectedAllDestinationNodes2 = this.globalVariableService.getSelectedAllDestinationNodes2();
+
+    // console.log("is_all_destination_check: ", this.selectedAllDestinationNodes);
+
+    this.filterParams = this.globalVariableService.getFilterParams();
+    console.log("new Filters DESTINATION: ", this.filterParams);
+
+    // if (this.isAllSelected) {
+    //   this.destinationNodes.map((element: any) => {
+    //     this.selectedDestinationNodes.push(element.destination_node);
+    //   })
+    // } else {
+    //   this.selectedDestinationNodes = [];
+    // }
+    // console.log("select All: ", this.selectedDestinationNodes);
+
+    this.proceed();
+    this.enableDisableProceedButton();
+  }
   selectDestinationNode(destinationNode: any, event: any, from: any = null) {
     if (event.target.checked) {
       this.selectedDestinationNodes2.push(destinationNode.destination_node);
@@ -130,7 +310,7 @@ export class FilterDestinationNodeLevel2Component implements OnInit {
   }
 
   resetDestinationNode() {
-    this.searchInput = '';
+    this.searchInput2 = '';
     this.disableProceed = true;
     this.selectedDestinationNodes2 = [];
     this.globalVariableService.setSelectedDestinationNodes2(this.selectedDestinationNodes2);

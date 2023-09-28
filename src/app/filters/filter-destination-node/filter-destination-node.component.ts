@@ -54,6 +54,10 @@ export class FilterDestinationNodeComponent implements OnInit {
   showAutoSuggest: boolean = false;
   distinctDestinationNodesData: any = [];
 
+  public groupedByDestinationNode: any = {};
+  // public finalGroupedByDestinationNode: any = {};
+  public finalGroupedByDestinationBeforeNode: any = {};
+
   constructor(
     private nodeSelectsService: NodeSelectsService,
     private globalVariableService: GlobalVariableService,
@@ -61,7 +65,6 @@ export class FilterDestinationNodeComponent implements OnInit {
     private elementRef: ElementRef
   ) {
   }
-
 
   // debounce function makes sure that your code is only triggered once per user input
   debounce(func: any, timeout = 1000) {
@@ -87,12 +90,12 @@ export class FilterDestinationNodeComponent implements OnInit {
       console.log("event Destination: ", event.clickOn);
       this.notEmptyPost = true;
       if (event.clickOn == undefined) {
-        console.log("destination Level 2:1 ", event.clickOn);
+        console.log("destination Level1:1 ", event.clickOn);
         this.getResetDestinationNode();
       } else if (event.clickOn !== undefined && (event.clickOn == 'sourceNodeFilter' || event.clickOn == 'edgeTypeFilter')) {
         // this.hideCardBody = true;
         this.filterParams = this.globalVariableService.getFilterParams();
-        console.log("destination Level 2:2 ", event.clickOn);
+        console.log("destination Level1:2 ", event.clickOn);
         // if (this.firstTimeCheck === false) // Node select only one time reload when we choose destination nodes are selected
         this.getDestinationNode();
 
@@ -116,7 +119,9 @@ export class FilterDestinationNodeComponent implements OnInit {
 
   public getResetDestinationNode() {
     this.destinationNodes = [];
+    this.destinationNodesDB = [];
     this.selectedDestinationNodes = [];
+    this.globalVariableService.setSelectedDestinationNodes(this.selectedDestinationNodes);
     this.searchInput = '';
     this.destinationNodesLength = [];
     this.distinctDestinationNodesData = [];
@@ -131,41 +136,41 @@ export class FilterDestinationNodeComponent implements OnInit {
     // this.currentPage = 1;
     if (this.filterParams.source_node != undefined) {
       this.loading = true;
-      setTimeout(() => {
-        this.nodeSelectsService.getDestinationNode(this.filterParams)
-          .subscribe(
-            data => {
-              this.result = data;
-              this.destinationNodesLength = this.result.destinationNodeRecords.length;
-              console.log("destinationNodes Length: ", this.destinationNodesLength);
 
-              //Start here for clinical trials destination nodes unique data
-              let destinationID: any = [];
-              this.result.destinationNodeRecords.forEach((event: any) => {
-                destinationID.push(event.destination_node);
-              });
-              console.log("destinationID: ", destinationID);
-              this.distinctDestinationNodesData = [...new Set(destinationID.map((x: any) => x))];
-              console.log("destinationNodes res: ", this.distinctDestinationNodesData);
+      this.nodeSelectsService.getDestinationNode(this.filterParams)
+        .subscribe(
+          data => {
+            this.result = data;
+            this.destinationNodesLength = this.result.destinationNodeRecords.length;
+            console.log("destinationNodes Length: ", this.destinationNodesLength);
 
-              this.globalVariableService.setSelectedAllForCTDestinationNodes(this.distinctDestinationNodesData);
-              this.selectedAllForCTDestinationNodes = Array.from(this.globalVariableService.getSelectedAllForCTDestinationNodes());
-              this.filterParams = this.globalVariableService.getFilterParams();
-              console.log("new new Filters all select DESTINATION: ", this.filterParams);
-              //End here for clinical trials destination nodes unique data
-            },
-            err => {
-              // this.destinationNodesCheck = true;
-              this.loading = false;
-              console.log(err.message)
-            },
-            () => {
-              // this.destinationNodesCheck = true;
-              this.loading = false;
-              console.log("loading finish")
-            }
-          );
-      }, 1000);
+            //Start here for clinical trials destination nodes unique data
+            let destinationID: any = [];
+            this.result.destinationNodeRecords.forEach((event: any) => {
+              destinationID.push(event.destination_node);
+            });
+            console.log("destinationID: ", destinationID);
+            this.distinctDestinationNodesData = [...new Set(destinationID.map((x: any) => x))];
+            console.log("destinationNodes res: ", this.distinctDestinationNodesData);
+
+            this.globalVariableService.setSelectedAllForCTDestinationNodes(this.distinctDestinationNodesData);
+            this.selectedAllForCTDestinationNodes = Array.from(this.globalVariableService.getSelectedAllForCTDestinationNodes());
+            this.filterParams = this.globalVariableService.getFilterParams();
+            console.log("new new Filters all select DESTINATION: ", this.filterParams);
+            //End here for clinical trials destination nodes unique data
+          },
+          err => {
+            // this.destinationNodesCheck = true;
+            this.loading = false;
+            console.log(err.message)
+          },
+          () => {
+            // this.destinationNodesCheck = true;
+            this.loading = false;
+            console.log("loading finish")
+          }
+        );
+
     } else {
       console.log("no checked data")
       this.destinationNodes = [];
@@ -189,27 +194,90 @@ export class FilterDestinationNodeComponent implements OnInit {
         .subscribe(
           data => {
             this.result = data;
-            // this.destinationNodesDB = this.result.destinationNodeRecords;
-            console.log("destinationNodesKeyup: ", this.result.destinationNodeRecords);
+            this.destinationNodesDB = this.result.destinationNodeRecords;
+            console.log("destinationNodesKeyup: ", this.destinationNodesDB);
 
-            //Start sorting according to keyword search filter in autosugest json objects
+            ///////////////////////////////////////////////////////
+            // 2. Group by destination_node name
+            const groupedDestinationNodes = this.destinationNodesDB.reduce((accumulator: any, element: any, index: any) => {
+              const destination_node_id = element.destination_node;
+              const destination_node_name = element.destination_node_name;
+              const subcategory_syn_node_name = element.syn_node_name;
+              if (accumulator[destination_node_id])
+                return {
+                  ...accumulator,
+                  [destination_node_id]: {
+                    ...accumulator[destination_node_id],
+                    subCategories: [...accumulator[destination_node_id].subCategories, subcategory_syn_node_name],
+                  }
+                };
+              else
+                return {
+                  ...accumulator,
+                  [destination_node_id]: {
+                    destination_node_name: destination_node_name,
+                    subCategories: [subcategory_syn_node_name],
+                  }
+                };
+            }, {});
+            console.log("groupedDestinationNodes: ", groupedDestinationNodes);
+
+            //////////////////////////////////////////////////////////////////////////
+            // 3. Group according to destination name name and get the new json objects
+            this.groupedByDestinationNode =
+              Object.keys(groupedDestinationNodes).map(destination_node_id => ({
+                destination_node: destination_node_id,
+                destination_node_name: groupedDestinationNodes[destination_node_id].destination_node_name,
+                subcategory_syn_node_name: groupedDestinationNodes[destination_node_id].subCategories,
+              }))
+            console.log("groupedByDestinationNode: ", this.groupedByDestinationNode);
+
+            ///////////////////////////////////////////////////////////////////////////////////////
+            //4. Start sorting according to keyword search filter in autosugest json objects
             let searchField = "destination_node_name";
-            let searchFieldSyn = "syn_node_name";
             let results1 = []; let results2 = []; let results3 = [];
-            // this.destinationNodesDB = [];
-            for (var i = 0; i < this.result.destinationNodeRecords.length; i++) {
-              if ((this.result.destinationNodeRecords[i][searchField]).toLowerCase() == (this.searchInput).toLowerCase()) {
-                results1.push(this.result.destinationNodeRecords[i]);
-              } else if ((this.result.destinationNodeRecords[i][searchFieldSyn]).toLowerCase() == (this.searchInput).toLowerCase()) {
-                results2.push(this.result.destinationNodeRecords[i]);
-              } else {
-                results3.push(this.result.destinationNodeRecords[i]);
+            this.finalGroupedByDestinationBeforeNode = [];
+            for (var i = 0; i < this.groupedByDestinationNode.length; i++) {
+              if ((this.groupedByDestinationNode[i][searchField]).toLowerCase() == (this.searchInput).toLowerCase()) {// To check the node_name equality
+                results1.push(this.groupedByDestinationNode[i]);
+              }
+              else {
+                // console.log("subcatcount: ", this.groupedBySourceNode[i].subcategory_syn_node_name.length);
+                for (var j = 0; j < this.groupedByDestinationNode[i].subcategory_syn_node_name.length; j++) {
+                  if ((this.groupedByDestinationNode[i].subcategory_syn_node_name[j]).toLowerCase() == (this.searchInput).toLowerCase()) { // To check the syn_node_name equality
+                    results2.push(this.groupedByDestinationNode[i]);
+                  }
+                }
+                results3.push(this.groupedByDestinationNode[i]);
               }
             }
-            this.destinationNodesDB = results1.concat(results2).concat(results3);
-            console.log("final: ", this.destinationNodesDB);
+            this.finalGroupedByDestinationBeforeNode = results1.concat(results2, results3);
+            console.log("Final data: ", this.finalGroupedByDestinationBeforeNode);
+
+            const key = 'destination_node';
+            this.destinationNodesDB = [...new Map(this.finalGroupedByDestinationBeforeNode.map((item: any) =>
+              [item[key], item])).values()];
+            console.log("Final unique data: ", this.destinationNodesDB);
             //End sorting according to filter in autosugest json objects
 
+            //Start sorting according to keyword search filter in autosugest json objects
+            // let searchField = "destination_node_name";
+            // let searchFieldSyn = "syn_node_name";
+            // let results1 = []; let results2 = []; let results3 = [];
+            // this.destinationNodesDB = [];
+
+            // for (var i = 0; i < this.result.destinationNodeRecords.length; i++) {
+            //   if ((this.result.destinationNodeRecords[i][searchField]).toLowerCase() == (this.searchInput).toLowerCase()) {
+            //     results1.push(this.result.destinationNodeRecords[i]);
+            //   } else if ((this.result.destinationNodeRecords[i][searchFieldSyn]).toLowerCase() == (this.searchInput).toLowerCase()) {
+            //     results2.push(this.result.destinationNodeRecords[i]);
+            //   } else {
+            //     results3.push(this.result.destinationNodeRecords[i]);
+            //   }
+            // }
+            // this.destinationNodesDB = results1.concat(results2).concat(results3);
+            // console.log("final: ", this.destinationNodesDB);
+            //End sorting according to filter in autosugest json objects
           },
           err => {
             // this.destinationNodesCheck = true;
@@ -225,11 +293,15 @@ export class FilterDestinationNodeComponent implements OnInit {
     } else if (this.filterParams.source_node == undefined) {
       this.destinationNodesDB = [];
       this.selectedDestinationNodes = [];
-      console.log("destination else if : ", this.selectedDestinationNodes);
+      this.globalVariableService.setSelectedDestinationNodes(this.selectedDestinationNodes);
+      // console.log("destination else if : ", this.selectedDestinationNodes);
       // this.globalVariableService.resetfilters();
     } else {
       this.destinationNodesDB = [];
-      console.log("destination else : ", this.destinationNodesDB);
+      this.selectedDestinationNodes = [];
+      this.globalVariableService.setSelectedDestinationNodes(this.selectedDestinationNodes);
+      // console.log("destination else2 : ", this.destinationNodesDB);
+      console.log("destination else : ", this.selectedDestinationNodes);
     }
   }
 
@@ -274,7 +346,7 @@ export class FilterDestinationNodeComponent implements OnInit {
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data
     // if (from != 'nodeSelectsWarningModal')
     this.proceed();
-    this.enableDisableProceedButton();
+    // this.enableDisableProceedButton();
   }
 
   collapseMenuItem() {

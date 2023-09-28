@@ -70,8 +70,6 @@ export class FilterEdgeTypeComponent implements OnInit {
     this.filterParams = this.globalVariableService.getFilterParams();
     // console.log("new Filters1: ", this.filterParams);
 
-
-
     this.nodeSelectsService.getEdgeTypeFirst().subscribe(
       (data: any) => {
         this.result = data;
@@ -79,19 +77,26 @@ export class FilterEdgeTypeComponent implements OnInit {
         console.log("edge Types First: ", this.edgeTypesFirst);
       });
 
-
-
-    // this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
-    //   console.log("eventEdgeType:: ", event);
-    //   if (event.clickOn == undefined) {
-    //     this.hideCardBody = true;
-    //     this.selectedEdgeTypes = []; // Reinitialized, because when data updated on click TA, it should empty locally
-    //     this.getEdgeType(event, 2);
-    //   } else if (event.clickOn !== undefined && event.clickOn == 'sourceNodeFilter') {
-    //     this.hideCardBody = true;
-    //     this.getEdgeType(event, 2);
-    //   }
-    // });
+    this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
+      console.log("eventEdgeType1:: ", event);
+      if (event.clickOn == undefined) {
+        // this.hideCardBody = true;
+        this.selectedEdgeTypes = []; // Reinitialized, because when data updated on click TA, it should empty locally
+        this.selectedEdgeTypesByGroup = [];
+        this.selectedEdgeTypesNames = [];
+        this.isAllSelected = false;
+        this.getEdgeType(event, 2);
+      } else if (event.clickOn !== undefined && event.clickOn == 'sourceNodeFilter') {
+        console.log("eventEdgeType2:: ", event.clickOn);
+        // this.hideCardBody = true;
+        this.selectedEdgeTypes = [];
+        this.globalVariableService.setSelectedEdgeTypes(this.selectedEdgeTypes);
+        this.selectedEdgeTypesByGroup = [];
+        this.selectedEdgeTypesNames = [];
+        this.isAllSelected = false;
+        this.getEdgeType(event, 2);
+      }
+    });
     this.getEdgeType(event, 1);
     // this.hideCardBody = true;
 
@@ -118,7 +123,6 @@ export class FilterEdgeTypeComponent implements OnInit {
     ).edge_type_id;
   }
 
-
   public getEdgeType(event: any, type: any) {
     this.loading = true;
     this.params = this.globalVariableService.getFilterParams();
@@ -133,8 +137,6 @@ export class FilterEdgeTypeComponent implements OnInit {
           // console.log("result: ", this.result);
           this.edgeTypes = this.result.edgeTypeRecords;
           console.log("edge Types Group: ", this.edgeTypes);
-
-
 
           // var dataCollect = this.groupBy(this.edgeTypes, 'edge_group_id');
           // console.log("edge Types Group2: ", dataCollect);

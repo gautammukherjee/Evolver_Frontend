@@ -143,8 +143,7 @@ export class EventDescriptionComponent implements OnInit {
     //console.log("abc = "+_limit.load_value);
 
     if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined && _filterParams.destination_node2 == undefined) ||
-      ((_filterParams.source_node2 != undefined && _filterParams.nnrt_id2 != undefined)
-        || (_filterParams.destination_node2 != undefined && _filterParams.nnrt_id2 != undefined))) {
+      (_filterParams.source_node2 != undefined && _filterParams.nnrt_id2 != undefined)) {
       this.loadingDesc = true;
       this.noDataFoundDetails = false;
 
@@ -178,7 +177,6 @@ export class EventDescriptionComponent implements OnInit {
             });
       }
       ///////////////// End To get the complete data for level 1 and level 2 /////////////////////////////
-
 
       //First Degree Data
       if (_filterParams.nnrt_id != undefined) {
