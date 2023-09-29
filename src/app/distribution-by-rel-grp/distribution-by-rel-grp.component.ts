@@ -237,7 +237,7 @@ export class DistributionByRelGrpComponent implements OnInit {
             events: {
               click: (event: any) => {
                 // console.log(event.point);
-                this.modalRef = this.modalService.open(this.show_popup_event, { size: 'lg', keyboard: false, backdrop: 'static' });
+                this.modalRef = this.modalService.open(this.show_popup_event, { size: 'xl', keyboard: false, backdrop: 'static' });
                 this.onRegionSelection(event);
               }
             }
