@@ -19,17 +19,16 @@
             <div class="table-responsive position-relative">
 
                 <div>
-                    <span class="float-start text-white p-1 mr-2" style="background-color: #6C7572; border-radius:5px;"
+                    <span class="float-start text-white p-1 mr-2 level1-title"
                         *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">First Degree
                         Combinations
                         <span class="badge bg-primary text-white">{{masterListsDataDetailsLengthLevelOne}}</span></span>
-                    <span class="float-start text-white p-1 mr-2" style="background-color: #6C7572; border-radius:5px;"
+                    <span class="float-start text-white p-1 mr-2 level2-title"
                         *ngIf="secondLoadApiResult!=undefined && masterListsDataDetailsLengthLevelTwo > 0">Second Degree
                         Combinations
                         <span class="badge bg-primary text-white">{{masterListsDataDetailsLengthLevelTwo}}</span></span>
                 </div>
-                <div class="table-responsive position-relative"
-                    [ngClass]="isNetworkMapFullScreen == true ? 'network-map-full-screen' : ''">
+                <div [ngClass]="isNetworkMapFullScreen == true ? 'network-map-full-screen' : ''">
 
                     <!--<div class="form-check" style="margin-left: 12px;">
                     <input type="radio" class="form-check-input" name="edgeSelect" id="edgeUnchecked" value="1"
