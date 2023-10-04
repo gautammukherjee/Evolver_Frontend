@@ -654,3 +654,34 @@ body {
         height:auto;
     }
 }
+
+.custom-fixed-header-table, .modal-event-articles{
+	table{
+		thead{
+			tr{
+				border:none !important;
+	
+				th{
+					background-color: #187ebc !important;
+                    // 989da1
+                    border:none;
+                    color: #fff;
+
+                    .filter-control{
+                        input.search-input{
+                            border:none
+                        }
+                    }
+
+                    &:first-child{
+                        border-radius: 10px 0px 0px 0px;
+                    }
+                    &:last-child{
+                        border-radius: 0px 10px 0px 0px;
+                    }
+				}
+			}
+		}
+	}
+	
+}
