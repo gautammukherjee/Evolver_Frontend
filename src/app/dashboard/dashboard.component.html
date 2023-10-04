@@ -8,14 +8,14 @@
                     <div class="filter-left-heading" style="font-size:16px;">
                         First Degree
                     </div>
-                    <div class="filter-single" style="width:20%;">
+                    <div class="filter-single" style="width:15%;">
                         <app-filter-node-select (onSelectNode)='nodeChanged($event)'></app-filter-node-select>
                     </div>
                     <div class="filter-single"  style="width:30%;">
                         <app-filter-source-node (onSelectSourceNode)='sourceNodeChanged("sourceNodeFilter" , $event)'
                             [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node>
                     </div>
-                    <div class="filter-single" style="width:20%;">
+                    <div class="filter-single" style="width:25%;">
                         <app-filter-edge-type
                             (onSelectEdgeType)='edgeTypeChanged("edgeTypeFilter")' [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type>
                     </div>
@@ -74,7 +74,7 @@
                     <button class="btn btn-sm ms-2 btn-custom-sm" style="background-color: #B765A3;color: #fff;"
                         (click)="resetAllFilters()"><i class="bi bi-arrow-clockwise" title="Reset"></i></button>&nbsp;
                     <button class="btn btn-sm btn-custom-sm" style="background-color: #B765A3;color: #fff; border:1px solid #B765A3;"
-                        [disabled]="!isSourceNodes" (click)="onSubmit()"><i class="bi bi-search" title="Search" alt="Search"></i></button>
+                        [disabled]="!isSourceNodes" (click)="onSubmit()"><i class="bi bi-search" title="Search" alt="Search"></i> Submit</button>
                 </div>
             </div>
         </div>
