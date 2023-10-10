@@ -74,6 +74,9 @@ export class DashboardComponent implements OnInit {
     if (e && e.length > 0) {
       this.isAddLevelChk = false;
       this.isSubmitChk = false;
+    }else{
+      this.isAddLevelChk = true;
+      this.isSubmitChk = true;
     }
     // this.doFilterApply.next(undefined);
     this.doUpdateFilterDataApply.next({ clickOn: clickOn });
@@ -119,6 +122,9 @@ export class DashboardComponent implements OnInit {
   sourceNodeChanged2(clickOn: any, e: any) {
     if (e && e.length > 0) {
       this.isAddLevelChk = false;
+      this.isSubmitChk = false;
+    }else{
+      this.isAddLevelChk = true;
       this.isSubmitChk = false;
     }
     // this.doFilterApply.next(undefined);
