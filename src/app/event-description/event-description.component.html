@@ -32,10 +32,10 @@
                         [ngClass]="toggleLevels == false ? 'hiddenLevels' : currentLevel == '1' ? 'level1' : currentLevel == 2 ? 'level2' : 'level3'">
 
                         <div>
-                            <span class="float-start text-white p-1 mr-2" style="background-color: #6C7572; border-radius:5px;"
+                            <span class="float-start text-white p-1 mr-2 level1-title"
                                 *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">First Degree Combinations
                                 <span class="badge bg-primary text-white">{{masterListsDataDetailsLengthLevelOne}}</span></span>
-                            <span class="float-start text-white p-1" style="background-color: #6C7572; border-radius:5px;"
+                            <span class="float-start text-white p-1 level2-title"
                                 *ngIf="secondLoadApiResult!=undefined && masterListsDataDetailsLengthLevelTwo > 0">Second Degree Combinations
                                 <span class="badge bg-primary text-white">{{masterListsDataDetailsLengthLevelTwo}}</span></span>
                         </div>
@@ -225,7 +225,8 @@
         </div>
 
         <div class="modal-footer">
-            <a class="btn btn-primary " (click)="scrollTop()">Go to top</a>
+            <a class="btn btn-primary" (click)="scrollTop()">Go to top</a>
+            <a class="btn btn-primary" (click)="downloadAtricleAndEvidencesData()">Download</a>
         </div>
     </div>
 

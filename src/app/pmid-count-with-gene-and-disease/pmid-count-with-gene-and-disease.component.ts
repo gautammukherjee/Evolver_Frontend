@@ -107,39 +107,24 @@ export class PmidCountWithGeneAndDiseaseComponent implements OnInit {
               this.pmidCountGraph = [];
               this.masterListsDataCountGraph.forEach((event: any) => {
                 this.pmidCountGraph.push({
-                  count: event.count,
+                  unique_pmids: event.unique_pmids,
                   publication_date: event.publication_date,
-                  date: new Date(event.publication_date)
+                  date: new Date(event.publication_date),
+                  level: event.label
                 });
               });
               this.pmidCountGraph.sort((a: any, b: any) => a.date - b.date);
               console.log("pmidCountGraph2: ", this.pmidCountGraph);
 
               //Combined the two array with unique publication date and sum the count values
-              this.pmidCountGraphFinal = this.pmidCountGraph.reduce((acc:any, ele:any) => {
-                const existingPMIDCount = acc.find((x:any) => x.publication_date === ele.publication_date);
-                if(!existingPMIDCount) return acc.concat(ele);
-                return (existingPMIDCount.count += ele.count, acc);
-              },[])
-              console.log("response: ", this.pmidCountGraphFinal);
-              
-              this.drawAreaChart();
+              this.pmidCountGraphFinal = this.pmidCountGraph.reduce((acc: any, ele: any) => {
+                const existingPMIDCount = acc.find((x: any) => x.publication_date === ele.publication_date);
+                if (!existingPMIDCount) return acc.concat(ele);
+                return (existingPMIDCount.unique_pmids += ele.unique_pmids, acc);
+              }, [])
+              console.log("pmidCountGraphFinal: ", this.pmidCountGraphFinal);
 
-              // this._RDS.pmid_count_gene_disease_revamp_level_one(_filterParams).subscribe(
-              //   (data: any) => {
-              //     this.result = data;
-              //     this.pmidCountGraph = this.result.nodeSelectsRecords;
-              //     // console.log("pmid count: ", this.pmidCountGraph.length);
-              //     this.drawAreaChart();
-              //   },
-              //   (error: any) => {
-              //     console.error(error)
-              //     this.errorMsg = error;
-              //   },
-              //   () => {
-              //     this.graphLoader = false;
-              //   }
-              // );
+              this.drawAreaChart();
             });
       }
     }
@@ -150,10 +135,6 @@ export class PmidCountWithGeneAndDiseaseComponent implements OnInit {
   }
 
   drawAreaChart() {
-
-    //    console.log("In drawAreaChart");
-    //  console.log(this.data);
-
     this.pmid_Count = [];
     this.graphDateCategory = [];
 
@@ -181,7 +162,7 @@ export class PmidCountWithGeneAndDiseaseComponent implements OnInit {
       }
       var dateQuarter = this.datCatQuarter + " - " + quarterSplitDate[0];
       this.pmid_Count.push({
-        'y': parseFloat(element.count),
+        'y': parseFloat(element.unique_pmids),
         //'date': dateQuarter, toolTipText: '<table style="border: 1; border-color: #D0021B;" cellspacing="2" cellpadding="2"><tr><td style="font-size:12px;">Date Quarter: </td><td style="font-size:11px;">' + dateCat + '</td></tr><tr><td style="font-size:12px; color: #B9D4F4;"><strong>Event Count:</strong> </td><td style="font-size:11px; color: #B9D4F4;"><strong>' + element.count + '</strong></td></tr></table>',
       });
       this.graphDateCategory.push(dateQuarter);
