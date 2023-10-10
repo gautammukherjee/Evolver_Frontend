@@ -67,13 +67,18 @@ export class NetworkMapComponent implements OnInit {
   masterListsDataDetailsLengthLevelOne: number = 0;
   remainedCountForFirstLevel: number = 0;
   masterListsDataDetailsLevelTwo: any = [];
+  masterListsDataDetailsLevelThree: any = [];
   masterListsDataDetailsLengthLevelTwo: number = 0;
+  masterListsDataDetailsLengthLevelThree: number = 0;
   remainedCountForSecondLevel: number = 0;
+  remainedCountForThirdLevel: number = 0;
 
   firstLoadApiResult: any;
   secondLoadApiResult: any;
+  thirdLoadApiResult: any;
   firstCompleteApiResult: any;
   secondCompleteApiResult: any;
+  thirdCompleteApiResult: any;
 
 
   constructor(
@@ -130,8 +135,11 @@ export class NetworkMapComponent implements OnInit {
     }
 
     // if (_filterParams.source_node != undefined) {
-    if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined && _filterParams.destination_node2 == undefined) ||
-      (_filterParams.source_node2 != undefined && _filterParams.nnrt_id2 != undefined)) {
+    if ((_filterParams.source_node != undefined 
+      && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined && _filterParams.destination_node2 == undefined
+      && _filterParams.nnrt_id3 == undefined && _filterParams.source_node3 == undefined && _filterParams.destination_node3 == undefined) 
+      || (_filterParams.source_node2 != undefined && _filterParams.nnrt_id2 != undefined && _filterParams.nnrt_id3 == undefined && _filterParams.source_node3 == undefined)
+      || (_filterParams.source_node3 != undefined && _filterParams.nnrt_id3 != undefined)) {
       this.loadingMap = true;
       this.noDataFoundMap = false;
 
@@ -144,7 +152,12 @@ export class NetworkMapComponent implements OnInit {
         let combinedDataAPIFull;
         if (_filterParams.nnrt_id2 != undefined) {
           const secondAPIFull = this.nodeSelectsService.getMasterListsMapRevampLevelTwoCount(this.filterParams);
-          combinedDataAPIFull = [firstAPIsFull, secondAPIFull];
+          if (_filterParams.nnrt_id3 != undefined) {
+            const thirdAPIFull = this.nodeSelectsService.getMasterListsMapRevampLevelThreeCount(this.filterParams);
+            combinedDataAPIFull = [firstAPIsFull, secondAPIFull, thirdAPIFull];
+          } else {
+            combinedDataAPIFull = [firstAPIsFull, secondAPIFull];
+          }
         } else {
           combinedDataAPIFull = [firstAPIsFull];
         }
@@ -155,33 +168,50 @@ export class NetworkMapComponent implements OnInit {
               //this will return list of array of the result
               this.firstCompleteApiResult = result[0];
               this.secondCompleteApiResult = result[1];
+              this.thirdCompleteApiResult = result[2];
               console.log("first Complete Api Result: ", this.firstCompleteApiResult);
               console.log("second Complete Api Result: ", this.secondCompleteApiResult);
+              console.log("third Complete Api Result: ", this.thirdCompleteApiResult);
               this.masterListsDataDetailsLengthLevelOne = this.firstCompleteApiResult.masterListsData[0].count;
-              
+
               //To check wheter the first level data is less than 1000 then deduct the first level value from 1000
               this.remainedCountForFirstLevel = (((1000 - this.masterListsDataDetailsLengthLevelOne) <= 0) ? 0 : (1000 - this.masterListsDataDetailsLengthLevelOne));
-              // console.log("remainedCountForFirstLevel: ", this.remainedCountForFirstLevel);
+              console.log("remainedCountForFirstLevel: ", this.remainedCountForFirstLevel);
 
               if (this.secondCompleteApiResult != undefined) {
                 this.masterListsDataDetailsLengthLevelTwo = this.secondCompleteApiResult.masterListsData[0].count;
-                
+
                 //To check wheter the second level data is less than 1000 then deduct the second level value from 1000
                 this.remainedCountForSecondLevel = (((1000 - this.masterListsDataDetailsLengthLevelTwo) <= 0) ? 0 : (1000 - this.masterListsDataDetailsLengthLevelTwo));
-                // console.log("remainedCountForSecondLevel: ", this.remainedCountForSecondLevel);
+                console.log("remainedCountForSecondLevel: ", this.remainedCountForSecondLevel);
+              }
+
+              if (this.thirdCompleteApiResult != undefined) {
+                this.masterListsDataDetailsLengthLevelThree = this.thirdCompleteApiResult.masterListsData[0].count;
+
+                //To check wheter the third level data is less than 1000 then deduct the second level value from 1000
+                this.remainedCountForThirdLevel = (((1000 - this.masterListsDataDetailsLengthLevelThree) <= 0) ? 0 : (1000 - this.masterListsDataDetailsLengthLevelThree));
+                console.log("remainedCountForThirdLevel: ", this.remainedCountForThirdLevel);
               }
 
               //First Degree Data
-              this.filterParams = this.globalVariableService.getFilterParams({ "limitValue": this.remainedCountForSecondLevel }); // second level varriable set the limit into first level
+              this.filterParams = this.globalVariableService.getFilterParams({ "limitValue": (this.remainedCountForSecondLevel + this.remainedCountForThirdLevel) }); // second level varriable set the limit into first level
               console.log("new Filter Params level1: ", this.filterParams);
               const firstAPIs = this.nodeSelectsService.getMasterListsMapRevampLevelOne(this.filterParams);
               let combinedDataAPI;
               if (_filterParams.nnrt_id2 != undefined) {
-                this.filterParams = this.globalVariableService.getFilterParams({ "limitValue": this.remainedCountForFirstLevel }); // first level varriable set the limit into second level
+                this.filterParams = this.globalVariableService.getFilterParams({ "limitValue": (this.remainedCountForFirstLevel + this.remainedCountForThirdLevel) }); // first level varriable set the limit into second level
                 console.log("new Filter Params Level2: ", this.filterParams);
 
                 const secondAPI = this.nodeSelectsService.getMasterListsMapRevampLevelTwo(this.filterParams);
-                combinedDataAPI = [firstAPIs, secondAPI];
+                if (_filterParams.nnrt_id3 != undefined) {
+                  this.filterParams = this.globalVariableService.getFilterParams({ "limitValue": (this.remainedCountForFirstLevel + this.remainedCountForSecondLevel) }); // first level varriable set the limit into second level
+                  console.log("new Filter Params Level3: ", this.filterParams);
+                  const thirdAPI = this.nodeSelectsService.getMasterListsMapRevampLevelThree(this.filterParams);
+                  combinedDataAPI = [firstAPIs, secondAPI, thirdAPI];
+                } else {
+                  combinedDataAPI = [firstAPIs, secondAPI];
+                }
               } else {
                 combinedDataAPI = [firstAPIs];
               }
@@ -193,8 +223,10 @@ export class NetworkMapComponent implements OnInit {
                     //this will return list of array of the result
                     this.firstLoadApiResult = result[0];
                     this.secondLoadApiResult = result[1];
-                    console.log("first Load Api Result: ", this.firstLoadApiResult);
-                    console.log("second Load Api Result: ", this.secondLoadApiResult);
+                    this.thirdLoadApiResult = result[2];
+                    // console.log("first Load Api Result: ", this.firstLoadApiResult);
+                    // console.log("second Load Api Result: ", this.secondLoadApiResult);
+                    // console.log("third Load Api Result: ", this.thirdLoadApiResult);
 
                     ////////// **************** Merging the data into one place *******************////////////////              
                     this.masterListsDataDetailsLevelOne = this.firstLoadApiResult.masterListsData;
@@ -203,14 +235,23 @@ export class NetworkMapComponent implements OnInit {
                     let firstLevelDataStore = this.masterListsDataDetailsLevelOne; //Store the First level data
 
                     //Second Degree Data
+                    this.masterListsDataDetailsLevelTwo = [];
                     if (this.secondLoadApiResult != undefined) {
                       //Second level data and Combined data first and second level
                       this.masterListsDataDetailsLevelTwo = this.secondLoadApiResult.masterListsData;
                       console.log("Second Level Data: ", this.masterListsDataDetailsLevelTwo);
-
                       this.masterListsData = [].concat(firstLevelDataStore, this.masterListsDataDetailsLevelTwo);
-                      console.log("Combined Data Load: ", this.masterListsData);
                     }
+                    let secondLevelDataStore = this.masterListsDataDetailsLevelTwo; //Store the First level data
+
+                    this.masterListsDataDetailsLevelThree = [];
+                    if (this.thirdLoadApiResult != undefined) {
+                      //Third level data and Combined data first, second and third level
+                      this.masterListsDataDetailsLevelThree = this.thirdLoadApiResult.masterListsData;
+                      console.log("Third Level Data: ", this.masterListsDataDetailsLevelThree);
+                      this.masterListsData = [].concat(firstLevelDataStore, secondLevelDataStore, this.masterListsDataDetailsLevelThree);
+                    }
+                    console.log("Combined Data Load: ", this.masterListsData);
 
                     //Start here to after combined to data get unique like before
                     this.nodeData = [];
@@ -238,9 +279,12 @@ export class NetworkMapComponent implements OnInit {
                       if (event.level == 1) {
                         levelSourceColor = '#BF63A2';
                         levelTargetColor = '#85C9E8';
-                      } else {
+                      } else if (event.level == 2) {
                         levelSourceColor = '#8ceb34';
                         levelTargetColor = '#c2c435';
+                      } else {
+                        levelSourceColor = '#00FFFF';
+                        levelTargetColor = '#7FFF00';
                       }
                       this.sourcenodeData.push({
                         id: Math.floor(event.sourcenode), name: event.sourcenode_name, neIds: event.ne_ids, edgeTypeIds: event.edge_type_ids, colorNode: levelSourceColor, shapeType: 'round-hexagon', nodeType: 'source'
@@ -427,135 +471,6 @@ export class NetworkMapComponent implements OnInit {
       relativePlacementConstraint: undefined,
       boundingBox: { x1: 100, y1: 200, w: 3000, h: 2000 },
     }
-
-    // this.layout = {
-    //   // name: 'grid',
-    //   // animate: true,
-
-    //   name: 'fcose',
-    //   idealEdgeLength: 60,
-    //   avoidOverlap:true,
-    //   nodeOverlap: 20,
-    //   // refresh: 20,
-    //   nodeSpacing: 20,
-    //   spacingFactor: 12,
-    //   fit: true,
-    //   padding: 20,
-    //   randomize: false,
-    //   componentSpacing: 10,
-    //   nodeRepulsion: 5048,
-    //   // nodeRepulsion: function( node ){ return 2048; },
-    //   edgeElasticity: 100,
-    //   nestingFactor: 1.2,
-    //   gravity: 1,
-    //   numIter: 1500,
-    //   initialTemp: 1000,
-    //   coolingFactor: 0.49,
-    //   minTemp: 1.0,
-    //   animate: false,
-    //   animationThreshold: 250,
-    //   // boundingBox: { x1: 0, y1: 0, w: 2000, h: 1000 },
-    //   nodeDimensionsIncludeLabels: false,
-    // };
-
-    // this.graphData = {
-    //   nodes:
-    //     [
-    //       {
-    //         "data": {
-    //           "id": "434",
-    //           "name": "node1",
-    //           "node_type": "circular",
-    //           "weight": 100,
-    //           "colorCode": "red",
-    //           "shapeType": "octagon"
-    //         }
-    //       },
-    //       {
-    //         "data": {
-    //           "id": "700",
-    //           "name": "node2",
-    //           "node_type": "circular",
-    //           "weight": 100,
-    //           "colorCode": "red",
-    //           "shapeType": "octagon"
-    //         }
-    //       },
-    //       {
-    //         "data": {
-    //           "id": "68",
-    //           "name": "node3",
-    //           "node_type": "circular",
-    //           "weight": 100,
-    //           "colorCode": "red",
-    //           "shapeType": "octagon"
-    //         }
-    //       },
-    //       {
-    //         "data": {
-    //           "id": "650",
-    //           "name": "node4",
-    //           "node_type": "circular",
-    //           "weight": 100,
-    //           "colorCode": "red",
-    //           "shapeType": "octagon"
-    //         }
-    //       },
-    //       {
-    //         "data": {
-    //           "id": "782",
-    //           "name": "node5",
-    //           "node_type": "circular",
-    //           "weight": 100,
-    //           "colorCode": "red",
-    //           "shapeType": "octagon"
-    //         }
-    //       }
-    //     ],
-    //   edges:
-    //     [
-    //       {
-    //         "data": {
-    //           "source": "700",
-    //           "target": "434",
-    //           "colorCode": "pink",
-    //           "strength": 2,
-    //         }
-    //       },
-    //       {
-    //         "data": {
-    //           "source": "434",
-    //           "target": "700",
-    //           "colorCode": "pink",
-    //           "strength": 2,
-    //         }
-    //       },
-    //       {
-    //         "data": {
-    //           "source": "68",
-    //           "target": "650",
-    //           "colorCode": "pink",
-    //           "strength": 2,
-    //         }
-    //       },
-    //       {
-    //         "data": {
-    //           "source": "782",
-    //           "target": "68",
-    //           "colorCode": "pink",
-    //           "strength": 2,
-    //         }
-    //       },
-    //       {
-    //         "data": {
-    //           "source": "650",
-    //           "target": "782",
-    //           "colorCode": "pink",
-    //           "strength": 2,
-    //         }
-    //       }
-    //     ]
-    // };
 
     this.graphData = {
       nodes:

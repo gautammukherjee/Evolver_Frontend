@@ -8,17 +8,17 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-filter-source-node-level2',
-  templateUrl: './filter-source-node-level2.component.html',
-  styleUrls: ['./filter-source-node-level2.component.scss']
+  selector: 'app-filter-source-node-level3',
+  templateUrl: './filter-source-node-level3.component.html',
+  styleUrls: ['./filter-source-node-level3.component.scss']
 })
-export class FilterSourceNodeLevel2Component implements OnInit {
+export class FilterSourceNodeLevel3Component implements OnInit {
 
-  @Output() onSelectSourceNode2: EventEmitter<any> = new EventEmitter();
+  @Output() onSelectSourceNode3: EventEmitter<any> = new EventEmitter();
   @Input() UpdateFilterDataApply?: Subject<any>;
   private filterParams: any;
-  public selectedSourceNodes2: any = [];
-  public sourceNodes2: any = [];
+  public selectedSourceNodes3: any = [];
+  public sourceNodes3: any = [];
   // public sourceNodes: Array<object> = [];
   // private params: object = {};
   private result: any = [];
@@ -32,9 +32,9 @@ export class FilterSourceNodeLevel2Component implements OnInit {
   private warningModalRef: any;
   searchInput: any = null;
   sourceNodeFilter: string = '';
-  public groupedBySourceNode2: any = {};
-  public finalGroupedBySourceNode2: any = {};
-  public finalGroupedBySourceBeforeNode2: any = {};
+  public groupedBySourceNode3: any = {};
+  public finalGroupedBySourceNode3: any = {};
+  public finalGroupedBySourceBeforeNode3: any = {};
 
 
   constructor(
@@ -57,35 +57,33 @@ export class FilterSourceNodeLevel2Component implements OnInit {
     // console.log("new Filters source node: ", this.filterParams);
 
     this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
-      console.log("Source Level2: ", event.clickOn);
+      console.log("Source Level3: ", event.clickOn);
       if (event.clickOn == undefined) {
-        // console.log("Source Level 2:1 ", event.clickOn);
+        // console.log("Source Level 3:1 ", event.clickOn);
         this.getResetSourceNode();
-      } else if (event.clickOn !== undefined && (event.clickOn == 'sourceNodeFilter' || event.clickOn == 'edgeTypeFilter' || event.clickOn == 'destinationNodeFilter' || event.clickOn == 'nodeLevel2Filter' || event.clickOn == 'deleteLevel2')) {
+      }
+      else if (event.clickOn !== undefined && (event.clickOn == 'deleteLevel3' || event.clickOn == 'sourceNodeFilter' || event.clickOn == 'edgeTypeFilter' || event.clickOn == 'destinationNodeFilter' || event.clickOn == 'nodeLevel2Filter' || event.clickOn == 'sourceNode2Filter' || event.clickOn == 'edgeType2Filter' || event.clickOn == 'destinationNode2Filter' || event.clickOn == 'nodeLevel3Filter')) {
         // this.hideCardBody = true;
         this.isAllSelected = false;
         this.filterParams = this.globalVariableService.getFilterParams();
-        console.log("Source Level 2:2 ", event.clickOn);
+        console.log("Source Level 3:2 ", event.clickOn);
         // if (this.firstTimeCheck === false) // Node select only one time reload when we choose destination nodes are selected
-        this.getSourceNode2();
+        this.getSourceNode3();
       }
     });
-    this.getSourceNode2();
-    this.selectedSourceNodes2 = Array.from(this.globalVariableService.getSelectedSourceNodes2());
+    this.getSourceNode3();
+    this.selectedSourceNodes3 = Array.from(this.globalVariableService.getSelectedSourceNodes3());
   }
 
   ngOnDestroy() {
-    // if(this.UpdateFilterDataApply){
-    //   this.UpdateFilterDataApply.unsubscribe();
-    // }
     // this.UpdateFilterDataApply?.unsubscribe();
   }
 
   public getResetSourceNode() {
-    this.sourceNodes2 = [];
+    this.sourceNodes3 = [];
   }
 
-  // getSourceNode22() {
+  // getSourceNode33() {
   //   console.log("val: ", this.searchInput);
 
   //   // this.selectedSourceNodes = [];
@@ -93,21 +91,21 @@ export class FilterSourceNodeLevel2Component implements OnInit {
   //   this.filterParams = this.globalVariableService.getFilterParams({ "searchval": this.searchInput });
   //   console.log("filterparamsSearchSource: ", this.filterParams);
 
-  //   this.selectedSourceNodes2 = [];
+  //   this.selectedSourceNodes3 = [];
   //   if (this.filterParams.source_node != undefined) {
   //     this.loading = true;
-  //     this.nodeSelectsService.getSourceNode2(this.filterParams)
+  //     this.nodeSelectsService.getSourceNode3(this.filterParams)
   //       .subscribe(
   //         data => {
   //           this.result = data;
-  //           this.sourceNodes2 = this.result.sourceNodeRecords2;
+  //           this.sourceNodes3 = this.result.sourceNodeRecords3;
 
   //           // 1. get the json objects
-  //           console.log("sourceNodes2: ", this.sourceNodes2);
+  //           console.log("sourceNodes3: ", this.sourceNodes3);
 
   //           ///////////////////////////////////////////////////////
   //           // 2. Group by source_node name
-  //           const groupedSourceNodes2 = this.sourceNodes2.reduce((accumulator: any, element: any, index: any) => {
+  //           const groupedSourceNodes3 = this.sourceNodes3.reduce((accumulator: any, element: any, index: any) => {
   //             const source_node_id = element.source_node;
   //             const source_node_name = element.source_node_name;
   //             const subcategory_syn_node_name = element.syn_node_name;
@@ -128,44 +126,44 @@ export class FilterSourceNodeLevel2Component implements OnInit {
   //                 }
   //               };
   //           }, {});
-  //           console.log("groupedSourceNodes2: ", groupedSourceNodes2);
+  //           console.log("groupedSourceNodes3: ", groupedSourceNodes3);
 
   //           //////////////////////////////////////////////////////////////////////////
   //           // 3. Group according to source name name and get the new json objects
-  //           this.groupedBySourceNode2 =
-  //             Object.keys(groupedSourceNodes2).map(source_node_id => ({
+  //           this.groupedBySourceNode3 =
+  //             Object.keys(groupedSourceNodes3).map(source_node_id => ({
   //               source_node: source_node_id,
-  //               source_node_name: groupedSourceNodes2[source_node_id].source_node_name,
-  //               subcategory_syn_node_name: groupedSourceNodes2[source_node_id].subCategories,
+  //               source_node_name: groupedSourceNodes3[source_node_id].source_node_name,
+  //               subcategory_syn_node_name: groupedSourceNodes3[source_node_id].subCategories,
   //             }))
-  //           console.log("groupedBySourceNode2: ", this.groupedBySourceNode2);
+  //           console.log("groupedBySourceNode3: ", this.groupedBySourceNode3);
 
   //           ///////////////////////////////////////////////////////////////////////////////////////
   //           //4. Start sorting according to keyword search filter in autosugest json objects
   //           let searchField = "source_node_name";
   //           let results1 = []; let results2 = []; let results3 = [];
-  //           this.finalGroupedBySourceBeforeNode2 = [];
-  //           for (var i = 0; i < this.groupedBySourceNode2.length; i++) {
-  //             if ((this.groupedBySourceNode2[i][searchField]).toLowerCase() == (this.searchInput).toLowerCase()) {// To check the node_name equality
-  //               results1.push(this.groupedBySourceNode2[i]);
+  //           this.finalGroupedBySourceBeforeNode3 = [];
+  //           for (var i = 0; i < this.groupedBySourceNode3.length; i++) {
+  //             if ((this.groupedBySourceNode3[i][searchField]).toLowerCase() == (this.searchInput).toLowerCase()) {// To check the node_name equality
+  //               results1.push(this.groupedBySourceNode3[i]);
   //             }
   //             else {
   //               // console.log("subcatcount: ", this.groupedBySourceNode[i].subcategory_syn_node_name.length);
-  //               for (var j = 0; j < this.groupedBySourceNode2[i].subcategory_syn_node_name.length; j++) {
-  //                 if ((this.groupedBySourceNode2[i].subcategory_syn_node_name[j]).toLowerCase() == (this.searchInput).toLowerCase()) { // To check the syn_node_name equality
-  //                   results2.push(this.groupedBySourceNode2[i]);
+  //               for (var j = 0; j < this.groupedBySourceNode3[i].subcategory_syn_node_name.length; j++) {
+  //                 if ((this.groupedBySourceNode3[i].subcategory_syn_node_name[j]).toLowerCase() == (this.searchInput).toLowerCase()) { // To check the syn_node_name equality
+  //                   results2.push(this.groupedBySourceNode3[i]);
   //                 }
   //               }
-  //               results3.push(this.groupedBySourceNode2[i]);
+  //               results3.push(this.groupedBySourceNode3[i]);
   //             }
   //           }
-  //           this.finalGroupedBySourceBeforeNode2 = results1.concat(results2, results3);
-  //           console.log("Final data: ", this.finalGroupedBySourceBeforeNode2);
+  //           this.finalGroupedBySourceBeforeNode3 = results1.concat(results2, results3);
+  //           console.log("Final data: ", this.finalGroupedBySourceBeforeNode3);
 
   //           const key = 'source_node';
-  //           this.finalGroupedBySourceNode2 = [...new Map(this.finalGroupedBySourceBeforeNode2.map((item: any) =>
+  //           this.finalGroupedBySourceNode3 = [...new Map(this.finalGroupedBySourceBeforeNode3.map((item: any) =>
   //             [item[key], item])).values()];
-  //           console.log("Final unique data2: ", this.finalGroupedBySourceNode2);
+  //           console.log("Final unique data3: ", this.finalGroupedBySourceNode3);
   //           //End sorting according to filter in autosugest json objects
   //         },
   //         err => {
@@ -181,19 +179,19 @@ export class FilterSourceNodeLevel2Component implements OnInit {
 
   // }
 
-  getSourceNode2() {
-    this.globalVariableService.resetSourceNode2(); // reset the source node when source node component refresh
+  getSourceNode3() {
+    this.globalVariableService.resetSourceNode3(); // reset the source node when source node component refresh
     this.filterParams = this.globalVariableService.getFilterParams();
-    this.selectedSourceNodes2 = []
+    this.selectedSourceNodes3 = []
 
-    if (this.filterParams.source_node != undefined) {
+    if (this.filterParams.source_node2 != undefined) {
       this.loading = true;
-      this.nodeSelectsService.getSourceNode2(this.filterParams)
+      this.nodeSelectsService.getSourceNode3(this.filterParams)
         .subscribe(
           data => {
             this.result = data;
-            this.sourceNodes2 = this.result.sourceNodeRecords2;
-            console.log("sourceNodes2: ", this.sourceNodes2);
+            this.sourceNodes3 = this.result.sourceNodeRecords3;
+            console.log("sourceNodes3: ", this.sourceNodes3);
           },
           err => {
             this.loading = false;
@@ -205,28 +203,28 @@ export class FilterSourceNodeLevel2Component implements OnInit {
           }
         );
     } else {
-      this.sourceNodes2 = [];
+      this.sourceNodes3 = [];
       // this.globalVariableService.resetfilters();
     }
   }
 
   selectSourceNode(sourceNode: any, event: any, warning: any = null) {
     if (event.target.checked) {
-      this.selectedSourceNodes2.push(sourceNode.source_node);
+      this.selectedSourceNodes3.push(sourceNode.source_node);
     } else {
-      this.selectedSourceNodes2.splice(this.selectedSourceNodes2.indexOf(sourceNode.source_node), 1);
+      this.selectedSourceNodes3.splice(this.selectedSourceNodes3.indexOf(sourceNode.source_node), 1);
     }
-    // console.log("selectedSourceNodes2: ", this.selectedSourceNodes2.length);
+    // console.log("selectedSourceNodes3: ", this.selectedSourceNodes3.length);
 
-    // if (this.selectedSourceNodes2.length > 2) {
+    // if (this.selectedSourceNodes3.length > 2) {
     //   console.log("when more then one Source is selected");
     //   this.warningModalRef = this.modalService.open(warning, { size: 'lg', keyboard: false, backdrop: 'static' });
-    // } else if (warning != null && this.selectedSourceNodes2.length == 1) {
+    // } else if (warning != null && this.selectedSourceNodes3.length == 1) {
     // }
-    this.globalVariableService.setSelectedSourceNodes2(this.selectedSourceNodes2);
-    this.selectedSourceNodes2 = Array.from(this.globalVariableService.getSelectedSourceNodes2());
+    this.globalVariableService.setSelectedSourceNodes3(this.selectedSourceNodes3);
+    this.selectedSourceNodes3 = Array.from(this.globalVariableService.getSelectedSourceNodes3());
     this.filterParams = this.globalVariableService.getFilterParams();
-    console.log("new Filters SOURCE2:: ", this.filterParams);
+    console.log("new Filters SOURCE3:: ", this.filterParams);
 
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data   
     // if (from != 'nodeSelectsWarningModal')
@@ -237,15 +235,15 @@ export class FilterSourceNodeLevel2Component implements OnInit {
   selectAll() {
     console.log("is_all: ", this.isAllSelected);
 
-    this.selectedSourceNodes2 = [];
+    this.selectedSourceNodes3 = [];
     if (this.isAllSelected) {
-      this.sourceNodes2.map((element: any) => {
-        this.selectedSourceNodes2.push(element.source_node);
+      this.sourceNodes3.map((element: any) => {
+        this.selectedSourceNodes3.push(element.source_node);
       });
     } else {
-      this.selectedSourceNodes2 = [];
+      this.selectedSourceNodes3 = [];
     }
-    console.log("By selectedSourceNodes2: ", this.selectedSourceNodes2);
+    console.log("By selectedSourceNodes3: ", this.selectedSourceNodes3);
 
     this.proceed();
     this.enableDisableProceedButton();
@@ -260,20 +258,20 @@ export class FilterSourceNodeLevel2Component implements OnInit {
     this.disableProceed = true;
     // console.log("event: ", event);
     // this.globalVariableService.resetfilters();
-    this.selectedSourceNodes2 = [];
-    this.globalVariableService.setSelectedSourceNodes2(this.selectedSourceNodes2);
-    this.selectedSourceNodes2 = Array.from(this.globalVariableService.getSelectedSourceNodes2());
+    this.selectedSourceNodes3 = [];
+    this.globalVariableService.setSelectedSourceNodes3(this.selectedSourceNodes3);
+    this.selectedSourceNodes3 = Array.from(this.globalVariableService.getSelectedSourceNodes3());
     this.proceed();
   }
 
   seeMoreClosePopup() {
-    this.selectedSourceNodes2 = Array.from(this.globalVariableService.getSelectedSourceNodes2());
+    this.selectedSourceNodes3 = Array.from(this.globalVariableService.getSelectedSourceNodes3());
     this.isAllSelected = false;
     this.seeMoreNodeSelectsModal.close();
   }
 
   closePopup() {
-    this.selectedSourceNodes2 = Array.from(this.globalVariableService.getSelectedSourceNodes2());
+    this.selectedSourceNodes3 = Array.from(this.globalVariableService.getSelectedSourceNodes3());
     this.isAllSelected = false;
     this.seeMoreNodeSelectsModal.close();
     this.warningModalRef.close();
@@ -285,15 +283,15 @@ export class FilterSourceNodeLevel2Component implements OnInit {
   }
 
   proceed() {
-    this.globalVariableService.setSelectedSourceNodes2(this.selectedSourceNodes2);
-    this.selectedSourceNodes2 = Array.from(this.globalVariableService.getSelectedSourceNodes2());
+    this.globalVariableService.setSelectedSourceNodes3(this.selectedSourceNodes3);
+    this.selectedSourceNodes3 = Array.from(this.globalVariableService.getSelectedSourceNodes3());
     if (this.seeMoreNodeSelectsModal != undefined)
       this.seeMoreNodeSelectsModal.close();
-    this.onSelectSourceNode2.emit(this.selectedSourceNodes2);
+    this.onSelectSourceNode3.emit();
   }
 
   private enableDisableProceedButton() {
-    if (this.selectedSourceNodes2.length < 1) {
+    if (this.selectedSourceNodes3.length < 1) {
       this.disableProceed = true;
     } else {
       this.disableProceed = false;

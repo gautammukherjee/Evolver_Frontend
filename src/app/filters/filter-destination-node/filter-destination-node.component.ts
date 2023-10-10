@@ -170,7 +170,6 @@ export class FilterDestinationNodeComponent implements OnInit {
             console.log("loading finish")
           }
         );
-
     } else {
       console.log("no checked data")
       this.destinationNodes = [];

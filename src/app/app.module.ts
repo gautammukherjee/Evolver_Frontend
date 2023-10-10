@@ -28,11 +28,14 @@ import { DestinationNodePipe } from './pipes/destinationNodePipe';
 import { EdgeTypePipe } from './pipes/edgeTypePipe';
 import { FilterNodeSelectComponent } from './filters/filter-node-select/filter-node-select.component';
 import { FilterNodeSelectLevel2Component } from './filters/filter-node-select-level2/filter-node-select-level2.component';
+import { FilterNodeSelectLevel3Component } from './filters/filter-node-select-level3/filter-node-select-level3.component';
 import { NoPageComponent } from './no-page/no-page.component';
 import { FilterSourceNodeComponent } from './filters/filter-source-node/filter-source-node.component';
 import { FilterSourceNodeLevel2Component } from './filters/filter-source-node-level2/filter-source-node-level2.component';
+import { FilterSourceNodeLevel3Component } from './filters/filter-source-node-level3/filter-source-node-level3.component';
 import { FilterDestinationNodeComponent } from './filters/filter-destination-node/filter-destination-node.component';
 import { FilterDestinationNodeLevel2Component } from './filters/filter-destination-node-level2/filter-destination-node-level2.component';
+import { FilterDestinationNodeLevel3Component } from './filters/filter-destination-node-level3/filter-destination-node-level3.component';
 
 import { FilterEdgeTypeComponent } from './filters/filter-edge-type/filter-edge-type.component';
 import { FilterSubmitComponent } from './filters/filter-submit/filter-submit.component';
@@ -41,6 +44,7 @@ import { SafePipe } from './pipes/safe.pipe';
 import { BioInfomaticsComponent } from './bio-infomatics/bio-infomatics.component';
 
 import { FilterEdgeTypeLevel2Component } from './filters/filter-edge-type-level2/filter-edge-type-level2.component';
+import { FilterEdgeTypeLevel3Component } from './filters/filter-edge-type-level3/filter-edge-type-level3.component';
 import { EventChartComponent } from './event-chart/event-chart.component';
 
 
@@ -102,7 +106,11 @@ import { CtInvestigatorRelsByStatsComponent } from './ct/ct-investigator-rels-by
     NctInvestigatorNameComponent,
     InvestigatorByCountryComponent,
     CtIndexComponent,
-    CtInvestigatorRelsByStatsComponent
+    CtInvestigatorRelsByStatsComponent,
+    FilterNodeSelectLevel3Component,
+    FilterSourceNodeLevel3Component,
+    FilterEdgeTypeLevel3Component,
+    FilterDestinationNodeLevel3Component
   ],
   imports: [
     BrowserModule,

@@ -34,6 +34,9 @@ export class NodeSelectsService {
   getNodeSelects2(params: any) {
     return this.http.post(this.API_URL + 'getNodeSelects2', params, httpOptions);
   }
+  getNodeSelects3(params: any) {
+    return this.http.post(this.API_URL + 'getNodeSelects3', params, httpOptions);
+  }
 
   // getCategories() {
   //   if (this._TAs) {
@@ -57,9 +60,16 @@ export class NodeSelectsService {
   getSourceNode2(params: any) {
     return this.http.post(this.API_URL + 'getSourceNode2', params, httpOptions);
   }
+  
+  getSourceNode3(params: any) {
+    return this.http.post(this.API_URL + 'getSourceNode3', params, httpOptions);
+  }
 
   getDestinationNode2(params: any) {
     return this.http.post(this.API_URL + 'getDestinationNode2', params, httpOptions);
+  }
+  getDestinationNode3(params: any) {
+    return this.http.post(this.API_URL + 'getDestinationNode3', params, httpOptions);
   }
 
   getEdgeTypeFirst() {
@@ -103,11 +113,17 @@ export class NodeSelectsService {
   getMasterListsRevampLevelTwo(params: any) {
     return this.http.post(this.API_URL + 'getMasterListsRevampLevelTwo', params, httpOptions);
   }
+  getMasterListsRevampLevelThree(params: any) {
+    return this.http.post(this.API_URL + 'getMasterListsRevampLevelThree', params, httpOptions);
+  }
   getMasterListsRevampLevelOneCount(params: any) {
     return this.http.post(this.API_URL + 'getMasterListsRevampLevelOneCount', params, httpOptions);
   }
   getMasterListsRevampLevelTwoCount(params: any) {
     return this.http.post(this.API_URL + 'getMasterListsRevampLevelTwoCount', params, httpOptions);
+  }
+  getMasterListsRevampLevelThreeCount(params: any) {
+    return this.http.post(this.API_URL + 'getMasterListsRevampLevelThreeCount', params, httpOptions);
   }
 
   //network map
@@ -117,11 +133,17 @@ export class NodeSelectsService {
   getMasterListsMapRevampLevelTwo(params: any) {
     return this.http.post(this.API_URL + 'getMasterListsMapRevampLevelTwo', params, httpOptions);
   }
+  getMasterListsMapRevampLevelThree(params: any) {
+    return this.http.post(this.API_URL + 'getMasterListsMapRevampLevelThree', params, httpOptions);
+  }
   getMasterListsMapRevampLevelOneCount(params: any) {
     return this.http.post(this.API_URL + 'getMasterListsMapRevampLevelOneCount', params, httpOptions);
   }
   getMasterListsMapRevampLevelTwoCount(params: any) {
     return this.http.post(this.API_URL + 'getMasterListsMapRevampLevelTwoCount', params, httpOptions);
+  }
+  getMasterListsMapRevampLevelThreeCount(params: any) {
+    return this.http.post(this.API_URL + 'getMasterListsMapRevampLevelThreeCount', params, httpOptions);
   }
 
   getAllRecords(params: any) {

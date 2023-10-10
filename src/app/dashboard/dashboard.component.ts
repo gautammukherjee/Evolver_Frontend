@@ -20,8 +20,9 @@ export class DashboardComponent implements OnInit {
   viewMode = 'event_list';
   showLevels: boolean = true;
   currentLevel: number = 1;
-  maxLevel: number = 2;
-  isSourceNodes: boolean = false;
+  maxLevel: number = 3;
+  isAddLevelChk: boolean = true;
+  isSubmitChk: boolean = true;
   public selectedNodeSelects2: any = [];
   public selectedTabs: any = [];
 
@@ -71,7 +72,8 @@ export class DashboardComponent implements OnInit {
   }
   sourceNodeChanged(clickOn: any, e: any) {
     if (e && e.length > 0) {
-      this.isSourceNodes = true;
+      this.isAddLevelChk = false;
+      this.isSubmitChk = false;
     }
     // this.doFilterApply.next(undefined);
     this.doUpdateFilterDataApply.next({ clickOn: clickOn });
@@ -115,6 +117,10 @@ export class DashboardComponent implements OnInit {
     this.doUpdateFilterDataApply.next({ clickOn: clickOn });
   }
   sourceNodeChanged2(clickOn: any, e: any) {
+    if (e && e.length > 0) {
+      this.isAddLevelChk = false;
+      this.isSubmitChk = false;
+    }
     // this.doFilterApply.next(undefined);
     this.doUpdateFilterDataApply.next({ clickOn: clickOn });
   }
@@ -160,7 +166,10 @@ export class DashboardComponent implements OnInit {
 
     // this.doFilterApply.next(undefined);
     this.showLevels = true;
+    this.isAddLevelChk=true;
+    this.isSubmitChk = false;
     this.currentLevel = this.currentLevel + 1;
+    // console.log("level add: ", this.currentLevel);
   }
 
   onSubmit() {
@@ -244,14 +253,44 @@ export class DashboardComponent implements OnInit {
   }
 
   deleteSecondDegree(clickOn:any){
-    this.showLevels = !this.showLevels;
-    // this.currentLevel = this.currentLevel - 1;
+    // this.showLevels = !this.showLevels;
+    this.currentLevel = this.currentLevel - 1;    
+    // console.log("level minus: ", this.currentLevel);
+    this.isAddLevelChk = false;
     
-    this.doUpdateFilterDataApply.next({ clickOn: clickOn });
+    // this.doUpdateFilterDataApply.next({ clickOn: clickOn });
     this.globalVariableService.resetfiltersForLevel2();
 
     this.filterParams = this.globalVariableService.getFilterParams();
     console.log("filterparams after level 2 delete: ", this.filterParams);
   }
 
+  deleteThirdDegree(clickOn:any){
+    // this.showLevels = !this.showLevels;
+    this.currentLevel = this.currentLevel - 1;
+    // console.log("level minus: ", this.currentLevel);
+    this.isAddLevelChk = false;
+    
+    // this.doUpdateFilterDataApply.next({ clickOn: clickOn });
+    this.globalVariableService.resetfiltersForLevel3();
+
+    this.filterParams = this.globalVariableService.getFilterParams();
+    console.log("filterparams after level 3 delete: ", this.filterParams);
+  }
+
+  //////////
+  //level 3 filter
+  nodeChanged3(clickOn: any) {
+    // this.doFilterApply.next(e);
+    // this.doUpdateFilterDataApply.next(e);
+    this.doUpdateFilterDataApply.next({ clickOn: clickOn });
+  }
+  sourceNodeChanged3(clickOn: any, e: any) {
+    // this.doFilterApply.next(undefined);
+    this.doUpdateFilterDataApply.next({ clickOn: clickOn });
+  }
+  edgeTypeChanged3(clickOn: any) {
+    // this.doFilterApply.next(e);
+    this.doUpdateFilterDataApply.next({ clickOn: clickOn });
+  }
 }

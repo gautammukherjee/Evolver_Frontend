@@ -2,7 +2,9 @@
     <app-header></app-header>
 
     <section class="dashboard-main-wrapper">
+
         <div class="horizontal-filters-wrapper pt-1 pb-1">
+            <!-- First Degree -->
             <div class="horizonal-filter-bar">
                 <div class="filter-inner" style="width: 98%;">
                     <div class="filter-left-heading" style="font-size:16px;">
@@ -11,13 +13,13 @@
                     <div class="filter-single" style="width:20%;">
                         <app-filter-node-select (onSelectNode)='nodeChanged($event)'></app-filter-node-select>
                     </div>
-                    <div class="filter-single"  style="width:30%;">
+                    <div class="filter-single" style="width:30%;">
                         <app-filter-source-node (onSelectSourceNode)='sourceNodeChanged("sourceNodeFilter" , $event)'
                             [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node>
                     </div>
                     <div class="filter-single" style="width:20%;">
-                        <app-filter-edge-type
-                            (onSelectEdgeType)='edgeTypeChanged("edgeTypeFilter")' [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type>
+                        <app-filter-edge-type (onSelectEdgeType)='edgeTypeChanged("edgeTypeFilter")'
+                            [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type>
                     </div>
                     <div class="filter-single" style="width:30%;">
                         <app-filter-destination-node
@@ -29,25 +31,23 @@
                     &nbsp;</div> -->
             </div>
 
+            <!----------------------------------- Second Degree -------------------------------------->
             <div [ngStyle]="{'display' : showLevels == false ? 'none' : 'block'}">
-
-                <div style="width: 2%; position: relative;margin: -6px;">
-                    <button class="btn btn-sm text-white text-center" style="position: relative;top: 32px;left: 135px;" *ngIf="currentLevel > 1"
-                        (click)="deleteSecondDegree('deleteLevel2')" title="Delete Second Degree"><i
-                            class="bi bi-trash3"></i></button>                            
-                </div>
-
-                <div *ngIf="currentLevel == 2" class="horizonal-filter-bar" style="width: 98%;">
+                <div *ngIf="currentLevel > 1" class="horizonal-filter-bar" style="width: 98%;margin-top:15px;">
                     <div class="filter-inner">
-                        <div class="filter-left-heading" style="font-size:16px;">
-                            Second Degree
+                        <div class="filter-left-heading d-flex" style="font-size:16px;">
+                            Second Degree 
+                            <span *ngIf="currentLevel == 2" style="cursor: pointer;" (click)="deleteSecondDegree('deleteLevel2')" title="Delete Second Degree">
+                                <i class="bi bi-trash3"></i>
+                            </span>
                         </div>
                         <div class="filter-single" style="width:20%;">
                             <app-filter-node-select-level2 (onSelectNode2)='nodeChanged2("nodeLevel2Filter")'
                                 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-node-select-level2>
                         </div>
                         <div class="filter-single" style="width:30%;">
-                            <app-filter-source-node-level2 (onSelectSourceNode2)='sourceNodeChanged2("sourceNode2Filter" , $event)'
+                            <app-filter-source-node-level2
+                                (onSelectSourceNode2)='sourceNodeChanged2("sourceNode2Filter" , $event)'
                                 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node-level2>
                         </div>
                         <div class="filter-single" style="width:20%;">
@@ -55,26 +55,58 @@
                                 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type-level2>
                         </div>
                         <div class="filter-single" style="width:30%;">
-                            <app-filter-destination-node-level2
+                            <app-filter-destination-node-level2 (onSelectDestinationNode2)='destinationNodeChanged2("destinationNode2Filter")'
                                 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-destination-node-level2>
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <!------------------------------- Third Degree ---------------------------->
+            <div [ngStyle]="{'display' : showLevels == false ? 'none' : 'block'}">
+                <div *ngIf="currentLevel > 2" class="horizonal-filter-bar" style="width: 98%;margin-top: 17px;">
+                    <div class="filter-inner">
+                        <div class="filter-left-heading d-flex" style="font-size:16px;">
+                            Third Degree
+                            <span *ngIf="currentLevel == 3" title="Delete Third Degree" style="cursor: pointer;" (click)="deleteThirdDegree('deleteLevel3')">
+                                <i class="bi bi-trash3"></i>
+                            </span>
+                        </div>
+                        <div class="filter-single" style="width:20%;">
+                            <app-filter-node-select-level3 (onSelectNode3)='nodeChanged3("nodeLevel3Filter")'
+                                [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-node-select-level3>
+                        </div>
+                        <div class="filter-single" style="width:30%;">
+                            <app-filter-source-node-level3
+                                (onSelectSourceNode3)='sourceNodeChanged3("sourceNode3Filter" , $event)'
+                                [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node-level3>
+                        </div>
+                        <div class="filter-single" style="width:20%;">
+                            <app-filter-edge-type-level3 (onSelectEdgeType3)='edgeTypeChanged2("edgeType3Filter")'
+                                [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type-level3>
+                        </div>
+                        <div class="filter-single" style="width:30%;">
+                            <app-filter-destination-node-level3
+                                [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-destination-node-level3>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="add-level-handler pe-2 ml-4 mr-4" style="height: 24px;">
                 <div class="float-start">
                     &nbsp;&nbsp;&nbsp;<button class="btn btn-light btn-sm btn-custom-sm" (click)="onAddLevel()"
-                        [disabled]="maxLevel === currentLevel || !isSourceNodes">+ Add Level</button>
+                        [disabled]="isAddLevelChk">+ Add Level</button>
                     <button class="btn btn-light btn-sm ms-2 btn-custom-sm" *ngIf="currentLevel > 1"
                         (click)="onToggleLevel()">{{showLevels == false ? 'Show' : 'Hide'}} Level</button>
                 </div>
                 <div class="float-end">
                     <button class="btn btn-sm ms-2 btn-custom-sm" style="background-color: #B765A3;color: #fff;"
                         (click)="resetAllFilters()"><i class="bi bi-arrow-clockwise" title="Reset"></i></button>&nbsp;
-                    <button class="btn btn-sm btn-custom-sm" style="background-color: #B765A3;color: #fff; border:1px solid #B765A3;"
-                        [disabled]="!isSourceNodes" (click)="onSubmit()"><i class="bi bi-search" title="Search" alt="Search"></i></button>
+                    <button class="btn btn-sm btn-custom-sm"
+                        style="background-color: #B765A3;color: #fff; border:1px solid #B765A3;"
+                        [disabled]="isSubmitChk" (click)="onSubmit()"><i class="bi bi-search" title="Search"
+                            alt="Search"></i></button>
                 </div>
             </div>
         </div>

@@ -6,19 +6,19 @@ import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-filter-node-select-level2',
-  templateUrl: './filter-node-select-level2.component.html',
-  styleUrls: ['./filter-node-select-level2.component.scss']
+  selector: 'app-filter-node-select-level3',
+  templateUrl: './filter-node-select-level3.component.html',
+  styleUrls: ['./filter-node-select-level3.component.scss']
 })
-export class FilterNodeSelectLevel2Component implements OnInit {
+export class FilterNodeSelectLevel3Component implements OnInit {
 
-  @Output() onSelectNode2: EventEmitter<any> = new EventEmitter();
+  @Output() onSelectNode3: EventEmitter<any> = new EventEmitter();
   @Input() UpdateFilterDataApply?: Subject<any>;
 
   // public alphabeticallyGroupedGenes = [];
   // public alphabeticallyGroupedNodeSelects: any = '';
-  public selectedNodeSelects2: any = [];
-  public node_selects2: any = [];
+  public selectedNodeSelects3: any = [];
+  public node_selects3: any = [];
   private params: object = {};
   private result: any = [];
   public loading: boolean = false;
@@ -66,27 +66,27 @@ export class FilterNodeSelectLevel2Component implements OnInit {
     //End here
 
     this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
-      console.log("Node Level: ", event.clickOn);
+      console.log("Node Level3: ", event.clickOn);
       if (event.clickOn == undefined) {
-        console.log("Click Node Level 2:1 ", event.clickOn);
-        this.node_selects2 = [];
+        console.log("Click Node Level 3:1 ", event.clickOn);
+        this.node_selects3 = [];
         // this.getNodeSelects(event);
-      } else if (event.clickOn !== undefined && (event.clickOn == 'sourceNodeFilter' || event.clickOn == 'deleteLevel2' || event.clickOn == 'edgeTypeFilter' || event.clickOn == 'destinationNodeFilter')) {
-        console.log("Click Node Level 2:2 ", event.clickOn);
+      } else if (event.clickOn !== undefined && (event.clickOn == 'sourceNodeFilter' || event.clickOn == 'deleteLevel3' || event.clickOn == 'edgeTypeFilter' || event.clickOn == 'destinationNodeFilter' || event.clickOn == 'nodeLevel2Filter' || event.clickOn == 'sourceNode2Filter' || event.clickOn == 'edgeType2Filter' || event.clickOn == 'destinationNode2Filter')) {
+        console.log("Click Node Level 3:2 ", event.clickOn);
         // if (this.firstTimeCheck === false) // Node select only one time reload when we choose destination nodes are selected
-        this.globalVariableService.setSelectedNodeSelects2(undefined);
+        this.globalVariableService.setSelectedNodeSelects3(undefined);
         this.getNodeSelects(event);
       }
     });
     this.getNodeSelects(event);
     // this.hideCardBody = true;
 
-    // this.globalVariableService.setSelectedNodeSelects2(2);
-    // this.selectedNodeSelects2 = Array.from(this.globalVariableService.getSelectedNodeSelects2());
-    // console.log("sel_nodes2: ", this.selectedNodeSelects2);
+    // this.globalVariableService.setSelectedNodeSelects3(2);
+    // this.selectedNodeSelects3 = Array.from(this.globalVariableService.getSelectedNodeSelects3());
+    // console.log("sel_nodes2: ", this.selectedNodeSelects3);
 
     this.filterParams = this.globalVariableService.getFilterParams();
-    // console.log("new Filters node select2: ", this.filterParams);
+    // console.log("new Filters node select3: ", this.filterParams);
 
   }
 
@@ -100,33 +100,33 @@ export class FilterNodeSelectLevel2Component implements OnInit {
     // this.diseaseCheck = this.params['di_ids']; // if disease_id is checked
     // this.diseaseCheckCT = this.params['ct_di_ids']; // if disease_id is checked
     // console.log("checked here Gene: ", this.diseaseCheck);
-    this.selectedNodeSelects2 = [];
+    this.selectedNodeSelects3 = [];
 
-    console.log("node_selects11111: ", this.filterParams);
+    console.log("node_selects33333: ", this.filterParams);
 
-    if (this.filterParams.source_node != undefined) {
+    if (this.filterParams.source_node2 != undefined) {
       this.loading = true;
       // this.firstTimeCheck = true;
-      this.nodeSelectsService.getNodeSelects2(this.filterParams)
+      this.nodeSelectsService.getNodeSelects3(this.filterParams)
         .subscribe(
           data => {
             this.result = data;
-            this.node_selects2 = this.result.nodeSelectsRecords;
-            console.log("node_selects2: ", this.node_selects2);
+            this.node_selects3 = this.result.nodeSelectsRecords;
+            console.log("node_selects3: ", this.node_selects3);
 
-            // this.alphabeticallyGroupedNodeSelects = this.groupBy(this.node_selects2, 'pair_name');
+            // this.alphabeticallyGroupedNodeSelects = this.groupBy(this.node_selects3, 'pair_name');
             // console.log("alphabeticallyGroupedGenes: ", this.alphabeticallyGroupedGenes);
 
             //if (event !== undefined && event.type == 'load') { // i.e No Genes selected previously
             // for (let i = 0; i < this.result.nodeSelectsRecords.length && i < 1; i++) {
             //   // this.selectedNodeSelects.push(this.result.nodeSelectsRecords[i].nnrt_id);
-            //   this.selectedNodeSelects2 = this.result.nodeSelectsRecords[i].nnrt_id;
-            //   //this.selectedNodeSelects2 = [];
+            //   this.selectedNodeSelects3 = this.result.nodeSelectsRecords[i].nnrt_id;
+            //   //this.selectedNodeSelects3 = [];
             // }
-            // console.log("selected Nodes: ", this.selectedNodeSelects2);
-            // this.globalVariableService.setSelectedNodeSelects2(this.selectedNodeSelects2);
+            // console.log("selected Nodes: ", this.selectedNodeSelects3);
+            // this.globalVariableService.setSelectedNodeSelects3(this.selectedNodeSelects3);
             //} else {
-            //this.selectedNodeSelects2 = Array.from(this.globalVariableService.getSelectedNodeSelects2());
+            //this.selectedNodeSelects3 = Array.from(this.globalVariableService.getSelectedNodeSelects3());
             //}
           },
           err => {
@@ -142,17 +142,17 @@ export class FilterNodeSelectLevel2Component implements OnInit {
         );
     }
     else {
-      this.node_selects2 = [];
-      this.globalVariableService.resetfiltersForLevel2();
+      this.node_selects3 = [];
+      this.globalVariableService.resetfiltersForLevel3();
     }
 
   }
 
-  selectNode2(nodeValue: any) {
-    this.selectedNodeSelects2 = nodeValue.target.value;
-    // this.globalVariableService.setSelectedNodeSelects2(this.selectedNodeSelects2);
-    // this.selectedNodeSelects2 = Array.from(this.globalVariableService.getSelectedNodeSelects2());
-    console.log("node selects2 in : ", this.selectedNodeSelects2);
+  selectNode3(nodeValue: any) {
+    this.selectedNodeSelects3 = nodeValue.target.value;
+    // this.globalVariableService.setSelectedNodeSelects3(this.selectedNodeSelects3);
+    // this.selectedNodeSelects3 = Array.from(this.globalVariableService.getSelectedNodeSelects3());
+    console.log("node selects3 in : ", this.selectedNodeSelects3);
 
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data   
 
@@ -169,18 +169,18 @@ export class FilterNodeSelectLevel2Component implements OnInit {
   //   if (this.isAllSelected) {
   //     this.result.map((element: any) => {
   //       // console.log("element: ", element);
-  //       this.selectedNodeSelects2.push(element.nnrt_id);
+  //       this.selectedNodeSelects3.push(element.nnrt_id);
   //     })
   //   } else {
-  //     this.selectedNodeSelects2 = [];
+  //     this.selectedNodeSelects3 = [];
   //   }
   //   this.enableDisableProceedButton();
   // }
 
   resetNode() {
-    this.selectedNodeSelects2 = [];
-    this.globalVariableService.setSelectedNodeSelects2(undefined);
-    this.selectedNodeSelects2 = Array.from(this.globalVariableService.getSelectedNodeSelects2());
+    this.selectedNodeSelects3 = [];
+    this.globalVariableService.setSelectedNodeSelects3(undefined);
+    this.selectedNodeSelects3 = Array.from(this.globalVariableService.getSelectedNodeSelects3());
     // this.proceed();
   }
 
@@ -197,13 +197,13 @@ export class FilterNodeSelectLevel2Component implements OnInit {
   }
 
   seeMoreClosePopup() {
-    this.selectedNodeSelects2 = Array.from(this.globalVariableService.getSelectedNodeSelects2());
+    this.selectedNodeSelects3 = Array.from(this.globalVariableService.getSelectedNodeSelects3());
     this.isAllSelected = false;
     this.seeMoreNodeSelectsModal.close();
   }
 
   closePopup() {
-    this.selectedNodeSelects2 = Array.from(this.globalVariableService.getSelectedNodeSelects2());
+    this.selectedNodeSelects3 = Array.from(this.globalVariableService.getSelectedNodeSelects3());
     this.isAllSelected = false;
     this.seeMoreNodeSelectsModal.close();
   }
@@ -214,16 +214,16 @@ export class FilterNodeSelectLevel2Component implements OnInit {
   }
 
   proceed() {
-    this.globalVariableService.setSelectedNodeSelects2(this.selectedNodeSelects2);
-    this.selectedNodeSelects2 = Array.from(this.globalVariableService.getSelectedNodeSelects2());
-    console.log("yes here: ", this.selectedNodeSelects2);
+    this.globalVariableService.setSelectedNodeSelects3(this.selectedNodeSelects3);
+    this.selectedNodeSelects3 = Array.from(this.globalVariableService.getSelectedNodeSelects3());
+    console.log("yes here: ", this.selectedNodeSelects3);
     if (this.seeMoreNodeSelectsModal != undefined)
       this.seeMoreNodeSelectsModal.close();
-    this.onSelectNode2.emit(this.selectedNodeSelects2);
+    this.onSelectNode3.emit(this.selectedNodeSelects3);
   }
 
   private enableDisableProceedButton() {
-    if (this.selectedNodeSelects2.length < 1) {
+    if (this.selectedNodeSelects3.length < 1) {
       this.disableProceed = true;
     } else {
       this.disableProceed = false;

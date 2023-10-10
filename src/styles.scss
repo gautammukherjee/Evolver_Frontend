@@ -213,6 +213,7 @@ body {
 
     .horizonal-filter-bar {
         padding: 0px 10px 3px 0px;
+        // padding: 0px 9px 25px 0px;
         align-items: center;
 
         .filter-inner {
@@ -642,6 +643,7 @@ body {
 
 .networkstatus{
     height:0;
+    overflow: hidden;
     &.offline{
         width: 100%;
         background: red;

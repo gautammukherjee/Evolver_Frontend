@@ -37,6 +37,7 @@ export class DistributionByRelGrpComponent implements OnInit {
   categories: any = [];
   categories2: any = [];
   graphData: any = [];
+  graphData2: any = [];
   drillDownData: any = [];
 
   firstLoadApiResult: any;
@@ -142,35 +143,64 @@ export class DistributionByRelGrpComponent implements OnInit {
                 this.masterListsDataDetailsLevelTwo = this.secondLoadApiResult.nodeSelectsRecords2;
                 console.log("Second Level Data: ", this.masterListsDataDetailsLevelTwo);
                 this.masterListsDataEdgeGraph = [].concat(firstLevelDataStore, this.masterListsDataDetailsLevelTwo);
-                console.log("Combined Data Load: ", this.masterListsDataEdgeGraph);
               }
+              console.log("Combined Data Load: ", this.masterListsDataEdgeGraph);
 
-              this.masterListsDataEdgeGraphs = [];
-              this.masterListsDataEdgeGraph.forEach((event: any) => {
-                this.masterListsDataEdgeGraphs.push({
-                  pmids: event.pmids,
-                  edge_group_id: event.edge_group_id,
-                  grouped_edge_types_name: event.grouped_edge_types_name,
-                });
-              });
-              console.log("masterListsDataEdgeGraphs: ", this.masterListsDataEdgeGraphs);
 
-              ////////////////// Here get the edge type name on the basis of edge group id ///////////////////////
+              this.masterListsDataEdgeGraphFinal = [...new Set(this.masterListsDataEdgeGraph.map((x: any) => x.grouped_edge_types_name))];
+              console.log("masterListsDataEdgeGraphFinal: ", this.masterListsDataEdgeGraphFinal);
+
+              this.categories = [];
+              for (let i = 0; i < this.masterListsDataEdgeGraphFinal.length; i++) {
+                this.categories.push(this.masterListsDataEdgeGraphFinal[i]);
+
+                
+              }
+              console.log("categories: ", this.categories);
+
+              //First Degree
+              this.graphData = [];
+              for (let i = 0; i < this.masterListsDataDetailsLevelOne.length; i++) {
+                this.graphData.push(this.masterListsDataDetailsLevelOne[i]['pmids']);
+              }
+              console.log("graphData1: ", this.graphData);
+
+              //Second Degree
+              this.graphData2 = [];
+              for (let i = 0; i < this.masterListsDataDetailsLevelTwo.length; i++) {
+                // this.categories.push(this.masterListsDataDetailsLevelTwo[i]['grouped_edge_types_name']);
+                this.graphData2.push(this.masterListsDataDetailsLevelTwo[i]['pmids']);
+              }
+              console.log("graphData2: ", this.graphData2);
+
+
+              // this.masterListsDataEdgeGraphs = [];
+              // this.masterListsDataEdgeGraph.forEach((event: any) => {
+              //   this.masterListsDataEdgeGraphs.push({
+              //     pmids: event.pmids,
+              //     edge_group_id: event.edge_group_id,
+              //     grouped_edge_types_name: event.grouped_edge_types_name,
+              //   });
+              // });
+              // console.log("masterListsDataEdgeGraphs: ", this.masterListsDataEdgeGraphs);
+
+              // ////////////////// Here get the edge type name on the basis of edge group id ///////////////////////
               //Combined the two array with unique edge_group_id and sum the pmid values
-              this.masterListsDataEdgeGraphFinal = this.masterListsDataEdgeGraphs.reduce((acc2: any, ele2: any) => {
-                const existingEdgeGroupCount = acc2.find((xx: any) => xx.edge_group_id === ele2.edge_group_id);
-                if (!existingEdgeGroupCount) return acc2.concat(ele2);
-                return (existingEdgeGroupCount.pmids += ele2.pmids, acc2);
-              }, [])
-              console.log("response: ", this.masterListsDataEdgeGraphFinal);
+              // this.masterListsDataEdgeGraphFinal = this.masterListsDataEdgeGraphs.reduce((acc2: any, ele2: any) => {
+              //   const existingEdgeGroupCount = acc2.find((xx: any) => xx.edge_group_id === ele2.edge_group_id);
+              //   if (!existingEdgeGroupCount) return acc2.concat(ele2);
+              //   return (existingEdgeGroupCount.pmids += ele2.pmids, acc2);
+              // }, [])
+              // console.log("response: ", this.masterListsDataEdgeGraphFinal);              
+
+              // this.graphData = [];
+              // for (let i = 0; i < this.masterListsDataEdgeGraphFinal.length; i++) {
+              //   this.categories.push(this.masterListsDataEdgeGraphFinal[i]['grouped_edge_types_name']);
+              //   // graphData.push([this.masterListsDataEdgeGraphFinal[i]['grouped_edge_types_name'], this.masterListsDataEdgeGraphFinal[i]['pmids']]);
+              //   this.graphData.push({ name: this.masterListsDataEdgeGraphFinal[i]['grouped_edge_types_name'], y: this.masterListsDataEdgeGraphFinal[i]['pmids'], edge_group_id: this.masterListsDataEdgeGraphFinal[i]['edge_group_id'] });
+              // }
 
               this.loadingChart = false;
-              this.graphData = [];
-              for (let i = 0; i < this.masterListsDataEdgeGraphFinal.length; i++) {
-                this.categories.push(this.masterListsDataEdgeGraphFinal[i]['grouped_edge_types_name']);
-                // graphData.push([this.masterListsDataEdgeGraphFinal[i]['grouped_edge_types_name'], this.masterListsDataEdgeGraphFinal[i]['pmids']]);
-                this.graphData.push({ name: this.masterListsDataEdgeGraphFinal[i]['grouped_edge_types_name'], y: this.masterListsDataEdgeGraphFinal[i]['pmids'], edge_group_id: this.masterListsDataEdgeGraphFinal[i]['edge_group_id'] });
-              }
               this.loadingMessage = false;
               console.log("graphdataHere: ", this.graphData);
               this.drawColumnChart();
@@ -192,7 +222,7 @@ export class DistributionByRelGrpComponent implements OnInit {
   drawColumnChart() {
     Highcharts.chart('container', <any>{
       chart: {
-        type: 'bar',
+        type: 'column',
         plotBorderWidth: 1,
         marginLeft: 250
       },
@@ -205,7 +235,7 @@ export class DistributionByRelGrpComponent implements OnInit {
         }
       },
       xAxis: {
-        type: 'category',
+        categories: this.categories,
         labels: {
           style: {
             fontSize: '11px',
@@ -221,6 +251,10 @@ export class DistributionByRelGrpComponent implements OnInit {
       },
       legend: {
         enabled: false
+      },
+      tooltip: {
+        format: '<b>{key}</b><br/>{series.name}: {y}<br/>' +
+          'Total: {point.stackTotal}'
       },
       plotOptions: {
         column: {
@@ -244,13 +278,22 @@ export class DistributionByRelGrpComponent implements OnInit {
           },
         }
       },
-      tooltip: {
-        pointFormat: '<span style="color:{point.color}">Count</span>: <b>{point.y}</b>'
-      },
+      // tooltip: {
+      //   pointFormat: '<span style="color:{point.color}">Count</span>: <b>{point.y}</b>'
+      // },
+      // series: [{
+      //   colorByPoint: true,
+      //   data: this.graphData
+      // }],
+
       series: [{
-        colorByPoint: true,
+        name: 'Level1',
         data: this.graphData
-      }],
+      }, {
+        name: 'Level2',
+        data: this.graphData2
+      }]
+
     });
 
     this.graphLoader = false;
@@ -370,7 +413,7 @@ export class DistributionByRelGrpComponent implements OnInit {
           }
         }
       },
-      yAxis: {  
+      yAxis: {
         type: 'logarithmic',
         title: {
           text: 'Article Count',

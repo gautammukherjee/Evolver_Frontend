@@ -27,6 +27,10 @@
                         *ngIf="secondLoadApiResult!=undefined && masterListsDataDetailsLengthLevelTwo > 0">Second Degree
                         Combinations
                         <span class="badge bg-primary text-white">{{masterListsDataDetailsLengthLevelTwo}}</span></span>
+                    <span class="float-start text-white p-1 mr-2 level3-title"
+                        *ngIf="thirdLoadApiResult!=undefined && masterListsDataDetailsLengthLevelThree > 0">Third Degree
+                        Combinations
+                        <span class="badge bg-primary text-white">{{masterListsDataDetailsLengthLevelThree}}</span></span>
                 </div>
                 <div [ngClass]="isNetworkMapFullScreen == true ? 'network-map-full-screen' : ''">
 
