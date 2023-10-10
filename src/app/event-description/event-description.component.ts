@@ -86,7 +86,7 @@ export class EventDescriptionComponent implements OnInit {
   secondScrollApiResult: any;
   // firstAPI: any;
   // secondAPI: any;
-
+  pmidArr: any = [];
 
   constructor(
     private globalVariableService: GlobalVariableService,
@@ -334,9 +334,10 @@ export class EventDescriptionComponent implements OnInit {
   //   getArticles_callback(edgeNeId, sourceNode, destinationNode, edgeTypesID, this);
   //   //}
   // }
-  senetence_display() {
-    console.log("hereeeeee xxx");
-  }
+
+  // senetence_display() {
+  //   console.log("hereeeeee");
+  // }
 
   ArticlePopup(edgeNeId: any, sourceNode: string, destinationNode: string, edgeTypesID: number, level: number) {
     this.articleHere = [];
@@ -356,6 +357,7 @@ export class EventDescriptionComponent implements OnInit {
         temps["source"] = sourceNode;
         temps["destination"] = destinationNode;
         temps["pmid"] = "<a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + event.pmid + "'>" + event.pmid + "</a>";
+        this.pmidArr.push(event.pmid);
         temps["publication_date"] = event.publication_date;
         temps["title"] = event.title;
         temps["edge_type"] = event.edge_type_name
@@ -662,5 +664,15 @@ export class EventDescriptionComponent implements OnInit {
   //   this.getEventDescription(this.filterParams);
   // }
 
+  downloadAtricleAndEvidencesData(){
+    console.log(this.pmidArr);
+    this.nodeSelectsService.downloadAtricleAndEvidencesData({ 'pmid_arr': this.pmidArr }).subscribe((data: any) => {
+      console.log(data);
+      this.result = data;
+      this.result.forEach((event: any) => {
+        this.edgeHere += event.edge_type_name + "<br>";
+      });
+    })
+  }
 
 }

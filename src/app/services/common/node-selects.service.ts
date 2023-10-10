@@ -213,4 +213,8 @@ export class NodeSelectsService {
     return this.http.post(this.API_URL + 'getCTInvestigatorRelsByStats', params, httpOptions);
   }
 
+  downloadAtricleAndEvidencesData(params:any){
+    return this.http.post(this.API_URL + 'downloadAtricleAndEvidencesData', params, httpOptions)
+  }
+
 }

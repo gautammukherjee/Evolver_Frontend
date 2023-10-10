@@ -14,15 +14,15 @@
       <div class="body">
         <div *ngIf="edgeTypes.length">
           <div class="search-options">
-            <input type="checkbox" name="edgeTypes" [(ngModel)]="isAllSelected" [value]="edgeTypes" [checked]=""
+            <input type="checkbox" name="edgeTypes" class="form-check-input" [(ngModel)]="isAllSelected" [value]="edgeTypes" [checked]=""
               (change)="selectAll();">
-            <span class="custom-control-description text-dark">&nbsp;Select All</span>
+            <span class="custom-control-description text-dark" >&nbsp;Select All</span>
 
             <div class="mb-1 form-check" *ngFor="let edgeType of edgeTypes | EdgeTypeFilterPipe:edgeTypeFilter">
               <input class="form-check-input border border-secondary" type="checkbox" name="edgeTypes"
                 [value]="edgeTypes" [checked]="selectedEdgeTypesByGroup.indexOf(edgeType.edge_group_id)>-1 "
                 (change)="selectEdgeType(edgeType,$event)">
-              <label class="form-check-label">
+              <label class="form-check-label" style="font-size: 13px;">
                 {{edgeType.edge_group_name}}
               </label>
             </div>

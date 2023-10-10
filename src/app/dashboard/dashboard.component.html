@@ -10,16 +10,16 @@
                     <div class="filter-left-heading" style="font-size:16px;">
                         First Degree
                     </div>
-                    <div class="filter-single" style="width:20%;">
+                    <div class="filter-single" style="width:15%;">
                         <app-filter-node-select (onSelectNode)='nodeChanged($event)'></app-filter-node-select>
                     </div>
                     <div class="filter-single" style="width:30%;">
                         <app-filter-source-node (onSelectSourceNode)='sourceNodeChanged("sourceNodeFilter" , $event)'
                             [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node>
                     </div>
-                    <div class="filter-single" style="width:20%;">
-                        <app-filter-edge-type (onSelectEdgeType)='edgeTypeChanged("edgeTypeFilter")'
-                            [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type>
+                    <div class="filter-single" style="width:25%;">
+                        <app-filter-edge-type
+                            (onSelectEdgeType)='edgeTypeChanged("edgeTypeFilter")' [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type>
                     </div>
                     <div class="filter-single" style="width:30%;">
                         <app-filter-destination-node
@@ -41,7 +41,7 @@
                                 <i class="bi bi-trash3"></i>
                             </span>
                         </div>
-                        <div class="filter-single" style="width:20%;">
+                        <div class="filter-single" style="width:15%;">
                             <app-filter-node-select-level2 (onSelectNode2)='nodeChanged2("nodeLevel2Filter")'
                                 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-node-select-level2>
                         </div>
@@ -50,7 +50,7 @@
                                 (onSelectSourceNode2)='sourceNodeChanged2("sourceNode2Filter" , $event)'
                                 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node-level2>
                         </div>
-                        <div class="filter-single" style="width:20%;">
+                        <div class="filter-single" style="width:25%;">
                             <app-filter-edge-type-level2 (onSelectEdgeType2)='edgeTypeChanged2("edgeType2Filter")'
                                 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type-level2>
                         </div>
@@ -72,7 +72,7 @@
                                 <i class="bi bi-trash3"></i>
                             </span>
                         </div>
-                        <div class="filter-single" style="width:20%;">
+                        <div class="filter-single" style="width:15%;">
                             <app-filter-node-select-level3 (onSelectNode3)='nodeChanged3("nodeLevel3Filter")'
                                 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-node-select-level3>
                         </div>
@@ -81,7 +81,7 @@
                                 (onSelectSourceNode3)='sourceNodeChanged3("sourceNode3Filter" , $event)'
                                 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node-level3>
                         </div>
-                        <div class="filter-single" style="width:20%;">
+                        <div class="filter-single" style="width:25%;">
                             <app-filter-edge-type-level3 (onSelectEdgeType3)='edgeTypeChanged2("edgeType3Filter")'
                                 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type-level3>
                         </div>
@@ -106,7 +106,7 @@
                     <button class="btn btn-sm btn-custom-sm"
                         style="background-color: #B765A3;color: #fff; border:1px solid #B765A3;"
                         [disabled]="isSubmitChk" (click)="onSubmit()"><i class="bi bi-search" title="Search"
-                            alt="Search"></i></button>
+                            alt="Search"></i> Submit</button>
                 </div>
             </div>
         </div>
