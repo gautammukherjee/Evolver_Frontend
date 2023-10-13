@@ -28,7 +28,7 @@
                         style="color:#fff; text-align: center; font-weight: bold;">
                         Please Choose Pair Type and Source for Second Degree
                     </div>
-                    <div class="table-responsive custom-fixed-header-table table table-striped"
+                    <div class="table-responsive custom-fixed-header-table table table-striped table-hover"
                         [ngClass]="toggleLevels == false ? 'hiddenLevels' : currentLevel == '1' ? 'level1' : currentLevel == 2 ? 'level2' : 'level3'">
 
                         <div>
@@ -38,12 +38,15 @@
                             <span class="float-start text-white p-1 level2-title"
                                 *ngIf="secondLoadApiResult!=undefined && masterListsDataDetailsLengthLevelTwo > 0">Second Degree Combinations
                                 <span class="badge bg-primary text-white">{{masterListsDataDetailsLengthLevelTwo}}</span></span>
+                            <span class="float-start text-white p-1 level3-title"
+                                *ngIf="thirdLoadApiResult!=undefined && masterListsDataDetailsLengthLevelThree > 0">Third Degree Combinations
+                                <span class="badge bg-primary text-white">{{masterListsDataDetailsLengthLevelThree}}</span></span>
                         </div>
 
                         <table id="showEventDescription" data-toolbar="#toolbar" data-search="true"
                             data-show-export="true" data-export-options='{"fileName": "evolverAI"}'
                             data-show-columns="true" data-page-size="100" data-filter-control="true"
-                            data-page-list="[10, 25, 50, 100, all]" class="">
+                            data-page-list="[10, 25, 50, 100, all]" class="table-striped">
                             <!--<table id="showEventDescription" data-toolbar="#toolbar" data-search="true" data-page-size="50" data-page-list="[10, 25, 50, 100, All]">-->
                             <thead>
                                 <tr>
@@ -158,7 +161,7 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <div class="modal-body white_bg without_bord_rad modal-event-articles">
+        <div class="modal-body white_bg without_bord_rad">
             <div class="row">
                 <div class="col-md-12 bottam-buffer home_tiles">
 
@@ -225,8 +228,7 @@
         </div>
 
         <div class="modal-footer">
-            <a class="btn btn-primary" (click)="scrollTop()">Go to top</a>
-            <a class="btn btn-primary" (click)="downloadAtricleAndEvidencesData()">Download</a>
+            <a class="btn btn-primary " (click)="scrollTop()">Go to top</a>
         </div>
     </div>
 

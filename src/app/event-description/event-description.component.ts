@@ -53,9 +53,12 @@ export class EventDescriptionComponent implements OnInit {
   masterListsDataDetailsLevelOne: any = [];
   masterListsDataDetailsLengthLevelOne: number = 0;
   masterListsDataDetailsLevelTwo: any = [];
+  masterListsDataDetailsLevelThree: any = [];
   masterListsDataDetailsLengthLevelTwo: number = 0;
+  masterListsDataDetailsLengthLevelThree: number = 0;
   masterListsDataDetailsExtraLevelOne: any = [];
   masterListsDataDetailsExtraLevelTwo: any = [];
+  masterListsDataDetailsExtraLevelThree: any = [];
 
   // masterListsDataLength: number = 0;
   // masterListsDataLoaded: any = [];
@@ -80,13 +83,16 @@ export class EventDescriptionComponent implements OnInit {
 
   firstLoadApiResult: any;
   secondLoadApiResult: any;
+  thirdLoadApiResult: any;
   firstCompleteApiResult: any;
   secondCompleteApiResult: any;
+  thirdCompleteApiResult: any;
   firstScrollApiResult: any;
   secondScrollApiResult: any;
+  thirdScrollApiResult: any;
   // firstAPI: any;
   // secondAPI: any;
-  pmidArr: any = [];
+
 
   constructor(
     private globalVariableService: GlobalVariableService,
@@ -142,8 +148,11 @@ export class EventDescriptionComponent implements OnInit {
   getEventDescription(_filterParams: any) {
     //console.log("abc = "+_limit.load_value);
 
-    if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined && _filterParams.destination_node2 == undefined) ||
-      (_filterParams.source_node2 != undefined && _filterParams.nnrt_id2 != undefined)) {
+    if ((_filterParams.source_node != undefined
+      && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined && _filterParams.destination_node2 == undefined
+      && _filterParams.nnrt_id3 == undefined && _filterParams.source_node3 == undefined && _filterParams.destination_node3 == undefined)
+      || (_filterParams.source_node2 != undefined && _filterParams.nnrt_id2 != undefined && _filterParams.nnrt_id3 == undefined && _filterParams.source_node3 == undefined)
+      || (_filterParams.source_node3 != undefined && _filterParams.nnrt_id3 != undefined)) {
       this.loadingDesc = true;
       this.noDataFoundDetails = false;
 
@@ -156,7 +165,12 @@ export class EventDescriptionComponent implements OnInit {
         let combinedDataAPIFull;
         if (_filterParams.nnrt_id2 != undefined) {
           const secondAPIFull = this.nodeSelectsService.getMasterListsRevampLevelTwoCount(this.filterParams);
-          combinedDataAPIFull = [firstAPIsFull, secondAPIFull];
+          if (_filterParams.nnrt_id3 != undefined) {
+            const thirdAPIFull = this.nodeSelectsService.getMasterListsMapRevampLevelThreeCount(this.filterParams);
+            combinedDataAPIFull = [firstAPIsFull, secondAPIFull, thirdAPIFull];
+          } else {
+            combinedDataAPIFull = [firstAPIsFull, secondAPIFull];
+          }
         } else {
           combinedDataAPIFull = [firstAPIsFull];
         }
@@ -168,11 +182,16 @@ export class EventDescriptionComponent implements OnInit {
               //this will return list of array of the result
               this.firstCompleteApiResult = result[0];
               this.secondCompleteApiResult = result[1];
+              this.thirdCompleteApiResult = result[2];
               console.log("first Complete Api Result: ", this.firstCompleteApiResult);
               console.log("second Complete Api Result: ", this.secondCompleteApiResult);
+              console.log("third Complete Api Result: ", this.thirdCompleteApiResult);
               this.masterListsDataDetailsLengthLevelOne = this.firstCompleteApiResult.masterListsData[0].count;
               if (this.secondCompleteApiResult != undefined) {
                 this.masterListsDataDetailsLengthLevelTwo = this.secondCompleteApiResult.masterListsData[0].count;
+              }
+              if (this.thirdCompleteApiResult != undefined) {
+                this.masterListsDataDetailsLengthLevelThree = this.thirdCompleteApiResult.masterListsData[0].count;
               }
             });
       }
@@ -187,7 +206,12 @@ export class EventDescriptionComponent implements OnInit {
         let combinedDataAPI;
         if (_filterParams.nnrt_id2 != undefined) {
           const secondAPI = this.nodeSelectsService.getMasterListsRevampLevelTwo(this.filterParams);
-          combinedDataAPI = [firstAPIs, secondAPI];
+          if (_filterParams.nnrt_id3 != undefined) {
+            const thirdAPI = this.nodeSelectsService.getMasterListsRevampLevelThree(this.filterParams);
+            combinedDataAPI = [firstAPIs, secondAPI, thirdAPI];
+          } else {
+            combinedDataAPI = [firstAPIs, secondAPI];
+          }
         } else {
           combinedDataAPI = [firstAPIs];
         }
@@ -199,24 +223,36 @@ export class EventDescriptionComponent implements OnInit {
               //this will return list of array of the result
               this.firstLoadApiResult = result[0];
               this.secondLoadApiResult = result[1];
-              console.log("first Load Api Result: ", this.firstLoadApiResult);
-              console.log("second Load Api Result: ", this.secondLoadApiResult);
+              this.thirdLoadApiResult = result[2];
+              // console.log("first Load Api Result: ", this.firstLoadApiResult);
+              // console.log("second Load Api Result: ", this.secondLoadApiResult);
+              // console.log("third Load Api Result: ", this.thirdLoadApiResult);
 
               ////////// **************** Merging the data into one place *******************////////////////              
               this.masterListsDataDetailsLevelOne = this.firstLoadApiResult.masterListsData;
               this.masterListsData = this.masterListsDataDetailsLevelOne;
-              console.log("First Level Data: ", this.masterListsData);
+              console.log("First Level Data: ", this.masterListsDataDetailsLevelOne);
               let firstLevelDataStore = this.masterListsDataDetailsLevelOne; //Store the First level data
 
               //Second Degree Data
+              this.masterListsDataDetailsLevelTwo = [];
               if (this.secondLoadApiResult != undefined) {
                 //Second level data and Combined data first and second level
                 this.masterListsDataDetailsLevelTwo = this.secondLoadApiResult.masterListsData;
                 console.log("Second Level Data: ", this.masterListsDataDetailsLevelTwo);
-
                 this.masterListsData = [].concat(firstLevelDataStore, this.masterListsDataDetailsLevelTwo);
-                console.log("Combined Data Load: ", this.masterListsData);
               }
+              let secondLevelDataStore = this.masterListsDataDetailsLevelTwo; //Store the First level data
+
+              //Third Degree Data
+              this.masterListsDataDetailsLevelThree = [];
+              if (this.thirdLoadApiResult != undefined) {
+                this.masterListsDataDetailsLevelThree = this.thirdLoadApiResult.masterListsData;
+                console.log("Third Level Data: ", this.masterListsDataDetailsLevelThree);
+                this.masterListsData = [].concat(firstLevelDataStore, secondLevelDataStore, this.masterListsDataDetailsLevelThree);
+              }
+              console.log("Combined Data Load: ", this.masterListsData);
+
               this.loadingDesc = false;
               ////////// **************** End Merging the data into one place *******************////////////////
 
@@ -334,10 +370,9 @@ export class EventDescriptionComponent implements OnInit {
   //   getArticles_callback(edgeNeId, sourceNode, destinationNode, edgeTypesID, this);
   //   //}
   // }
-
-  // senetence_display() {
-  //   console.log("hereeeeee");
-  // }
+  senetence_display() {
+    console.log("hereeeeee xxx");
+  }
 
   ArticlePopup(edgeNeId: any, sourceNode: string, destinationNode: string, edgeTypesID: number, level: number) {
     this.articleHere = [];
@@ -357,7 +392,6 @@ export class EventDescriptionComponent implements OnInit {
         temps["source"] = sourceNode;
         temps["destination"] = destinationNode;
         temps["pmid"] = "<a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + event.pmid + "'>" + event.pmid + "</a>";
-        this.pmidArr.push(event.pmid);
         temps["publication_date"] = event.publication_date;
         temps["title"] = event.title;
         temps["edge_type"] = event.edge_type_name
@@ -497,7 +531,6 @@ export class EventDescriptionComponent implements OnInit {
       });
       this.loaderArticle = false;
     });
-
   }
 
   // showPMIDLists(edgeNeId: any, sourceNode: string, destinationNode: string) {
@@ -570,7 +603,12 @@ export class EventDescriptionComponent implements OnInit {
         let combinedScrollDataAPI;
         if (this.filterParams.nnrt_id2 != undefined) {
           const secondScrollAPI = this.nodeSelectsService.getMasterListsRevampLevelTwo(this.filterParams);
-          combinedScrollDataAPI = [firstScrollAPIs, secondScrollAPI];
+          if (this.filterParams.nnrt_id3 != undefined) {
+            const thirdScrollAPI = this.nodeSelectsService.getMasterListsRevampLevelThree(this.filterParams);
+            combinedScrollDataAPI = [firstScrollAPIs, secondScrollAPI, thirdScrollAPI];
+          } else {
+            combinedScrollDataAPI = [firstScrollAPIs, secondScrollAPI];
+          }
         } else {
           combinedScrollDataAPI = [firstScrollAPIs];
         }
@@ -582,10 +620,18 @@ export class EventDescriptionComponent implements OnInit {
               //this will return list of array of the result
               this.firstScrollApiResult = result[0];
               this.secondScrollApiResult = result[1];
+              this.thirdScrollApiResult = result[2];
               console.log("first Scroll Api Result: ", this.firstScrollApiResult);
               console.log("second Scroll Api Result: ", this.secondScrollApiResult);
+              console.log("third Scroll Api Result: ", this.thirdScrollApiResult);
 
-              if (this.secondScrollApiResult != undefined) {
+              if (this.thirdScrollApiResult != undefined) {
+                if (this.firstScrollApiResult.masterListsData.length === 0 && this.secondScrollApiResult.masterListsData.length === 0 && this.thirdScrollApiResult.masterListsData.length === 0) {
+                  this.notEmptyPost = false;
+                  this.isloading = false;
+                }
+              }
+              else if (this.secondScrollApiResult != undefined) {
                 if (this.firstScrollApiResult.masterListsData.length === 0 && this.secondScrollApiResult.masterListsData.length === 0) {
                   this.notEmptyPost = false;
                   this.isloading = false;
@@ -600,18 +646,27 @@ export class EventDescriptionComponent implements OnInit {
               ////////// **************** Merging the data into one place *******************////////////////
               this.masterListsDataDetailsExtraLevelOne = this.firstScrollApiResult.masterListsData;
               this.masterListsData = this.masterListsDataDetailsExtraLevelOne;
-              console.log("First Level Scroll Data Store: ", this.masterListsData);
+              console.log("First Level Scroll Data Store: ", this.masterListsDataDetailsExtraLevelOne);
               let firstLevelExtraDataStore = this.masterListsDataDetailsExtraLevelOne; //Store the First level data
 
               //Second Degree Data
+              this.masterListsDataDetailsExtraLevelTwo = [];
               if (this.secondScrollApiResult != undefined) {
-                //Second level data and Combined data first and second level
                 this.masterListsDataDetailsExtraLevelTwo = this.secondScrollApiResult.masterListsData;
                 console.log("Second Level Extra Data: ", this.masterListsDataDetailsExtraLevelTwo);
-
                 this.masterListsData = [].concat(firstLevelExtraDataStore, this.masterListsDataDetailsExtraLevelTwo);
-                console.log("Combined Scroll Data: ", this.masterListsData);
               }
+              let secondLevelExtraDataStore = this.masterListsDataDetailsExtraLevelTwo; //Store the Second level data
+
+              //Third Degree Data
+              this.masterListsDataDetailsExtraLevelThree = [];
+              if (this.thirdScrollApiResult != undefined) {
+                this.masterListsDataDetailsExtraLevelThree = this.thirdScrollApiResult.masterListsData;
+                console.log("Third Level Data: ", this.masterListsDataDetailsExtraLevelThree);
+                this.masterListsData = [].concat(firstLevelExtraDataStore, secondLevelExtraDataStore, this.masterListsDataDetailsExtraLevelThree);
+              }
+              console.log("Combined Scroll Data: ", this.masterListsData);
+
               this.loadingDesc = false;
               ////////// **************** End Merging the data into one place *******************////////////////
 
@@ -663,16 +718,5 @@ export class EventDescriptionComponent implements OnInit {
   //   this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": event.target.value, "limitValue": 8000 });
   //   this.getEventDescription(this.filterParams);
   // }
-
-  downloadAtricleAndEvidencesData(){
-    console.log(this.pmidArr);
-    this.nodeSelectsService.downloadAtricleAndEvidencesData({ 'pmid_arr': this.pmidArr }).subscribe((data: any) => {
-      console.log(data);
-      this.result = data;
-      this.result.forEach((event: any) => {
-        this.edgeHere += event.edge_type_name + "<br>";
-      });
-    })
-  }
 
 }
