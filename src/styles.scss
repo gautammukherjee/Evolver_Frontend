@@ -658,6 +658,9 @@ body {
 }
 
 .custom-fixed-header-table, .modal-event-articles{
+    .bs-bars{
+        display: none;
+    }
 	table{
 		thead{
 			tr{
