@@ -330,7 +330,8 @@ export class NetworkMapComponent implements OnInit {
                       //Node data
                       this.nodeData.push({
                         // data: { id: Math.floor(event.node_id), name: event.node, node_type: event.nodetype, weight: 100, colorCode: event.colourcode, shapeType: 'octagon' },
-                        data: { id: Math.floor(event.id), name: event.name.toLowerCase(), neIds: event.neIds, edgeTypeIds: event.edgeTypeIds, node_type: event.nodeType, weight: 100, colorCode: event.colorNode, shapeType: event.shapeType }
+                        // data: { id: Math.floor(event.id), name: event.name.toLowerCase(), neIds: event.neIds, edgeTypeIds: event.edgeTypeIds, node_type: event.nodeType, weight: 100, colorCode: event.colorNode, shapeType: event.shapeType }
+                        data: { id: Math.floor(event.id), name: event.name, neIds: event.neIds, edgeTypeIds: event.edgeTypeIds, node_type: event.nodeType, weight: 100, colorCode: event.colorNode, shapeType: event.shapeType }
                       });
                     });
 
