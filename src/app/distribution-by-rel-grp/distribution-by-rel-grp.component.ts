@@ -38,19 +38,26 @@ export class DistributionByRelGrpComponent implements OnInit {
   categories2: any = [];
   graphData: any = [];
   graphData2: any = [];
+  graphData3: any = [];
   drillDownData: any = [];
+  drillDownData2: any = [];
+  drillDownData3: any = [];
 
   firstLoadApiResult: any;
   secondLoadApiResult: any;
+  thirdLoadApiResult: any;
   firstLoadDrillApiResult: any;
   secondLoadDrillApiResult: any;
+  thirdLoadDrillApiResult: any;
   masterListsDataEdgeGraph: any = [];
   masterListsDataEdgeGraphs: any = [];
   masterListsDataEdgeGraphFinal: any = [];
   masterListsDataDetailsLevelOne: any = [];
   masterListsDataDetailsLevelTwo: any = [];
+  masterListsDataDetailsLevelThree: any = [];
   masterListsDrillDataDetailsLevelOne: any = [];
   masterListsDrillDataDetailsLevelTwo: any = [];
+  masterListsDrillDataDetailsLevelThree: any = [];
 
 
   public edgeTypesFirst: any = [];
@@ -104,9 +111,12 @@ export class DistributionByRelGrpComponent implements OnInit {
   getDistributionByRelGroup(_filterParams: any) {
 
     // if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined) || (_filterParams.nnrt_id2 != undefined && _filterParams.source_node2!=undefined)) {
-    if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined && _filterParams.destination_node2 == undefined) ||
-      (_filterParams.source_node2 != undefined && _filterParams.nnrt_id2 != undefined)) {
-      console.log("new Filters by rel group charts IN: ", this.filterParams);
+    if ((_filterParams.source_node != undefined
+      && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined && _filterParams.destination_node2 == undefined
+      && _filterParams.nnrt_id3 == undefined && _filterParams.source_node3 == undefined && _filterParams.destination_node3 == undefined)
+      || (_filterParams.source_node2 != undefined && _filterParams.nnrt_id2 != undefined && _filterParams.nnrt_id3 == undefined && _filterParams.source_node3 == undefined)
+      || (_filterParams.source_node3 != undefined && _filterParams.nnrt_id3 != undefined)) {
+      console.log("new Filters by Rel group charts IN: ", this.filterParams);
       this.loadingChart = true;
       this.noDataFound = false;
 
@@ -116,7 +126,12 @@ export class DistributionByRelGrpComponent implements OnInit {
         let combinedDataAPI;
         if (_filterParams.nnrt_id2 != undefined) {
           const secondAPI = this._RDS.distribution_by_relation_grp_level_two(this.filterParams);
-          combinedDataAPI = [firstAPIs, secondAPI];
+          if (_filterParams.nnrt_id3 != undefined) {
+            const thirdAPI = this._RDS.distribution_by_relation_grp_level_three(this.filterParams);
+            combinedDataAPI = [firstAPIs, secondAPI, thirdAPI];
+          } else {
+            combinedDataAPI = [firstAPIs, secondAPI];
+          }
         } else {
           combinedDataAPI = [firstAPIs];
         }
@@ -128,83 +143,133 @@ export class DistributionByRelGrpComponent implements OnInit {
               //this will return list of array of the result
               this.firstLoadApiResult = result[0];
               this.secondLoadApiResult = result[1];
+              this.thirdLoadApiResult = result[2];
               console.log("first Load Api Result: ", this.firstLoadApiResult);
               console.log("second Load Api Result: ", this.secondLoadApiResult);
+              console.log("third Load Api Result: ", this.thirdLoadApiResult);
 
               ////////// **************** Merging the data into one place *******************////////////////              
               this.masterListsDataDetailsLevelOne = this.firstLoadApiResult.nodeSelectsRecords;
               this.masterListsDataEdgeGraph = this.masterListsDataDetailsLevelOne;
-              console.log("First Level Data: ", this.masterListsDataEdgeGraph);
+              console.log("First Level Data: ", this.masterListsDataDetailsLevelOne);
               let firstLevelDataStore = this.masterListsDataDetailsLevelOne; //Store the First level data
 
               //Second Degree Data
+              this.masterListsDataDetailsLevelTwo = [];
               if (this.secondLoadApiResult != undefined) {
                 //Second level data and Combined data first and second level
                 this.masterListsDataDetailsLevelTwo = this.secondLoadApiResult.nodeSelectsRecords2;
                 console.log("Second Level Data: ", this.masterListsDataDetailsLevelTwo);
                 this.masterListsDataEdgeGraph = [].concat(firstLevelDataStore, this.masterListsDataDetailsLevelTwo);
               }
+              let secondLevelDataStore = this.masterListsDataDetailsLevelTwo; //Store the First level data
+
+              this.masterListsDataDetailsLevelThree = [];
+              if (this.thirdLoadApiResult != undefined) {
+                //Third level data and Combined data first and third level
+                this.masterListsDataDetailsLevelThree = this.thirdLoadApiResult.nodeSelectsRecords3;
+                console.log("Third Level Data: ", this.masterListsDataDetailsLevelThree);
+                this.masterListsDataEdgeGraph = [].concat(firstLevelDataStore, secondLevelDataStore, this.masterListsDataDetailsLevelThree);
+              }
               console.log("Combined Data Load: ", this.masterListsDataEdgeGraph);
 
+              // this.masterListsDataEdgeGraphFinal = [...new Set(this.masterListsDataEdgeGraph.map((x: any) => ({ 'edge_group_id': x.edge_group_id, 'grouped_edge_types_name': x.grouped_edge_types_name })))];
+              // console.log("masterListsDataEdgeGraphFinal1: ", this.masterListsDataEdgeGraphFinal);
 
-              this.masterListsDataEdgeGraphFinal = [...new Set(this.masterListsDataEdgeGraph.map((x: any) => x.grouped_edge_types_name))];
-              console.log("masterListsDataEdgeGraphFinal: ", this.masterListsDataEdgeGraphFinal);
-
-              this.categories = [];
-              for (let i = 0; i < this.masterListsDataEdgeGraphFinal.length; i++) {
-                this.categories.push(this.masterListsDataEdgeGraphFinal[i]);
-
-                
+              //Start to Get the unique/distinct after combined data
+              var map = new Map();
+              for (let masterListsDataEdgeGraphs of this.masterListsDataEdgeGraph) {
+                map.set(masterListsDataEdgeGraphs["edge_group_id"], masterListsDataEdgeGraphs);
               }
-              console.log("categories: ", this.categories);
+              var iteratorValues = map.values();
+              this.masterListsDataEdgeGraphFinal = [...iteratorValues];
+              console.log("masterListsDataEdgeGraphFinal: ", this.masterListsDataEdgeGraphFinal);
+              //End to Get the unique/distinct after combined data
+
+              const ids = new Set(this.masterListsDataDetailsLevelOne.map((e: any) => e.edge_group_id));
+              const ids2 = new Set(this.masterListsDataDetailsLevelTwo.map((e: any) => e.edge_group_id));
+              const ids3 = new Set(this.masterListsDataDetailsLevelThree.map((e: any) => e.edge_group_id));
+
+              //First Degree              
+              this.masterListsDataEdgeGraphFinal.forEach((e: any) => {
+                if (!ids.has(e.edge_group_id)) {
+                  this.masterListsDataDetailsLevelOne.push({ edge_group_id: e.edge_group_id, grouped_edge_types_name: e.grouped_edge_types_name, label: 1, pmids: 0 });
+                }
+              });
+
+              //Second Degree              
+              this.masterListsDataEdgeGraphFinal.forEach((e: any) => {
+                if (this.secondLoadApiResult != undefined) {
+                  if (!ids2.has(e.edge_group_id)) {
+                    this.masterListsDataDetailsLevelTwo.push({ edge_group_id: e.edge_group_id, grouped_edge_types_name: e.grouped_edge_types_name, label: 2, pmids: 0 });
+                  }
+                }
+              });
+
+              //Third Degree              
+              this.masterListsDataEdgeGraphFinal.forEach((e: any) => {
+                if (this.thirdLoadApiResult != undefined) {
+                  if (!ids3.has(e.edge_group_id)) {
+                    this.masterListsDataDetailsLevelThree.push({ edge_group_id: e.edge_group_id, grouped_edge_types_name: e.grouped_edge_types_name, label: 3, pmids: 0 });
+                  }
+                }
+              });
+
+              //Start For First level sorting
+              this.masterListsDataDetailsLevelOne.sort(function (a: any, b: any) {
+                return (a.edge_group_id - b.edge_group_id);
+              });
+              console.log("First Level New Data: ", this.masterListsDataDetailsLevelOne);
+              //End For First level
+
+              //Start For Second level sorting
+              if (this.secondLoadApiResult != undefined) {
+                this.masterListsDataDetailsLevelTwo.sort(function (a: any, b: any) {
+                  return (a.edge_group_id - b.edge_group_id);
+                });
+              }
+              console.log("Second Level New Data: ", this.masterListsDataDetailsLevelTwo);
+              //End For Second level
+
+              //Start For Third level sorting
+              if (this.thirdLoadApiResult != undefined) {
+                this.masterListsDataDetailsLevelThree.sort(function (a: any, b: any) {
+                  return (a.edge_group_id - b.edge_group_id);
+                });
+              }
+              console.log("Third Level New Data: ", this.masterListsDataDetailsLevelThree);
+              //End For Third level
 
               //First Degree
+              this.categories = [];
               this.graphData = [];
               for (let i = 0; i < this.masterListsDataDetailsLevelOne.length; i++) {
-                this.graphData.push(this.masterListsDataDetailsLevelOne[i]['pmids']);
+                this.categories.push(this.masterListsDataDetailsLevelOne[i]['grouped_edge_types_name']);
+                // this.graphData.push(this.masterListsDataDetailsLevelOne[i]['pmids']);
+                this.graphData.push({ name: this.masterListsDataDetailsLevelOne[i]['grouped_edge_types_name'], y: this.masterListsDataDetailsLevelOne[i]['pmids'], edge_group_id: this.masterListsDataDetailsLevelOne[i]['edge_group_id']  });
               }
+              console.log("categories: ", this.categories);
               console.log("graphData1: ", this.graphData);
 
               //Second Degree
               this.graphData2 = [];
               for (let i = 0; i < this.masterListsDataDetailsLevelTwo.length; i++) {
-                // this.categories.push(this.masterListsDataDetailsLevelTwo[i]['grouped_edge_types_name']);
-                this.graphData2.push(this.masterListsDataDetailsLevelTwo[i]['pmids']);
+                // this.graphData2.push(this.masterListsDataDetailsLevelTwo[i]['pmids']);
+                this.graphData2.push({ name: this.masterListsDataDetailsLevelTwo[i]['grouped_edge_types_name'], y: this.masterListsDataDetailsLevelTwo[i]['pmids'], edge_group_id: this.masterListsDataDetailsLevelTwo[i]['edge_group_id'] });
               }
               console.log("graphData2: ", this.graphData2);
 
-
-              // this.masterListsDataEdgeGraphs = [];
-              // this.masterListsDataEdgeGraph.forEach((event: any) => {
-              //   this.masterListsDataEdgeGraphs.push({
-              //     pmids: event.pmids,
-              //     edge_group_id: event.edge_group_id,
-              //     grouped_edge_types_name: event.grouped_edge_types_name,
-              //   });
-              // });
-              // console.log("masterListsDataEdgeGraphs: ", this.masterListsDataEdgeGraphs);
-
-              // ////////////////// Here get the edge type name on the basis of edge group id ///////////////////////
-              //Combined the two array with unique edge_group_id and sum the pmid values
-              // this.masterListsDataEdgeGraphFinal = this.masterListsDataEdgeGraphs.reduce((acc2: any, ele2: any) => {
-              //   const existingEdgeGroupCount = acc2.find((xx: any) => xx.edge_group_id === ele2.edge_group_id);
-              //   if (!existingEdgeGroupCount) return acc2.concat(ele2);
-              //   return (existingEdgeGroupCount.pmids += ele2.pmids, acc2);
-              // }, [])
-              // console.log("response: ", this.masterListsDataEdgeGraphFinal);              
-
-              // this.graphData = [];
-              // for (let i = 0; i < this.masterListsDataEdgeGraphFinal.length; i++) {
-              //   this.categories.push(this.masterListsDataEdgeGraphFinal[i]['grouped_edge_types_name']);
-              //   // graphData.push([this.masterListsDataEdgeGraphFinal[i]['grouped_edge_types_name'], this.masterListsDataEdgeGraphFinal[i]['pmids']]);
-              //   this.graphData.push({ name: this.masterListsDataEdgeGraphFinal[i]['grouped_edge_types_name'], y: this.masterListsDataEdgeGraphFinal[i]['pmids'], edge_group_id: this.masterListsDataEdgeGraphFinal[i]['edge_group_id'] });
-              // }
+              //Third Degree
+              this.graphData3 = [];
+              for (let i = 0; i < this.masterListsDataDetailsLevelThree.length; i++) {
+                // this.graphData3.push(this.masterListsDataDetailsLevelThree[i]['pmids']);
+                this.graphData3.push({ name: this.masterListsDataDetailsLevelThree[i]['grouped_edge_types_name'], y: this.masterListsDataDetailsLevelThree[i]['pmids'], edge_group_id: this.masterListsDataDetailsLevelThree[i]['edge_group_id'] });
+              }
+              console.log("graphData3: ", this.graphData3);
 
               this.loadingChart = false;
               this.loadingMessage = false;
-              console.log("graphdataHere: ", this.graphData);
               this.drawColumnChart();
-
             },
             (error: any) => {
               console.error(error)
@@ -250,12 +315,28 @@ export class DistributionByRelGrpComponent implements OnInit {
         },
       },
       legend: {
-        enabled: false
+        align: 'left',
+        x: 250,
+        verticalAlign: 'top',
+        y: 70,
+        floating: true,
+        // backgroundColor:
+        // Highcharts.defaultOptions.legend.backgroundColor || 'white',
+        borderColor: '#CCC',
+        borderWidth: 1,
+        shadow: false,
+        // labelFormatter: function() {
+        //   return categories[0]
+        // },
       },
       tooltip: {
         format: '<b>{key}</b><br/>{series.name}: {y}<br/>' +
           'Total: {point.stackTotal}'
       },
+      // tooltip: {
+      //   headerFormat: '<b>{point.x}</b><br/>',
+      //   pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+      // },
       plotOptions: {
         column: {
           stacking: "normal"
@@ -270,7 +351,7 @@ export class DistributionByRelGrpComponent implements OnInit {
           point: {
             events: {
               click: (event: any) => {
-                // console.log(event.point);
+                console.log(event);
                 this.modalRef = this.modalService.open(this.show_popup_event, { size: 'xl', keyboard: false, backdrop: 'static' });
                 this.onRegionSelection(event);
               }
@@ -292,6 +373,9 @@ export class DistributionByRelGrpComponent implements OnInit {
       }, {
         name: 'Level2',
         data: this.graphData2
+      }, {
+        name: 'Level3',
+        data: this.graphData3
       }]
 
     });
@@ -300,12 +384,12 @@ export class DistributionByRelGrpComponent implements OnInit {
   }
 
   onRegionSelection(event: any) {
-
+    console.log("points: ", event.point);
     this.selectedEdgeTypesByGroups = [];
     this.graphLoaderDrill = true;
 
     this.selectedEdgeTypesByGroups.push(event.point.options.edge_group_id);
-    console.log(this.selectedEdgeTypesByGroups);
+    console.log("edge groups: ", this.selectedEdgeTypesByGroups);
 
     this.selectedEdgeTypes = this.edgeTypesFirst.filter((item: any) => (
       this.selectedEdgeTypesByGroups.includes(item.edge_group_id)
@@ -319,7 +403,12 @@ export class DistributionByRelGrpComponent implements OnInit {
     let combinedDataDrillAPI;
     if (this.filterParams.nnrt_id2 != undefined) {
       const secondDrillAPIs = this._RDS.distribution_by_relation_grp_get_edge_type_drilldown_level_two(this.filterParams);
-      combinedDataDrillAPI = [firstDrillAPIs, secondDrillAPIs];
+      if (this.filterParams.nnrt_id3 != undefined) {
+        const thirdDrillAPIs = this._RDS.distribution_by_relation_grp_get_edge_type_drilldown_level_three(this.filterParams);
+        combinedDataDrillAPI = [firstDrillAPIs, secondDrillAPIs, thirdDrillAPIs];
+      } else {
+        combinedDataDrillAPI = [firstDrillAPIs, secondDrillAPIs];
+      }
     } else {
       combinedDataDrillAPI = [firstDrillAPIs];
     }
@@ -331,8 +420,10 @@ export class DistributionByRelGrpComponent implements OnInit {
           //this will return list of array of the result
           this.firstLoadDrillApiResult = result[0];
           this.secondLoadDrillApiResult = result[1];
+          this.thirdLoadDrillApiResult = result[2];
           console.log("first Load Drill Api Result: ", this.firstLoadDrillApiResult);
           console.log("second Load Drill Api Result: ", this.secondLoadDrillApiResult);
+          console.log("third Load Drill Api Result: ", this.thirdLoadDrillApiResult);
 
           ////////// **************** Merging the data into one place *******************////////////////              
           this.masterListsDrillDataDetailsLevelOne = this.firstLoadDrillApiResult.edgeNamesDrillDown;
@@ -341,42 +432,112 @@ export class DistributionByRelGrpComponent implements OnInit {
           let firstLevelDrillDataStore = this.masterListsDrillDataDetailsLevelOne; //Store the First level data
 
           //Second Degree Data
+          this.masterListsDrillDataDetailsLevelTwo = [];
           if (this.secondLoadDrillApiResult != undefined) {
             //Second level data and Combined data first and second level
             this.masterListsDrillDataDetailsLevelTwo = this.secondLoadDrillApiResult.edgeNamesDrillDown2;
             console.log("Second Level Data Drill: ", this.masterListsDrillDataDetailsLevelTwo);
             this.dataEdgeNames = [].concat(firstLevelDrillDataStore, this.masterListsDrillDataDetailsLevelTwo);
           }
+          let secondLevelDrillDataStore = this.masterListsDrillDataDetailsLevelTwo; //Store the First level data
+
+          this.masterListsDrillDataDetailsLevelThree = [];
+          if (this.thirdLoadDrillApiResult != undefined) {
+            //Third level data and Combined data first and third level
+            this.masterListsDrillDataDetailsLevelThree = this.thirdLoadDrillApiResult.edgeNamesDrillDown3;
+            console.log("Third Level Data: ", this.masterListsDrillDataDetailsLevelThree);
+            this.dataEdgeNames = [].concat(firstLevelDrillDataStore, secondLevelDrillDataStore, this.masterListsDrillDataDetailsLevelThree);
+          }
           console.log("Combined Data Load Drill: ", this.dataEdgeNames);
 
-          this.dataEdgeNamesFull = [];
-          this.dataEdgeNames.forEach((event: any) => {
-            this.dataEdgeNamesFull.push({
-              pmids: event.pmids,
-              edge_type_id: event.edge_type_id,
-              edge_types_name: event.edge_types_name,
-              label: event.label,
-            });
-          });
-          console.log("dataEdgeNamesFull: ", this.dataEdgeNamesFull);
+          // this.dataEdgeNamesFinal = [...new Set(this.dataEdgeNames.map((x: any) => ({ 'edge_type_id': x.edge_type_id, 'edge_types_name': x.edge_types_name })))];
+          // console.log("dataEdgeNamesFinal1: ", this.dataEdgeNamesFinal);
 
-          ////////////////// Here get the edge type name on the basis of edge edge_type_id ///////////////////////
-          //Combined the two array with unique edge_type_id and sum the pmids values
-          this.dataEdgeNamesFinal = this.dataEdgeNamesFull.reduce((acc2: any, ele2: any) => {
-            const existingEdgeCount = acc2.find((xx: any) => xx.edge_type_id === ele2.edge_type_id);
-            if (!existingEdgeCount) return acc2.concat(ele2);
-            return (existingEdgeCount.pmids += ele2.pmids, acc2);
-          }, [])
-          console.log("response Drill: ", this.dataEdgeNamesFinal);
-
-          this.drillDownData = [];
-          for (let i = 0; i < this.dataEdgeNamesFinal.length; i++) {
-            this.categories2.push(this.dataEdgeNamesFinal[i]['edge_types_name']);
-            this.drillDownData.push({ name: this.dataEdgeNamesFinal[i]['edge_types_name'], y: this.dataEdgeNamesFinal[i]['pmids'], label: this.dataEdgeNamesFinal[i]['label'] });
+          //Start to Get the unique/distinct after combined data
+          var map = new Map();
+          for (let dataEdgeNamess of this.dataEdgeNames) {
+            map.set(dataEdgeNamess["edge_type_id"], dataEdgeNamess);
           }
+          var iteratorValues = map.values();
+          this.dataEdgeNamesFinal = [...iteratorValues];
+          console.log("dataEdgeNamesFinal2: ", this.dataEdgeNamesFinal);
+          //End to Get the unique/distinct after combined data
+
+          const ids = new Set(this.masterListsDrillDataDetailsLevelOne.map((e: any) => e.edge_type_id));
+          const ids2 = new Set(this.masterListsDrillDataDetailsLevelTwo.map((e: any) => e.edge_type_id));
+          const ids3 = new Set(this.masterListsDrillDataDetailsLevelThree.map((e: any) => e.edge_type_id));
+          this.dataEdgeNamesFinal.forEach((e: any) => {
+            //First Degree Drill
+            if (!ids.has(e.edge_type_id)) {
+              this.masterListsDrillDataDetailsLevelOne.push({ edge_type_id: e.edge_type_id, edge_types_name: e.edge_types_name, label: 1, pmids: 0 });
+            }
+            //Second Degree
+            if (this.secondLoadDrillApiResult != undefined) {
+              if (!ids2.has(e.edge_type_id)) {
+                this.masterListsDrillDataDetailsLevelTwo.push({ edge_type_id: e.edge_type_id, edge_types_name: e.edge_types_name, label: 2, pmids: 0 });
+              }
+            }
+            //Third Degree
+            if (this.thirdLoadDrillApiResult != undefined) {
+              if (!ids3.has(e.edge_type_id)) {
+                this.masterListsDrillDataDetailsLevelThree.push({ edge_type_id: e.edge_type_id, edge_types_name: e.edge_types_name, label: 3, pmids: 0 });
+              }
+            }
+          });
+
+          //Start For First level sorting
+          this.masterListsDrillDataDetailsLevelOne.sort(function (a: any, b: any) {
+            return (a.edge_type_id - b.edge_type_id);
+          });
+          console.log("First Level New Drill Data: ", this.masterListsDrillDataDetailsLevelOne);
+          //End For First level
+
+          //Start For Second level sorting
+          if (this.secondLoadDrillApiResult != undefined) {
+            this.masterListsDrillDataDetailsLevelTwo.sort(function (a: any, b: any) {
+              return (a.edge_type_id - b.edge_type_id);
+            });
+          }
+          console.log("Second Level New Drill Data: ", this.masterListsDrillDataDetailsLevelTwo);
+          //End For Second level
+
+          //Start For Third level sorting
+          if (this.thirdLoadDrillApiResult != undefined) {
+            this.masterListsDrillDataDetailsLevelThree.sort(function (a: any, b: any) {
+              return (a.edge_type_id - b.edge_type_id);
+            });
+          }
+          console.log("Third Level New Drill Data: ", this.masterListsDrillDataDetailsLevelThree);
+          //End For Third level
+
+          //First Degree
+          this.categories2 = [];
+          this.drillDownData = [];
+          for (let i = 0; i < this.masterListsDrillDataDetailsLevelOne.length; i++) {
+            this.categories2.push(this.masterListsDrillDataDetailsLevelOne[i]['edge_types_name']);
+            // this.drillDownData.push(this.masterListsDrillDataDetailsLevelOne[i]['pmids']);
+            this.drillDownData.push({ name: this.masterListsDrillDataDetailsLevelOne[i]['edge_types_name'], y: this.masterListsDrillDataDetailsLevelOne[i]['pmids'], edge_type_id: this.masterListsDrillDataDetailsLevelOne[i]['edge_type_id'] });
+          }
+          console.log("drillDownData1: ", this.drillDownData);
+          console.log("categories2: ", this.categories2);
+
+          //Second Degree
+          this.drillDownData2 = [];
+          for (let i = 0; i < this.masterListsDrillDataDetailsLevelTwo.length; i++) {
+            // this.drillDownData2.push(this.masterListsDrillDataDetailsLevelTwo[i]['pmids']);
+            this.drillDownData2.push({ name: this.masterListsDrillDataDetailsLevelTwo[i]['edge_types_name'], y: this.masterListsDrillDataDetailsLevelTwo[i]['pmids'], edge_type_id: this.masterListsDrillDataDetailsLevelTwo[i]['edge_type_id'] });
+          }
+          console.log("drillDownData2: ", this.drillDownData2);
+
+          //Third Degree
+          this.drillDownData3 = [];
+          for (let i = 0; i < this.masterListsDrillDataDetailsLevelThree.length; i++) {
+            // this.drillDownData3.push(this.masterListsDrillDataDetailsLevelThree[i]['pmids']);
+            this.drillDownData3.push({ name: this.masterListsDrillDataDetailsLevelThree[i]['edge_types_name'], y: this.masterListsDrillDataDetailsLevelThree[i]['pmids'], edge_type_id: this.masterListsDrillDataDetailsLevelThree[i]['edge_type_id'] });
+          }
+          console.log("drillDownData3: ", this.drillDownData3);
 
           this.loadingChart = false;
-          console.log("drillDownData: ", this.drillDownData)
           this.drawColumnChartDrillDown();
         },
         err => {
@@ -392,7 +553,7 @@ export class DistributionByRelGrpComponent implements OnInit {
   drawColumnChartDrillDown() {
     Highcharts.chart('container2', <any>{
       chart: {
-        type: 'bar',
+        type: 'column',
         plotBorderWidth: 1,
         marginLeft: 200
       },
@@ -405,7 +566,7 @@ export class DistributionByRelGrpComponent implements OnInit {
         }
       },
       xAxis: {
-        type: 'category',
+        categories: this.categories2,
         labels: {
           style: {
             fontSize: '11px',
@@ -417,10 +578,14 @@ export class DistributionByRelGrpComponent implements OnInit {
         type: 'logarithmic',
         title: {
           text: 'Article Count',
-        }
+        },
       },
       legend: {
         enabled: false
+      },
+      tooltip: {
+        format: '<b>{key}</b><br/>{series.name}: {y}<br/>' +
+          'Total: {point.stackTotal}'
       },
       plotOptions: {
         column: {
@@ -434,13 +599,23 @@ export class DistributionByRelGrpComponent implements OnInit {
           }
         }
       },
-      tooltip: {
-        pointFormat: '<span style="color:{point.color}">Count</span>: <b>{point.y}</b>'
-      },
+      // tooltip: {
+      //   pointFormat: '<span style="color:{point.color}">Count</span>: <b>{point.y}</b>'
+      // },
+      // series: [{
+      //   colorByPoint: true,
+      //   data: this.drillDownData
+      // }],
       series: [{
-        colorByPoint: true,
+        name: 'Level1',
         data: this.drillDownData
-      }],
+      }, {
+        name: 'Level2',
+        data: this.drillDownData2
+      }, {
+        name: 'Level3',
+        data: this.drillDownData3
+      }]
     });
   }
 

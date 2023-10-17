@@ -257,7 +257,7 @@ export class EventDescriptionComponent implements OnInit {
               ////////// **************** End Merging the data into one place *******************////////////////
 
               this.masterListsDataDetailsLoaded = [];
-              // let j = 0;
+              let j = 1;
               this.masterListsData.forEach((event: any) => {
                 var temps: any = {};
                 //Get the Edge Type Name
@@ -268,6 +268,7 @@ export class EventDescriptionComponent implements OnInit {
                 const edgeTypeNeIds = event.ne_ids;
                 const edgeTypeNeIdsPost = edgeTypeNeIds.replace(regex, '');
                 // temps["news_id"] = event.news_id;
+                temps["news_id"] = j;
                 temps["sourcenode_name"] = event.sourcenode_name;
                 temps["destinationnode_name"] = event.destinationnode_name;
                 temps["level"] = event.level;
@@ -278,6 +279,7 @@ export class EventDescriptionComponent implements OnInit {
                 temps["edgeNeId"] = edgeTypeNeIdsPost;
                 temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";
                 this.masterListsDataDetailsLoaded.push(temps);
+                j++;
               });
               this.masterListsDataDetailsCombined = this.masterListsDataDetailsLoaded;
               console.log("Total Combined Load Data: ", this.masterListsDataDetailsCombined);
@@ -666,11 +668,14 @@ export class EventDescriptionComponent implements OnInit {
                 this.masterListsData = [].concat(firstLevelExtraDataStore, secondLevelExtraDataStore, this.masterListsDataDetailsExtraLevelThree);
               }
               console.log("Combined Scroll Data: ", this.masterListsData);
+              console.log("here combined: ", this.masterListsDataDetailsCombined);
+              console.log("here combined count: ", this.masterListsDataDetailsCombined.length);
 
               this.loadingDesc = false;
               ////////// **************** End Merging the data into one place *******************////////////////
 
               this.masterListsDataDetailsExtra = [];
+              let j = (this.masterListsDataDetailsCombined.length + 1);
               this.masterListsData.forEach((event: any) => {
                 var temps: any = {};
                 //Get the Edge Type Name
@@ -682,6 +687,7 @@ export class EventDescriptionComponent implements OnInit {
                 const edgeTypeNeIdsPost = edgeTypeNeIds.replace(regex, '');
                 //console.log(edgeTypeNeIdsPost);
                 // temps["news_id"] = event.news_id;
+                temps["news_id"] = j;
                 temps["sourcenode_name"] = event.sourcenode_name;
                 temps["destinationnode_name"] = event.destinationnode_name;
                 temps["level"] = event.level;
@@ -692,6 +698,7 @@ export class EventDescriptionComponent implements OnInit {
                 temps["edgeNeId"] = edgeTypeNeIdsPost;
                 temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";
                 this.masterListsDataDetailsExtra.push(temps);
+                j++;
               });
               console.log("New data Scroll Added: ", this.masterListsDataDetailsExtra);
               this.masterListsDataDetailsCombined = this.masterListsDataDetailsCombined.concat(this.masterListsDataDetailsExtra);
