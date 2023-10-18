@@ -91,7 +91,7 @@ export class CTDiseaseAssocComponent implements OnInit {
             temps["minimum_age"] = event.minimum_age;
             temps["maximum_age"] = event.maximum_age;
             temps["healthy_volunteers"] = event.healthy_volunteers;
-            temps["verification_date"] = event.verification_date;                  
+            temps["verification_date"] = event.varification_date;                  
             temps["last_update_submitted"] = event.last_update_submitted;
             temps["last_update_submitted_qc"] = event.last_update_submitted_qc;
             temps["study_first_posted"] = event.study_first_posted;

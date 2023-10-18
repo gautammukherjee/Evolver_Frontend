@@ -37,6 +37,7 @@
     "highcharts-angular": "^3.1.2",
     "jquery": "^3.7.0",
     "moment": "^2.29.4",
+    "multiple-select": "^1.6.0",
     "ng-select": "^1.0.2",
     "ng2-cytoscape": "^0.4.0",
     "ng2-select": "^2.0.0",

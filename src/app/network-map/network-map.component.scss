@@ -200,6 +200,45 @@ ng2-cytoscape {
     // }
 }
 
+.network-map-legands{
+    position: absolute;
+    right: 10px;
+    top: 50px;
+
+    .leg-row{
+        display: flex;
+        align-items: center;
+        column-gap: 5px;
+        .leg-box{
+            width:10px;
+            min-width: 10px;
+            height:10px;
+            min-height: 10px;
+            
+        }
+        .leg-name{
+            font-size: 11px;
+            color: #000;
+        }
+
+        &:nth-child(1){
+            .leg-box{
+                background-color: #BF63A2;
+            }
+        }
+        &:nth-child(2){
+            .leg-box{
+                background-color: #8ceb34;
+            }
+        }
+        &:nth-child(3){
+            .leg-box{
+                background-color: #00FFFF;
+            }
+        }
+    }
+}
+
 .exit-map-fullscreen-fixed-posBtn {
     position: fixed;
     right: 10px;

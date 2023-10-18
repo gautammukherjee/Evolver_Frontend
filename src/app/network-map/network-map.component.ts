@@ -135,9 +135,9 @@ export class NetworkMapComponent implements OnInit {
     }
 
     // if (_filterParams.source_node != undefined) {
-    if ((_filterParams.source_node != undefined 
+    if ((_filterParams.source_node != undefined
       && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined && _filterParams.destination_node2 == undefined
-      && _filterParams.nnrt_id3 == undefined && _filterParams.source_node3 == undefined && _filterParams.destination_node3 == undefined) 
+      && _filterParams.nnrt_id3 == undefined && _filterParams.source_node3 == undefined && _filterParams.destination_node3 == undefined)
       || (_filterParams.source_node2 != undefined && _filterParams.nnrt_id2 != undefined && _filterParams.nnrt_id3 == undefined && _filterParams.source_node3 == undefined)
       || (_filterParams.source_node3 != undefined && _filterParams.nnrt_id3 != undefined)) {
       this.loadingMap = true;
@@ -286,6 +286,14 @@ export class NetworkMapComponent implements OnInit {
                         levelSourceColor = '#00FFFF';
                         levelTargetColor = '#7FFF00';
                       }
+
+                      // // this.filterParams
+                      // if (event.destinationnode == event.sourcenode && event.level==1 && event.level==2) {
+                      //   levelSourceColor = '#000';
+                      //   levelTargetColor = '#c2c435';
+                      // }
+
+
                       this.sourcenodeData.push({
                         id: Math.floor(event.sourcenode), name: event.sourcenode_name, neIds: event.ne_ids, edgeTypeIds: event.edge_type_ids, colorNode: levelSourceColor, shapeType: 'round-hexagon', nodeType: 'source'
                       });
