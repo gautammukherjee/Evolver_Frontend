@@ -284,7 +284,7 @@ export class NetworkMapComponent implements OnInit {
                         levelTargetColor = '#c2c435';
                       } else {
                         levelSourceColor = '#00FFFF';
-                        levelTargetColor = '#7FFF00';
+                        levelTargetColor = '#f7786b';
                       }
 
                       // // this.filterParams

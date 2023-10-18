@@ -73,17 +73,20 @@
                     </div>
 
                     <div class="network-map-legands" *ngIf="!nodesCheckLength">
-                        <div class="leg-row">
+                        <div class="leg-row" *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">
                             <div class="leg-box"></div>
+                            <div class="leg-box-target"></div>
                             <div class="leg-name">First Degree</div>
                         </div>
-                        <div class="leg-row">
+                        <div class="leg-row" *ngIf="secondLoadApiResult!=undefined && masterListsDataDetailsLengthLevelTwo > 0">
                             <div class="leg-box"></div>
-                            <div class="leg-name">First Degree</div>
+                            <div class="leg-box-target"></div>
+                            <div class="leg-name">Second Degree</div>
                         </div>
-                        <div class="leg-row">
+                        <div class="leg-row" *ngIf="thirdLoadApiResult!=undefined && masterListsDataDetailsLengthLevelThree > 0">
                             <div class="leg-box"></div>
-                            <div class="leg-name">First Degree</div>
+                            <div class="leg-box-target"></div>
+                            <div class="leg-name">Third Degree</div>
                         </div>
                     </div>
 

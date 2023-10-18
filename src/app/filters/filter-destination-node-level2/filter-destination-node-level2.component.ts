@@ -81,9 +81,9 @@ export class FilterDestinationNodeLevel2Component implements OnInit {
         this.getDestinationNode2();
 
         this.searchInput2 = '';
-        this.selectedDestinationNodes2 = [];
-        this.globalVariableService.setSelectedDestinationNodes(this.selectedDestinationNodes2);
-        this.destinationNodesDB2 = [];
+        // this.selectedDestinationNodes2 = [];
+        // this.globalVariableService.setSelectedDestinationNodes(this.selectedDestinationNodes2);
+        // this.destinationNodesDB2 = [];
         this.getDestinationNode2OnChange();
       }
     });

@@ -216,6 +216,13 @@ ng2-cytoscape {
             min-height: 10px;
             
         }
+        .leg-box-target{
+            width:10px;
+            min-width: 10px;
+            height:10px;
+            min-height: 10px;
+            
+        }
         .leg-name{
             font-size: 11px;
             color: #000;
@@ -225,15 +232,24 @@ ng2-cytoscape {
             .leg-box{
                 background-color: #BF63A2;
             }
+            .leg-box-target{
+                background-color: #85C9E8;
+            }
         }
         &:nth-child(2){
             .leg-box{
                 background-color: #8ceb34;
             }
+            .leg-box-target{
+                background-color: #e4cf15;
+            }
         }
         &:nth-child(3){
             .leg-box{
                 background-color: #00FFFF;
+            }
+            .leg-box-target{
+                background-color: #f7786b;
             }
         }
     }
@@ -259,18 +275,23 @@ ng2-cytoscape {
     padding: 1px !important;
     margin: 2px;
     position: absolute;
+    font-size: 12px;
 }
 
 .level2-title {
     background-color: #6C7572;
     border-radius: 5px;
     padding: 1px !important;
-    margin: 31px 2px;
+    margin: 2px 188px;
+    font-size: 12px;
+    position: absolute;
 }
 
 .level3-title {
     background-color: #6C7572;
     border-radius: 5px;
     padding: 1px !important;
-    margin: 31px 2px;
+    margin: 2px 390px;
+    font-size: 12px;
+    position: absolute;
 }

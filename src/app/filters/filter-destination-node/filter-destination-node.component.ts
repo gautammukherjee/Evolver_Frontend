@@ -106,9 +106,9 @@ export class FilterDestinationNodeComponent implements OnInit {
         //   return this.getDestinationNode();
         // });
         this.searchInput = '';
-        this.selectedDestinationNodes = [];
-        this.globalVariableService.setSelectedDestinationNodes(this.selectedDestinationNodes);
-        this.destinationNodesDB = [];
+        // this.selectedDestinationNodes = [];
+        // this.globalVariableService.setSelectedDestinationNodes(this.selectedDestinationNodes);
+        // this.destinationNodesDB = [];
         this.getDestinationNodeOnChange();
       }
     });

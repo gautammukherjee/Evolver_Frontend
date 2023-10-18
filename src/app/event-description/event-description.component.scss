@@ -98,24 +98,40 @@
 	cursor: pointer;
 }
 
+.saveFilterBtn {
+	padding: 4px;
+    width: 87px;
+    border-radius: 15px;
+    border: none;
+    background-color: #ffca28;
+    cursor: pointer;
+    font-size: 13px;
+    color: #000;
+}
+
 .level1-title {
     background-color: #6C7572;
     border-radius: 5px;
     padding: 1px !important;
     margin: 2px;
     position: absolute;
+    font-size: 12px;
 }
 
 .level2-title {
     background-color: #6C7572;
     border-radius: 5px;
     padding: 1px !important;
-    margin: 34px 2px;
+    margin: 2px 188px;
+    font-size: 12px;
+    position: absolute;
 }
 
 .level3-title {
     background-color: #6C7572;
     border-radius: 5px;
     padding: 1px !important;
-    margin: 34px 2px;
+    margin: 2px 390px;
+    font-size: 12px;
+    position: absolute;
 }

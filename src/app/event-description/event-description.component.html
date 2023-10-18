@@ -8,6 +8,7 @@
                 select
                 entities to
                 generate Details</div>
+            
             <!--<div class="card-panel-box-heading">
             Event List
         </div>-->
@@ -33,15 +34,25 @@
 
                         <div>
                             <span class="float-start text-white p-1 mr-2 level1-title"
-                                *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">First Degree Combinations
-                                <span class="badge bg-primary text-white">{{masterListsDataDetailsLengthLevelOne}}</span></span>
+                                *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">First
+                                Degree Combinations
+                                <span
+                                    class="badge bg-primary text-white">{{masterListsDataDetailsLengthLevelOne}}</span></span>
                             <span class="float-start text-white p-1 level2-title"
-                                *ngIf="secondLoadApiResult!=undefined && masterListsDataDetailsLengthLevelTwo > 0">Second Degree Combinations
-                                <span class="badge bg-primary text-white">{{masterListsDataDetailsLengthLevelTwo}}</span></span>
+                                *ngIf="secondLoadApiResult!=undefined && masterListsDataDetailsLengthLevelTwo > 0">Second
+                                Degree Combinations
+                                <span
+                                    class="badge bg-primary text-white">{{masterListsDataDetailsLengthLevelTwo}}</span></span>
                             <span class="float-start text-white p-1 level3-title"
-                                *ngIf="thirdLoadApiResult!=undefined && masterListsDataDetailsLengthLevelThree > 0">Third Degree Combinations
-                                <span class="badge bg-primary text-white">{{masterListsDataDetailsLengthLevelThree}}</span></span>
+                                *ngIf="thirdLoadApiResult!=undefined && masterListsDataDetailsLengthLevelThree > 0">Third
+                                Degree Combinations
+                                <span
+                                    class="badge bg-primary text-white">{{masterListsDataDetailsLengthLevelThree}}</span></span>
                         </div>
+
+                        <!-- <div style="position: absolute;margin: 2px 586px;" *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">
+                            <button class="saveFilterBtn">Save Filter</button>
+                        </div> -->
 
                         <table id="showEventDescription" data-toolbar="#toolbar" data-search="true"
                             data-show-export="true" data-export-options='{"fileName": "evolverAI"}'
@@ -55,19 +66,19 @@
                                         data-filter-control="input">Source</th>
                                     <th data-field="destinationnode_name" data-sortable="true" width="10%"
                                         data-filter-control="input">Destination</th>
-                                    <th data-field="level" data-sortable="true" width="10%"
-                                        data-filter-control="select" data-tableexport-value = "Level">
+                                    <th data-field="level" data-sortable="true" width="10%" data-filter-control="select"
+                                        data-tableexport-value="Level">
                                         Level</th>
                                     <!-- <th data-field="edgeTypes" data-sortable="true" width="10%"
                                         data-filter-control="input">
                                         Edge Type</th> -->
                                     <th data-field="pmidCount" data-sortable="true" width="10%"
-                                        data-filter-control="select" data-tableexport-value = "PMID Count">
+                                        data-filter-control="select" data-tableexport-value="PMID Count">
                                         PMID Count</th>
                                     <!-- <th data-filter-control="select" data-field="article_count" data-sortable="true" width="10%">
                                             Articles Count</th> -->
                                     <th data-field="edgeNeCount" width="10%">
-                                        Articles</th>
+                                        </th>
 
                                     <!-- <th data-field="edgeNe" data-sortable="true" width="10%">
                                         Get Edge Type Article</th> -->
