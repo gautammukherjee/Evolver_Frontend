@@ -246,7 +246,7 @@ export class DistributionByRelGrpComponent implements OnInit {
               for (let i = 0; i < this.masterListsDataDetailsLevelOne.length; i++) {
                 this.categories.push(this.masterListsDataDetailsLevelOne[i]['grouped_edge_types_name']);
                 // this.graphData.push(this.masterListsDataDetailsLevelOne[i]['pmids']);
-                this.graphData.push({ name: this.masterListsDataDetailsLevelOne[i]['grouped_edge_types_name'], y: this.masterListsDataDetailsLevelOne[i]['pmids'], edge_group_id: this.masterListsDataDetailsLevelOne[i]['edge_group_id']  });
+                this.graphData.push({ name: this.masterListsDataDetailsLevelOne[i]['grouped_edge_types_name'], y: this.masterListsDataDetailsLevelOne[i]['pmids'], edge_group_id: this.masterListsDataDetailsLevelOne[i]['edge_group_id'] });
               }
               console.log("categories: ", this.categories);
               console.log("graphData1: ", this.graphData);
@@ -369,13 +369,16 @@ export class DistributionByRelGrpComponent implements OnInit {
 
       series: [{
         name: 'Level1',
-        data: this.graphData
+        data: this.graphData,
+        color: '#f7786b'
       }, {
         name: 'Level2',
-        data: this.graphData2
+        data: this.graphData2,
+        color: '#618685'
       }, {
         name: 'Level3',
-        data: this.graphData3
+        data: this.graphData3,
+        color: '#80ced6'
       }]
 
     });
@@ -605,16 +608,20 @@ export class DistributionByRelGrpComponent implements OnInit {
       // series: [{
       //   colorByPoint: true,
       //   data: this.drillDownData
-      // }],
+      // }],      
+
       series: [{
         name: 'Level1',
-        data: this.drillDownData
+        data: this.drillDownData,
+        color: '#f7786b'
       }, {
         name: 'Level2',
-        data: this.drillDownData2
+        data: this.drillDownData2,
+        color: '#618685'
       }, {
         name: 'Level3',
-        data: this.drillDownData3
+        data: this.drillDownData3,
+        color: '#80ced6'
       }]
     });
   }

@@ -81,6 +81,9 @@ export class FilterDestinationNodeLevel2Component implements OnInit {
         this.getDestinationNode2();
 
         this.searchInput2 = '';
+        this.selectedDestinationNodes2 = [];
+        this.globalVariableService.setSelectedDestinationNodes(this.selectedDestinationNodes2);
+        this.destinationNodesDB2 = [];
         this.getDestinationNode2OnChange();
       }
     });
@@ -252,13 +255,14 @@ export class FilterDestinationNodeLevel2Component implements OnInit {
       this.globalVariableService.setSelectedDestinationNodes2(this.selectedDestinationNodes2);
       // console.log("destination else if : ", this.selectedDestinationNodes);
       // this.globalVariableService.resetfilters();
-    } else {
-      this.destinationNodesDB2 = [];
-      this.selectedDestinationNodes2 = [];
-      this.globalVariableService.setSelectedDestinationNodes2(this.selectedDestinationNodes2);
-      // console.log("destination else2 : ", this.destinationNodesDB);
-      console.log("destination else : ", this.selectedDestinationNodes2);
-    }
+    } 
+    // else {
+    //   this.destinationNodesDB2 = [];
+    //   this.selectedDestinationNodes2 = [];
+    //   this.globalVariableService.setSelectedDestinationNodes2(this.selectedDestinationNodes2);
+    //   // console.log("destination else2 : ", this.destinationNodesDB);
+    //   console.log("destination else : ", this.selectedDestinationNodes2);
+    // }
     console.log("filter in destination2: ", this.filterParams);
   }
 
