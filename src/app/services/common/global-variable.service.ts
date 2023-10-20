@@ -247,7 +247,6 @@ export class GlobalVariableService {
       edge_type_id2: this.getSelectedEdgeTypes2().length > 0 ? this.getSelectedEdgeTypes2() : undefined,
       edge_type_id3: this.getSelectedEdgeTypes3().length > 0 ? this.getSelectedEdgeTypes3() : undefined,
 
-
       node_id: this.getSelectedNodes().length > 0 ? this.getSelectedNodes() : undefined,
       edge_select: this.getSelectedEdges() != undefined ? this.getSelectedEdges() : 1,
       mapType: this.getMapsSelected() != undefined ? this.getMapsSelected() : 'default',
@@ -261,20 +260,20 @@ export class GlobalVariableService {
 
   resetfilters() {
     // this.setSelectedNodeSelects(2);
-    this.setSelectedSourceNodes([]);
-    this.setSelectedSourceNodes2([]);
-    this.setSelectedSourceNodes3([]);
-    this.setSelectedDestinationNodes([]);
-    this.setSelectedDestinationNodes2([]);
-    this.setSelectedDestinationNodes3([]);
-    this.setSelectedNodeSelects2(undefined);
-    this.setSelectedNodeSelects3(undefined);
-    this.setSelectedEdgeTypes([]);
-    this.setSelectedEdgeTypes2([]);
-    this.setSelectedEdgeTypes3([]);
-    this.setSelectedAllForCTDestinationNodes([]);
-    this.setSelectedAllForCTDestinationNodes2([]);
-    this.setSelectedAllForCTDestinationNodes3([]);
+    // this.setSelectedSourceNodes([]);
+    // this.setSelectedSourceNodes2([]);
+    // this.setSelectedSourceNodes3([]);
+    // this.setSelectedDestinationNodes([]);
+    // this.setSelectedDestinationNodes2([]);
+    // this.setSelectedDestinationNodes3([]);
+    // this.setSelectedNodeSelects2(undefined);
+    // this.setSelectedNodeSelects3(undefined);
+    // this.setSelectedEdgeTypes([]);
+    // this.setSelectedEdgeTypes2([]);
+    // this.setSelectedEdgeTypes3([]);
+    // this.setSelectedAllForCTDestinationNodes([]);
+    // this.setSelectedAllForCTDestinationNodes2([]);
+    // this.setSelectedAllForCTDestinationNodes3([]);
   }
 
   resetfiltersForLevel2() {

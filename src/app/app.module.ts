@@ -26,6 +26,7 @@ import { NodeDataPipe } from './pipes/nodeDataPipe';
 import { SourceNodePipe } from './pipes/sourceNodePipe';
 import { DestinationNodePipe } from './pipes/destinationNodePipe';
 import { EdgeTypePipe } from './pipes/edgeTypePipe';
+import { FilterDataPipe } from './pipes/filterDataPipe';
 import { FilterNodeSelectComponent } from './filters/filter-node-select/filter-node-select.component';
 import { FilterNodeSelectLevel2Component } from './filters/filter-node-select-level2/filter-node-select-level2.component';
 import { FilterNodeSelectLevel3Component } from './filters/filter-node-select-level3/filter-node-select-level3.component';
@@ -64,6 +65,7 @@ import { NctInvestigatorNameComponent } from './ct/nct-investigator-name/nct-inv
 import { InvestigatorByCountryComponent } from './ct/investigator-by-country/investigator-by-country.component';
 import { CtIndexComponent } from './ct/ct-index/ct-index.component';
 import { CtInvestigatorRelsByStatsComponent } from './ct/ct-investigator-rels-by-stats/ct-investigator-rels-by-stats.component';
+import { ScenarioComponent } from './scenario/scenario.component';
 
 @NgModule({
   declarations: [
@@ -94,6 +96,7 @@ import { CtInvestigatorRelsByStatsComponent } from './ct/ct-investigator-rels-by
     DestinationNodePipe,
     EdgeTypePipe,
     SafePipe,
+    FilterDataPipe,
     BioInfomaticsComponent,
     EventChartComponent,
     DistributionByRelGrpComponent,
@@ -110,7 +113,8 @@ import { CtInvestigatorRelsByStatsComponent } from './ct/ct-investigator-rels-by
     FilterNodeSelectLevel3Component,
     FilterSourceNodeLevel3Component,
     FilterEdgeTypeLevel3Component,
-    FilterDestinationNodeLevel3Component
+    FilterDestinationNodeLevel3Component,
+    ScenarioComponent
   ],
   imports: [
     BrowserModule,
@@ -142,7 +146,8 @@ import { CtInvestigatorRelsByStatsComponent } from './ct/ct-investigator-rels-by
     NodeDataPipe,
     SourceNodePipe,
     DestinationNodePipe,
-    EdgeTypePipe
+    EdgeTypePipe,
+    FilterDataPipe
   ],
   schemas: [],
   providers: [

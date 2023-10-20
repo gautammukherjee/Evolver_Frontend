@@ -64,7 +64,7 @@ export class InvestigatorByRoleComponent implements OnInit {
   getCTDataInvestigatorRole() {
 
     this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
-    console.log("params in CT: ", this.filterParams);
+    console.log("params in CT2: ", this.filterParams);
 
     if (this.filterParams.source_node != undefined) {
       // $('.overlay').fadeOut(500);

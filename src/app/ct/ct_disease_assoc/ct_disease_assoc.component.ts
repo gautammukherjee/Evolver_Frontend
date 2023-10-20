@@ -58,7 +58,7 @@ export class CTDiseaseAssocComponent implements OnInit {
 
   getCTDataAssocWithDisease() {
     this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
-    console.log("params in CT: ", this.filterParams);
+    console.log("params in CT1: ", this.filterParams);
 
     if (this.filterParams.source_node != undefined) {
       // $('.overlay').fadeOut(500);
