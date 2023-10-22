@@ -65,6 +65,7 @@ import { InvestigatorByCountryComponent } from './ct/investigator-by-country/inv
 import { CtIndexComponent } from './ct/ct-index/ct-index.component';
 import { CtInvestigatorRelsByStatsComponent } from './ct/ct-investigator-rels-by-stats/ct-investigator-rels-by-stats.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
+import { PreviewComponent } from './preview/preview.component';
 
 @NgModule({
   declarations: [
@@ -112,7 +113,8 @@ import { UserDashboardComponent } from './user-dashboard/user-dashboard.componen
     FilterSourceNodeLevel3Component,
     FilterEdgeTypeLevel3Component,
     FilterDestinationNodeLevel3Component,
-    UserDashboardComponent
+    UserDashboardComponent,
+    PreviewComponent
   ],
   imports: [
     BrowserModule,
