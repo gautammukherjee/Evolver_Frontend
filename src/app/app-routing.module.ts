@@ -9,6 +9,7 @@ import { NoPageComponent } from './no-page/no-page.component';
 import { BioInfomaticsComponent } from './bio-infomatics/bio-infomatics.component';
 import { EventChartComponent } from './event-chart/event-chart.component';
 import { ScenarioComponent } from './scenario/scenario.component';
+import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 
 const routes: Routes = [
   {
@@ -43,6 +44,10 @@ const routes: Routes = [
   {
     path: 'scenario',
     component: ScenarioComponent
+  },
+  {
+    path: 'user-dashboard',
+    component: UserDashboardComponent
   },
   {
     path: '**', // 404 page

@@ -259,21 +259,21 @@ export class GlobalVariableService {
   }
 
   resetfilters() {
-    // this.setSelectedNodeSelects(2);
-    // this.setSelectedSourceNodes([]);
-    // this.setSelectedSourceNodes2([]);
-    // this.setSelectedSourceNodes3([]);
-    // this.setSelectedDestinationNodes([]);
-    // this.setSelectedDestinationNodes2([]);
-    // this.setSelectedDestinationNodes3([]);
-    // this.setSelectedNodeSelects2(undefined);
-    // this.setSelectedNodeSelects3(undefined);
-    // this.setSelectedEdgeTypes([]);
-    // this.setSelectedEdgeTypes2([]);
-    // this.setSelectedEdgeTypes3([]);
-    // this.setSelectedAllForCTDestinationNodes([]);
-    // this.setSelectedAllForCTDestinationNodes2([]);
-    // this.setSelectedAllForCTDestinationNodes3([]);
+    this.setSelectedNodeSelects(2);
+    this.setSelectedSourceNodes([]);
+    this.setSelectedSourceNodes2([]);
+    this.setSelectedSourceNodes3([]);
+    this.setSelectedDestinationNodes([]);
+    this.setSelectedDestinationNodes2([]);
+    this.setSelectedDestinationNodes3([]);
+    this.setSelectedNodeSelects2(undefined);
+    this.setSelectedNodeSelects3(undefined);
+    this.setSelectedEdgeTypes([]);
+    this.setSelectedEdgeTypes2([]);
+    this.setSelectedEdgeTypes3([]);
+    this.setSelectedAllForCTDestinationNodes([]);
+    this.setSelectedAllForCTDestinationNodes2([]);
+    this.setSelectedAllForCTDestinationNodes3([]);
   }
 
   resetfiltersForLevel2() {

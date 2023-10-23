@@ -268,8 +268,8 @@
             <input type="text" ngModel id="filter_name" class="form-control" name="filter_name" autocomplete="off"
               [ngClass]="{
                 'form-control' : true,
-                'is-invalid': myForm.form.controls.filter_name?.errors != null && myForm.form.controls.filter_name?.touched,
-                'is-valid' : myForm.form.controls.filter_name?.errors == null && myForm.form.controls.filter_name?.touched
+                'is-invalid': myForm.form.controls['filter_name']?.invalid && myForm.form.controls['filter_name']?.touched,
+                'is-valid' : myForm.form.controls['filter_name']?.errors == null && myForm.form.controls['filter_name']?.touched
             }" required>
           </div>
         </div>
