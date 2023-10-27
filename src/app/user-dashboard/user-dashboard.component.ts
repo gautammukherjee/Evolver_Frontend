@@ -205,8 +205,8 @@ export class UserDashboardComponent implements OnInit {
       console.log("here2: ", this.filterParams);
   
       if (_filterparams['tabType'] == "details") {
-        this.doFilterApplyTab3.next(undefined);
-        this.router.navigate(['/dashboard/']);
+        // this.doFilterApplyTab3.next(undefined);
+        this.router.navigate(['/preview/']);
       }
   
   
