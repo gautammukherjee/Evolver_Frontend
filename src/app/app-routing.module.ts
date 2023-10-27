@@ -10,6 +10,7 @@ import { BioInfomaticsComponent } from './bio-infomatics/bio-infomatics.componen
 import { EventChartComponent } from './event-chart/event-chart.component';
 import { ScenarioComponent } from './scenario/scenario.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
+import { PreviewComponent } from './preview/preview.component';
 
 const routes: Routes = [
   {
@@ -48,6 +49,10 @@ const routes: Routes = [
   {
     path: 'user-dashboard',
     component: UserDashboardComponent
+  },
+  {
+    path: 'preview',
+    component: PreviewComponent
   },
   {
     path: '**', // 404 page
