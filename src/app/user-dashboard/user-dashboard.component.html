@@ -4,7 +4,7 @@
     <div class="page-title">
         <h3>My Dashboard</h3>
     </div>
-    <div class="filter-bar">
+    <!-- <div class="filter-bar">
         <div class="query-selector">
             <select name="" id="" class="form-select">
                 <option value="">Self Query</option>
@@ -19,61 +19,55 @@
 
             <i class="bi bi-trash3 text-danger"></i>
         </div>
+    </div> -->
+
+    <div class="overlay text-center" *ngIf="loadingSenarios">
+        <img style="margin:185px 653px;" src="../../assets/images/loader_big.gif" />
+    </div>
+    <div class="overlay text-center" *ngIf="loadingDel">
+        <img style="margin:185px 653px;" src="../../assets/images/loader_big.gif" />
+    </div>
+
+    <div class="col-md-4 col-lg-4 col-xl-4" style="padding: 10px 0px 10px 0px;">
+        <input type="text" name="search" class="form-control" [(ngModel)]="searchText"
+            placeholder="Search with Query Name">
     </div>
 
     <div class="table-responsive query-table">
         <table class="table">
             <thead>
                 <tr>
-                    <th>Saved Query</th>
-                    <th class="text-center">Share</th>
-                    <th class="text-center">Edit</th>
-                    <th class="text-center">Receive Alert</th>
-                    <th class="text-center">Delete</th>
+                    <th>Query Name</th>
+                    <th>Username</th>
+                    <th>Created</th>
+                    <th>Comments</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Target 1 - disease 1 association</td>
-                    <td class="text-center"><i class="bi bi-share"></i></td>
-                    <td class="text-center"><i class="bi bi-pencil-square"></i></td>
-                    <td class="text-center"><i class="bi bi-envelope-at"></i></td>
-                    <td class="text-center"><i class="bi bi-trash3 text-danger"></i></td>
-                </tr>
-                <tr>
-                    <td>Target - TA 1 association</td>
-                    <td class="text-center"><i class="bi bi-share"></i></td>
-                    <td class="text-center"><i class="bi bi-pencil-square"></i></td>
-                    <td class="text-center"><i class="bi bi-envelope-at"></i></td>
-                    <td class="text-center"><i class="bi bi-trash3 text-danger"></i></td>
-                </tr>
-                <tr>
-                    <td>Target 1 - disease 1 association</td>
-                    <td class="text-center"><i class="bi bi-share"></i></td>
-                    <td class="text-center"><i class="bi bi-pencil-square"></i></td>
-                    <td class="text-center"><i class="bi bi-envelope-at"></i></td>
-                    <td class="text-center"><i class="bi bi-trash3 text-danger"></i></td>
-                </tr>
-                <tr>
-                    <td>Target - TA 1 association</td>
-                    <td class="text-center"><i class="bi bi-share"></i></td>
-                    <td class="text-center"><i class="bi bi-pencil-square"></i></td>
-                    <td class="text-center"><i class="bi bi-envelope-at"></i></td>
-                    <td class="text-center"><i class="bi bi-trash3 text-danger"></i></td>
-                </tr>
-                <tr>
-                    <td>Target 1 - disease 1 association</td>
-                    <td class="text-center"><i class="bi bi-share"></i></td>
-                    <td class="text-center"><i class="bi bi-pencil-square"></i></td>
-                    <td class="text-center"><i class="bi bi-envelope-at"></i></td>
-                    <td class="text-center"><i class="bi bi-trash3 text-danger"></i></td>
-                </tr>
-                <tr>
-                    <td>Target - TA 1 association</td>
-                    <td class="text-center"><i class="bi bi-share"></i></td>
-                    <td class="text-center"><i class="bi bi-pencil-square"></i></td>
-                    <td class="text-center"><i class="bi bi-envelope-at"></i></td>
-                    <td class="text-center"><i class="bi bi-trash3 text-danger"></i></td>
+                <tr *ngFor="let scenario of scenarioListsTables | FilterFilterPipe:searchText">
+                    <td class="text-center">
+                        <a id="index" (click)="selectscenario(scenario,$event)" routerLinkActive="active"
+                            class="btn btn-outline-primary">{{scenario.scenario_name}}
+                        </a>
+                    </td>
+                    <td class="text-center">{{scenario.user_name}}</td>
+                    <td class="text-center">{{scenario.created_at | date: 'MM-dd-yyyy'}}</td>
+                    <td class="text-center">
+                        <!-- {{ (scenario.user_comments.length>15)? (scenario.user_comments |
+                  slice:0:15)+'..':(scenario.user_comments) }} -->
+                        <div class="containerComment" [class.show]="scenario.visible">
+                            {{scenario.comments}}
+                        </div>
+                        <!-- <button (click)="scenario.visible = !scenario.visible">{{ scenario.visible ? '&laquo;&laquo;':
+                            '&raquo;&raquo;'
+                            }}</button> -->
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-danger btn-sm" [disabled]="currentUser.user_id!=scenario.user_id"
+                            (click)="delUserScenario(scenario.id)"><span class="fa fa-trash"></span> Delete</button>
+                        <!-- <input type="radio" name="scenario" [value]="scenario" (change)="selectscenario(scenario,$event)"> -->
+                    </td>
                 </tr>
             </tbody>
         </table>

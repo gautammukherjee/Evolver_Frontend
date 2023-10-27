@@ -66,6 +66,7 @@ import { CtIndexComponent } from './ct/ct-index/ct-index.component';
 import { CtInvestigatorRelsByStatsComponent } from './ct/ct-investigator-rels-by-stats/ct-investigator-rels-by-stats.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import { PreviewComponent } from './preview/preview.component';
+import { FilterDataPipe } from './pipes/filterDataPipe';
 
 @NgModule({
   declarations: [
@@ -96,6 +97,7 @@ import { PreviewComponent } from './preview/preview.component';
     DestinationNodePipe,
     EdgeTypePipe,
     SafePipe,
+    FilterDataPipe,
     BioInfomaticsComponent,
     EventChartComponent,
     DistributionByRelGrpComponent,

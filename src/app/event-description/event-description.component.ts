@@ -1,10 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, Inject } from '@angular/core';
 import { GlobalVariableService } from './../services/common/global-variable.service';
 import { NodeSelectsService } from '../services/common/node-selects.service';
+import { ScenarioService } from '../services/common/scenario.service';
 import { Subject, BehaviorSubject, map, mergeMap, forkJoin } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 import * as moment from "moment";
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 declare var jQuery: any;
 
@@ -90,13 +92,27 @@ export class EventDescriptionComponent implements OnInit {
   firstScrollApiResult: any;
   secondScrollApiResult: any;
   thirdScrollApiResult: any;
+
+  scenarioVar: any;
+  scenario: object = {};
+  moduleTypes: number = 0;
+  scenariosPerUserCount: number = 0;
+  private userScenario: any;
+  private currentUser: any = JSON.parse(sessionStorage.getItem('currentUser') || "null");
+  loadingScenario: boolean = false;
   // firstAPI: any;
   // secondAPI: any;
 
 
+  scenarioForm = new FormGroup({
+    filter_name: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(15)]),
+    user_comments: new FormControl('')
+  })
+
   constructor(
     private globalVariableService: GlobalVariableService,
     private nodeSelectsService: NodeSelectsService,
+    private scenarioService: ScenarioService,
     private datePipe: DatePipe,
     private modalService: NgbModal,
   ) { }
@@ -725,5 +741,93 @@ export class EventDescriptionComponent implements OnInit {
   //   this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": event.target.value, "limitValue": 8000 });
   //   this.getEventDescription(this.filterParams);
   // }
+
+  captureScenario(userScenario: any) {
+    this.scenarioForm.value.filter_name = "";
+    this.scenarioForm.value.user_comments = "";
+    this.userScenario = this.modalService.open(userScenario, { size: 'lg' });
+  }
+
+  saveCaptureScenario() {
+
+    this.loadingScenario = true;
+    let firstNodeLength = this.globalVariableService.getSelectedNodeSelects();
+    let firstSourceNodeLength = this.globalVariableService.getSelectedSourceNodes().length;
+
+    var filterCC = this.globalVariableService.getFilterParams(
+      {
+        'destination_node_all_for_ct': this.globalVariableService.setSelectedAllForCTDestinationNodes([]),
+        'destination_node_all_for_ct2': this.globalVariableService.setSelectedAllForCTDestinationNodes2([]),
+        'destination_node_all_for_ct3': this.globalVariableService.setSelectedAllForCTDestinationNodes3([])
+      }
+    );
+    // var filterCC = this.globalVariableService.getFilterParams();
+    // var filterCC = this.globalVariableService.getFilterParams({ 'ta_id_dashboard': this.globalVariableService.setSelectedTaForDashboard([]), 'di_ids_dashboard': this.globalVariableService.setSelectedIndicationForDashboard([]), 'ta_id': this.globalVariableService.setSelectedTa([]), 'di_ids': this.globalVariableService.setSelectedIndication([]), 'single_ta_id': this.globalVariableService.setSelectedSingleTa([]) });
+    console.log("filterParam: ", filterCC);
+
+    if (firstNodeLength != undefined && firstSourceNodeLength >= 1) {
+
+      this.scenarioService.getPerUserScenarios(this.currentUser).subscribe(
+        data => {
+          this.result = data;
+          this.scenariosPerUserCount = this.result.totalScenariosPerUser[0].count;
+          console.log("scenario per user: ", this.scenariosPerUserCount);
+
+          if (this.scenariosPerUserCount >= 20) {
+            alert("Each user atleast 10 queries are saved.....");
+            // return false;
+          }
+          else {
+            this.scenario = {
+              user_id: this.currentUser,
+              // module_id: this.globalVariableService.getSelectedModules(),
+              // page_id: this.globalVariableService.getSelectedPageType(),
+              filter_criteria: filterCC, //filterCC,
+              filter_name: this.scenarioForm.value.filter_name,
+              user_comments: this.scenarioForm.value.user_comments
+            };
+            console.log("your scenario: ", this.scenario);
+            this.scenarioService.addUserScenario(this.scenario).subscribe(
+              data => {
+                alert("Scenario Saved Successfully...");
+                this.scenarioForm.value.filter_name = "";
+                this.scenarioForm.value.user_comments = "";
+                console.log("name: ", this.scenarioForm.value.filter_name);
+                console.log(data);
+                this.userScenario.close();
+                // this.informatorySecarioExpendedStatus = false;
+                
+              },
+              err => {
+                alert("Can't save, Data size is large. Reduce it by apply more accurate filters");
+                this.loadingScenario = false;
+                console.log(err);
+              },
+              () => {
+                this.scenarioForm.value.filter_name = "";
+                this.scenarioForm.value.user_comments = "";
+                this.loadingScenario = false;
+              }
+            );
+          }
+        },
+        err => {
+          // this.loading = false;
+          console.log(err);
+        },
+        () => {
+          // this.loading = false;
+        }
+      );
+    } else {
+      this.userScenario.close();
+      alert("Please select atleat one Pair Type and Source Node");
+      //return false;
+    }
+  }
+
+  closePopup() {
+    this.userScenario.close();
+  }
 
 }

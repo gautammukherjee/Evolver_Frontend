@@ -3,12 +3,11 @@
 <div class="search-options">
     <div class="card-panel-box">
         <div class="customTable" style="border: 0px solid #ddd; min-height:400px;">
-            <div class="text-muted fs-2 text-center mb-4"
-                *ngIf="(masterListsDataDetailsLengthLevelOne==0 && masterListsDataDetailsLengthLevelTwo == 0)">Please
+            <div class="text-muted fs-2 text-center mb-4" *ngIf="(masterListsDataDetailsLengthLevelOne==0)">Please
                 select
                 entities to
                 generate Details</div>
-            
+
             <!--<div class="card-panel-box-heading">
             Event List
         </div>-->
@@ -50,10 +49,6 @@
                                     class="badge bg-primary text-white">{{masterListsDataDetailsLengthLevelThree}}</span></span>
                         </div>
 
-                        <!-- <div style="position: absolute;margin: 2px 586px;" *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">
-                            <button class="saveFilterBtn">Save Filter</button>
-                        </div> -->
-
                         <table id="showEventDescription" data-toolbar="#toolbar" data-search="true"
                             data-show-export="true" data-export-options='{"fileName": "evolverAI"}'
                             data-show-columns="true" data-page-size="100" data-filter-control="true"
@@ -78,7 +73,7 @@
                                     <!-- <th data-filter-control="select" data-field="article_count" data-sortable="true" width="10%">
                                             Articles Count</th> -->
                                     <th data-field="edgeNeCount" width="10%">
-                                        </th>
+                                    </th>
 
                                     <!-- <th data-field="edgeNe" data-sortable="true" width="10%">
                                         Get Edge Type Article</th> -->
@@ -104,9 +99,19 @@
             </div>
 
             <div class="text-center" *ngIf="isloading"><img src="./assets/images/spinner_small_loader.gif"></div>
-            <div class="text-center">
+            <div class="text-center" style="float: left;position: absolute;right: 608px;">
                 <button *ngIf="!isloading && notEmptyPost && firstCompleteApiResult!=undefined" (click)="onDescScroll()"
                     class="loadMoreBtn">Load More</button>
+            </div>
+
+            <!-- <a class="dropdown-item" class="text-dark m-1" style="cursor: pointer;"
+                (click)="captureScenario(userScenario)">
+                <span class="fa fa-save"></span> Save Query
+              </a> -->
+
+            <div style="position: absolute;float: left;right: 474px;"
+                *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">
+                <button class="saveFilterBtn" (click)="captureScenario(userScenario)">Save Query</button>
             </div>
 
         </div>
@@ -243,4 +248,61 @@
         </div>
     </div>
 
+</ng-template>
+
+<!-- SAVE scenario -->
+<ng-template #userScenario let-c="close" let-d="dismiss">
+
+    <div class="overlay text-center" *ngIf="loadingScenario">
+        <img style="margin:185px 653px;" src="../../assets/images/loader_big.gif" />
+    </div>
+
+    <form autocomplete="nope" class="form-signin" [formGroup]="scenarioForm">
+        <!-- <form #myForm="ngForm" method="post" class="form" role="form"> -->
+        <div class="modal-header blue_bg_hdr modal-lg">
+            <h4 class="modal-title">Save Query</h4>
+            <button class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body white_bg without_bord_rad">
+            <div class="row">
+                <div class="col-md-12 bottam-buffer home_tiles">
+                    <label for="old_pwd">Filter Name</label>
+                    <input type="text" ngModel class="form-control" formControlName="filter_name" name="filter_name" value=""
+                        autocomplete="off">
+                </div>
+                <span class="text-danger" *ngIf="scenarioForm.controls['filter_name'].hasError('minlength')">
+                    Your Title minimum 5 characters long.
+                </span>
+                <span class="text-danger" *ngIf="scenarioForm.controls['filter_name'].hasError('maxlength')">
+                    Your Title maximum 15 characters long.
+                </span>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12 bottam-buffer home_tiles">
+                    <label for="old_pwd">Comments</label>
+                    <textarea id="user_comments" ngModel formControlName="user_comments" name="user_comments"
+                        class="form-control">
+            </textarea>
+                </div>
+            </div>
+            <br />
+            <br />
+            <div class="row">
+                <div class="col-md-12 bottam-buffer home_tiles">
+                    <div class="pull-left" style="margin-right: 10px;">
+                        <button  (click)="saveCaptureScenario()" type="submit" class="btn btn-success btn-block mb-4"
+                            [disabled]="scenarioForm.invalid">Save</button>
+                    </div>
+                    <div class="pull-left">
+                        <button class="btn btn-danger" (click)="closePopup()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- comment from piyush -->
 </ng-template>
