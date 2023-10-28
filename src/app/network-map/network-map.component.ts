@@ -277,14 +277,14 @@ export class NetworkMapComponent implements OnInit {
                       let levelSourceColor;
                       let levelTargetColor;
                       if (event.level == 1) {
-                        levelSourceColor = '#BF63A2';
-                        levelTargetColor = '#85C9E8';
+                        levelSourceColor = '#f08542';
+                        levelTargetColor = '#ffb16b';
                       } else if (event.level == 2) {
-                        levelSourceColor = '#8ceb34';
-                        levelTargetColor = '#c2c435';
+                        levelSourceColor = '#bc5090';
+                        levelTargetColor = '#ff6361';
                       } else {
-                        levelSourceColor = '#00FFFF';
-                        levelTargetColor = '#f7786b';
+                        levelSourceColor = '#ffa600';
+                        levelTargetColor = '#a0a825';
                       }
 
                       // // this.filterParams

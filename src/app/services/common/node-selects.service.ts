@@ -27,8 +27,8 @@ export class NodeSelectsService {
 
   constructor(private http: HttpClient) { }
 
-  getNodeSelects() {
-    return this.http.get(this.API_URL + 'getNodeSelects', httpOptions);
+  getNodeSelects(params: any) {
+    return this.http.post(this.API_URL + 'getNodeSelects', params, httpOptions);
   }
 
   getNodeSelects2(params: any) {
@@ -215,6 +215,16 @@ export class NodeSelectsService {
 
   downloadAtricleAndEvidencesData(params:any){
     return this.http.post(this.API_URL + 'downloadAtricleAndEvidencesData', params, httpOptions)
+  }
+  
+  getEdgeTypeSce1(params: any) {
+    return this.http.post(this.API_URL + 'getEdgeTypeSce1', params, httpOptions);
+  }
+  getEdgeTypeSce2(params: any) {
+    return this.http.post(this.API_URL + 'getEdgeTypeSce2', params, httpOptions);
+  }
+  getEdgeTypeSce3(params: any) {
+    return this.http.post(this.API_URL + 'getEdgeTypeSce3', params, httpOptions);
   }
 
 }

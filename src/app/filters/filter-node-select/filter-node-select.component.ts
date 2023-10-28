@@ -90,6 +90,7 @@ export class FilterNodeSelectComponent implements OnInit {
   public getNodeSelects(event: any, type: any) {
     this.loading = true;
     this.params = this.globalVariableService.getFilterParams();
+    this.filterParams = this.globalVariableService.getFilterParams();
     // this.diseaseCheck = this.params['di_ids']; // if disease_id is checked
     // this.diseaseCheckCT = this.params['ct_di_ids']; // if disease_id is checked
     // console.log("checked here Gene: ", this.diseaseCheck);
@@ -97,7 +98,7 @@ export class FilterNodeSelectComponent implements OnInit {
     // this.selectedGenes = [];
 
     //if (this.diseaseCheck !== undefined || this.diseaseCheckCT !== undefined) {
-    this.nodeSelectsService.getNodeSelects()
+    this.nodeSelectsService.getNodeSelects(this.filterParams)
       .subscribe(
         data => {
           this.result = data;
