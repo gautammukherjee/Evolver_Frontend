@@ -85,3 +85,23 @@
         }
     }
 }
+
+.preview-data-table{
+    padding-top: 5px;
+
+    .custom-fixed-header-table{
+        h3{
+            position: absolute;
+            top:12px;
+        }
+    }
+    &.level1{
+        margin-top:64px;
+    }
+    &.level2{
+        margin-top:64px;
+    }
+    &.level3{
+        margin-top:64px;
+    }
+}
