@@ -240,7 +240,7 @@
                                 <img style="margin:185px 653px;" src="../../assets/images/loader_big.gif" />
                             </div>
                             <div class="table-responsive position-relative custom-fixed-header-table table table-striped table-hover"
-                                [ngClass]="toggleLevels == false ? 'hiddenLevels' : currentLevel == '1' ? 'level1' : currentLevel == 2 ? 'level2' : 'level3'">
+                                [ngClass]="node_selects3.length>0 ? 'level3' : !node_selects3.length && node_selects2.length>0 ? 'level2' : 'level1'">
 
                                 <h3>{{scenarioName}}
                                     <div class="d-inline-block ms-3">

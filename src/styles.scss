@@ -633,6 +633,26 @@ body {
     }
 }
 
+.preview-data-table{
+    .custom-fixed-header-table{
+        &.level1{
+            .fix-sticky{
+                top:107px !important;
+            }
+        }
+        &.level2{
+            .fix-sticky{
+                top:150px !important;
+            }
+        }
+        &.level3{
+            .fix-sticky{
+                top:193px !important;
+            }
+        }
+    }
+}
+
 .hiddenLevels {
     .fix-sticky {
         top: 170px !important;
