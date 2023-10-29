@@ -94,6 +94,10 @@ export class UserDashboardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.showAllScenarioLists();
+  }
+
+  showAllScenarioLists() {
     this.loadingSenarios = true;
     this.scenarioService.getUserScenarios({ user_id: this.currentUser.user_id }).subscribe(
       data => {
@@ -113,7 +117,6 @@ export class UserDashboardComponent implements OnInit {
           temps["visible"] = false;
           this.scenarioListsTables.push(temps);
         });
-
         console.log("scenario lists: ", this.scenarioListsTables);
       },
       err => {
@@ -133,7 +136,7 @@ export class UserDashboardComponent implements OnInit {
 
     var _filterparams = JSON.parse(scenario.filter_criteria);
 
-    console.log("filter_criteria: ", _filterparams);    
+    console.log("filter_criteria: ", _filterparams);
     // console.log("page_id: ", scenario.page_id);
 
     localStorage.setItem("scenarioID", '1');
@@ -151,13 +154,13 @@ export class UserDashboardComponent implements OnInit {
     _filterparams['source_node'] != undefined ? (this.globalVariableService.setSelectedSourceNodes(_filterparams['source_node'])) : undefined;
     _filterparams['edge_type_id'] != undefined ? (this.globalVariableService.setSelectedEdgeTypes(_filterparams['edge_type_id'])) : undefined;
     _filterparams['destination_node'] != undefined ? (this.globalVariableService.setSelectedDestinationNodes(_filterparams['destination_node'])) : undefined;
-    
+
     //Level2
     _filterparams['nnrt_id2'] != undefined ? (this.globalVariableService.setSelectedNodeSelects2(_filterparams['nnrt_id2'])) : undefined;
     _filterparams['source_node2'] != undefined ? (this.globalVariableService.setSelectedSourceNodes2(_filterparams['source_node2'])) : undefined;
     _filterparams['edge_type_id2'] != undefined ? (this.globalVariableService.setSelectedEdgeTypes2(_filterparams['edge_type_id2'])) : undefined;
     _filterparams['destination_node2'] != undefined ? (this.globalVariableService.setSelectedDestinationNodes2(_filterparams['destination_node2'])) : undefined;
-    
+
     //Level3
     _filterparams['nnrt_id3'] != undefined ? (this.globalVariableService.setSelectedNodeSelects3(_filterparams['nnrt_id3'])) : undefined;
     _filterparams['source_node3'] != undefined ? (this.globalVariableService.setSelectedSourceNodes3(_filterparams['source_node3'])) : undefined;
@@ -183,7 +186,7 @@ export class UserDashboardComponent implements OnInit {
     this.globalVariableService.setSelectedAllDestinationNodes((_filterparams['destination_node_all'] != undefined ? _filterparams['destination_node_all'] : 0));
     this.globalVariableService.setSelectedAllDestinationNodes2((_filterparams['destination_node_all2'] != undefined ? _filterparams['destination_node_all2'] : 0));
     this.globalVariableService.setSelectedAllDestinationNodes3((_filterparams['destination_node_all3'] != undefined ? _filterparams['destination_node_all3'] : 0));
-    
+
     this.globalVariableService.setTabsSelected((_filterparams['tabType'] != undefined ? "preview" : "preview"));
     // localStorage.setItem("api_scenarios", JSON.parse(JSON.stringify(this.apiss)));
 
@@ -212,44 +215,15 @@ export class UserDashboardComponent implements OnInit {
       };
       this.scenarioService.delUserScenario(this.scenarioDel).subscribe(
         data => {
-          // alert("Favourite deleted Successfully...");
-          // this.scenarioService.getUserScenarios({ user_id: this.currentUser.user_id, module_id: 1 }).subscribe(
-          this.scenarioService.getUserScenarios({ user_id: this.currentUser.user_id }).subscribe(
-            data => {
-              this.result = data;
-              this.scenarios = this.result.scenarios;
-
-              this.scenarioListsTables = [];
-              this.result.scenarios.forEach((event: any) => {
-                var temps: any = {};
-                temps["created_at"] = event.created_at;
-                temps["filter_criteria"] = event.filter_criteria;
-                temps["scenario_name"] = event.scenario_name;
-                temps["id"] = event.id;
-                temps["comments"] = event.comments;
-                temps["user_id"] = event.user_id;
-                temps["user_name"] = event.user_name;
-                temps["visible"] = false;
-                this.scenarioListsTables.push(temps);
-              });
-            },
-            err => {
-              this.loadingDel = false;
-              console.log(err);
-            },
-            () => {
-              this.loadingDel = false;
-              // console.log("finished");
-            }
-          );
+          this.showAllScenarioLists();
         },
         err => {
           alert("Can't delete..");
-          // this.loadingDel = false;
+          this.loadingDel = false;
           console.log(err);
         },
         () => {
-          // this.loadingDel = false;
+          this.loadingDel = false;
         }
       )
     }

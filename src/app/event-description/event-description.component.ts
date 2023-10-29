@@ -98,6 +98,7 @@ export class EventDescriptionComponent implements OnInit {
   moduleTypes: number = 0;
   scenariosPerUserCount: number = 0;
   private userScenario: any;
+  private userScenarioWithResult: any;
   private currentUser: any = JSON.parse(sessionStorage.getItem('currentUser') || "null");
   loadingScenario: boolean = false;
   // firstAPI: any;
@@ -826,8 +827,16 @@ export class EventDescriptionComponent implements OnInit {
     }
   }
 
+  captureScenarioWithResult(userScenarioWithResult: any) {
+    this.userScenarioWithResult = this.modalService.open(userScenarioWithResult, { size: 'lg' });
+  }
+
   closePopup() {
     this.userScenario.close();
+  }
+
+  closePopup2() {
+    this.userScenarioWithResult.close();
   }
 
 }

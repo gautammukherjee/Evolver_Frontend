@@ -21,12 +21,14 @@
         </div>
     </div> -->
 
-    <div class="overlay text-center" *ngIf="loadingSenarios">
+    <!-- <div class="overlay text-center" *ngIf="loadingSenarios">
         <img style="margin:185px 653px;" src="../../assets/images/loader_big.gif" />
-    </div>
-    <div class="overlay text-center" *ngIf="loadingDel">
+    </div> -->
+    <div class="loading-custom" *ngIf="loadingSenarios"><span class="fa fa-spinner fa-spin"></span>&nbsp;Loading...</div>
+    <div class="loading-custom" *ngIf="loadingDel"><span class="fa fa-spinner fa-spin"></span>&nbsp;Loading...</div>
+    <!-- <div class="overlay text-center" *ngIf="loadingDel">
         <img style="margin:185px 653px;" src="../../assets/images/loader_big.gif" />
-    </div>
+    </div> -->
 
     <div class="col-md-4 col-lg-4 col-xl-4" style="padding: 10px 0px 10px 0px;">
         <input type="text" name="search" class="form-control" [(ngModel)]="searchText"

@@ -108,3 +108,19 @@
         }
     }
 }
+
+.loading-custom {
+    position: absolute;
+    width: 200px;
+    left: 575px;
+    top: 260px;
+    padding: 10px;
+    background: #3066C4;
+    text-align: center;
+    color: aliceblue;
+    border: 1px solid #b3af22;
+
+    span {
+        color: #000;
+    }
+}
