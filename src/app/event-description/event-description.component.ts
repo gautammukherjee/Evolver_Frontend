@@ -389,9 +389,7 @@ export class EventDescriptionComponent implements OnInit {
   //   getArticles_callback(edgeNeId, sourceNode, destinationNode, edgeTypesID, this);
   //   //}
   // }
-  senetence_display() {
-    console.log("hereeeeee xxx");
-  }
+  
 
   ArticlePopup(edgeNeId: any, sourceNode: string, destinationNode: string, edgeTypesID: number, level: number) {
     this.articleHere = [];
@@ -737,6 +735,19 @@ export class EventDescriptionComponent implements OnInit {
     window.scrollTo({ top: 0 });
   }
 
+  /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  By: Gautam M
+  *** Article with Evidence Data Download Section ***
+  Objective: In backend we'll generate excel with Articles and Evidence data together & Upload the file on S3 bucket.
+  Later on user can download that excel from application.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  articlesWithEvidenceData(){
+    //console.log(this.articleList);
+    this.nodeSelectsService.downloadAtricleAndEvidencesData({'articles':this.articleList}).subscribe((p: any) => {
+      let sentences = p; 
+      console.log(JSON.stringify(sentences)); 
+    })
+  }
   // loadNextDataSetOLD(event: any) {
   //   //console.log(event.target.value);
   //   this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": event.target.value, "limitValue": 8000 });
