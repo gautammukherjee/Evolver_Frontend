@@ -8,7 +8,9 @@ import { ManagePasswordComponent } from './manage-password/manage-password.compo
 import { NoPageComponent } from './no-page/no-page.component';
 import { BioInfomaticsComponent } from './bio-infomatics/bio-infomatics.component';
 import { EventChartComponent } from './event-chart/event-chart.component';
+import { ScenarioComponent } from './scenario/scenario.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
+import { PreviewComponent } from './preview/preview.component';
 
 const routes: Routes = [
   {
@@ -41,8 +43,16 @@ const routes: Routes = [
     component: ManagePasswordComponent
   },
   {
+    path: 'scenario',
+    component: ScenarioComponent
+  },
+  {
     path: 'user-dashboard',
     component: UserDashboardComponent
+  },
+  {
+    path: 'preview',
+    component: PreviewComponent
   },
   {
     path: '**', // 404 page

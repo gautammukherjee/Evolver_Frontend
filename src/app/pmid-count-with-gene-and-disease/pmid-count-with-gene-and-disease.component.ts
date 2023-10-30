@@ -192,7 +192,7 @@ export class PmidCountWithGeneAndDiseaseComponent implements OnInit {
         type: 'areaspline'
       },
       title: {
-        // text: 'Count of PMID with Relevant Genes or Diseases'
+        text: 'Count of PMID with Relevant Genes or Diseases'
       },
       subtitle: {
         style: {

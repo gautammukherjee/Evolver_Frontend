@@ -12,13 +12,12 @@ import { GlobalVariableService } from '../services/common/global-variable.servic
 import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-user-dashboard',
-  templateUrl: './user-dashboard.component.html',
-  styleUrls: ['./user-dashboard.component.scss'],
+  selector: 'scenario',
+  templateUrl: './scenario.component.html',
+  styleUrls: ['./scenario.component.scss'],
   providers: [DatePipe]
 })
-export class UserDashboardComponent implements OnInit {
-
+export class ScenarioComponent implements OnInit {
   private result: any;
   private params: any;
   scenarios: object = [];
@@ -26,6 +25,24 @@ export class UserDashboardComponent implements OnInit {
   filter_criteria: any;
   resultset: any;
   // chart: Chart;
+  // yearQuarterChart: Chart;
+  // intensityByEventAndPhaseChart: Chart;
+  // countOfEventIdAndStandardDeviationOfIntensityDiseaseNameChart: Chart;
+  // countOfEventIdAndStandardDeviationOfIntensityDrugNameChart: Chart;
+  // CountOfEventIdByIntensity4BinsChart: Chart;
+  // CountOfEventIdByIntensity2BinsChart: Chart;
+  // MSlopeAndMaMslopeChart: Chart;
+  // EIDetailyearQuarterChart: Chart;
+  // maxOfIntensityByPmidChart: Chart;
+  // diseaseByEventCountTreeChart: Chart;
+  // geneByEventCountTreeChart: Chart;
+  // drugByEventCountChart: Chart;
+  // companyByEventCountChart: Chart;
+  // EIDetailevent2BinChart: Chart;
+  // EIDetailevent4BinChart: Chart;
+  // techEventCountChart: Chart;
+  // phaseEventCountChart: Chart;
+  // geneOntologyChart: Chart;
 
   private maximum: any;
   show = false;
@@ -94,10 +111,6 @@ export class UserDashboardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.showAllScenarioLists();
-  }
-
-  showAllScenarioLists() {
     this.loadingSenarios = true;
     this.scenarioService.getUserScenarios({ user_id: this.currentUser.user_id }).subscribe(
       data => {
@@ -117,6 +130,7 @@ export class UserDashboardComponent implements OnInit {
           temps["visible"] = false;
           this.scenarioListsTables.push(temps);
         });
+
         console.log("scenario lists: ", this.scenarioListsTables);
       },
       err => {
@@ -130,6 +144,7 @@ export class UserDashboardComponent implements OnInit {
     );
   }
 
+
   //Select the scenario from the scenarios lists
   selectscenario(scenario: any, evt: any) {
     // console.log("scenario: ", JSON.stringify(scenario));
@@ -137,6 +152,7 @@ export class UserDashboardComponent implements OnInit {
     var _filterparams = JSON.parse(scenario.filter_criteria);
 
     console.log("filter_criteria: ", _filterparams);
+    // console.log("module_id: ", scenario.module_id);
     // console.log("page_id: ", scenario.page_id);
 
     localStorage.setItem("scenarioID", '1');
@@ -149,60 +165,56 @@ export class UserDashboardComponent implements OnInit {
     // var initFromDate = { month: ((new Date(fromDate.toDateString())).getMonth() + 1), day: ((new Date(fromDate.toDateString())).getDate()), year: ((new Date(fromDate.toDateString())).getFullYear()) };
     // this.globalVariableService.setFromDate({ month: initFromDate.month, day: initFromDate.day, year: initFromDate.year });
 
+    ///////// To date fields ///////////
+    // var toDateFields = _filterparams['to_date'].split('-');
+    // var toDate = new Date(toDateFields[2] + '-' + toDateFields[0] + '-' + toDateFields[1]);
+    // var initToDate = { month: ((new Date(toDate.toDateString())).getMonth() + 1), day: ((new Date(toDate.toDateString())).getDate()), year: ((new Date(toDate.toDateString())).getFullYear()) };
+    // this.globalVariableService.setToDate({ month: initToDate.month, day: initToDate.day, year: initToDate.year });
+
+    /////////// News and Scientific component ////////////
+
     //Level1
-    _filterparams['nnrt_id'] != undefined ? (this.globalVariableService.setSelectedNodeSelects(_filterparams['nnrt_id'])) : undefined;
-    _filterparams['source_node'] != undefined ? (this.globalVariableService.setSelectedSourceNodes(_filterparams['source_node'])) : undefined;
-    _filterparams['edge_type_id'] != undefined ? (this.globalVariableService.setSelectedEdgeTypes(_filterparams['edge_type_id'])) : undefined;
-    _filterparams['destination_node'] != undefined ? (this.globalVariableService.setSelectedDestinationNodes(_filterparams['destination_node'])) : undefined;
-
+    this.globalVariableService.setSelectedNodeSelects((_filterparams['nnrt_id'] !== undefined ? _filterparams['nnrt_id'] : ''));
+    this.globalVariableService.setSelectedSourceNodes((_filterparams['source_node'] != undefined ? _filterparams['source_node'] : ''));
+    this.globalVariableService.setSelectedEdgeTypes((_filterparams['edge_type_id'] != undefined ? _filterparams['edge_type_id'] : ''));
+    this.globalVariableService.setSelectedDestinationNodes((_filterparams['destination_node'] != undefined ? _filterparams['destination_node'] : ''));
+    
     //Level2
-    _filterparams['nnrt_id2'] != undefined ? (this.globalVariableService.setSelectedNodeSelects2(_filterparams['nnrt_id2'])) : undefined;
-    _filterparams['source_node2'] != undefined ? (this.globalVariableService.setSelectedSourceNodes2(_filterparams['source_node2'])) : undefined;
-    _filterparams['edge_type_id2'] != undefined ? (this.globalVariableService.setSelectedEdgeTypes2(_filterparams['edge_type_id2'])) : undefined;
-    _filterparams['destination_node2'] != undefined ? (this.globalVariableService.setSelectedDestinationNodes2(_filterparams['destination_node2'])) : undefined;
+    this.globalVariableService.setSelectedNodeSelects2((_filterparams['nnrt_id2'] !== undefined ? _filterparams['nnrt_id2'] : ''));
+    this.globalVariableService.setSelectedSourceNodes2((_filterparams['source_node2'] != undefined ? _filterparams['source_node2'] : ''));
+    this.globalVariableService.setSelectedEdgeTypes2((_filterparams['edge_type_id2'] != undefined ? _filterparams['edge_type_id2'] : ''));
+    this.globalVariableService.setSelectedDestinationNodes2((_filterparams['destination_node2'] != undefined ? _filterparams['destination_node2'] : ''));
 
     //Level3
-    _filterparams['nnrt_id3'] != undefined ? (this.globalVariableService.setSelectedNodeSelects3(_filterparams['nnrt_id3'])) : undefined;
-    _filterparams['source_node3'] != undefined ? (this.globalVariableService.setSelectedSourceNodes3(_filterparams['source_node3'])) : undefined;
-    _filterparams['edge_type_id3'] != undefined ? (this.globalVariableService.setSelectedEdgeTypes3(_filterparams['edge_type_id3'])) : undefined;
-    _filterparams['destination_node3'] != undefined ? (this.globalVariableService.setSelectedDestinationNodes3(_filterparams['destination_node3'])) : undefined;
+    this.globalVariableService.setSelectedNodeSelects3((_filterparams['nnrt_id3'] !== undefined ? _filterparams['nnrt_id3'] : ''));
+    this.globalVariableService.setSelectedSourceNodes3((_filterparams['source_node3'] != undefined ? _filterparams['source_node3'] : ''));
+    this.globalVariableService.setSelectedEdgeTypes3((_filterparams['edge_type_id3'] != undefined ? _filterparams['edge_type_id3'] : ''));
+    this.globalVariableService.setSelectedDestinationNodes3((_filterparams['destination_node3'] != undefined ? _filterparams['destination_node3'] : ''));
 
-    //Level2
-    // if (_filterparams['nnrt_id2'] != undefined) {
-    //   this.globalVariableService.setSelectedNodeSelects2((_filterparams['nnrt_id2'] !== undefined ? _filterparams['nnrt_id2'] : undefined));
-    //   this.globalVariableService.setSelectedSourceNodes2((_filterparams['source_node2'] != undefined ? _filterparams['source_node2'] : undefined));
-    //   this.globalVariableService.setSelectedEdgeTypes2((_filterparams['edge_type_id2'] != undefined ? _filterparams['edge_type_id2'] : undefined));
-    //   this.globalVariableService.setSelectedDestinationNodes2((_filterparams['destination_node2'] != undefined ? _filterparams['destination_node2'] : undefined));
-    // }
+    this.globalVariableService.setSelectedAllDestinationNodes((_filterparams['destination_node_all'] != undefined ? _filterparams['destination_node_all'] : ''));
+    this.globalVariableService.setSelectedAllDestinationNodes2((_filterparams['destination_node_all2'] != undefined ? _filterparams['destination_node_all2'] : ''));
+    this.globalVariableService.setSelectedAllDestinationNodes3((_filterparams['destination_node_all3'] != undefined ? _filterparams['destination_node_all3'] : ''));
+    this.globalVariableService.setTabsSelected((_filterparams['tabType'] != undefined ? _filterparams['tabType'] : ''));
 
-    //Level3
-    // if (_filterparams['nnrt_id3'] != undefined) {
-    //   this.globalVariableService.setSelectedNodeSelects3((_filterparams['nnrt_id3'] !== undefined ? _filterparams['nnrt_id3'] : undefined));
-    //   this.globalVariableService.setSelectedSourceNodes3((_filterparams['source_node3'] != undefined ? _filterparams['source_node3'] : undefined));
-    //   this.globalVariableService.setSelectedEdgeTypes3((_filterparams['edge_type_id3'] != undefined ? _filterparams['edge_type_id3'] : undefined));
-    //   this.globalVariableService.setSelectedDestinationNodes3((_filterparams['destination_node3'] != undefined ? _filterparams['destination_node3'] : undefined));
-    // }
-
-    this.globalVariableService.setSelectedAllDestinationNodes((_filterparams['destination_node_all'] != undefined ? _filterparams['destination_node_all'] : 0));
-    this.globalVariableService.setSelectedAllDestinationNodes2((_filterparams['destination_node_all2'] != undefined ? _filterparams['destination_node_all2'] : 0));
-    this.globalVariableService.setSelectedAllDestinationNodes3((_filterparams['destination_node_all3'] != undefined ? _filterparams['destination_node_all3'] : 0));
-
-    this.globalVariableService.setTabsSelected((_filterparams['tabType'] != undefined ? "preview" : "preview"));
+    // this.globalVariableService.setSelectedTaForDashboard(_filterparams['ta_id_dashboard']);
+    // this.globalVariableService.setSelectedIndicationForDashboard(_filterparams['di_ids_dashboard']);
     // localStorage.setItem("api_scenarios", JSON.parse(JSON.stringify(this.apiss)));
 
     console.log("here1: ", _filterparams);
-    // this.filterParams = this.globalVariableService.getFilterParams();
-    // console.log("here2: ", this.filterParams);
+    this.filterParams = this.globalVariableService.getFilterParams();
+    console.log("here2: ", this.filterParams);
 
     if (_filterparams['tabType'] == "details") {
-      // this.doFilterApplyTab3.next(undefined);
-      this.router.navigate(['/preview/']);
+      this.doFilterApplyTab3.next(undefined);
+      this.router.navigate(['/dashboard/']);
     }
+
 
     // this.router.navigate(['/modules/active-ingredient/dashboard'], { queryParams: { scenarioId: '1' } });
     // this.router.navigate(['/modules/active-ingredient/dashboard']);
     // this.router.navigate([]).then(result => { window.open(this.link, '_blank'); });
   }
+
 
   ////////// Delete the user scenarios /////////////////
   delUserScenario(id: number) {
@@ -215,18 +227,50 @@ export class UserDashboardComponent implements OnInit {
       };
       this.scenarioService.delUserScenario(this.scenarioDel).subscribe(
         data => {
-          this.showAllScenarioLists();
+          // alert("Favourite deleted Successfully...");
+          // this.scenarioService.getUserScenarios({ user_id: this.currentUser.user_id, module_id: 1 }).subscribe(
+          this.scenarioService.getUserScenarios({ user_id: this.currentUser.user_id }).subscribe(
+            data => {
+              this.result = data;
+              this.scenarios = this.result.scenarios;
+
+              this.scenarioListsTables = [];
+              this.result.scenarios.forEach((event: any) => {
+                var temps: any = {};
+                temps["created_at"] = event.created_at;
+                temps["filter_criteria"] = event.filter_criteria;
+                temps["scenario_name"] = event.scenario_name;
+                temps["id"] = event.id;
+                temps["comments"] = event.comments;
+                temps["user_id"] = event.user_id;
+                temps["user_name"] = event.user_name;
+                temps["visible"] = false;
+                this.scenarioListsTables.push(temps);
+              });
+            },
+            err => {
+              this.loadingDel = false;
+              console.log(err);
+            },
+            () => {
+              this.loadingDel = false;
+              // console.log("finished");
+            }
+          );
         },
         err => {
           alert("Can't delete..");
-          this.loadingDel = false;
+          // this.loadingDel = false;
           console.log(err);
         },
         () => {
-          this.loadingDel = false;
+          // this.loadingDel = false;
         }
       )
     }
   }
+
+
+
 
 }

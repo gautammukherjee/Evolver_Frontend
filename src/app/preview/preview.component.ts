@@ -5,18 +5,18 @@ import { ScenarioService } from '../services/common/scenario.service';
 import { Subject, BehaviorSubject, map, mergeMap, forkJoin } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
 import * as moment from "moment";
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 declare var jQuery: any;
 
 @Component({
-  selector: 'app-event-description',
-  templateUrl: './event-description.component.html',
-  styleUrls: ['./event-description.component.scss'],
+  selector: 'app-preview',
+  templateUrl: './preview.component.html',
+  styleUrls: ['./preview.component.scss'],
   providers: [DatePipe]
 })
-export class EventDescriptionComponent implements OnInit {
+export class PreviewComponent implements OnInit {
   @Input() ProceedDoFilterApply?: Subject<any>; //# Input for ProceedDoFilter is getting from clinical details html
   @Input() currentLevel: any;
   @Input() toggleLevels: any;
@@ -98,17 +98,43 @@ export class EventDescriptionComponent implements OnInit {
   moduleTypes: number = 0;
   scenariosPerUserCount: number = 0;
   private userScenario: any;
-  private userScenarioWithResult: any;
   private currentUser: any = JSON.parse(sessionStorage.getItem('currentUser') || "null");
   loadingScenario: boolean = false;
+  fromScenarioChk: any = null;
+  scenarioName: any = null;
+
+  //All filters here
+  loadingFirstNode = false;
+  loadingFirstSource = false;
+  loadingFirstEdgeType = false;
+  loadingFirstDestination = false;
+  public node_selects1: any = [];
+  public sourceNodesFirst: any = [];
+  public edgeTypesFirst: any = [];
+  public destinationNodesFirst: any = [];
+
+  loadingSecondNode = false;
+  loadingSecondSource = false;
+  loadingSecondEdgeType = false;
+  loadingSecondDestination = false;
+  public node_selects2: any = [];
+  public sourceNodesSecond: any = [];
+  public edgeTypesSecond: any = [];
+  public destinationNodesSecond: any = [];
+
+  loadingThirdNode = false;
+  loadingThirdSource = false;
+  loadingThirdEdgeType = false;
+  loadingThirdDestination = false;
+  public node_selects3: any = [];
+  public sourceNodesThird: any = [];
+  public edgeTypesThird: any = [];
+  public destinationNodesThird: any = [];
+
+
+
   // firstAPI: any;
   // secondAPI: any;
-
-
-  scenarioForm = new FormGroup({
-    filter_name: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(15)]),
-    user_comments: new FormControl('')
-  })
 
   constructor(
     private globalVariableService: GlobalVariableService,
@@ -116,65 +142,85 @@ export class EventDescriptionComponent implements OnInit {
     private scenarioService: ScenarioService,
     private datePipe: DatePipe,
     private modalService: NgbModal,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.filterParams = this.globalVariableService.getFilterParams();
-    // console.log("new Filters1: ", this.filterParams);
+    console.log("new Filters1: ", this.filterParams);
     this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
-    this.getEventDescription(this.filterParams);
+    console.log("new Filters2: ", this.filterParams);
+    this.getEventDescription();
+
+    if (this.filterParams.nnrt_id != undefined)
+      this.getNodeSelects1();
+    if (this.filterParams.source_node != undefined)
+      this.getSourceNode1();
+    if (this.filterParams.edge_type_id != undefined)
+      this.getEdgeType1();
+    if (this.filterParams.destination_node != undefined)
+      this.getDestinationNode1();
+
+    if (this.filterParams.nnrt_id2 != undefined)
+      this.getNodeSelects2();
+    if (this.filterParams.source_node2 != undefined)
+      this.getSourceNode2();
+    if (this.filterParams.edge_type_id2 != undefined)
+      this.getEdgeType2();
+    if (this.filterParams.destination_node2 != undefined)
+      this.getDestinationNode2();
+
+    if (this.filterParams.nnrt_id3 != undefined)
+      this.getNodeSelects3();
+    if (this.filterParams.source_node3 != undefined)
+      this.getSourceNode3();
+    if (this.filterParams.edge_type_id3 != undefined)
+      this.getEdgeType3();
+    if (this.filterParams.destination_node3 != undefined)
+      this.getDestinationNode3();
+
     // this.getEventTotalDescription(this.filterParams);
 
-    this.ProceedDoFilterApply?.subscribe(data => {  // Calling from details, details working as mediator
-      //console.log("eventData: ", data);
-      this.notEmptyPost = true;
-      this.currentPage = 1;
-      if (data === undefined) { // data=undefined true when apply filter from side panel
-        // this.hideCardBody = true;
-        this.filterParams = this.globalVariableService.getFilterParams();
-        this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
-        this.getEventDescription(this.filterParams);
-        // this.getEventTotalDescription(this.filterParams);
-        //console.log("new Filters for articles: ", this.filterParams);
-      }
-    });
+    // this.ProceedDoFilterApply?.subscribe(data => {  // Calling from details, details working as mediator
+    //   //console.log("eventData: ", data);
+    //   this.notEmptyPost = true;
+    //   this.currentPage = 1;
+    //   if (data === undefined) { // data=undefined true when apply filter from side panel
+    //     // this.hideCardBody = true;
+    //     this.filterParams = this.globalVariableService.getFilterParams();
+    //     this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
+    //     this.getEventDescription(this.filterParams);
+    //     // this.getEventTotalDescription(this.filterParams);
+    //     //console.log("new Filters for articles: ", this.filterParams);
+    //   }
+    // });
   }
 
-  // getEventTotalDescription(_filterParams: any) {
-  //   this.filterParams = this.globalVariableService.getFilterParams();
-  //   const firstAPIsFull = this.nodeSelectsService.getMasterListsRevampLevelOne(this.filterParams);
-  //   const secondAPIFull = this.nodeSelectsService.getMasterListsRevampLevelTwo(this.filterParams);
+  getEventDescription() {
+    // console.log("abc = "+JSON.stringify(_filterParams));
 
-  //   // if ((_filterParams.source_node != undefined && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined && _filterParams.destination_node2 == undefined) || ((_filterParams.source_node2 != undefined || _filterParams.destination_node2 != undefined) && (_filterParams.nnrt_id2 != undefined && _filterParams.nnrt_id2 != ""))) {
-  //   if (this.filterParams.source_node != undefined) {
-  //     // this.loadingDesc = true;
-  //     this.masterListsDataLength = 0;
+    let _filterParams: any;
+    // _filterParams = this.globalVariableService.getFilterParams();
+    // console.log("new Filters1: ", this.filterParams);
+    _filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
+    console.log("new Filters22: ", _filterParams);
 
-  //     console.log("filterparams for all records: ", _filterParams);
-  //     this.nodeSelectsService.getAllRecords(this.filterParams).subscribe(
-  //       data => {
-  //         //console.log("data: ", data);
-  //         this.resultNodesTotal = data;
-  //         console.log("Total datas1: ", this.resultNodesTotal);
-  //         this.masterListsDataLength = this.resultNodesTotal.masterListsDataTotal[0].total;
-  //       }
-  //     )
-  //   }
-  // }
 
-  getEventDescription(_filterParams: any) {
-    //console.log("abc = "+_limit.load_value);
+    // if ((_filterParams.source_node != undefined
+    //   && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined && _filterParams.destination_node2 == undefined
+    //   && _filterParams.nnrt_id3 == undefined && _filterParams.source_node3 == undefined && _filterParams.destination_node3 == undefined)
+    //   || (_filterParams.source_node2 != undefined && _filterParams.nnrt_id2 != undefined && _filterParams.nnrt_id3 == undefined && _filterParams.source_node3 == undefined)
+    //   || (_filterParams.source_node3 != undefined && _filterParams.nnrt_id3 != undefined)) {
 
-    if ((_filterParams.source_node != undefined
-      && _filterParams.nnrt_id2 == undefined && _filterParams.source_node2 == undefined && _filterParams.destination_node2 == undefined
-      && _filterParams.nnrt_id3 == undefined && _filterParams.source_node3 == undefined && _filterParams.destination_node3 == undefined)
-      || (_filterParams.source_node2 != undefined && _filterParams.nnrt_id2 != undefined && _filterParams.nnrt_id3 == undefined && _filterParams.source_node3 == undefined)
-      || (_filterParams.source_node3 != undefined && _filterParams.nnrt_id3 != undefined)) {
+    this.fromScenarioChk = localStorage.getItem('cameFromScenario');
+    this.scenarioName = localStorage.getItem('scenarioName');
+
+    if (this.fromScenarioChk == 1) {
       this.loadingDesc = true;
       this.noDataFoundDetails = false;
 
       this.filterParams = this.globalVariableService.getFilterParams();
-      console.log("new data complete: ", this.filterParams);
+      console.log("new data complete in Preview: ", this.filterParams);
 
       ///////////////// Start To get the complete data for level 1 and level 2 /////////////////////////////
       if (_filterParams.nnrt_id != undefined) {
@@ -303,16 +349,23 @@ export class EventDescriptionComponent implements OnInit {
               this.bootstrapTableChart();
             });
       }
+
+      localStorage.removeItem('cameFromScenario');
+      localStorage.removeItem('scenarioName');
+    } else {
+      this.globalVariableService.resetfilters();
+      this.router.navigate(['/user-dashboard/']);
+
     }
-    else if (_filterParams.source_node != undefined) {
-      this.noDataFoundDetails = true;
-      // this.masterListsData = [];
-      // this.loadingDesc = false;
-    }
+    // else if (_filterParams.source_node != undefined) {
+    //   this.noDataFoundDetails = true;
+    //   // this.masterListsData = [];
+    //   // this.loadingDesc = false;
+    // }
   }
 
   bootstrapTableChart() {
-    jQuery('#showEventDescription').bootstrapTable({
+    jQuery('#showEventDescriptionP').bootstrapTable({
       bProcessing: true,
       bServerSide: true,
       pagination: true,
@@ -353,7 +406,7 @@ export class EventDescriptionComponent implements OnInit {
         }
       },
     });
-    jQuery('#showEventDescription').bootstrapTable("load", this.masterListsDataDetailsCombined);
+    jQuery('#showEventDescriptionP').bootstrapTable("load", this.masterListsDataDetailsCombined);
   }
 
   /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -370,26 +423,6 @@ export class EventDescriptionComponent implements OnInit {
       });
     });
   }
-  // reloadDescription() {
-  //   console.log("Event description: ")
-  //   // this.globalVariableService.resetChartFilter();
-  //   this.hideCardBody = !this.hideCardBody;
-  //   this.filterParams = this.globalVariableService.getFilterParams();
-  //   if (!this.hideCardBody)
-  //     this.getEventDescription(this.filterParams);
-  // }
-
-  /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  Commented by Gautam Mukherjee
-  ArticlePopup() is the main function and getArticles() is the callback function. 
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-  // ArticlePopup(edgeNeId: any, sourceNode: string, destinationNode: string, edgeTypesID: number, getArticles_callback: any) {
-  //   this.getEdgeTypesInternally(edgeTypesID);
-  //   //if(this.edgeHere!=""){
-  //   getArticles_callback(edgeNeId, sourceNode, destinationNode, edgeTypesID, this);
-  //   //}
-  // }
-  
 
   ArticlePopup(edgeNeId: any, sourceNode: string, destinationNode: string, edgeTypesID: number, level: number) {
     this.articleHere = [];
@@ -550,46 +583,10 @@ export class EventDescriptionComponent implements OnInit {
     });
   }
 
-  // showPMIDLists(edgeNeId: any, sourceNode: string, destinationNode: string) {
-  //   const edgeNeIdArr = edgeNeId.split(",");
-  //   //console.log(typeof edgeNeIdArr + edgeNeIdArr +edgeNeIdArr[0]);
-  //   var pubmedBaseUrl = "https://www.ncbi.nlm.nih.gov/pubmed/";
-  //   this.nodeSelectsService.getEdgePMIDLists({ 'ne_ids': edgeNeIdArr }).subscribe((pmid: any) => {
-  //     this.loaderEdgeType = false;
-  //     this.resultPMIDLists = pmid;
-  //     console.log(this.resultPMIDLists);
-  //     this.articleHerePMID = this.resultPMIDLists.pmidLists;
-  //     this.articlePMID = [];
-  //     this.articleHerePMID.forEach((event: any) => {
-  //       var temps: any = {};
-  //       temps["source"] = sourceNode;
-  //       temps["destination"] = destinationNode;
-  //       temps["pmid"] = "<a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + event.pmid + "'>" + event.pmid + "</a>";
-  //       temps["publication_date"] = event.publication_date;
-  //       temps["title"] = event.title;
-  //       this.articlePMID.push(temps);
-  //     });
-  //     jQuery('#articles_details_pmid').bootstrapTable({
-  //       bProcessing: true,
-  //       bServerSide: true,
-  //       pagination: true,
-  //       showToggle: true,
-  //       showColumns: true,
-  //       search: true,
-  //       pageSize: 25,
-  //       striped: true,
-  //       showFullscreen: true,
-  //       stickyHeader: true,
-  //       showExport: true,
-  //       data: this.articlePMID
-  //     });
-  //   });
-  // }
-
   onDescScroll() {
     console.log('onScroll Here');
     if (!this.isloading && !this.loadingDesc) {
-      if (this.notscrolly && this.notEmptyPost && this.filterParams['tabType'] == "details") {
+      if (this.notscrolly && this.notEmptyPost && this.filterParams['tabType'] == "preview") {
         console.log('onScroll Here inside');
         // this.spinner.show();
         this.notscrolly = false;
@@ -735,118 +732,320 @@ export class EventDescriptionComponent implements OnInit {
     window.scrollTo({ top: 0 });
   }
 
-  /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  By: Gautam M
-  *** Article with Evidence Data Download Section ***
-  Objective: In backend we'll generate excel with Articles and Evidence data together & Upload the file on S3 bucket.
-  Later on user can download that excel from application.
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-  articlesWithEvidenceData(){
-    //console.log(this.articleList);
-    this.nodeSelectsService.downloadAtricleAndEvidencesData({'articles':this.articleList}).subscribe((p: any) => {
-      let sentences = p; 
-      console.log(JSON.stringify(sentences)); 
-    })
-  }
-  // loadNextDataSetOLD(event: any) {
-  //   //console.log(event.target.value);
-  //   this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": event.target.value, "limitValue": 8000 });
-  //   this.getEventDescription(this.filterParams);
-  // }
-
   captureScenario(userScenario: any) {
-    this.scenarioForm.value.filter_name = "";
-    this.scenarioForm.value.user_comments = "";
     this.userScenario = this.modalService.open(userScenario, { size: 'lg' });
-  }
-
-  saveCaptureScenario() {
-
-    this.loadingScenario = true;
-    let firstNodeLength = this.globalVariableService.getSelectedNodeSelects();
-    let firstSourceNodeLength = this.globalVariableService.getSelectedSourceNodes().length;
-
-    var filterCC = this.globalVariableService.getFilterParams(
-      {
-        'destination_node_all_for_ct': this.globalVariableService.setSelectedAllForCTDestinationNodes([]),
-        'destination_node_all_for_ct2': this.globalVariableService.setSelectedAllForCTDestinationNodes2([]),
-        'destination_node_all_for_ct3': this.globalVariableService.setSelectedAllForCTDestinationNodes3([])
-      }
-    );
-    // var filterCC = this.globalVariableService.getFilterParams();
-    // var filterCC = this.globalVariableService.getFilterParams({ 'ta_id_dashboard': this.globalVariableService.setSelectedTaForDashboard([]), 'di_ids_dashboard': this.globalVariableService.setSelectedIndicationForDashboard([]), 'ta_id': this.globalVariableService.setSelectedTa([]), 'di_ids': this.globalVariableService.setSelectedIndication([]), 'single_ta_id': this.globalVariableService.setSelectedSingleTa([]) });
-    console.log("filterParam: ", filterCC);
-
-    if (firstNodeLength != undefined && firstSourceNodeLength >= 1) {
-
-      this.scenarioService.getPerUserScenarios(this.currentUser).subscribe(
-        data => {
-          this.result = data;
-          this.scenariosPerUserCount = this.result.totalScenariosPerUser[0].count;
-          console.log("scenario per user: ", this.scenariosPerUserCount);
-
-          if (this.scenariosPerUserCount >= 20) {
-            alert("Each user atleast 10 queries are saved.....");
-            // return false;
-          }
-          else {
-            this.scenario = {
-              user_id: this.currentUser,
-              // module_id: this.globalVariableService.getSelectedModules(),
-              // page_id: this.globalVariableService.getSelectedPageType(),
-              filter_criteria: filterCC, //filterCC,
-              filter_name: this.scenarioForm.value.filter_name,
-              user_comments: this.scenarioForm.value.user_comments
-            };
-            console.log("your scenario: ", this.scenario);
-            this.scenarioService.addUserScenario(this.scenario).subscribe(
-              data => {
-                alert("Scenario Saved Successfully...");
-                this.scenarioForm.value.filter_name = "";
-                this.scenarioForm.value.user_comments = "";
-                console.log("name: ", this.scenarioForm.value.filter_name);
-                console.log(data);
-                this.userScenario.close();
-                // this.informatorySecarioExpendedStatus = false;                
-              },
-              err => {
-                alert("Can't save, Data size is large. Reduce it by apply more accurate filters");
-                this.loadingScenario = false;
-                console.log(err);
-              },
-              () => {
-                this.scenarioForm.value.filter_name = "";
-                this.scenarioForm.value.user_comments = "";
-                this.loadingScenario = false;
-              }
-            );
-          }
-        },
-        err => {
-          // this.loading = false;
-          console.log(err);
-        },
-        () => {
-          // this.loading = false;
-        }
-      );
-    } else {
-      this.userScenario.close();
-      alert("Please select atleat one Pair Type and Source Node");
-      //return false;
-    }
-  }
-
-  captureScenarioWithResult(userScenarioWithResult: any) {
-    this.userScenarioWithResult = this.modalService.open(userScenarioWithResult, { size: 'lg' });
   }
 
   closePopup() {
     this.userScenario.close();
   }
 
-  closePopup2() {
-    this.userScenarioWithResult.close();
+
+  ////////// All Filters section /////////////////
+
+  //First Degree All Filters
+
+  //1. Node Filters1
+  public getNodeSelects1() {
+    this.filterParams = this.globalVariableService.getFilterParams({ 'cameFromScenario': this.fromScenarioChk });
+
+    if (this.filterParams.nnrt_id != undefined) {
+      this.loadingFirstNode = true;
+      this.nodeSelectsService.getNodeSelects(this.filterParams) 
+        .subscribe(
+          data => {
+            this.result = data;
+            this.node_selects1 = this.result.nodeSelectsRecords;
+            console.log("node_selects_preview: ", this.node_selects1);
+          },
+          err => {
+            this.loadingFirstNode = false;
+            console.log(err.message)
+          },
+          () => {
+            this.loadingFirstNode = false;
+            console.log("loading finish")
+          }
+        );
+    }
+    else {
+      this.node_selects1 = [];
+      // this.globalVariableService.resetfiltersForLevel1();
+    }
+  }
+  //2. Source Filters1
+  public getSourceNode1() {
+    // this.selectedSourceNodes = [];
+    this.loadingFirstSource = true;
+    this.filterParams = this.globalVariableService.getFilterParams({ 'cameFromScenario': this.fromScenarioChk });
+    console.log("filterparamsSearchSource: ", this.filterParams);
+    // this.params = this.globalVariableService.getFilterParams();
+    this.nodeSelectsService.getSourceNode(this.filterParams)
+      .subscribe(
+        data => {
+          this.result = data;
+          this.sourceNodesFirst = this.result.sourceNodeRecords;
+          // 1. get the json objects
+          console.log("sourceNodesFirst: ", this.sourceNodesFirst);
+        },
+        err => {
+          this.loadingFirstSource = false;
+          console.log(err.message)
+        },
+        () => {
+          this.loadingFirstSource = false;
+          console.log("loading finish")
+        }
+      );
+  }
+  //3. Edge Type Filters1
+  public getEdgeType1() {
+    this.loadingFirstEdgeType = true;
+    this.params = this.globalVariableService.getFilterParams();
+    // this.selectedEdgeTypes = Array.from(this.globalVariableService.getSelectedEdgeTypes());
+
+    this.nodeSelectsService.getEdgeTypeSce1(this.params)
+      .subscribe(
+        data => {
+          this.result = data;
+          this.edgeTypesFirst = this.result.edgeTypeRecords1;
+          console.log("edge Types Group: ", this.edgeTypesFirst);
+        },
+        err => {
+          this.loadingFirstEdgeType = false;
+          console.log(err.message)
+        },
+        () => {
+          this.loadingFirstEdgeType = false;
+          console.log("loading finish")
+        }
+      );
+  }
+  //4. Destination Filters1
+  public getDestinationNode1() {
+    this.loadingFirstDestination = true;
+    this.filterParams = this.globalVariableService.getFilterParams({ 'cameFromScenario': this.fromScenarioChk });
+    console.log("filterparamsSearchSource: ", this.filterParams);
+    // this.params = this.globalVariableService.getFilterParams();
+    this.nodeSelectsService.getDestinationNode(this.filterParams)
+      .subscribe(
+        data => {
+          this.result = data;
+          this.destinationNodesFirst = this.result.destinationNodeRecords;
+          // 1. get the json objects
+          console.log("destinationNodesFirst: ", this.destinationNodesFirst);
+        },
+        err => {
+          this.loadingFirstDestination = false;
+          console.log(err.message)
+        },
+        () => {
+          this.loadingFirstDestination = false;
+          console.log("loading finish")
+        }
+      );
   }
 
+
+  ////////////////////////************Second Degree All Filters*******************///////////////////
+
+  //1. Node Filters 
+  public getNodeSelects2() {
+    this.filterParams = this.globalVariableService.getFilterParams({ 'cameFromScenario': this.fromScenarioChk });
+
+    if (this.filterParams.nnrt_id2 != undefined) {
+      this.loadingSecondNode = true;
+      this.nodeSelectsService.getNodeSelects2(this.filterParams)
+        .subscribe(
+          data => {
+            this.result = data;
+            this.node_selects2 = this.result.nodeSelectsRecords;
+            console.log("node_selects_preview2: ", this.node_selects2);
+          },
+          err => {
+            this.loadingSecondNode = false;
+            console.log(err.message)
+          },
+          () => {
+            this.loadingSecondNode = false;
+            console.log("loading finish")
+          }
+        );
+    }
+    else {
+      this.node_selects2 = [];
+      // this.globalVariableService.resetfiltersForLevel1();
+    }
+  }
+  //2. Source Filters
+  public getSourceNode2() {
+    // this.selectedSourceNodes = [];
+    this.loadingSecondSource = true;
+    this.filterParams = this.globalVariableService.getFilterParams({ 'cameFromScenario': this.fromScenarioChk });
+    console.log("filterparamsSearchSource: ", this.filterParams);
+    // this.params = this.globalVariableService.getFilterParams();
+    this.nodeSelectsService.getSourceNode2(this.filterParams)
+      .subscribe(
+        data => {
+          this.result = data;
+          this.sourceNodesSecond = this.result.sourceNodeRecords2;
+          // 1. get the json objects
+          console.log("sourceNodesSecond: ", this.sourceNodesSecond);
+        },
+        err => {
+          this.loadingSecondSource = false;
+          console.log(err.message)
+        },
+        () => {
+          this.loadingSecondSource = false;
+          console.log("loading finish")
+        }
+      );
+
+  }
+  //3. Edge Type Filters2
+  public getEdgeType2() {
+    this.loadingSecondEdgeType = true;
+    this.params = this.globalVariableService.getFilterParams();
+    // this.selectedEdgeTypes = Array.from(this.globalVariableService.getSelectedEdgeTypes());
+
+    this.nodeSelectsService.getEdgeTypeSce2(this.params)
+      .subscribe(
+        data => {
+          this.result = data;
+          this.edgeTypesSecond = this.result.edgeTypeRecords2;
+          console.log("edge Types 2: ", this.edgeTypesSecond);
+        },
+        err => {
+          this.loadingSecondEdgeType = false;
+          console.log(err.message)
+        },
+        () => {
+          this.loadingSecondEdgeType = false;
+          console.log("loading finish")
+        }
+      );
+  }
+  //4. Destination Filters2
+  public getDestinationNode2() {
+    this.loadingSecondDestination = true;
+    this.filterParams = this.globalVariableService.getFilterParams({ 'cameFromScenario': this.fromScenarioChk });
+    this.nodeSelectsService.getDestinationNode2(this.filterParams)
+      .subscribe(
+        data => {
+          this.result = data;
+          this.destinationNodesSecond = this.result.destinationNodeRecords2;
+          console.log("destinationNodesSecond: ", this.destinationNodesSecond);
+        },
+        err => {
+          this.loadingSecondDestination = false;
+          console.log(err.message)
+        },
+        () => {
+          this.loadingSecondDestination = false;
+          console.log("loading finish")
+        }
+      );
+  }
+
+  //Third Degree All Filters
+
+  //1. Node Filters 
+  public getNodeSelects3() {
+    this.filterParams = this.globalVariableService.getFilterParams({ 'cameFromScenario': this.fromScenarioChk });
+
+    if (this.filterParams.nnrt_id3 != undefined) {
+      this.loadingThirdNode = true;
+      this.nodeSelectsService.getNodeSelects3(this.filterParams)
+        .subscribe(
+          data => {
+            this.result = data;
+            this.node_selects3 = this.result.nodeSelectsRecords;
+            console.log("node_selects_preview3: ", this.node_selects3);
+          },
+          err => {
+            this.loadingThirdNode = false;
+            console.log(err.message)
+          },
+          () => {
+            this.loadingThirdNode = false;
+            console.log("loading finish")
+          }
+        );
+    }
+    else {
+      this.node_selects3 = [];
+      // this.globalVariableService.resetfiltersForLevel1();
+    }
+  }
+  //2. Source Filters
+  getSourceNode3() {
+    // this.selectedSourceNodes = [];
+    this.loadingThirdSource = true;
+    this.filterParams = this.globalVariableService.getFilterParams({ 'cameFromScenario': this.fromScenarioChk });
+    console.log("filterparamsSearchSource: ", this.filterParams);
+    // this.params = this.globalVariableService.getFilterParams();
+    this.nodeSelectsService.getSourceNode3(this.filterParams)
+      .subscribe(
+        data => {
+          this.result = data;
+          this.sourceNodesThird = this.result.sourceNodeRecords3;
+          // 1. get the json objects
+          console.log("sourceNodesThird: ", this.sourceNodesThird);
+        },
+        err => {
+          this.loadingThirdSource = false;
+          console.log(err.message)
+        },
+        () => {
+          this.loadingThirdSource = false;
+          console.log("loading finish")
+        }
+      );
+
+  }
+  //3. Edge Type Filters3
+  public getEdgeType3() {
+    this.loadingThirdEdgeType = true;
+    this.params = this.globalVariableService.getFilterParams();
+    // this.selectedEdgeTypes = Array.from(this.globalVariableService.getSelectedEdgeTypes());
+
+    this.nodeSelectsService.getEdgeTypeSce2(this.params)
+      .subscribe(
+        data => {
+          this.result = data;
+          this.edgeTypesThird = this.result.edgeTypeRecords3;
+          console.log("edge Types 3: ", this.edgeTypesThird);
+        },
+        err => {
+          this.loadingThirdEdgeType = false;
+          console.log(err.message)
+        },
+        () => {
+          this.loadingThirdEdgeType = false;
+          console.log("loading finish")
+        }
+      );
+  }
+  //4. Destination Filters3
+  public getDestinationNode3() {
+    this.loadingThirdDestination = true;
+    this.filterParams = this.globalVariableService.getFilterParams({ 'cameFromScenario': this.fromScenarioChk });
+    this.nodeSelectsService.getDestinationNode3(this.filterParams)
+      .subscribe(
+        data => {
+          this.result = data;
+          this.destinationNodesThird = this.result.destinationNodeRecords3;
+          console.log("destinationNodesThird: ", this.destinationNodesThird);
+        },
+        err => {
+          this.loadingThirdDestination = false;
+          console.log(err.message)
+        },
+        () => {
+          this.loadingThirdDestination = false;
+          console.log("loading finish")
+        }
+      );
+  }
 }

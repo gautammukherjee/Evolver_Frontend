@@ -1,10 +1,12 @@
 <app-header></app-header>
 
+
+
 <div class="user-dashboard-wrapper">
-    <div class="page-title">
+    <div class="page-title bg-secondary bg-gradient text-light">
         <h3>My Dashboard</h3>
     </div>
-    <div class="filter-bar">
+    <!-- <div class="filter-bar">
         <div class="query-selector">
             <select name="" id="" class="form-select">
                 <option value="">Self Query</option>
@@ -19,61 +21,57 @@
 
             <i class="bi bi-trash3 text-danger"></i>
         </div>
-    </div>
+    </div> -->
 
-    <div class="table-responsive query-table">
+    <!-- <div class="overlay text-center" *ngIf="loadingSenarios">
+        <img src="../../assets/images/loader_big.gif" />
+    </div> -->
+    <!-- <div class="overlay text-center" *ngIf="loadingDel">
+        <img src="../../assets/images/loader_big.gif" />
+    </div> -->
+
+    <div class="loading-custom" *ngIf="loadingSenarios"><span class="fa fa-spinner fa-spin"></span>&nbsp;Loading...</div>
+    <div class="loading-custom" *ngIf="loadingDel"><span class="fa fa-spinner fa-spin"></span>&nbsp;Loading...</div>
+
+    <div *ngIf="scenarioListsTables.length" class="col-md-3 col-lg-3 col-xl-3 col-sm-6 col-xs-12" style="padding: 10px 0px 10px 0px;">
+        <input type="text" name="search" class="form-control" [(ngModel)]="searchText"
+            placeholder="Search with Query Name" style="background-color: #f4f5f5;font-size: 13px">
+    </div>
+    <div *ngIf="scenarioListsTables.length" class="table-responsive query-table">
         <table class="table">
             <thead>
                 <tr>
-                    <th>Saved Query</th>
-                    <th class="text-center">Share</th>
-                    <th class="text-center">Edit</th>
-                    <th class="text-center">Receive Alert</th>
-                    <th class="text-center">Delete</th>
+                    <th>Query Name</th>
+                    <th>Username</th>
+                    <th>Created</th>
+                    <th>Comments</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Target 1 - disease 1 association</td>
-                    <td class="text-center"><i class="bi bi-share"></i></td>
-                    <td class="text-center"><i class="bi bi-pencil-square"></i></td>
-                    <td class="text-center"><i class="bi bi-envelope-at"></i></td>
-                    <td class="text-center"><i class="bi bi-trash3 text-danger"></i></td>
-                </tr>
-                <tr>
-                    <td>Target - TA 1 association</td>
-                    <td class="text-center"><i class="bi bi-share"></i></td>
-                    <td class="text-center"><i class="bi bi-pencil-square"></i></td>
-                    <td class="text-center"><i class="bi bi-envelope-at"></i></td>
-                    <td class="text-center"><i class="bi bi-trash3 text-danger"></i></td>
-                </tr>
-                <tr>
-                    <td>Target 1 - disease 1 association</td>
-                    <td class="text-center"><i class="bi bi-share"></i></td>
-                    <td class="text-center"><i class="bi bi-pencil-square"></i></td>
-                    <td class="text-center"><i class="bi bi-envelope-at"></i></td>
-                    <td class="text-center"><i class="bi bi-trash3 text-danger"></i></td>
-                </tr>
-                <tr>
-                    <td>Target - TA 1 association</td>
-                    <td class="text-center"><i class="bi bi-share"></i></td>
-                    <td class="text-center"><i class="bi bi-pencil-square"></i></td>
-                    <td class="text-center"><i class="bi bi-envelope-at"></i></td>
-                    <td class="text-center"><i class="bi bi-trash3 text-danger"></i></td>
-                </tr>
-                <tr>
-                    <td>Target 1 - disease 1 association</td>
-                    <td class="text-center"><i class="bi bi-share"></i></td>
-                    <td class="text-center"><i class="bi bi-pencil-square"></i></td>
-                    <td class="text-center"><i class="bi bi-envelope-at"></i></td>
-                    <td class="text-center"><i class="bi bi-trash3 text-danger"></i></td>
-                </tr>
-                <tr>
-                    <td>Target - TA 1 association</td>
-                    <td class="text-center"><i class="bi bi-share"></i></td>
-                    <td class="text-center"><i class="bi bi-pencil-square"></i></td>
-                    <td class="text-center"><i class="bi bi-envelope-at"></i></td>
-                    <td class="text-center"><i class="bi bi-trash3 text-danger"></i></td>
+                <tr *ngFor="let scenario of scenarioListsTables | FilterFilterPipe:searchText">
+                    <td>
+                        <span (click)="selectscenario(scenario,$event)" routerLinkActive="active"
+                            class="text-primary cursor-pointer">{{scenario.scenario_name}}
+                    </span>
+                    </td>
+                    <td >{{scenario.user_name}}</td>
+                    <td >{{scenario.created_at | date: 'MM-dd-yyyy'}}</td>
+                    <td >
+                        <!-- {{ (scenario.user_comments.length>15)? (scenario.user_comments |
+              slice:0:15)+'..':(scenario.user_comments) }} -->
+                        <div class="containerComment" [class.show]="scenario.visible">
+                            {{scenario.comments}}
+                        </div>
+                        <!-- <button (click)="scenario.visible = !scenario.visible">{{ scenario.visible ? '&laquo;&laquo;':
+                        '&raquo;&raquo;'
+                        }}</button> -->
+                    </td>
+                    <td >
+                        <i class="bi bi-trash3 text-danger cursor-pointer" [ngStyle]="{'pointer-events' : currentUser.user_id!=scenario.user_id ? 'none' : ''}"
+                        (click)="delUserScenario(scenario.id)"></i>
+                        <!-- <input type="radio" name="scenario" [value]="scenario" (change)="selectscenario(scenario,$event)"> -->
+                    </td>
                 </tr>
             </tbody>
         </table>
