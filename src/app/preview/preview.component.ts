@@ -751,7 +751,7 @@ export class PreviewComponent implements OnInit {
 
     if (this.filterParams.nnrt_id != undefined) {
       this.loadingFirstNode = true;
-      this.nodeSelectsService.getNodeSelects(this.filterParams)
+      this.nodeSelectsService.getNodeSelects(this.filterParams) 
         .subscribe(
           data => {
             this.result = data;

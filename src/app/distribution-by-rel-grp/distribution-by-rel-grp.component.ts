@@ -39,9 +39,19 @@ export class DistributionByRelGrpComponent implements OnInit {
   graphData: any = [];
   graphData2: any = [];
   graphData3: any = [];
+  levelOneData: any = "";
+  levelTwoData: any = "";
+  levelThreeData: any = "";
+  finalLevelData: any = [];
   drillDownData: any = [];
   drillDownData2: any = [];
   drillDownData3: any = [];
+  levelOneDrillData: any = "";
+  levelTwoDrillData: any = "";
+  levelThreeDrillData: any = "";
+  finalLevelDrillData: any = [];
+
+
 
   firstLoadApiResult: any;
   secondLoadApiResult: any;
@@ -267,6 +277,31 @@ export class DistributionByRelGrpComponent implements OnInit {
               }
               console.log("graphData3: ", this.graphData3);
 
+              this.levelOneData = "";
+              if (this.graphData.length > 0) {
+                this.levelOneData = [{ name: 'Level1', data: this.graphData, color: '#bc5090' }]
+              }
+              this.levelTwoData = "";
+              if (this.graphData2.length > 0) {
+                this.levelTwoData = [{ name: 'Level2', data: this.graphData2, color: '#58508d' }]
+              }
+
+              this.levelThreeData = "";
+              if (this.graphData3.length > 0) {
+                this.levelThreeData = [{ name: 'Level3', data: this.graphData3, color: '#003f5c' }]
+              }
+
+              if (this.levelOneData != "") { // First Level
+                this.finalLevelData = this.levelOneData
+              }
+              if (this.levelTwoData != "") { // Second Level
+                this.finalLevelData = this.finalLevelData.concat(this.levelTwoData)
+              }
+              if (this.levelThreeData != "") { // Third Level
+                this.finalLevelData = this.finalLevelData.concat(this.levelThreeData)
+              }
+              console.log("Final data: ", this.finalLevelData);
+
               this.loadingChart = false;
               this.loadingMessage = false;
               this.drawColumnChart();
@@ -367,19 +402,9 @@ export class DistributionByRelGrpComponent implements OnInit {
       //   data: this.graphData
       // }],
 
-      series: [{
-        name: 'Level1',
-        data: this.graphData,
-        color: '#f7786b'
-      }, {
-        name: 'Level2',
-        data: this.graphData2,
-        color: '#618685'
-      }, {
-        name: 'Level3',
-        data: this.graphData3,
-        color: '#80ced6'
-      }]
+      series:
+        this.finalLevelData
+
 
     });
 
@@ -540,6 +565,32 @@ export class DistributionByRelGrpComponent implements OnInit {
           }
           console.log("drillDownData3: ", this.drillDownData3);
 
+          this.levelOneDrillData = "";
+          if (this.drillDownData.length > 0) {
+            this.levelOneDrillData = [{ name: 'Level1', data: this.drillDownData, color: '#bc5090' }]
+          }
+
+          this.levelTwoDrillData = "";
+          if (this.drillDownData2.length > 0) {
+            this.levelTwoDrillData = [{ name: 'Level2', data: this.drillDownData2, color: '#58508d' }]
+          }
+
+          this.levelThreeDrillData = "";
+          if (this.drillDownData3.length > 0) {
+            this.levelThreeDrillData = [{ name: 'Level3', data: this.drillDownData3, color: '#003f5c' }]
+          }
+
+          if (this.levelOneDrillData != "") { // First Level
+            this.finalLevelDrillData = this.levelOneDrillData
+          }
+          if (this.levelTwoDrillData != "") { // Second Level
+            this.finalLevelDrillData = this.finalLevelDrillData.concat(this.levelTwoDrillData)
+          }
+          if (this.levelThreeDrillData != "") { // Third Level
+            this.finalLevelDrillData = this.finalLevelDrillData.concat(this.levelThreeDrillData)
+          }
+          console.log("Final Drill data: ", this.finalLevelDrillData);
+
           this.loadingChart = false;
           this.drawColumnChartDrillDown();
         },
@@ -584,7 +635,19 @@ export class DistributionByRelGrpComponent implements OnInit {
         },
       },
       legend: {
-        enabled: false
+        align: 'left',
+        x: 250,
+        verticalAlign: 'top',
+        y: 70,
+        floating: true,
+        // backgroundColor:
+        // Highcharts.defaultOptions.legend.backgroundColor || 'white',
+        borderColor: '#CCC',
+        borderWidth: 1,
+        shadow: false,
+        // labelFormatter: function() {
+        //   return categories[0]
+        // },
       },
       tooltip: {
         format: '<b>{key}</b><br/>{series.name}: {y}<br/>' +
@@ -610,19 +673,20 @@ export class DistributionByRelGrpComponent implements OnInit {
       //   data: this.drillDownData
       // }],      
 
-      series: [{
-        name: 'Level1',
-        data: this.drillDownData,
-        color: '#f7786b'
-      }, {
-        name: 'Level2',
-        data: this.drillDownData2,
-        color: '#618685'
-      }, {
-        name: 'Level3',
-        data: this.drillDownData3,
-        color: '#80ced6'
-      }]
+      series: this.finalLevelDrillData
+      // [{
+      //   name: 'Level1',
+      //   data: this.drillDownData,
+      //   color: '#f7786b'
+      // }, {
+      //   name: 'Level2',
+      //   data: this.drillDownData2,
+      //   color: '#618685'
+      // }, {
+      //   name: 'Level3',
+      //   data: this.drillDownData3,
+      //   color: '#80ced6'
+      // }]
     });
   }
 

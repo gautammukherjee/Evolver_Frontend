@@ -216,7 +216,7 @@ export class NodeSelectsService {
   downloadAtricleAndEvidencesData(params:any){
     return this.http.post(this.API_URL + 'downloadAtricleAndEvidencesData', params, httpOptions)
   }
-
+  
   getEdgeTypeSce1(params: any) {
     return this.http.post(this.API_URL + 'getEdgeTypeSce1', params, httpOptions);
   }

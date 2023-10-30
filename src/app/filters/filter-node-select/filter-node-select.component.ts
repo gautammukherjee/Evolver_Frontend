@@ -89,6 +89,7 @@ export class FilterNodeSelectComponent implements OnInit {
 
   public getNodeSelects(event: any, type: any) {
     this.loading = true;
+    this.params = this.globalVariableService.getFilterParams();
     this.filterParams = this.globalVariableService.getFilterParams();
     // this.diseaseCheck = this.params['di_ids']; // if disease_id is checked
     // this.diseaseCheckCT = this.params['ct_di_ids']; // if disease_id is checked

@@ -795,8 +795,7 @@ export class EventDescriptionComponent implements OnInit {
                 console.log("name: ", this.scenarioForm.value.filter_name);
                 console.log(data);
                 this.userScenario.close();
-                // this.informatorySecarioExpendedStatus = false;
-                
+                // this.informatorySecarioExpendedStatus = false;                
               },
               err => {
                 alert("Can't save, Data size is large. Reduce it by apply more accurate filters");

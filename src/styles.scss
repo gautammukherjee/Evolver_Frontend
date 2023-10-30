@@ -11,6 +11,10 @@ body {
     z-index: 9999999;
 }
 
+.cursor-pointer{
+    cursor: pointer;
+}
+
 .login-wrapper {
     background-color: #F3F3F3;
     background-size: cover;
@@ -626,6 +630,26 @@ body {
     .fix-sticky {
         top: 277px !important;
         z-index: auto;
+    }
+}
+
+.preview-data-table{
+    .custom-fixed-header-table{
+        &.level1{
+            .fix-sticky{
+                top:107px !important;
+            }
+        }
+        &.level2{
+            .fix-sticky{
+                top:150px !important;
+            }
+        }
+        &.level3{
+            .fix-sticky{
+                top:193px !important;
+            }
+        }
     }
 }
 

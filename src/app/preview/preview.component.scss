@@ -37,16 +37,16 @@
                 max-width: calc(25% - 10px);
                 padding: 3px 0px;
 
-                select{
-                    padding:5px 10px;
+                select {
+                    padding: 5px 10px;
                     border: none;
                 }
 
                 .sidebar-card {
-                    .dropdown-toggle{
+                    .dropdown-toggle {
                         background-color: #fff;
                         border-radius: 4px;
-                        padding:5px 10px;
+                        padding: 5px 10px;
                     }
 
                     .heading {
@@ -86,140 +86,33 @@
     }
 }
 
-.navbar-light .navbar-nav .nav-link {
-	color: #1E2661 !important;
-}
+.preview-data-table {
+    padding-top: 5px;
 
-.two-side-wrapper {
-	display: flex;
-	background: #f8f9fa;
-}
+    .custom-fixed-header-table {
+        h5 {
+            position: absolute;
+            top: 12px;
 
-.two-side-wrapper .left-filter-panel {
-	width: 330px;
-	min-width: 330px;
-	max-width: 330px;
-	padding: 20px;
-}
+            span {
+                padding: 5px;
+                background-color: #B765A3;
+                color: #fff;
+                border-radius: 5px;
+                font-size: 11px;
+            }
+        }
+    }
 
-.two-side-wrapper .right-detail-panel {
-	width: 100%;
-	padding: 20px;
-}
+    &.level1 {
+        margin-top: 64px;
+    }
 
-.bs-bars {
-	display: none;
-}
+    &.level2 {
+        margin-top: 64px;
+    }
 
-// .event-desc-wrapper {
-// 	max-height: calc(100vh - 239px);
-// 	overflow: auto;
-// }
-
-.card-panel-box {
-	margin-bottom: 20px;
-	// box-shadow: 0px 1px 5px #ddd;
-	background: #FFF;
-}
-
-.card-panel-box .card-panel-box-heading {
-	font-size: 17px;
-	padding: 7px 15px;
-	background: #7880BA;
-	color: #fff;
-}
-
-.card-panel-box .card-panel-box-detail {
-	padding: 20px;
-}
-
-.card-panel-box .card-panel-box-detail .search-input {
-	margin-bottom: 10px;
-}
-
-.card-panel-box .card-panel-box-detail .search-input input:focus {
-	border: 1px solid #187ebc;
-	outline: none;
-	box-shadow: none;
-}
-
-.card-panel-box .card-panel-box-detail .checkbox-group .form-check {
-	margin-bottom: 3px;
-}
-
-.heat-maps {
-	padding: 20px;
-	display: flex;
-	justify-content: space-between;
-}
-
-.heat-maps .card-panel-box {
-	width: 32%;
-}
-
-.nowrap {
-	white-space: nowrap;
-}
-
-.overlay {
-	position: fixed;
-	height: 100%;
-	width: 100%;
-	top: 65px;
-	left: 0px;
-	background-color: rgba(255, 255, 255, 0.7);
-	z-index: 9999;
-	padding-top: 10px;
-}
-
-.search-results {
-	height: 100%;
-}
-
-.loadMoreBtn {
-	margin: 0px 0;
-	padding: 5px;
-	width: 150px;
-	border-radius: 15px;
-	border: none;
-	background-color: #ffca28;
-	cursor: pointer;
-}
-
-.saveFilterBtn {
-	padding: 4px;
-    width: 87px;
-    border-radius: 15px;
-    border: none;
-    background-color: #ffca28;
-    cursor: pointer;
-    font-size: 13px;
-    color: #000;
-}
-
-.level1-title {
-    background-color: #6C7572;
-    border-radius: 5px;
-    padding: 1px !important;
-    margin: 2px;
-    position: absolute;
-    font-size: 12px;
-}
-
-.level2-title {
-    background-color: #6C7572;
-    border-radius: 5px;
-    padding: 1px !important;
-    margin: 2px 188px;
-    font-size: 12px;
-    position: absolute;
-}
-
-.level3-title {
-    background-color: #6C7572;
-    border-radius: 5px;
-    padding: 1px !important;
-    margin: 2px 390px;
-    font-size: 12px;
-    position: absolute;
+    &.level3 {
+        margin-top: 64px;
+    }
 }
