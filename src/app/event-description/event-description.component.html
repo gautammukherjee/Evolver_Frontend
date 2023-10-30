@@ -99,7 +99,7 @@
             </div>
 
             <div class="text-center" *ngIf="isloading"><img src="./assets/images/spinner_small_loader.gif"></div>
-            <div class="text-center" style="float: left;position: absolute;right: 608px;">
+            <div class="text-center">
                 <button *ngIf="!isloading && notEmptyPost && firstCompleteApiResult!=undefined" (click)="onDescScroll()"
                     class="loadMoreBtn">Load More</button>
             </div>
@@ -109,14 +109,14 @@
                 <span class="fa fa-save"></span> Save Query
               </a> -->
 
-            <div style="position: absolute;float: left;right: 474px;"
+            <div class="float-end" 
                 *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">
-                <button class="saveFilterBtn" (click)="captureScenario(userScenario)">Save Query</button>
+                <button class="btn btn-primary" (click)="captureScenario(userScenario)">Save Query</button>
             </div>
-            <div style="position: absolute;float: left;right: 341px;"
+            <!-- <div style="position: absolute;float: left;right: 341px;"
                 *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">
                 <button class="saveFilterBtn" (click)="captureScenarioWithResult(userScenarioWithResult)">Save Result</button>
-            </div>
+            </div> -->
 
         </div>
 
