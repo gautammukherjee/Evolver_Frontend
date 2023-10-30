@@ -225,43 +225,46 @@
 
 
     <!-- Result set Shown here -->
-    <div class="inner-wrapper px-3">
+    <div class="preview-data-table px-3" [ngClass]="node_selects3.length>0 ? 'level3' : !node_selects3.length && node_selects2.length>0 ? 'level2' : 'level1'">
         <div class="search-options">
             <div class="card-panel-box">
                 <div class="customTable" style="border: 0px solid #ddd; min-height:400px;">
 
-                    <div class="text-muted fs-2 text-center mb-4" *ngIf="(masterListsDataDetailsLengthLevelOne==0)">
+                    <!-- <div class="text-muted fs-2 text-center mb-4" *ngIf="(masterListsDataDetailsLengthLevelOne==0)">
                         Please
                         select
-                        with user dashboard</div>
+                        with user dashboard</div> -->
 
                     <div class="card-panel-box-detail p-0">
                         <div class="customTable " id="eventListTable">
                             <div class="overlay text-center" *ngIf="loadingDesc">
                                 <img style="margin:185px 653px;" src="../../assets/images/loader_big.gif" />
                             </div>
-                            <div class="table-responsive custom-fixed-header-table table table-striped table-hover"
-                                [ngClass]="toggleLevels == false ? 'hiddenLevels' : currentLevel == '1' ? 'level1' : currentLevel == 2 ? 'level2' : 'level3'">
+                            <div class="table-responsive position-relative custom-fixed-header-table table table-striped table-hover"
+                                [ngClass]="node_selects3.length>0 ? 'level3' : !node_selects3.length && node_selects2.length>0 ? 'level2' : 'level1'">
 
-                                <div>
-                                    <span class="float-start text-white p-1 mr-2 level1-title"
-                                        *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">First
-                                        Degree Combinations
-                                        <span
-                                            class="badge bg-primary text-white">{{masterListsDataDetailsLengthLevelOne}}</span></span>
-                                    <span class="float-start text-white p-1 level2-title"
-                                        *ngIf="secondLoadApiResult!=undefined && masterListsDataDetailsLengthLevelTwo > 0">Second
-                                        Degree Combinations
-                                        <span
-                                            class="badge bg-primary text-white">{{masterListsDataDetailsLengthLevelTwo}}</span></span>
-                                    <span class="float-start text-white p-1 level3-title"
-                                        *ngIf="thirdLoadApiResult!=undefined && masterListsDataDetailsLengthLevelThree > 0">Third
-                                        Degree Combinations
-                                        <span
-                                            class="badge bg-primary text-white">{{masterListsDataDetailsLengthLevelThree}}</span></span>
-                                </div>
+                                <h5>
+                                    <span *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">{{scenarioName | titlecase}}</span>
+                                    <div class="d-inline-block ms-3">
+                                        <span class="btn btn-primary bg-primary btn-sm text-white p-1 mr-2 level1-title"  
+                                            *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">First
+                                            Degree Combinations
+                                            <span
+                                                class="badge bg-light text-primary">{{masterListsDataDetailsLengthLevelOne}}</span></span>
+                                        <span class="btn btn-primary btn-sm bg-primary text-white p-1 level2-title ms-2"
+                                            *ngIf="secondLoadApiResult!=undefined && masterListsDataDetailsLengthLevelTwo > 0">Second
+                                            Degree Combinations
+                                            <span
+                                                class="badge bg-light text-primary">{{masterListsDataDetailsLengthLevelTwo}}</span></span>
+                                        <span class="btn btn-primary btn-sm bg-primary text-white p-1 level3-title ms-2"
+                                            *ngIf="thirdLoadApiResult!=undefined && masterListsDataDetailsLengthLevelThree > 0">Third
+                                            Degree Combinations
+                                            <span
+                                                class="badge bg-light text-primary">{{masterListsDataDetailsLengthLevelThree}}</span></span>
+                                    </div>
+                                </h5>
 
-                                                    <div>{{scenarioName}}</div>
+                                <div style="position: absolute;top: 48px;font-size: 12px;"><a [routerLink]="['/user-dashboard']">Go to Dashboard</a></div>
 
                                 <table id="showEventDescriptionP" data-toolbar="#toolbar" data-search="true"
                                     data-show-export="true" data-export-options='{"fileName": "evolverAI"}'
