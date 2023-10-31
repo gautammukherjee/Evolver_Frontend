@@ -810,7 +810,7 @@ export class EventDescriptionComponent implements OnInit {
                 // this.informatorySecarioExpendedStatus = false;                
               },
               err => {
-                alert("Please choose another scenario name, this one is already exists");
+                alert("Please choose another scenario name, this one is already exists or Data size is large. Reduce it by apply more accurate filters");
                 this.loadingScenario = false;
                 console.log(err);
               },
