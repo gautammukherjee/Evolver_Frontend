@@ -810,7 +810,7 @@ export class EventDescriptionComponent implements OnInit {
                 // this.informatorySecarioExpendedStatus = false;                
               },
               err => {
-                alert("Can't save, Data size is large. Reduce it by apply more accurate filters");
+                alert("Please choose another scenario name, this one is already exists");
                 this.loadingScenario = false;
                 console.log(err);
               },
