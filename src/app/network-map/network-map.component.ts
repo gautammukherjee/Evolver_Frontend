@@ -277,23 +277,15 @@ export class NetworkMapComponent implements OnInit {
                       let levelSourceColor;
                       let levelTargetColor;
                       if (event.level == 1) {
-                        levelSourceColor = '#f08542';
-                        levelTargetColor = '#ffb16b';
+                        levelSourceColor = '#BF63A2';
+                        levelTargetColor = '#85C9E8';
                       } else if (event.level == 2) {
-                        levelSourceColor = '#bc5090';
-                        levelTargetColor = '#ff6361';
+                        levelSourceColor = '#8ceb34';
+                        levelTargetColor = '#e4cf15';
                       } else {
-                        levelSourceColor = '#ffa600';
-                        levelTargetColor = '#a0a825';
+                        levelSourceColor = '#00FFFF';
+                        levelTargetColor = '#f7786b';
                       }
-
-                      // // this.filterParams
-                      // if (event.destinationnode == event.sourcenode && event.level==1 && event.level==2) {
-                      //   levelSourceColor = '#000';
-                      //   levelTargetColor = '#c2c435';
-                      // }
-
-
                       this.sourcenodeData.push({
                         id: Math.floor(event.sourcenode), name: event.sourcenode_name, neIds: event.ne_ids, edgeTypeIds: event.edge_type_ids, colorNode: levelSourceColor, shapeType: 'round-hexagon', nodeType: 'source'
                       });
