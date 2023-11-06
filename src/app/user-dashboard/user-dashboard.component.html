@@ -9,8 +9,8 @@
     <!-- <div class="filter-bar">
         <div class="query-selector">
             <select name="" id="" class="form-select">
-                <option value="">Self Query</option>
-                <option value="">Shared Query</option>
+                <option value="">With Resultset</option>
+                <option value="">Without Resultset</option>
             </select>
         </div>
         <div class="items-deletion">
@@ -18,7 +18,6 @@
                 <input type="checkbox" class="form-check-input mt-0" id="selectAll">
                 <label class="form-check-label" for="selectAll">Select All to Delete</label>
             </div>
-
             <i class="bi bi-trash3 text-danger"></i>
         </div>
     </div> -->
@@ -41,21 +40,26 @@
         <table class="table">
             <thead>
                 <tr>
+                    <th>Sr No</th>
                     <th>Query Name</th>
                     <th>Username</th>
+                    <th>URL</th>
                     <th>Created</th>
                     <th>Comments</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let scenario of scenarioListsTables | FilterFilterPipe:searchText">
+                <tr *ngFor="let scenario of scenarioListsTables | FilterFilterPipe:searchText; let i = index;">
+                    <td >{{i+1}}</td>
                     <td>
                         <span (click)="selectscenario(scenario,$event)" routerLinkActive="active"
                             class="text-primary cursor-pointer">{{scenario.scenario_name}}
                     </span>
                     </td>
                     <td >{{scenario.user_name}}</td>
+                    <td *ngIf="scenario.uploaded_file_url!=null"><a href="{{scenario.uploaded_file_url}}">Download Saved Result</a></td>
+                    <td *ngIf="scenario.uploaded_file_url==null">&nbsp;</td>
                     <td >{{scenario.created_at | date: 'MM-dd-yyyy'}}</td>
                     <td >
                         <!-- {{ (scenario.user_comments.length>15)? (scenario.user_comments |

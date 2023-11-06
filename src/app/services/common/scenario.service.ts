@@ -20,6 +20,9 @@ export class ScenarioService {
   addUserScenario(params: any) {
     return this.http.post(API_URL + 'addUserScenario', params, httpOptions);
   }
+  updateUserScenario(params: any) {
+    return this.http.post(API_URL + 'updateUserScenario', params, httpOptions);
+  }
   getUserScenarios(params: any) {
 
     return this.http.post(API_URL + 'getUserScenarios', params, httpOptions);

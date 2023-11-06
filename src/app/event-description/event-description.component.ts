@@ -7,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 import * as moment from "moment";
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import * as XLSX from 'xlsx';
 
 declare var jQuery: any;
 
@@ -30,6 +31,8 @@ export class EventDescriptionComponent implements OnInit {
   resultNodesTotal: any = [];
   resultPMID: any = [];
   pmidCount: any;
+  myDate = new Date();
+  myDateValue: any;
 
   loadingDesc = false;
   params: any;
@@ -98,17 +101,24 @@ export class EventDescriptionComponent implements OnInit {
   moduleTypes: number = 0;
   scenariosPerUserCount: number = 0;
   private userScenario: any;
-  private userScenarioWithResult: any;
+  // private userScenarioWithResult: any;
   private currentUser: any = JSON.parse(sessionStorage.getItem('currentUser') || "null");
   loadingScenario: boolean = false;
   // firstAPI: any;
   // secondAPI: any;
 
+  wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' };
+
+  fileName: string = '';
+
 
   scenarioForm = new FormGroup({
     filter_name: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(15)]),
-    user_comments: new FormControl('')
+    user_comments: new FormControl(''),
+    result_set_checked: new FormControl(0)
   })
+
+
 
   constructor(
     private globalVariableService: GlobalVariableService,
@@ -116,7 +126,9 @@ export class EventDescriptionComponent implements OnInit {
     private scenarioService: ScenarioService,
     private datePipe: DatePipe,
     private modalService: NgbModal,
-  ) { }
+  ) {
+    this.myDateValue = this.datePipe.transform(this.myDate, 'dd-MM-yyyy hh:mm:ss a');
+  }
 
   ngOnInit() {
     this.filterParams = this.globalVariableService.getFilterParams();
@@ -389,7 +401,7 @@ export class EventDescriptionComponent implements OnInit {
   //   getArticles_callback(edgeNeId, sourceNode, destinationNode, edgeTypesID, this);
   //   //}
   // }
-  
+
 
   ArticlePopup(edgeNeId: any, sourceNode: string, destinationNode: string, edgeTypesID: number, level: number) {
     this.articleHere = [];
@@ -741,11 +753,11 @@ export class EventDescriptionComponent implements OnInit {
   Objective: In backend we'll generate excel with Articles and Evidence data together & Upload the file on S3 bucket.
   Later on user can download that excel from application.
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-  articlesWithEvidenceData(){
+  articlesWithEvidenceData() {
     //console.log(this.articleList);
-    this.nodeSelectsService.downloadAtricleAndEvidencesData({'articles':this.articleList}).subscribe((p: any) => {
-      let sentences = p; 
-      console.log(JSON.stringify(sentences)); 
+    this.nodeSelectsService.downloadAtricleAndEvidencesData({ 'articles': this.articleList }).subscribe((p: any) => {
+      let sentences = p;
+      console.log(JSON.stringify(sentences));
     })
   }
   // loadNextDataSetOLD(event: any) {
@@ -755,11 +767,12 @@ export class EventDescriptionComponent implements OnInit {
   // }
 
   captureScenario(userScenario: any) {
-    this.scenarioForm.value.filter_name = "";
-    this.scenarioForm.value.user_comments = "";
+    // this.scenarioForm.value.filter_name = "";
+    // this.scenarioForm.value.user_comments = "";
     this.userScenario = this.modalService.open(userScenario, { size: 'lg' });
   }
 
+  ///////// ************* SAVE the scenario *******************/////////////////////
   saveCaptureScenario() {
 
     this.loadingScenario = true;
@@ -775,7 +788,8 @@ export class EventDescriptionComponent implements OnInit {
     );
     // var filterCC = this.globalVariableService.getFilterParams();
     // var filterCC = this.globalVariableService.getFilterParams({ 'ta_id_dashboard': this.globalVariableService.setSelectedTaForDashboard([]), 'di_ids_dashboard': this.globalVariableService.setSelectedIndicationForDashboard([]), 'ta_id': this.globalVariableService.setSelectedTa([]), 'di_ids': this.globalVariableService.setSelectedIndication([]), 'single_ta_id': this.globalVariableService.setSelectedSingleTa([]) });
-    console.log("filterParam: ", filterCC);
+    console.log("filterParam in preview: ", filterCC);
+    // console.log("data in preview: ", this.masterListsDataDetailsCombined);
 
     if (firstNodeLength != undefined && firstSourceNodeLength >= 1) {
 
@@ -790,23 +804,95 @@ export class EventDescriptionComponent implements OnInit {
             // return false;
           }
           else {
+
+            let detailsLists: Array<object> = [];
+            for (var i = 0; i < this.masterListsDataDetailsCombined.length; i++) {
+              detailsLists.push({
+                'news_id': this.masterListsDataDetailsCombined[i].news_id,
+                'sourcenode': this.masterListsDataDetailsCombined[i].sourcenode_name,
+                'destinationnode': this.masterListsDataDetailsCombined[i].destinationnode_name,
+                'level': this.masterListsDataDetailsCombined[i].level,
+                'PMIDCount': this.masterListsDataDetailsCombined[i].pmidCount
+              });
+            }
+
             this.scenario = {
               user_id: this.currentUser,
               // module_id: this.globalVariableService.getSelectedModules(),
               // page_id: this.globalVariableService.getSelectedPageType(),
               filter_criteria: filterCC, //filterCC,
               filter_name: this.scenarioForm.value.filter_name,
-              user_comments: this.scenarioForm.value.user_comments
+              user_comments: this.scenarioForm.value.user_comments,
+              result_set_checked: this.scenarioForm.value.result_set_checked,
+              result_data_set: detailsLists
             };
             console.log("your scenario: ", this.scenario);
+
             this.scenarioService.addUserScenario(this.scenario).subscribe(
               data => {
+                const datas: any = data;
+                // console.log("dataFromSave: ", datas.scenarioLastId); // GET the last insert Scenario ID
+
+                //Start Result set is also stored in the excel format 
+                // if (this.scenarioForm.value.result_set == 1) {
+                //   //Save or download the result set into excel format
+                //   console.log("here all result set: ", this.masterListsDataDetailsCombined);
+
+                // let detailsLists: Array<object> = [];
+                // for (var i = 0; i < this.masterListsDataDetailsCombined.length; i++) {
+                //   detailsLists.push({
+                //     'news_id': this.masterListsDataDetailsCombined[i].news_id,
+                //     'sourcenode': this.masterListsDataDetailsCombined[i].sourcenode_name,
+                //     'destinationnode': this.masterListsDataDetailsCombined[i].destinationnode_name,
+                //     'level': this.masterListsDataDetailsCombined[i].level,
+                //     'PMIDCount': this.masterListsDataDetailsCombined[i].pmidCount
+                //   });
+                // }
+                //   /* generate worksheet */
+                //   const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(detailsLists);
+
+                //   /* generate workbook and add the worksheet */
+                //   const wb: XLSX.WorkBook = XLSX.utils.book_new();
+                //   XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+                //   /* save to file */
+                //   // console.log("values: ", this.myDateValue);
+                //   this.fileName = this.scenarioForm.value.filter_name + "_" + this.myDateValue + '.xlsx';
+                //   const xcelFileName = XLSX.writeFile(wb, this.fileName);
+                //   console.log("fileName: ", this.fileName);
+                //   console.log("xcelFileName: ", xcelFileName);
+
+                //   ////////// START UPDATE the scenario id and update the url with associative scenario id ////////////////////
+                //   const scenarioDetails = {
+                //     user_id: this.currentUser,
+                //     scenario_id: datas.scenarioLastId,
+                //     fileName: this.fileName
+                //   }
+                //   this.scenarioService.updateUserScenario(scenarioDetails).subscribe(
+                //     data2 => {
+                //       console.log("dataFromUpdate: ", data2); // GET the last insert Scenario ID
+                //       alert("Scenario Saved Successfully and URL updated successfully...");
+                //     },
+                //     err => {
+                //       alert("Something is wrong with your update of URL");
+                //       this.loadingScenario = false;
+                //       console.log(err);
+                //     },
+                //     () => {
+                //       this.loadingScenario = false;
+                //     }
+                //   )
+                // } 
+                ////////// END UPDATE the scenario id and update the url with associative scenario id ////////////////////
+                // else {
+                //   alert("Scenario Saved Successfully...");
+                // }
+
                 alert("Scenario Saved Successfully...");
-                this.scenarioForm.value.filter_name = "";
-                this.scenarioForm.value.user_comments = "";
-                console.log("name: ", this.scenarioForm.value.filter_name);
-                console.log(data);
                 this.userScenario.close();
+                // this.scenarioForm.value.filter_name = "";
+                // this.scenarioForm.value.user_comments = "";
+                // console.log(data);                
                 // this.informatorySecarioExpendedStatus = false;                
               },
               err => {
@@ -817,9 +903,11 @@ export class EventDescriptionComponent implements OnInit {
               () => {
                 this.scenarioForm.value.filter_name = "";
                 this.scenarioForm.value.user_comments = "";
+                this.scenarioForm.value.result_set_checked = 0;
                 this.loadingScenario = false;
               }
             );
+
           }
         },
         err => {
@@ -837,16 +925,16 @@ export class EventDescriptionComponent implements OnInit {
     }
   }
 
-  captureScenarioWithResult(userScenarioWithResult: any) {
-    this.userScenarioWithResult = this.modalService.open(userScenarioWithResult, { size: 'lg' });
-  }
+  // captureScenarioWithResult(userScenarioWithResult: any) {
+  //   this.userScenarioWithResult = this.modalService.open(userScenarioWithResult, { size: 'lg' });
+  // }
 
   closePopup() {
     this.userScenario.close();
   }
 
-  closePopup2() {
-    this.userScenarioWithResult.close();
-  }
+  // closePopup2() {
+  //   this.userScenarioWithResult.close();
+  // }
 
 }

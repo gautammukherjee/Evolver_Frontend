@@ -265,8 +265,9 @@
                                 </h5>
 
                                 <div style="position: absolute;top: 48px;font-size: 12px;"><a [routerLink]="['/user-dashboard']">Go to Dashboard</a></div>
+                                <div style="position: absolute;top: 48px;left:102px;font-size: 12px;" *ngIf="uploadedFileUrl!='null'"><a href="{{uploadedFileUrl}}">Download Saved Result</a></div>
 
-                                <table id="showEventDescriptionP" data-toolbar="#toolbar" data-search="true"
+                                <table id="showEventDescriptionP" data-toolbar="#toolbar" data-search="true" 
                                     data-show-export="true" data-export-options='{"fileName": "evolverAI"}'
                                     data-show-columns="true" data-page-size="100" data-filter-control="true"
                                     data-page-list="[10, 25, 50, 100, all]" class="table-striped">

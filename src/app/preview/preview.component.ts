@@ -102,6 +102,7 @@ export class PreviewComponent implements OnInit {
   loadingScenario: boolean = false;
   fromScenarioChk: any = null;
   scenarioName: any = null;
+  uploadedFileUrl: any = null;
 
   //All filters here
   loadingFirstNode = false;
@@ -214,6 +215,7 @@ export class PreviewComponent implements OnInit {
 
     this.fromScenarioChk = localStorage.getItem('cameFromScenario');
     this.scenarioName = localStorage.getItem('scenarioName');
+    this.uploadedFileUrl = localStorage.getItem('uploadedFileUrl');
 
     if (this.fromScenarioChk == 1) {
       this.loadingDesc = true;
@@ -352,6 +354,7 @@ export class PreviewComponent implements OnInit {
 
       localStorage.removeItem('cameFromScenario');
       localStorage.removeItem('scenarioName');
+      localStorage.removeItem('uploadedFileUrl');
     } else {
       this.globalVariableService.resetfilters();
       this.router.navigate(['/user-dashboard/']);

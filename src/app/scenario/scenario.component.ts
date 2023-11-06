@@ -128,6 +128,7 @@ export class ScenarioComponent implements OnInit {
           temps["user_id"] = event.user_id;
           temps["user_name"] = event.user_name;
           temps["visible"] = false;
+          temps["downloaded_file_url"] = event.downloaded_file_url;
           this.scenarioListsTables.push(temps);
         });
 
@@ -158,6 +159,7 @@ export class ScenarioComponent implements OnInit {
     localStorage.setItem("scenarioID", '1');
     localStorage.setItem("cameFromScenario", '1');
     localStorage.setItem("scenarioName", scenario.scenario_name);
+    localStorage.setItem("downloadUrl", scenario.uploaded_file_url);
 
     /////////// From date fields ///////////
     // var fromDateFields = _filterparams['from_date'].split('-');

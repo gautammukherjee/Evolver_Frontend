@@ -115,6 +115,7 @@ export class UserDashboardComponent implements OnInit {
           temps["user_id"] = event.user_id;
           temps["user_name"] = event.user_name;
           temps["visible"] = false;
+          temps["uploaded_file_url"] = event.uploaded_file_url;
           this.scenarioListsTables.push(temps);
         });
         console.log("scenario lists: ", this.scenarioListsTables);
@@ -142,6 +143,7 @@ export class UserDashboardComponent implements OnInit {
     localStorage.setItem("scenarioID", '1');
     localStorage.setItem("cameFromScenario", '1');
     localStorage.setItem("scenarioName", scenario.scenario_name);
+    localStorage.setItem("uploadedFileUrl", scenario.uploaded_file_url);
 
     /////////// From date fields ///////////
     // var fromDateFields = _filterparams['from_date'].split('-');
