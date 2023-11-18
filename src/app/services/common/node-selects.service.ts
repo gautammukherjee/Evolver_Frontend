@@ -227,4 +227,8 @@ export class NodeSelectsService {
     return this.http.post(this.API_URL + 'getEdgeTypeSce3', params, httpOptions);
   }
 
+  getArticleSentencesScenario(params: any) {
+    return this.http.post(this.API_URL + 'getArticleSentencesScenario', params, httpOptions);
+  }
+
 }

@@ -198,6 +198,7 @@
                                 data-filter-control="true" data-page-list="[10, 25, 50, 100, All]">
                                 <thead>
                                     <tr>
+                                        <th data-field="state" data-checkbox="true">ID</th>
                                         <th data-field="id" data-sortable="true" width="2%">
                                             #
                                         </th>
@@ -247,6 +248,11 @@
         </div>
 
         <div class="modal-footer">
+            <!-- <div class="float-end" *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">
+                <button class="btn btn-primary" (click)="captureScenario(userScenario)">Save Query</button>
+            </div> -->
+
+            <a class="btn btn-primary" (click)="captureSentences(userSentences)">Download & Save</a>
             <!-- <a class="btn btn-primary " (click)="articlesWithEvidenceData()">Download</a> -->
             <a class="btn btn-primary " (click)="scrollTop()">Go to top</a>
         </div>
@@ -310,6 +316,77 @@
                     </div>
                     <div class="pull-left">
                         <button class="btn btn-danger" (click)="closePopup()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- comment from piyush -->
+</ng-template>
+<!-- SAVE scenario with result set -->
+
+
+<!--------------------- SAVE article sentences ----------------------------->
+<ng-template #userSentences let-c="close" let-d="dismiss">
+
+    <div class="overlay text-center" *ngIf="loadingArticleSaved">
+        <img style="margin:185px 653px;" src="../../assets/images/loader_big.gif" />
+    </div>
+
+    <form autocomplete="nope" class="form-signin" [formGroup]="sentenceForm">
+        <!-- <form #myForm="ngForm" method="post" class="form" role="form"> -->
+        <div class="modal-header blue_bg_hdr modal-lg">
+            <h4 class="modal-title">Save Article Sentences</h4>
+            <button class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body white_bg without_bord_rad">
+            <div class="row">
+                <div class="col-md-12 bottam-buffer home_tiles">
+                    <label for="filter1_name">Scenario Name</label>
+                    <input type="text" ngModel class="form-control" formControlName="filter1_name" name="filter1_name"
+                        value="" autocomplete="off" (input)="onScenarioChoose('input')">
+                </div>
+                <span class="text-danger" *ngIf="sentenceForm.controls['filter1_name'].hasError('minlength')">
+                    Name minimum 5 characters long.
+                </span>
+                <span class="text-danger" *ngIf="sentenceForm.controls['filter1_name'].hasError('maxlength')">
+                    Name maximum 15 characters long.
+                </span>
+            </div>
+            <div>OR</div>
+            <div class="row">
+                <div class="col-md-12 bottam-buffer home_tiles">
+                    <label for="filter1_name">Select Existing Scenario</label>
+                    <span *ngIf="loadingArticleScenarioLists"><img src="./assets/images/spinner_small_loader.gif"></span>
+                    <select ngModel class="form-control" formControlName="scenario_exist_name" name="scenario_exist_name" (change)="onScenarioChoose('dropdown')">
+                        <option value="" selected>--Select existing scenario--</option>
+                        <option *ngFor="let scenarionName of scenarioExistName" [value]="scenarionName['id']">
+                            {{scenarionName['name']}}</option>
+                    </select>
+                </div>               
+            </div>
+            <br />
+
+            <div class="row">
+                <div class="col-md-12 bottam-buffer home_tiles">
+                    <label for="old_pwd">Comments</label>
+                    <textarea id="user1_comments" ngModel formControlName="user1_comments" name="user1_comments"
+                        class="form-control">
+                    </textarea>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12 bottam-buffer home_tiles">
+                    <div class="pull-left" style="margin-right: 10px; float:left;">
+                        <button (click)="articlesWithEvidenceData()" type="submit" class="btn btn-success btn-block mb-4"
+                            [disabled]="sentenceForm.invalid">Save</button>
+                    </div>
+                    <div class="pull-left">
+                        <button class="btn btn-danger" (click)="closePopup2()">Close</button>
                     </div>
                 </div>
             </div>

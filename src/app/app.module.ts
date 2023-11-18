@@ -67,6 +67,7 @@ import { CtIndexComponent } from './ct/ct-index/ct-index.component';
 import { CtInvestigatorRelsByStatsComponent } from './ct/ct-investigator-rels-by-stats/ct-investigator-rels-by-stats.component';
 import { ScenarioComponent } from './scenario/scenario.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
+import { ArticleSentenceDashboardComponent } from './article-sentence-dashboard/article-sentence-dashboard.component';
 import { PreviewComponent } from './preview/preview.component';
 
 @NgModule({
@@ -118,7 +119,8 @@ import { PreviewComponent } from './preview/preview.component';
     FilterDestinationNodeLevel3Component,
     ScenarioComponent,
     UserDashboardComponent,
-    PreviewComponent
+    PreviewComponent,
+    ArticleSentenceDashboardComponent
   ],
   imports: [
     BrowserModule,
