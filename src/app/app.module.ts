@@ -27,6 +27,7 @@ import { SourceNodePipe } from './pipes/sourceNodePipe';
 import { DestinationNodePipe } from './pipes/destinationNodePipe';
 import { EdgeTypePipe } from './pipes/edgeTypePipe';
 import { FilterDataPipe } from './pipes/filterDataPipe';
+import { FilterArticlePipe } from './pipes/filterArticlePipe';
 import { FilterNodeSelectComponent } from './filters/filter-node-select/filter-node-select.component';
 import { FilterNodeSelectLevel2Component } from './filters/filter-node-select-level2/filter-node-select-level2.component';
 import { FilterNodeSelectLevel3Component } from './filters/filter-node-select-level3/filter-node-select-level3.component';
@@ -100,6 +101,7 @@ import { PreviewComponent } from './preview/preview.component';
     EdgeTypePipe,
     SafePipe,
     FilterDataPipe,
+    FilterArticlePipe,
     BioInfomaticsComponent,
     EventChartComponent,
     DistributionByRelGrpComponent,
@@ -153,7 +155,8 @@ import { PreviewComponent } from './preview/preview.component';
     SourceNodePipe,
     DestinationNodePipe,
     EdgeTypePipe,
-    FilterDataPipe
+    FilterDataPipe,
+    FilterArticlePipe
   ],
   schemas: [],
   providers: [

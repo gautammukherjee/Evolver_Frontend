@@ -29,7 +29,7 @@ export class ArticleSentenceDashboardComponent implements OnInit {
 
   private maximum: any;
   show = false;
-  searchText: any;
+  searchText2: any;
 
   doFilterApplyTab3: Subject<any> = new Subject();  // ## P= Parent
 
