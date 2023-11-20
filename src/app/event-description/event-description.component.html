@@ -1,6 +1,9 @@
 <!-- <div class="search-options event-desc-wrapper" infinite-scroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="50"
     (scrolled)="onDescScroll()" [scrollWindow]="false"> -->
-<div class="search-options">
+    <div class="save-query-top-btn" *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">
+        <button class="btn btn-primary btn-sm" (click)="captureScenario(userScenario)">Save Query</button>
+    </div>
+    <div class="search-options">
     <div class="card-panel-box">
         <div class="customTable" style="border: 0px solid #ddd; min-height:400px;">
             <div class="text-muted fs-2 text-center mb-4" *ngIf="(masterListsDataDetailsLengthLevelOne==0)">Please
@@ -110,7 +113,7 @@
               </a> -->
 
             <div class="float-end" *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">
-                <button class="btn btn-primary" (click)="captureScenario(userScenario)">Save Query</button>
+                <button class="btn btn-primary btn-sm" (click)="captureScenario(userScenario)">Save Query</button>
             </div>
             <!-- <div style="position: absolute;float: left;right: 341px;"
                 *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">
