@@ -963,7 +963,7 @@ export class EventDescriptionComponent implements OnInit {
       this.downloadData = jQuery("#articles_details").bootstrapTable('getSelections');
       console.log("selected articles: ", this.downloadData);
     } else {
-      alert("Atleast 1 article are selected in your lists.....");
+      alert("Atleast 1 article are select.....");
     }
 
   }
