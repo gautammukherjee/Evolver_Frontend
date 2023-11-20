@@ -208,7 +208,7 @@ export class ArticleSentenceDashboardComponent implements OnInit {
 
   ////////// Delete the user scenarios /////////////////
   delArticleSentencesScenario(id: number) {
-    if (confirm("Are you sure to delete2!")) {
+    if (confirm("Are you sure to delete!")) {
       this.loadingDel = true;
 
       this.scenarioDel = {
