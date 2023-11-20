@@ -27,6 +27,7 @@ import { SourceNodePipe } from './pipes/sourceNodePipe';
 import { DestinationNodePipe } from './pipes/destinationNodePipe';
 import { EdgeTypePipe } from './pipes/edgeTypePipe';
 import { FilterDataPipe } from './pipes/filterDataPipe';
+import { FilterArticlePipe } from './pipes/filterArticlePipe';
 import { FilterNodeSelectComponent } from './filters/filter-node-select/filter-node-select.component';
 import { FilterNodeSelectLevel2Component } from './filters/filter-node-select-level2/filter-node-select-level2.component';
 import { FilterNodeSelectLevel3Component } from './filters/filter-node-select-level3/filter-node-select-level3.component';
@@ -67,6 +68,7 @@ import { CtIndexComponent } from './ct/ct-index/ct-index.component';
 import { CtInvestigatorRelsByStatsComponent } from './ct/ct-investigator-rels-by-stats/ct-investigator-rels-by-stats.component';
 import { ScenarioComponent } from './scenario/scenario.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
+import { ArticleSentenceDashboardComponent } from './article-sentence-dashboard/article-sentence-dashboard.component';
 import { PreviewComponent } from './preview/preview.component';
 
 @NgModule({
@@ -99,6 +101,7 @@ import { PreviewComponent } from './preview/preview.component';
     EdgeTypePipe,
     SafePipe,
     FilterDataPipe,
+    FilterArticlePipe,
     BioInfomaticsComponent,
     EventChartComponent,
     DistributionByRelGrpComponent,
@@ -118,7 +121,8 @@ import { PreviewComponent } from './preview/preview.component';
     FilterDestinationNodeLevel3Component,
     ScenarioComponent,
     UserDashboardComponent,
-    PreviewComponent
+    PreviewComponent,
+    ArticleSentenceDashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -151,7 +155,8 @@ import { PreviewComponent } from './preview/preview.component';
     SourceNodePipe,
     DestinationNodePipe,
     EdgeTypePipe,
-    FilterDataPipe
+    FilterDataPipe,
+    FilterArticlePipe
   ],
   schemas: [],
   providers: [

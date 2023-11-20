@@ -1,10 +1,8 @@
 <app-header></app-header>
 
-
-
 <div class="user-dashboard-wrapper">
     <div class="page-title bg-secondary bg-gradient text-light">
-        <h3>My Dashboard</h3>
+        <h3>My Article Sentences</h3>
     </div>
     <!-- <div class="filter-bar">
         <div class="query-selector">
@@ -33,7 +31,7 @@
     <div class="loading-custom" *ngIf="loadingDel"><span class="fa fa-spinner fa-spin"></span>&nbsp;Loading...</div>
 
     <div *ngIf="scenarioListsTables.length" class="col-md-3 col-lg-3 col-xl-3 col-sm-6 col-xs-12" style="padding: 10px 0px 10px 0px;">
-        <input type="text" name="search" class="form-control" [(ngModel)]="searchText"
+        <input type="text" name="search" class="form-control" [(ngModel)]="searchText2"
             placeholder="Search with Query Name" style="background-color: #f4f5f5;font-size: 13px">
     </div>
     <div *ngIf="scenarioListsTables.length" class="table-responsive query-table">
@@ -42,7 +40,7 @@
                 <tr>
                     <th>Sr No</th>
                     <th>Query Name</th>
-                    <th>Username</th>
+                    <!-- <th>Username</th> -->
                     <th>URL</th>
                     <th>Created</th>
                     <th>Comments</th>
@@ -50,14 +48,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let scenario of scenarioListsTables | FilterFilterPipe:searchText; let i = index;">
+                <tr *ngFor="let scenario of scenarioListsTables | ArticleFilterPipe:searchText2; let i = index;">
                     <td >{{i+1}}</td>
                     <td>
-                        <span (click)="selectscenario(scenario,$event)" routerLinkActive="active"
-                            class="text-primary cursor-pointer">{{scenario.scenario_name}}
+                        <span
+                            class="">{{scenario.name}}
                     </span>
                     </td>
-                    <td >{{scenario.user_name}}</td>
+                    <!-- <td >{{scenario.user_name}}</td> -->
                     <td *ngIf="scenario.uploaded_file_url!=null"><a href="{{scenario.uploaded_file_url}}">Download Saved Result</a></td>
                     <td *ngIf="scenario.uploaded_file_url==null">NA</td>
                     <td >{{scenario.created_at | date: 'MM-dd-yyyy'}}</td>
@@ -65,7 +63,7 @@
                         <!-- {{ (scenario.user_comments.length>15)? (scenario.user_comments |
               slice:0:15)+'..':(scenario.user_comments) }} -->
                         <div class="containerComment" [class.show]="scenario.visible">
-                            {{scenario.comments}}
+                            {{scenario.description}}
                         </div>
                         <!-- <button (click)="scenario.visible = !scenario.visible">{{ scenario.visible ? '&laquo;&laquo;':
                         '&raquo;&raquo;'
@@ -73,7 +71,7 @@
                     </td>
                     <td >
                         <i class="bi bi-trash3 text-danger cursor-pointer" [ngStyle]="{'pointer-events' : currentUser.user_id!=scenario.user_id ? 'none' : ''}"
-                        (click)="delUserScenario(scenario.id)"></i>
+                        (click)="delArticleSentencesScenario(scenario.id)"></i>
                         <!-- <input type="radio" name="scenario" [value]="scenario" (change)="selectscenario(scenario,$event)"> -->
                     </td>
                 </tr>

@@ -51,4 +51,15 @@ export class ScenarioService {
     return this.http.post(API_URL + 'delUserScenario', params, httpOptions);
   }
 
+  //////////
+  getUserArticleSentencesDashboard(params: any) {
+    return this.http.post(API_URL + 'getUserArticleSentencesDashboard', params, httpOptions);
+  }
+
+  delArticleSentencesScenario(params: any) {
+    return this.http.post(API_URL + 'delArticleSentencesScenario', params, httpOptions);
+  }
+
+
+
 }

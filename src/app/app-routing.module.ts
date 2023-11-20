@@ -11,6 +11,7 @@ import { EventChartComponent } from './event-chart/event-chart.component';
 import { ScenarioComponent } from './scenario/scenario.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import { PreviewComponent } from './preview/preview.component';
+import { ArticleSentenceDashboardComponent } from './article-sentence-dashboard/article-sentence-dashboard.component';
 
 const routes: Routes = [
   {
@@ -49,6 +50,10 @@ const routes: Routes = [
   {
     path: 'user-dashboard',
     component: UserDashboardComponent
+  },
+  {
+    path: 'article-sentence-dashboard',
+    component: ArticleSentenceDashboardComponent
   },
   {
     path: 'preview',

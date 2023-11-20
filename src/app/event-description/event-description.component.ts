@@ -83,6 +83,7 @@ export class EventDescriptionComponent implements OnInit {
   currentPage: number = 1;
   itemsPerPage: number = 1000;
   public isloading: boolean = false;
+  public loadingArticleSaved: boolean = false;
   loaderEvidence = false;
   noDataFoundDetails: boolean = false;
 
@@ -95,21 +96,25 @@ export class EventDescriptionComponent implements OnInit {
   firstScrollApiResult: any;
   secondScrollApiResult: any;
   thirdScrollApiResult: any;
+  scenarioExistName: any;
 
-  scenarioVar: any;
   scenario: object = {};
+  articleSentencesScenario: object = {};
   moduleTypes: number = 0;
   scenariosPerUserCount: number = 0;
   private userScenario: any;
+  private userSentences: any;
   // private userScenarioWithResult: any;
   private currentUser: any = JSON.parse(sessionStorage.getItem('currentUser') || "null");
   loadingScenario: boolean = false;
+  loadingArticleScenarioLists = false;
   // firstAPI: any;
   // secondAPI: any;
 
   wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' };
 
   fileName: string = '';
+  downloadData: any = [];
 
 
   scenarioForm = new FormGroup({
@@ -117,8 +122,11 @@ export class EventDescriptionComponent implements OnInit {
     user_comments: new FormControl(''),
     result_set_checked: new FormControl(0)
   })
-
-
+  sentenceForm = new FormGroup({
+    filter1_name: new FormControl('', [Validators.required]),
+    scenario_exist_name: new FormControl('', [Validators.required]),
+    user1_comments: new FormControl(''),
+  })
 
   constructor(
     private globalVariableService: GlobalVariableService,
@@ -131,6 +139,7 @@ export class EventDescriptionComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this.filterParams = this.globalVariableService.getFilterParams();
     // console.log("new Filters1: ", this.filterParams);
     this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
@@ -287,7 +296,7 @@ export class EventDescriptionComponent implements OnInit {
 
               this.masterListsDataDetailsLoaded = [];
               let j = 1;
-              this.masterListsData.forEach((event: any) => {
+              this.masterListsData.forEach((event: any, index: any) => {
                 var temps: any = {};
                 //Get the Edge Type Name
                 const regex = /[{}]/g;
@@ -297,7 +306,7 @@ export class EventDescriptionComponent implements OnInit {
                 const edgeTypeNeIds = event.ne_ids;
                 const edgeTypeNeIdsPost = edgeTypeNeIds.replace(regex, '');
                 // temps["news_id"] = event.news_id;
-                temps["news_id"] = j;
+                temps["news_id"] = (index + 1);
                 temps["sourcenode_name"] = event.sourcenode_name;
                 temps["destinationnode_name"] = event.destinationnode_name;
                 temps["level"] = event.level;
@@ -308,7 +317,6 @@ export class EventDescriptionComponent implements OnInit {
                 temps["edgeNeId"] = edgeTypeNeIdsPost;
                 temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";
                 this.masterListsDataDetailsLoaded.push(temps);
-                j++;
               });
               this.masterListsDataDetailsCombined = this.masterListsDataDetailsLoaded;
               console.log("Total Combined Load Data: ", this.masterListsDataDetailsCombined);
@@ -415,11 +423,12 @@ export class EventDescriptionComponent implements OnInit {
       this.articleHere = this.result.pmidListsSentence;
       this.articleList = [];
       var i = 1;
-      this.articleHere.forEach((event: any) => {
+      this.articleHere.forEach((event: any, index: any) => {
         var temps: any = {};
-        temps["id"] = i;
+        temps["id"] = (index + 1);
         temps["source"] = sourceNode;
         temps["destination"] = destinationNode;
+        temps["pubmed_id"] = event.pmid;
         temps["pmid"] = "<a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + event.pmid + "'>" + event.pmid + "</a>";
         temps["publication_date"] = event.publication_date;
         temps["title"] = event.title;
@@ -463,7 +472,7 @@ export class EventDescriptionComponent implements OnInit {
               //console.log(row.ne_id);
 
               this.loaderEvidence = true;
-              this.nodeSelectsService.getEvidenceData({ 'ne_id': row.ne_id }).subscribe((p: any) => {
+              this.nodeSelectsService.getEvidenceData({ 'ne_id': row.ne_id, 'pubmed_id': row.pubmed_id }).subscribe((p: any) => {
                 sentences = p;
                 //console.log(JSON.stringify(sentences));
                 if (sentences.evidence_data.length == 0) {
@@ -703,7 +712,7 @@ export class EventDescriptionComponent implements OnInit {
 
               this.masterListsDataDetailsExtra = [];
               let j = (this.masterListsDataDetailsCombined.length + 1);
-              this.masterListsData.forEach((event: any) => {
+              this.masterListsData.forEach((event: any, index: any) => {
                 var temps: any = {};
                 //Get the Edge Type Name
                 const regex = /[{}]/g;
@@ -714,7 +723,7 @@ export class EventDescriptionComponent implements OnInit {
                 const edgeTypeNeIdsPost = edgeTypeNeIds.replace(regex, '');
                 //console.log(edgeTypeNeIdsPost);
                 // temps["news_id"] = event.news_id;
-                temps["news_id"] = j;
+                temps["news_id"] = (index + 1);
                 temps["sourcenode_name"] = event.sourcenode_name;
                 temps["destinationnode_name"] = event.destinationnode_name;
                 temps["level"] = event.level;
@@ -725,7 +734,7 @@ export class EventDescriptionComponent implements OnInit {
                 temps["edgeNeId"] = edgeTypeNeIdsPost;
                 temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";
                 this.masterListsDataDetailsExtra.push(temps);
-                j++;
+                // j++;
               });
               console.log("New data Scroll Added: ", this.masterListsDataDetailsExtra);
               this.masterListsDataDetailsCombined = this.masterListsDataDetailsCombined.concat(this.masterListsDataDetailsExtra);
@@ -747,19 +756,6 @@ export class EventDescriptionComponent implements OnInit {
     window.scrollTo({ top: 0 });
   }
 
-  /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  By: Gautam M
-  *** Article with Evidence Data Download Section ***
-  Objective: In backend we'll generate excel with Articles and Evidence data together & Upload the file on S3 bucket.
-  Later on user can download that excel from application.
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-  articlesWithEvidenceData() {
-    //console.log(this.articleList);
-    this.nodeSelectsService.downloadAtricleAndEvidencesData({ 'articles': this.articleList }).subscribe((p: any) => {
-      let sentences = p;
-      console.log(JSON.stringify(sentences));
-    })
-  }
   // loadNextDataSetOLD(event: any) {
   //   //console.log(event.target.value);
   //   this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": event.target.value, "limitValue": 8000 });
@@ -936,5 +932,116 @@ export class EventDescriptionComponent implements OnInit {
   // closePopup2() {
   //   this.userScenarioWithResult.close();
   // }
+
+  /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  By: Gautam M
+  *** Article with Evidence Data Download Section ***
+  Objective: In backend we'll generate excel with Articles and Evidence data together & Upload the file on S3 bucket.
+  Later on user can download that excel from application.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+  captureSentences(userSentences: any) {
+
+    this.sentenceForm.controls['scenario_exist_name'].value == ''
+    this.sentenceForm.controls['scenario_exist_name'].enable();
+    this.sentenceForm.controls['filter1_name'].value == ''
+    this.sentenceForm.controls['filter1_name'].enable();
+
+    //GET the scenario exist name
+    this.loadingArticleScenarioLists = true;
+    this.nodeSelectsService.getArticleSentencesScenario(this.currentUser).subscribe(
+      data => {
+        this.scenarioExistName = data;
+        this.scenarioExistName = this.scenarioExistName.scenario_exist_lists;
+        console.log("scenario lists: ", this.scenarioExistName);
+        this.loadingArticleScenarioLists = false;
+      }
+    );
+
+    if (jQuery("#articles_details").bootstrapTable('getSelections').length > 0) {
+      this.userSentences = this.modalService.open(userSentences, { size: 'lg' });
+      this.downloadData = jQuery("#articles_details").bootstrapTable('getSelections');
+      console.log("selected articles: ", this.downloadData);
+    } else {
+      alert("Atleast 1 article are select.....");
+    }
+
+  }
+
+  // $('#button').click(function () {
+  //   alert('getSelections: ' + JSON.stringify($("#table").bootstrapTable('getSelections')));
+  // })
+
+  articlesWithEvidenceData() {
+    this.loadingArticleSaved = true;
+
+    // let downloadData = jQuery("#articles_details").bootstrapTable('getSelections');
+    // let downloadData = JSON.stringify(jQuery("#articles_details").bootstrapTable('getSelections'));
+    // console.log(downloadData);
+
+    let articleLists: Array<object> = [];
+    for (var i = 0; i < this.downloadData.length; i++) {
+      articleLists.push({
+        'source': this.downloadData[i].source,
+        'destination': this.downloadData[i].destination,
+        'pubmed_id': this.downloadData[i].pubmed_id,
+        'publication_date': this.downloadData[i].publication_date,
+        'title': this.downloadData[i].title,
+        'ne_id': this.downloadData[i].ne_id,
+        'edge_type': this.downloadData[i].edge_type
+      });
+    }
+    // console.log(articleLists);
+    this.articleSentencesScenario = {
+      user_id: this.currentUser,
+      filter1_name: this.sentenceForm.value.filter1_name,
+      scenario_exist_id: this.sentenceForm.value.scenario_exist_name,
+      user1_comments: this.sentenceForm.value.user1_comments,
+      result_data_set: articleLists
+    };
+    console.log("your article and sentences: ", this.articleSentencesScenario);
+
+    this.nodeSelectsService.downloadAtricleAndEvidencesData(this.articleSentencesScenario).subscribe(
+      (p: any) => {
+        let sentences = p;
+        console.log(JSON.stringify(sentences));
+        alert("Articles and sentences Saved Successfully...");
+        this.userSentences.close();
+      },
+      err => {
+        alert("Articles and sentences not saved...");
+        this.loadingArticleSaved = false;
+        console.log(err);
+      },
+      () => {
+        this.loadingArticleSaved = false;
+      }
+    )
+
+  }
+
+  closePopup2() {
+    this.userSentences.close();
+  }
+
+  onScenarioChoose(val: any) {
+    if (val == 'input') {
+      if (this.sentenceForm.controls['filter1_name'].value == '') {
+        this.sentenceForm.controls['scenario_exist_name'].enable();
+      }
+      else {
+        this.sentenceForm.controls['scenario_exist_name'].disable();
+        this.sentenceForm.controls['scenario_exist_name'].setValue('')
+      }
+    } else {
+      if (this.sentenceForm.controls['scenario_exist_name'].value == '') {
+        this.sentenceForm.controls['filter1_name'].enable();
+      }
+      else {
+        this.sentenceForm.controls['filter1_name'].setValue('');
+        this.sentenceForm.controls['filter1_name'].disable();
+      }
+    }
+  }
 
 }
