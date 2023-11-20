@@ -461,13 +461,14 @@ export class EventDescriptionComponent implements OnInit {
           //console.log(JSON.stringify(row));// ** entire row data
 
           //console.log("Sentence class container:-" + $($element).parent().next().attr("class"));
-          if ($($element).parent().next().attr("class") === undefined) {
-            //console.log($element);
+          if ($($element).parent().next().attr("class") === undefined || $($element).parent().next().attr("class") === "selected") {
+            console.log("1: ", $($element).parent().next().attr("class"));
             let sentences: any;
             let html: string;
             let html_str: string;
             let html_res: string;
 
+            console.log("field1: ", field);
             if (field == "sentence_btn") {
               //console.log(row.ne_id);
 
@@ -556,6 +557,8 @@ export class EventDescriptionComponent implements OnInit {
               });
             }
           } else {
+            console.log("2: ", $($element).parent().next().attr("class"));
+            console.log("field2: ", field);
             //$($element).parent().next().hide(700);
             if ($($element).parent().next().is(":visible")) {
               $($element).parent().next().hide(950);
