@@ -487,7 +487,8 @@ export class PreviewComponent implements OnInit {
           //console.log(JSON.stringify(row));// ** entire row data
 
           //console.log("Sentence class container:-" + $($element).parent().next().attr("class"));
-          if ($($element).parent().next().attr("class") === undefined || $($element).parent().next().attr("class") === "selected") {
+          let tr_class = $($element).parent().next().attr("class");
+          if (((tr_class === undefined)  || (tr_class === "selected")) || (tr_class != "sentence_container")) {
             //console.log($element);
             let sentences: any;
             let html: string;
