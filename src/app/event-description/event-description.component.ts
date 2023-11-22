@@ -937,7 +937,7 @@ export class EventDescriptionComponent implements OnInit {
   // }
 
   /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  By: Gautam M
+  By: Piyush
   *** Article with Evidence Data Download Section ***
   Objective: In backend we'll generate excel with Articles and Evidence data together & Upload the file on S3 bucket.
   Later on user can download that excel from application.

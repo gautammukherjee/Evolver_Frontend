@@ -6,6 +6,7 @@ import { Subject, BehaviorSubject, map, mergeMap, forkJoin } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import * as moment from "moment";
 
 declare var jQuery: any;
@@ -131,11 +132,20 @@ export class PreviewComponent implements OnInit {
   public sourceNodesThird: any = [];
   public edgeTypesThird: any = [];
   public destinationNodesThird: any = [];
-
-
-
+  loadingArticleScenarioLists = false;
+  public loadingArticleSaved: boolean = false;
+  articleSentencesScenario: object = {};
+  scenarioExistName: any;
+  private userSentences: any;
+  downloadData: any = [];
   // firstAPI: any;
   // secondAPI: any;
+
+  sentenceForm = new FormGroup({
+    filter1_name: new FormControl('', [Validators.required]),
+    scenario_exist_name: new FormControl('', [Validators.required]),
+    user1_comments: new FormControl(''),
+  })
 
   constructor(
     private globalVariableService: GlobalVariableService,
@@ -444,6 +454,7 @@ export class PreviewComponent implements OnInit {
         temps["id"] = i;
         temps["source"] = sourceNode;
         temps["destination"] = destinationNode;
+        temps["pubmed_id"] = event.pmid;
         temps["pmid"] = "<a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + event.pmid + "'>" + event.pmid + "</a>";
         temps["publication_date"] = event.publication_date;
         temps["title"] = event.title;
@@ -476,7 +487,7 @@ export class PreviewComponent implements OnInit {
           //console.log(JSON.stringify(row));// ** entire row data
 
           //console.log("Sentence class container:-" + $($element).parent().next().attr("class"));
-          if ($($element).parent().next().attr("class") === undefined) {
+          if ($($element).parent().next().attr("class") === undefined || $($element).parent().next().attr("class") === "selected") {
             //console.log($element);
             let sentences: any;
             let html: string;
@@ -487,7 +498,7 @@ export class PreviewComponent implements OnInit {
               //console.log(row.ne_id);
 
               this.loaderEvidence = true;
-              this.nodeSelectsService.getEvidenceData({ 'ne_id': row.ne_id }).subscribe((p: any) => {
+              this.nodeSelectsService.getEvidenceData({ 'ne_id': row.ne_id, 'pubmed_id': row.pubmed_id }).subscribe((p: any) => {
                 sentences = p;
                 //console.log(JSON.stringify(sentences));
                 if (sentences.evidence_data.length == 0) {
@@ -741,6 +752,115 @@ export class PreviewComponent implements OnInit {
 
   closePopup() {
     this.userScenario.close();
+  }
+
+  /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  By: Piyush
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  //Articles and Sentences stores and download the data
+  
+  captureSentences(userSentences: any) {
+
+    this.sentenceForm.controls['scenario_exist_name'].value == ''
+    this.sentenceForm.controls['scenario_exist_name'].enable();
+    this.sentenceForm.controls['filter1_name'].value == ''
+    this.sentenceForm.controls['filter1_name'].enable();
+
+    //GET the scenario exist name
+    this.loadingArticleScenarioLists = true;
+    this.nodeSelectsService.getArticleSentencesScenario(this.currentUser).subscribe(
+      data => {
+        this.scenarioExistName = data;
+        this.scenarioExistName = this.scenarioExistName.scenario_exist_lists;
+        console.log("scenario lists: ", this.scenarioExistName);
+        this.loadingArticleScenarioLists = false;
+      }
+    );
+
+    if (jQuery("#articles_details").bootstrapTable('getSelections').length > 0) {
+      this.userSentences = this.modalService.open(userSentences, { size: 'lg' });
+      this.downloadData = jQuery("#articles_details").bootstrapTable('getSelections');
+      console.log("selected articles: ", this.downloadData);
+    } else {
+      alert("Atleast 1 article are select.....");
+    }
+
+  }
+
+  // $('#button').click(function () {
+  //   alert('getSelections: ' + JSON.stringify($("#table").bootstrapTable('getSelections')));
+  // })
+
+  articlesWithEvidenceData() {
+    this.loadingArticleSaved = true;
+
+    // let downloadData = jQuery("#articles_details").bootstrapTable('getSelections');
+    // let downloadData = JSON.stringify(jQuery("#articles_details").bootstrapTable('getSelections'));
+    // console.log(downloadData);
+
+    let articleLists: Array<object> = [];
+    for (var i = 0; i < this.downloadData.length; i++) {
+      articleLists.push({
+        'source': this.downloadData[i].source,
+        'destination': this.downloadData[i].destination,
+        'pubmed_id': this.downloadData[i].pubmed_id,
+        'publication_date': this.downloadData[i].publication_date,
+        'title': this.downloadData[i].title,
+        'ne_id': this.downloadData[i].ne_id,
+        'edge_type': this.downloadData[i].edge_type
+      });
+    }
+    // console.log(articleLists);
+    this.articleSentencesScenario = {
+      user_id: this.currentUser,
+      filter1_name: this.sentenceForm.value.filter1_name,
+      scenario_exist_id: this.sentenceForm.value.scenario_exist_name,
+      user1_comments: this.sentenceForm.value.user1_comments,
+      result_data_set: articleLists
+    };
+    console.log("your article and sentences: ", this.articleSentencesScenario);
+
+    this.nodeSelectsService.downloadAtricleAndEvidencesData(this.articleSentencesScenario).subscribe(
+      (p: any) => {
+        let sentences = p;
+        console.log(JSON.stringify(sentences));
+        alert("Articles and sentences Saved Successfully...");
+        this.userSentences.close();
+      },
+      err => {
+        alert("Articles and sentences not saved...");
+        this.loadingArticleSaved = false;
+        console.log(err);
+      },
+      () => {
+        this.loadingArticleSaved = false;
+      }
+    )
+
+  }
+
+  closePopup2() {
+    this.userSentences.close();
+  }
+
+  onScenarioChoose(val: any) {
+    if (val == 'input') {
+      if (this.sentenceForm.controls['filter1_name'].value == '') {
+        this.sentenceForm.controls['scenario_exist_name'].enable();
+      }
+      else {
+        this.sentenceForm.controls['scenario_exist_name'].disable();
+        this.sentenceForm.controls['scenario_exist_name'].setValue('')
+      }
+    } else {
+      if (this.sentenceForm.controls['scenario_exist_name'].value == '') {
+        this.sentenceForm.controls['filter1_name'].enable();
+      }
+      else {
+        this.sentenceForm.controls['filter1_name'].setValue('');
+        this.sentenceForm.controls['filter1_name'].disable();
+      }
+    }
   }
 
 
