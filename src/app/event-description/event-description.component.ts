@@ -461,8 +461,9 @@ export class EventDescriptionComponent implements OnInit {
           //console.log(JSON.stringify(row));// ** entire row data
 
           //console.log("Sentence class container:-" + $($element).parent().next().attr("class"));
-          if ($($element).parent().next().attr("class") === undefined || $($element).parent().next().attr("class") === "selected") {
-            console.log("1: ", $($element).parent().next().attr("class"));
+          let tr_class = $($element).parent().next().attr("class");
+          if (((tr_class === undefined)  || (tr_class === "selected")) || (tr_class != "sentence_container")) {
+            
             let sentences: any;
             let html: string;
             let html_str: string;
@@ -478,7 +479,7 @@ export class EventDescriptionComponent implements OnInit {
                 //console.log(JSON.stringify(sentences));
                 if (sentences.evidence_data.length == 0) {
                   this.loaderEvidence = false;
-                  $($element).parent().after('<tr class="sentence_container"><td colspan="8"><div class="alert alert-danger">No Evidence found in database!</div></td></tr>');
+                  $($element).parent().after('<tr class="sentence_container"><td colspan="9"><div class="alert alert-danger">No Evidence found in database!</div></td></tr>');
                   //$($element).children().eq(0).css({ "background-color": "#B765A3", "border": "1px solid #B765A3" });//effect in sentence button
                   $($element).children().eq(0).hide(500);
                   $($element).children().eq(1).show(600);
@@ -532,13 +533,14 @@ export class EventDescriptionComponent implements OnInit {
                     html_str = "<table width='100%' border='1' cellpadding='2'>";
                     html_str += "<tr>";
                     html_str += "<td width='30%'><span style='color:" + e1_color + "'>" + sentences.evidence_data[i].gene_symbol_e1 + "</span>(" + sentences.evidence_data[i].e1_type_name + ")</td>";
-                    html_str += "<td  width='20%'>" + sentences.evidence_data[i].edge_name + "</td>";
+                    html_str += "<td  width='19%'>" + sentences.evidence_data[i].edge_name + "</td>";
                     html_str += "<td  width='30%'><span style='color:" + e1_color + "'>" + sentences.evidence_data[i].gene_symbol_e2 + "</span>(" + sentences.evidence_data[i].e2_type_name + ")</td>";
-                    html_str += "<td  width='20%'>PMID: <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + sentences.evidence_data[i].pubmed_id + "'>" + sentences.evidence_data[i].pubmed_id + "</a></td>"
+                    html_str += "<td  width='19%'>PMID: <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + sentences.evidence_data[i].pubmed_id + "'>" + sentences.evidence_data[i].pubmed_id + "</a></td>"
+                    html_str += "<td width='2%'>&nbsp;</td>";
                     html_str += "</tr>";
 
                     html_str += "<tr>";
-                    html_str += "<td colspan='4'>" + sentence_text1 + "</td>";
+                    html_str += "<td colspan='5'>" + sentence_text1 + "</td>";
                     html_str += "</tr>";
                     html_str += "</table>";
 
@@ -546,7 +548,7 @@ export class EventDescriptionComponent implements OnInit {
                     this.loaderEvidence = false;
                   };//for
 
-                  $($element).parent().after('<tr class="sentence_container"><td colspan="8">' + html_res + '</td></tr>');
+                  $($element).parent().after('<tr class="sentence_container"><td colspan="9">' + html_res + '</td></tr>');
                   // $($element).children().eq(0).css({ "background-color": "#B765A3", "border": "1px solid #B765A3" });//change color of sentence button
                   $($element).children().eq(0).hide(500);
                   $($element).children().eq(1).show(600);
@@ -554,16 +556,18 @@ export class EventDescriptionComponent implements OnInit {
 
                   this.loaderEvidence = false;
                 }
+
               });
             }
           } else {
-            console.log("2: ", $($element).parent().next().attr("class"));
-            console.log("field2: ", field);
+            
             //$($element).parent().next().hide(700);
-            if ($($element).parent().next().is(":visible")) {
+            if ($($element).parent().next().is(":visible")) {//if sentence-table is visible
+              //console.log("in if...");
               $($element).parent().next().hide(950);
               $($element).children().eq(1).text("Show");
             } else {
+              //console.log("in else...");
               $($element).parent().next().show(950);
               $($element).children().eq(1).text("Hide")
             }
@@ -966,7 +970,7 @@ export class EventDescriptionComponent implements OnInit {
       this.downloadData = jQuery("#articles_details").bootstrapTable('getSelections');
       console.log("selected articles: ", this.downloadData);
     } else {
-      alert("Atleast 1 article are select.....");
+      alert("Atleast one article need to select!");
     }
 
   }
