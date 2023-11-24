@@ -6,38 +6,36 @@
   </div> -->
   <div class="body">
     <div class="search-input">
+      <!-- <input type="text" disabled class="form-control" name="node_new_selects" [value]="selectedNodeSelectsName"> -->
       <select name="" id="" class="form-control" (change)="selectNode($event)">
         <!--<option value="node_select.nnrt_id" [selected]="selectedNodeSelects.indexOf(node_select.nnrt_id)>-1 ">{{node_select.pair_name}}</option>-->
         <option value="null" disabled>Please choose Pair</option>
-        <option *ngFor="let node_select of node_selects; let i = index" [value]="node_selects[i].nnrt_id" [selected]="(node_selects[i].nnrt_id==2?'selected':'')">
+        <option *ngFor="let node_select of node_selects; let i = index" [value]="node_selects[i].nnrt_id" [selected]="(node_selects[i].nnrt_id==selectedNodeSelects?'selected':'')">
           {{ node_select.pair_name }}
         </option>
       </select>
+      <!-- <span *ngIf="node_selects.length > 2" style="cursor: pointer" class="text-white float-right"
+        (click)="SeeMore($event,seeMoreGeneModal);">
+        See More Pair Type</span> -->
       <img *ngIf="loading" width="20px" src="../../assets/images/loader_small.gif" />
     </div>
-
   </div>
 </div>
-
 
 
 <!--<div class="card-panel-box bg-theme top-tile">
   <div class="card-panel-box-heading">
     <img src="../../assets/images/associated_company.png" />
     Nodes <img *ngIf="loading" src="../../assets/images/small-loader.gif" width="18px" />
-
     <i *ngIf="nodeSelectsCheck==true" (click)="reloadNode()"
       style="color:white; float:right; cursor: pointer; margin-right: 8px;" title="Reload"
       class="ion-refresh">Reload</i>
   </div>
-
   <div class="card-panel-box-detail" *ngIf="node_selects.length > 0" style="height: 150px;overflow: auto;">
       <div class="checkbox-group" style="min-height: 183px; color: aliceblue;">
       <div class="search-input">
         <input class="form-control" type="text" placeholder="Search" aria-label="Search" [(ngModel)]="nodeSelectsFilter" />
       </div>
-
-
       <div class="sidebar-card">
         <div class="heading">
             <h4>Level 1 Pair Type</h4>
@@ -48,21 +46,13 @@
             </select>
         </div>
       </div>
-
-      
-
     </div>
-
     <span *ngIf="selectedNodeSelects.length > 0" style="cursor: pointer;font-size: 13px;float: right;margin-top: 10px;clear:both;" class="text-white float-left"
       (click)="resetNode();">Reset</span>
-
-    
-
     <span *ngIf="node_selects.length > 2" style="cursor: pointer" class="text-white float-right"
       (click)="SeeMore($event,seeMoreGeneModal);">{{node_selects.length-10}}
       More</span>
   </div>
-
   <div class="card-panel-box-detail" *ngIf="node_selects.length <= 0">
     <div class="" *ngIf="(nodeSelectsCheck==false)">
       <i (click)="reloadNode()" style="color:white; cursor: pointer;" title="Reload" class="fa fa-refresh">&nbsp;
@@ -73,7 +63,6 @@
         No news exists for any node</i>
     </div>
   </div>
-
 </div>
 
 <ng-template #nodeSelectsWarningModal let-c="close" let-d="dismiss">
@@ -93,7 +82,7 @@
       <button class="btn btn-hero-info btn-demo" (click)="closePopup()">Okay</button>
     </div>
   </div>
-</ng-template>
+</ng-template>-->
 
 <ng-template #seeMoreGeneModal let-c="close" let-d="dismiss">
   <div class="modal-body without_bord_rad indicators-modal">
@@ -111,33 +100,16 @@
             <input class="form-control" type="text" [(ngModel)]="nodeSelectsFilterText">
             <span class="fa fa-search "></span>
           </div>
-
-          <div class="indicator_alpha">
-            <span *ngFor="let node_selects of alphabeticallyGroupedNodeSelects">
-              <span class="text-white" (mouseleave)="mouseOverON=''" (mouseover)="mouseOverON =node_selects.key"
-                (click)="scrollToView(node_selects.key)">{{node_selects.key}}</span>
-            </span>
-          </div>
         </div>
       </div>
     </div>
 
-    <div class="custom-modal-body">
-      <div class="my-div-content singleIndicatorFilter" id="{{node_selects.key}}"
-        [ngClass]="(mouseOverON==node_selects.key ) ?'cls-highlight':''"
-        *ngFor="let node_selects of alphabeticallyGroupedNodeSelects">
-        <div class="two-column_popup demo-checkboxes-radio"
-          *ngFor="let node_select of node_selects.value | NodeFilterPipe:nodeSelectsFilterText">
-          <input type="checkbox" name="node_selects" [value]="node_select"
-            [checked]="selectedNodeSelects.indexOf(node_select.nnrt_id)>-1 "
-            >
-          <span class="custom-control-indicator"></span>
-          <span class="custom-control-description text-dark">&nbsp;&nbsp;{{node_select.pair_name}}</span>
-        </div>
-        <div class="clearfix"></div>
-      </div>
-      <div class="clearfix"></div>
-    </div>
+    <ul>
+      <li class="form-control" *ngFor="let node_select of node_selects; let i = index">
+        <input type="radio" name="node_selects" [value]="node_selects[i].nnrt_id" (click)="selectNode($event)" [checked]="(node_selects[i].nnrt_id==2?'checked':'')">
+        &nbsp;<label>{{ node_selects[i].pair_name }}</label>
+      </li>
+    </ul>
 
     <div class="modal-footer">
       <div class="demo-checkboxes-radio">
@@ -146,4 +118,4 @@
       <button class="btn btn-danger" (click)="seeMoreClosePopup()">Close</button>
     </div>
   </div>
-</ng-template>-->
+</ng-template>

@@ -315,7 +315,7 @@ export class EventDescriptionComponent implements OnInit {
                 temps["pmidCount"] = event.pmids;
                 temps["edgeTypesID"] = edgeTypeIdsPost;
                 temps["edgeNeId"] = edgeTypeNeIdsPost;
-                temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";
+                temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'><i class='bi bi-card-heading'></i>&nbsp;Articles</button> &nbsp;";
                 this.masterListsDataDetailsLoaded.push(temps);
               });
               this.masterListsDataDetailsCombined = this.masterListsDataDetailsLoaded;
@@ -739,7 +739,7 @@ export class EventDescriptionComponent implements OnInit {
                 temps["pmidCount"] = event.pmids;
                 temps["edgeTypesID"] = edgeTypeIdsPost;
                 temps["edgeNeId"] = edgeTypeNeIdsPost;
-                temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'>Articles</button> &nbsp;";
+                temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'><i class='bi bi-card-heading'></i>&nbsp;Articles</button> &nbsp;";
                 this.masterListsDataDetailsExtra.push(temps);
                 // j++;
               });

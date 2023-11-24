@@ -17,6 +17,7 @@ export class FilterNodeSelectComponent implements OnInit {
   // public alphabeticallyGroupedGenes = [];
   public alphabeticallyGroupedNodeSelects: any = '';
   public selectedNodeSelects: any = [];
+  public selectedNodeSelectsName: any = [];
   public node_selects: any = [];
   private params: object = {};
   private result: any = [];
@@ -116,6 +117,13 @@ export class FilterNodeSelectComponent implements OnInit {
             //this.selectedGenes = [];
           }
           console.log("selected Nodes: ", this.selectedNodeSelects);
+          
+          for (let i = 0; i < this.result.nodeSelectsRecords.length && i < 1; i++) {
+            // this.selectedNodeSelects.push(this.result.nodeSelectsRecords[i].nnrt_id);
+            this.selectedNodeSelectsName = this.result.nodeSelectsRecords[i + 1].pair_name;
+            //this.selectedGenes = [];
+          }
+          console.log("selected Nodes Name: ", this.selectedNodeSelectsName);
           this.globalVariableService.setSelectedNodeSelects(this.selectedNodeSelects);
           //} else {
           //this.selectedGenes = Array.from(this.globalVariableService.getSelectedNodeSelects());
@@ -140,7 +148,7 @@ export class FilterNodeSelectComponent implements OnInit {
   }
 
   selectNode(nodeValue: any) {
-    // console.log("nodeValue: ", nodeValue.target.value);
+    console.log("nodeValue: ", nodeValue.target.value);
 
     this.globalVariableService.resetfilters();
     this.params = this.globalVariableService.getFilterParams();
@@ -158,12 +166,26 @@ export class FilterNodeSelectComponent implements OnInit {
     this.filterParams = this.globalVariableService.getFilterParams();
     console.log("new Filters NODE SELECTS:: ", this.filterParams);
 
+
+    // for (let i = 0; i < this.result.nodeSelectsRecords.length && i < 1; i++) {
+    //   // this.selectedNodeSelects.push(this.result.nodeSelectsRecords[i].nnrt_id);
+    //   this.selectedNodeSelects = this.result.nodeSelectsRecords[i + 5].nnrt_id;
+    //   //this.selectedGenes = [];
+    // }
+
+    for (let i = 0; i < this.result.nodeSelectsRecords.length && i < 1; i++) {
+      // this.selectedNodeSelects.push(this.result.nodeSelectsRecords[i].nnrt_id);
+      this.selectedNodeSelectsName = this.result.nodeSelectsRecords[i + 4].pair_name;
+      //this.selectedGenes = [];
+    }
+    console.log("selected Nodes Name2: ", this.selectedNodeSelectsName);
+
     // console.log("selectedNodeSelects: ", this.selectedNodeSelects);
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data   
 
     // if (from != 'nodeSelectsWarningModal')
     this.proceed();
-    this.enableDisableProceedButton();
+    // this.enableDisableProceedButton();
   }
 
   collapseMenuItem() {
@@ -177,9 +199,9 @@ export class FilterNodeSelectComponent implements OnInit {
     // this.proceed();
   }
 
-  // SeeMore(evt: any, seeMoreGeneModal: any) {
-  //   this.seeMoreNodeSelectsModal = this.modalService.open(seeMoreGeneModal, { size: 'lg', windowClass: 'diseaseModal-custom-class', keyboard: false, backdrop: 'static' });
-  // }
+  SeeMore(evt: any, seeMoreGeneModal: any) {
+    this.seeMoreNodeSelectsModal = this.modalService.open(seeMoreGeneModal, { size: 'lg', windowClass: 'diseaseModal-custom-class', keyboard: false, backdrop: 'static' });
+  }
 
   seeMoreClosePopup() {
     this.selectedNodeSelects = Array.from(this.globalVariableService.getSelectedNodeSelects());
@@ -193,10 +215,10 @@ export class FilterNodeSelectComponent implements OnInit {
     this.seeMoreNodeSelectsModal.close();
   }
 
-  // public seeMoreproceed() {
-  //   this.proceed();
-  //   // this.enableDisableProceedButton();
-  // }
+  public seeMoreproceed() {
+    this.proceed();
+    // this.enableDisableProceedButton();
+  }
 
   proceed() {
     // this.globalVariableService.setSelectedNodeSelects(this.selectedNodeSelects);

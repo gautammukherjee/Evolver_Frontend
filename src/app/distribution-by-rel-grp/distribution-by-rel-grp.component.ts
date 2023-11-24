@@ -351,9 +351,9 @@ export class DistributionByRelGrpComponent implements OnInit {
       },
       legend: {
         align: 'left',
-        x: 250,
+        x: 240,
         verticalAlign: 'top',
-        y: 70,
+        y: 0,
         floating: true,
         // backgroundColor:
         // Highcharts.defaultOptions.legend.backgroundColor || 'white',
@@ -636,9 +636,9 @@ export class DistributionByRelGrpComponent implements OnInit {
       },
       legend: {
         align: 'left',
-        x: 250,
+        x: 160,
         verticalAlign: 'top',
-        y: 70,
+        y: 0,
         floating: true,
         // backgroundColor:
         // Highcharts.defaultOptions.legend.backgroundColor || 'white',

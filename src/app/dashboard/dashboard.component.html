@@ -8,7 +8,7 @@
             <div class="horizonal-filter-bar">
                 <div class="filter-inner" style="width: 98%;">
                     <div class="filter-left-heading" style="font-size:16px;">
-                        First Degree
+                        1<sup>st</sup> Degree
                     </div>
                     <div class="filter-single" style="width:15%;">
                         <app-filter-node-select (onSelectNode)='nodeChanged($event)'></app-filter-node-select>
@@ -35,9 +35,9 @@
             <div [ngStyle]="{'display' : showLevels == false ? 'none' : 'block'}">
                 <div *ngIf="currentLevel > 1" class="horizonal-filter-bar" style="width: 98%;margin-top:15px;">
                     <div class="filter-inner">
-                        <div class="filter-left-heading d-flex" style="font-size:16px;">
-                            Second Degree 
-                            <span *ngIf="currentLevel == 2" style="cursor: pointer;" (click)="deleteSecondDegree('deleteLevel2')" title="Delete Second Degree">
+                        <div class="filter-left-heading" style="font-size:16px;">
+                            2<sup>nd</sup> Degree 
+                            <span class="float-end" *ngIf="currentLevel == 2" style="cursor: pointer;" (click)="deleteSecondDegree('deleteLevel2')" title="Delete Second Degree">
                                 <i class="bi bi-trash3"></i>
                             </span>
                         </div>
@@ -66,9 +66,9 @@
             <div [ngStyle]="{'display' : showLevels == false ? 'none' : 'block'}">
                 <div *ngIf="currentLevel > 2" class="horizonal-filter-bar" style="width: 98%;margin-top: 17px;">
                     <div class="filter-inner">
-                        <div class="filter-left-heading d-flex" style="font-size:16px;">
-                            Third Degree
-                            <span *ngIf="currentLevel == 3" title="Delete Third Degree" style="cursor: pointer;" (click)="deleteThirdDegree('deleteLevel3')">
+                        <div class="filter-left-heading" style="font-size:16px;">
+                            3<sup>rd</sup> Degree
+                            <span class="float-end" *ngIf="currentLevel == 3" title="Delete Third Degree" style="cursor: pointer;" (click)="deleteThirdDegree('deleteLevel3')">
                                 <i class="bi bi-trash3"></i>
                             </span>
                         </div>
@@ -142,11 +142,11 @@
                                     type="button" role="tab" aria-controls="tab4" aria-selected="false"
                                     (click)="onSubmitTab($event, 'articlecount')">Visual Charts</button>
                             </li>
-                            <li class="nav-item" role="presentation">
+                            <!-- <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="tab5-tab" data-bs-toggle="tab" data-bs-target="#tab5"
                                     type="button" role="tab" aria-controls="tab5" aria-selected="false"
                                     (click)="onSubmitTab($event, 'ct')">Clinical Trial</button>
-                            </li>
+                            </li> -->
                         </ul>
 
                         <div class="tab-content" id="myTabContent">
@@ -177,9 +177,9 @@
                                     [ProceedDoFilterApply]="doFilterApplyTab4"></app-pmid-count-with-gene-and-disease>
                             </div>
 
-                            <div class="tab-pane p-2 fade" id="tab5" role="tabpanel" aria-labelledby="tab5-tab">
+                            <!-- <div class="tab-pane p-2 fade" id="tab5" role="tabpanel" aria-labelledby="tab5-tab"> -->
                                 <!-- <app-ct-index></app-ct-index> -->
-                                <app-ct_disease_assoc [ProceedDoFilterApply]="doFilterApplyTab5"></app-ct_disease_assoc>
+                                <!-- <app-ct_disease_assoc [ProceedDoFilterApply]="doFilterApplyTab5"></app-ct_disease_assoc>
                                 <app-ct_investigator_rels
                                     [ProceedDoFilterApply]="doFilterApplyTab5"></app-ct_investigator_rels>
                                 <app-nct-investigator-name
@@ -187,10 +187,10 @@
                                 <app-ct-investigator-rels-by-stats
                                     [ProceedDoFilterApply]="doFilterApplyTab5"></app-ct-investigator-rels-by-stats>
                                 <app-investigator-by-role
-                                    [ProceedDoFilterApply]="doFilterApplyTab5"></app-investigator-by-role>
+                                    [ProceedDoFilterApply]="doFilterApplyTab5"></app-investigator-by-role> -->
                                 <!-- <app-investigator-by-country
                                     [ProceedDoFilterApply]="doFilterApplyTab5"></app-investigator-by-country> -->
-                            </div>
+                            <!-- </div> -->
                             <!-- <div class="tab-pane p-2 fade" id="tab5" role="tabpanel" aria-labelledby="tab5-tab">                              
                             </div> -->
                         </div>

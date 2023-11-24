@@ -94,8 +94,9 @@
 	width: 150px;
 	border-radius: 15px;
 	border: none;
-	background-color: #ffca28;
+	background-color: #B765A3;
 	cursor: pointer;
+	color: #fff;
 }
 
 .saveFilterBtn {
@@ -103,7 +104,7 @@
     width: 125px;
     border-radius: 15px;
     border: none;
-    background-color: #ffca28;
+    background-color: #B765A3;
     cursor: pointer;    
     color: #000;
 }
@@ -139,4 +140,13 @@
 	position: absolute;
     right: 15px;
     top: 0;
+}
+.save-query{
+	margin: -52px -283px 10px 10px;
+	padding: 6px;
+	width: 126px;
+	border-radius: 14px; 
+	border: navajowhite;
+	background-color: #B765A3;
+	cursor: pointer;
 }

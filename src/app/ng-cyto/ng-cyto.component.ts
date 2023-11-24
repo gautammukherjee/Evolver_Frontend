@@ -294,134 +294,7 @@ export class NgCytoComponent implements OnChanges {
             }
         });
 
-        ////////// OLD when click the nodes show in popup
-        // cy.on('click', 'node', (e: any) => {
-        //     var node = e.target;
-
-        //     var neighborhood = node.neighborhood().add(node);
-        //     // console.log("neighbr1: ", node.neighborhood().nodes());
-
-        //     cy.elements().addClass('faded');
-        //     neighborhood.removeClass('faded');
-        //     localselect.emit(node.data('name'));
-
-        //     var TargetNode = node[0]._private.data;
-        //     console.log("act: ", node[0]._private.data);
-        //     var directlyConnectedNodes = node.neighborhood().nodes();
-        //     console.log("nodesHere: ", directlyConnectedNodes);
-        //     $("#nodeDetails").html("");
-        //     if (directlyConnectedNodes != undefined) {
-        //         var nodeDetails = "";
-
-        //         nodeDetails += "<div style='float:left;'>";
-        //         nodeDetails += '<div style="padding: 5px; color:#BF63A2"><strong>' + TargetNode.name + '</strong></div>';
-        //         nodeDetails += '<div style="padding: 5px;"><strong>Node Type: ' + TargetNode.node_type + '</strong></div>';
-        //         nodeDetails += '<div style="padding: 5px;"><strong>Connections: </strong></div>';
-
-        //         //nodeDetails += '<input type="text" id="searchInput" autocomplete="off" onkeyup="searchConnections()" placeholder="&#xf002; Search for connections..">';
-
-        //         nodeDetails += "<ul style='padding: 2px 18px;'>";
-        //         directlyConnectedNodes.forEach((directlyConnectedNode: any) => {
-        //             // window.gv = directlyConnectedNode;
-        //             //console.log("inner: ", directlyConnectedNode);
-        //             // console.log("inner: ", gv);
-        //             // const el = document.getElementById("nodeClick");
-        //             // el?.addEventListener("onclick", this.nodeClickEvent);
-        //             nodeDetails += "<li style='list-style: initial; color:" + directlyConnectedNode._private.data.colorCode + "'>" + directlyConnectedNode._private.data.name + "</li>"; //22509 -HSP90 molecular
-        //         });
-        //         nodeDetails += "</ul>";
-        //         nodeDetails += "</div>";
-
-        //         $("#nodeDetails").html(nodeDetails);
-        //     } else {
-        //         $("#nodeDetails").html("");
-        //     }
-        //     ($('#myModalNode') as any).modal('show');
-        //     // this.showNodeInfo(node[0]._private.data.id); //append the node and reload the graph
-        // });
-
-        // cy.on('cxttap', 'node', (e: any) => {
-        //     var node = e.target;
-        //     // console.log("rightclick: ", node[0]._private.data.id);
-        //     this.showNodeInfo(node[0]._private.data.id); //append the node and reload the graph
-        // });
-
-        // cy.on('click', function (e: any) {
-        //     if (e.target === cy || e.target.group() == "edges") {
-        //         console.log("here edges: ", e.target.group());
-        //         cy.edges().addClass('highlighted');
-        //     }
-        //     else {
-        //         console.log("here edges2: ");
-        //         // cy.edges("[source='" + e.target.id() + "']").addClass('highlighted');
-        //         cy.edges("[source='" + e.target.id() + "']").style('lineColor', "#AF0000");
-        //     }
-        // });
-
-        // cy.on("tap", "node", (evt: any) => {
-        //     evt.target.connectedEdges().animate({
-        //         style: { lineColor: "red" }
-        //     })
-        // });
-
-        cy.on('tap', function (e: any) {
-            if (e.target === cy) {
-                cy.edges().removeClass('highlighted');
-                cy.elements().removeClass('faded');
-            } else {
-                // cy.edges("[source='" + e.target.id() + "']").style('lineColor', "#AF0000");
-                // e.target.connectedEdges().animate({
-                //     style: { lineColor: "red" }
-                // })
-            }
-        })
-
-
-        cy.on('mouseover', 'node', function (event: any) {
-            var evtTarget = event.target;
-            if (evtTarget !== cy) {
-                // console.log("Mouse Over");
-                evtTarget.style('border-width', '2px').style('border-color', "#AF0000");
-            }
-            evtTarget.qtip({
-                content: event.target._private.data.name,
-                show: {
-                    event: event.type,
-                    ready: true,
-                    solo: true
-                },
-                hide: {
-                    // event: 'mouseout'
-                }
-            }, event);
-        }).on('mouseout', function (event: any) {
-            var evtTarget = event.target;
-            if (evtTarget !== cy) {
-                // console.log("Fired");
-                evtTarget.style('border-width', '0px');
-            }
-        });
-
-        // cy.on('mouseover', 'node', (e: any) => {
-        //     var node = e.target;
-        //     // console.log("actRight: ", node[0]._private.data);
-        //     let node_ids = parseInt(node[0]._private.data.id);
-        //     // console.log("nodeIds: ", node_ids);
-
-        //     node.qtip({
-        //         content: e.target._private.data.name,
-        //         show: {
-        //             event: e.type,
-        //             ready: true,
-        //             solo: true
-        //         },
-        //         hide: {
-        //             // event: 'mouseout'
-        //         }
-        //     }, e);
-        // });
-
-        //////////////// ******** edges are now commented **********////////////////
+        //////////////// ******** edges are Shown here only difference between nodes and edges are show the source and destination name when you click on edges **********////////////////
         cy.on('tap', 'edge', (e: any) => {
             var edge = e.target._private.data;
             console.log("PMID: ", edge);
@@ -555,7 +428,7 @@ export class NgCytoComponent implements OnChanges {
                             //this.pubmedEdgeDetails += "<hr style='color: #32404E;'/>";
                             this.pubmedEdgeDetails += "</div>";
 
-                            // console.log("pubmedEdgeDetails: ", pubmedEdgeDetails);
+                            console.log("pubmedEdgeDetails: ", this.pubmedEdgeDetails);
                             $("#pubmedURLsDownloadLoader").html('');
                             $("#pubmedURLsDownload").html(this.pubmedURLsDownload);
                             $("#pubmedURLs").html(this.pubmedEdgeDetails);
@@ -571,6 +444,134 @@ export class NgCytoComponent implements OnChanges {
                     this.loadingEdge = false;
                 });
         });
+
+        ////////// OLD when click the nodes show in popup
+        // cy.on('click', 'node', (e: any) => {
+        //     var node = e.target;
+
+        //     var neighborhood = node.neighborhood().add(node);
+        //     // console.log("neighbr1: ", node.neighborhood().nodes());
+
+        //     cy.elements().addClass('faded');
+        //     neighborhood.removeClass('faded');
+        //     localselect.emit(node.data('name'));
+
+        //     var TargetNode = node[0]._private.data;
+        //     console.log("act: ", node[0]._private.data);
+        //     var directlyConnectedNodes = node.neighborhood().nodes();
+        //     console.log("nodesHere: ", directlyConnectedNodes);
+        //     $("#nodeDetails").html("");
+        //     if (directlyConnectedNodes != undefined) {
+        //         var nodeDetails = "";
+
+        //         nodeDetails += "<div style='float:left;'>";
+        //         nodeDetails += '<div style="padding: 5px; color:#BF63A2"><strong>' + TargetNode.name + '</strong></div>';
+        //         nodeDetails += '<div style="padding: 5px;"><strong>Node Type: ' + TargetNode.node_type + '</strong></div>';
+        //         nodeDetails += '<div style="padding: 5px;"><strong>Connections: </strong></div>';
+
+        //         //nodeDetails += '<input type="text" id="searchInput" autocomplete="off" onkeyup="searchConnections()" placeholder="&#xf002; Search for connections..">';
+
+        //         nodeDetails += "<ul style='padding: 2px 18px;'>";
+        //         directlyConnectedNodes.forEach((directlyConnectedNode: any) => {
+        //             // window.gv = directlyConnectedNode;
+        //             //console.log("inner: ", directlyConnectedNode);
+        //             // console.log("inner: ", gv);
+        //             // const el = document.getElementById("nodeClick");
+        //             // el?.addEventListener("onclick", this.nodeClickEvent);
+        //             nodeDetails += "<li style='list-style: initial; color:" + directlyConnectedNode._private.data.colorCode + "'>" + directlyConnectedNode._private.data.name + "</li>"; //22509 -HSP90 molecular
+        //         });
+        //         nodeDetails += "</ul>";
+        //         nodeDetails += "</div>";
+
+        //         $("#nodeDetails").html(nodeDetails);
+        //     } else {
+        //         $("#nodeDetails").html("");
+        //     }
+        //     ($('#myModalNode') as any).modal('show');
+        //     // this.showNodeInfo(node[0]._private.data.id); //append the node and reload the graph
+        // });
+
+        // cy.on('cxttap', 'node', (e: any) => {
+        //     var node = e.target;
+        //     // console.log("rightclick: ", node[0]._private.data.id);
+        //     this.showNodeInfo(node[0]._private.data.id); //append the node and reload the graph
+        // });
+
+        // cy.on('click', function (e: any) {
+        //     if (e.target === cy || e.target.group() == "edges") {
+        //         console.log("here edges: ", e.target.group());
+        //         cy.edges().addClass('highlighted');
+        //     }
+        //     else {
+        //         console.log("here edges2: ");
+        //         // cy.edges("[source='" + e.target.id() + "']").addClass('highlighted');
+        //         cy.edges("[source='" + e.target.id() + "']").style('lineColor', "#AF0000");
+        //     }
+        // });
+
+        // cy.on("tap", "node", (evt: any) => {
+        //     evt.target.connectedEdges().animate({
+        //         style: { lineColor: "red" }
+        //     })
+        // });
+
+        cy.on('tap', function (e: any) {
+            if (e.target === cy) {
+                cy.edges().removeClass('highlighted');
+                cy.elements().removeClass('faded');
+            } else {
+                // cy.edges("[source='" + e.target.id() + "']").style('lineColor', "#AF0000");
+                // e.target.connectedEdges().animate({
+                //     style: { lineColor: "red" }
+                // })
+            }
+        })
+
+
+        cy.on('mouseover', 'node', function (event: any) {
+            var evtTarget = event.target;
+            if (evtTarget !== cy) {
+                // console.log("Mouse Over");
+                evtTarget.style('border-width', '2px').style('border-color', "#AF0000");
+            }
+            evtTarget.qtip({
+                content: event.target._private.data.name,
+                show: {
+                    event: event.type,
+                    ready: true,
+                    solo: true
+                },
+                hide: {
+                    // event: 'mouseout'
+                }
+            }, event);
+        }).on('mouseout', function (event: any) {
+            var evtTarget = event.target;
+            if (evtTarget !== cy) {
+                // console.log("Fired");
+                evtTarget.style('border-width', '0px');
+            }
+        });
+
+        // cy.on('mouseover', 'node', (e: any) => {
+        //     var node = e.target;
+        //     // console.log("actRight: ", node[0]._private.data);
+        //     let node_ids = parseInt(node[0]._private.data.id);
+        //     // console.log("nodeIds: ", node_ids);
+
+        //     node.qtip({
+        //         content: e.target._private.data.name,
+        //         show: {
+        //             event: e.type,
+        //             ready: true,
+        //             solo: true
+        //         },
+        //         hide: {
+        //             // event: 'mouseout'
+        //         }
+        //     }, e);
+        // });
+
         //document.getElementById("#btnsave").addEventListener ("click", nodeClickEvent, false);
 
         // --- Map Download Begins ---

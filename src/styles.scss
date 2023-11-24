@@ -234,9 +234,13 @@ body {
                 background: #3066C4;
                 padding: 3px 10px;
                 font-weight: 600;
-                text-align: center;
+                text-align: left;
                 width: 150px;
                 min-width: 150px;
+
+                span{
+                    margin-left:auto
+                }
             }
     
             .filter-single {
@@ -621,14 +625,14 @@ body {
 
 .level2 {
     .fix-sticky {
-        top: 206px !important;
+        top: 202px !important;
         z-index: auto;
     }
 }
 
 .level3 {
     .fix-sticky {
-        top: 277px !important;
+        top: 263px !important;
         z-index: auto;
     }
 }
@@ -655,7 +659,7 @@ body {
 
 .hiddenLevels {
     .fix-sticky {
-        top: 170px !important;
+        top: 143px !important;
         z-index: auto;
     }
 }
@@ -684,6 +688,9 @@ body {
 }
 
 .custom-fixed-header-table, .modal-event-articles{
+    .columns-right, .search{
+        margin:0 !important;
+    }
     .bs-bars{
         display: none;
     }
