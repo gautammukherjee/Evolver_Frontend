@@ -97,7 +97,7 @@
         </div>
         <div class="col-md-12">
           <div class="indicator_search">
-            <input class="form-control" type="text" [(ngModel)]="nodeSelectsFilterText">
+            <input class="form-control" type="text" [(ngModel)]="nodeSelectsFilterText1">
             <span class="fa fa-search "></span>
           </div>
         </div>
@@ -105,9 +105,9 @@
     </div>
 
     <ul>
-      <li class="form-control" *ngFor="let node_select of node_selects; let i = index">
-        <input type="radio" name="node_selects" [value]="node_selects[i].nnrt_id" (click)="selectNode($event)" [checked]="(node_selects[i].nnrt_id==2?'checked':'')">
-        &nbsp;<label>{{ node_selects[i].pair_name }}</label>
+      <li class="form-control" *ngFor="let node_select of node_selects | PairTypeFilterPipe:nodeSelectsFilterText1;">
+        <input type="radio" name="node_selects" [value]="node_select.nnrt_id" (click)="selectNode($event)" [checked]="(node_select.nnrt_id==2?'checked':'')">
+        &nbsp;<label>{{ node_select.pair_name }}</label>
       </li>
     </ul>
 

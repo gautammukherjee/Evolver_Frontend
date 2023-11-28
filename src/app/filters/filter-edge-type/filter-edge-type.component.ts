@@ -184,7 +184,7 @@ export class FilterEdgeTypeComponent implements OnInit {
     this.selectedEdgeTypes = this.edgeTypesFirst.filter((item: any) => (
       this.selectedEdgeTypesByGroup.includes(item.edge_group_id)
     )).map((item: any) => item.edge_type_id)
-    console.log("selected Edge Types", this.selectedEdgeTypes);
+    console.log("selected Edge Types1", this.selectedEdgeTypes);
     // console.log("selectedEdgeTypesName: ", this.selectedEdgeTypesNames);
 
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data   

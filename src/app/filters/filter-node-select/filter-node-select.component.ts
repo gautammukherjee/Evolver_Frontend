@@ -38,7 +38,7 @@ export class FilterNodeSelectComponent implements OnInit {
   otherMouseOverONElem: any = undefined;
   public disableProceed = true;
   nodeSelectsFilter: string = '';
-  nodeSelectsFilterText: string = '';
+  nodeSelectsFilterText1: string = '';
   //diseaseCheck: any;
   //diseaseCheckCT: any;
   hideCardBody: boolean = true;
