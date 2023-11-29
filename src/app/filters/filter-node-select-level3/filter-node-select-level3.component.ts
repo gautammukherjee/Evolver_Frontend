@@ -18,6 +18,7 @@ export class FilterNodeSelectLevel3Component implements OnInit {
   // public alphabeticallyGroupedGenes = [];
   // public alphabeticallyGroupedNodeSelects: any = '';
   public selectedNodeSelects3: any = [];
+  public selectedNodeSelectsID: any;
   public node_selects3: any = [];
   private params: object = {};
   private result: any = [];
@@ -38,7 +39,8 @@ export class FilterNodeSelectLevel3Component implements OnInit {
   otherMouseOverONElem: any = undefined;
   public disableProceed = true;
   nodeSelectsFilter: string = '';
-  nodeSelectsFilterText: string = '';
+  nodeSelectsFilterText1: string = '';
+  nodeSelectsFilterText2: string = '';
   //diseaseCheck: any;
   //diseaseCheckCT: any;
   hideCardBody: boolean = true;
@@ -101,6 +103,7 @@ export class FilterNodeSelectLevel3Component implements OnInit {
     // this.diseaseCheckCT = this.params['ct_di_ids']; // if disease_id is checked
     // console.log("checked here Gene: ", this.diseaseCheck);
     this.selectedNodeSelects3 = [];
+    this.nodeSelectsFilterText2="";
 
     console.log("node_selects33333: ", this.filterParams);
 
@@ -148,8 +151,18 @@ export class FilterNodeSelectLevel3Component implements OnInit {
 
   }
 
-  selectNode3(nodeValue: any) {
-    this.selectedNodeSelects3 = nodeValue.target.value;
+  selectNode3(nodeValue: any, pair_name:any) {
+    this.nodeSelectsFilterText1='';
+
+    // this.selectedNodeSelects3 = nodeValue.target.value;
+    this.selectedNodeSelectsID = nodeValue;
+    this.nodeSelectsFilterText2 = pair_name;
+
+    this.globalVariableService.setSelectedNodeSelects3(this.selectedNodeSelectsID);
+    this.selectedNodeSelects3 = Array.from(this.globalVariableService.getSelectedNodeSelects3());
+    this.filterParams = this.globalVariableService.getFilterParams();
+    console.log("new Filters NODE SELECTS3:: ", this.filterParams);
+
     // this.globalVariableService.setSelectedNodeSelects3(this.selectedNodeSelects3);
     // this.selectedNodeSelects3 = Array.from(this.globalVariableService.getSelectedNodeSelects3());
     console.log("node selects3 in : ", this.selectedNodeSelects3);
@@ -214,7 +227,8 @@ export class FilterNodeSelectLevel3Component implements OnInit {
   }
 
   proceed() {
-    this.globalVariableService.setSelectedNodeSelects3(this.selectedNodeSelects3);
+    // this.globalVariableService.setSelectedNodeSelects3(this.selectedNodeSelects3);
+    this.globalVariableService.setSelectedNodeSelects3(this.selectedNodeSelectsID);
     this.selectedNodeSelects3 = Array.from(this.globalVariableService.getSelectedNodeSelects3());
     console.log("yes here: ", this.selectedNodeSelects3);
     if (this.seeMoreNodeSelectsModal != undefined)
