@@ -18,6 +18,8 @@
               (change)="selectAll();">
             <span class="custom-control-description text-dark" >&nbsp;Select All</span>
 
+            <button class="btn btn-outline-primary" style="float: right;" [disabled]="disableProceed" (click)="seeMoreproceed()"><i class="bi bi-arrow-right-square" title="Proceed"></i></button>
+
             <div class="mb-1 form-check" *ngFor="let edgeType of edgeTypes | EdgeTypeFilterPipe:edgeTypeFilter">
               <input class="form-check-input border border-secondary" type="checkbox" name="edgeTypes"
                 [value]="edgeTypes" [checked]="selectedEdgeTypesByGroup.indexOf(edgeType.edge_group_id)>-1 "

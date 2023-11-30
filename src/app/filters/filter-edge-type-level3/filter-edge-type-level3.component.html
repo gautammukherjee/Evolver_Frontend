@@ -16,13 +16,14 @@
             <input type="checkbox" name="edgeTypes2" [(ngModel)]="isAllSelected" [value]="edgeTypes3" [checked]=""
             (change)="selectAll($event);">
             <span class="custom-control-description text-dark">&nbsp;Select All</span>
+            <button class="btn btn-outline-primary" style="float: right;" [disabled]="disableProceed" (click)="seeMoreproceed()"><i class="bi bi-arrow-right-square" title="Proceed"></i></button>
             <div class="mb-1 form-check" *ngFor="let edgeType of edgeTypes3 | EdgeTypeFilterPipe:edgeTypeFilter">
               <input class="form-check-input border border-secondary" type="checkbox" name="edgeTypes2"  [value]="edgeType"
                 [checked]="selectedEdgeTypesByGroup3.indexOf(edgeType.edge_group_id)>-1 " (change)="selectEdgeType(edgeType,$event)">
               <label class="form-check-label">
                 {{edgeType.edge_group_name}}
               </label>
-            </div>            
+            </div>
           </div>
         </div>
       </div>      

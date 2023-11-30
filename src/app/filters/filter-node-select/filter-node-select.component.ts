@@ -147,8 +147,8 @@ export class FilterNodeSelectComponent implements OnInit {
     this.nodeSelectsFilterText1='';
     // console.log("nodeValue: ", nodeValue);
 
-    // this.globalVariableService.resetfilters();
-    // this.params = this.globalVariableService.getFilterParams();
+    this.globalVariableService.resetfilters();
+    this.params = this.globalVariableService.getFilterParams();
     // console.log("params1: ", this.params);
 
     // if (event.target.checked) {
@@ -176,7 +176,7 @@ export class FilterNodeSelectComponent implements OnInit {
 
     // if (from != 'nodeSelectsWarningModal')
     this.proceed();
-    // this.enableDisableProceedButton();
+    this.enableDisableProceedButton();
   }
 
   collapseMenuItem() {
