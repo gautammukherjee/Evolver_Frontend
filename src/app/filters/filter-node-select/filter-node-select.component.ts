@@ -17,7 +17,7 @@ export class FilterNodeSelectComponent implements OnInit {
   // public alphabeticallyGroupedGenes = [];
   public alphabeticallyGroupedNodeSelects: any = '';
   public selectedNodeSelects: any = [];
-  public selectedNodeSelectsName: any = [];
+  public selectedNodeSelectsID: any;
   public node_selects: any = [];
   private params: object = {};
   private result: any = [];
@@ -39,6 +39,7 @@ export class FilterNodeSelectComponent implements OnInit {
   public disableProceed = true;
   nodeSelectsFilter: string = '';
   nodeSelectsFilterText1: string = '';
+  nodeSelectsFilterText2: string = '';
   //diseaseCheck: any;
   //diseaseCheckCT: any;
   hideCardBody: boolean = true;
@@ -75,7 +76,7 @@ export class FilterNodeSelectComponent implements OnInit {
     this.getNodeSelects(event, 1);
     // this.hideCardBody = true;
 
-    this.globalVariableService.setSelectedNodeSelects(2);
+    this.globalVariableService.setSelectedNodeSelects(44);
     this.selectedNodeSelects = Array.from(this.globalVariableService.getSelectedNodeSelects());
     console.log("sel_nodes: ", this.selectedNodeSelects);
 
@@ -105,26 +106,21 @@ export class FilterNodeSelectComponent implements OnInit {
           this.result = data;
           // console.log("result: ", this.result);
           this.node_selects = this.result.nodeSelectsRecords;
+          this.nodeSelectsFilterText2 = this.node_selects[2].pair_name;
           console.log("node_selects: ", this.node_selects);
+          console.log("nodeSelectsFilterText2: ", this.nodeSelectsFilterText2);
 
           // this.alphabeticallyGroupedNodeSelects = this.groupBy(this.node_selects, 'pair_name');
           // console.log("alphabeticallyGroupedGenes: ", this.alphabeticallyGroupedGenes);
 
           //if (event !== undefined && event.type == 'load') { // i.e No Genes selected previously
-          for (let i = 0; i < this.result.nodeSelectsRecords.length && i < 1; i++) {
-            // this.selectedNodeSelects.push(this.result.nodeSelectsRecords[i].nnrt_id);
-            this.selectedNodeSelects = this.result.nodeSelectsRecords[i + 1].nnrt_id;
-            //this.selectedGenes = [];
-          }
-          console.log("selected Nodes: ", this.selectedNodeSelects);
-          
-          for (let i = 0; i < this.result.nodeSelectsRecords.length && i < 1; i++) {
-            // this.selectedNodeSelects.push(this.result.nodeSelectsRecords[i].nnrt_id);
-            this.selectedNodeSelectsName = this.result.nodeSelectsRecords[i + 1].pair_name;
-            //this.selectedGenes = [];
-          }
-          console.log("selected Nodes Name: ", this.selectedNodeSelectsName);
-          this.globalVariableService.setSelectedNodeSelects(this.selectedNodeSelects);
+          // for (let i = 0; i < this.result.nodeSelectsRecords.length && i < 1; i++) {
+          //   // this.selectedNodeSelects.push(this.result.nodeSelectsRecords[i].nnrt_id);
+          //   this.selectedNodeSelects = this.result.nodeSelectsRecords[i + 2].nnrt_id;
+          //   //this.selectedGenes = [];
+          // }
+          // console.log("selected Nodes: ", this.selectedNodeSelects);
+          // this.globalVariableService.setSelectedNodeSelects(this.selectedNodeSelects);
           //} else {
           //this.selectedGenes = Array.from(this.globalVariableService.getSelectedNodeSelects());
           //}
@@ -147,8 +143,9 @@ export class FilterNodeSelectComponent implements OnInit {
     // }
   }
 
-  selectNode(nodeValue: any) {
-    console.log("nodeValue: ", nodeValue.target.value);
+  selectNode(nodeValue: any, pair_name:any) {
+    this.nodeSelectsFilterText1='';
+    // console.log("nodeValue: ", nodeValue);
 
     this.globalVariableService.resetfilters();
     this.params = this.globalVariableService.getFilterParams();
@@ -159,33 +156,27 @@ export class FilterNodeSelectComponent implements OnInit {
     // } else {
     //   this.selectedNodeSelects.splice(this.selectedNodeSelects.indexOf(node.nnrt_id), 1);
     // }
-    this.selectedNodeSelects = nodeValue.target.value;
 
-    this.globalVariableService.setSelectedNodeSelects(this.selectedNodeSelects);
+    // this.selectedNodeSelectsID = nodeValue.target.value;
+    this.selectedNodeSelectsID = nodeValue;
+    this.nodeSelectsFilterText2 = pair_name;
+
+    this.globalVariableService.setSelectedNodeSelects(this.selectedNodeSelectsID);
     this.selectedNodeSelects = Array.from(this.globalVariableService.getSelectedNodeSelects());
     this.filterParams = this.globalVariableService.getFilterParams();
-    console.log("new Filters NODE SELECTS:: ", this.filterParams);
-
+    console.log("new Filters NODE SELECTS1:: ", this.filterParams);
 
     // for (let i = 0; i < this.result.nodeSelectsRecords.length && i < 1; i++) {
     //   // this.selectedNodeSelects.push(this.result.nodeSelectsRecords[i].nnrt_id);
     //   this.selectedNodeSelects = this.result.nodeSelectsRecords[i + 5].nnrt_id;
     //   //this.selectedGenes = [];
     // }
-
-    for (let i = 0; i < this.result.nodeSelectsRecords.length && i < 1; i++) {
-      // this.selectedNodeSelects.push(this.result.nodeSelectsRecords[i].nnrt_id);
-      this.selectedNodeSelectsName = this.result.nodeSelectsRecords[i + 4].pair_name;
-      //this.selectedGenes = [];
-    }
-    console.log("selected Nodes Name2: ", this.selectedNodeSelectsName);
-
     // console.log("selectedNodeSelects: ", this.selectedNodeSelects);
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data   
 
     // if (from != 'nodeSelectsWarningModal')
     this.proceed();
-    // this.enableDisableProceedButton();
+    this.enableDisableProceedButton();
   }
 
   collapseMenuItem() {

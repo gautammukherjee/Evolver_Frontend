@@ -64,6 +64,7 @@ export class FilterSourceNodeLevel2Component implements OnInit {
       } else if (event.clickOn !== undefined && (event.clickOn == 'sourceNodeFilter' || event.clickOn == 'edgeTypeFilter' || event.clickOn == 'destinationNodeFilter' || event.clickOn == 'nodeLevel2Filter' || event.clickOn == 'deleteLevel2')) {
         // this.hideCardBody = true;
         this.isAllSelected = false;
+        this.disableProceed=true;
         this.filterParams = this.globalVariableService.getFilterParams();
         console.log("Source Level 2:2 ", event.clickOn);
         // if (this.firstTimeCheck === false) // Node select only one time reload when we choose destination nodes are selected
@@ -230,7 +231,7 @@ export class FilterSourceNodeLevel2Component implements OnInit {
 
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data   
     // if (from != 'nodeSelectsWarningModal')
-    this.proceed();
+    // this.proceed();
     this.enableDisableProceedButton();
   }
 
@@ -247,7 +248,7 @@ export class FilterSourceNodeLevel2Component implements OnInit {
     }
     console.log("By selectedSourceNodes2: ", this.selectedSourceNodes2);
 
-    this.proceed();
+    // this.proceed();
     this.enableDisableProceedButton();
   }
 
@@ -281,7 +282,7 @@ export class FilterSourceNodeLevel2Component implements OnInit {
 
   public seeMoreproceed() {
     this.proceed();
-    this.enableDisableProceedButton();
+    // this.enableDisableProceedButton();
   }
 
   proceed() {

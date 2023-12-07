@@ -70,6 +70,7 @@ export class FilterEdgeTypeLevel2Component implements OnInit {
     //To filter the "SEE MORE" gene lists
     this.seeMoreFilterText = "";
     this.seeMoreFilterPlaceholder = "Search Edge Type";
+    
     //End here
 
     this.filterParams = this.globalVariableService.getFilterParams();
@@ -91,6 +92,7 @@ export class FilterEdgeTypeLevel2Component implements OnInit {
         this.selectedEdgeTypesByGroup2 = [];
         this.selectedEdgeTypesNames2 = [];
         this.isAllSelected = false;
+        this.disableProceed=true;
         this.getEdgeType2(event);
       }
     });
@@ -148,6 +150,7 @@ export class FilterEdgeTypeLevel2Component implements OnInit {
 
   selectEdgeType(edgeType: any, event: any, from: any = null) {
 
+    this.isAllSelected=false; //selectall checkbox is unchecked when click the checkbox lists
     if (event.target.checked) {
       this.selectedEdgeTypesByGroup2.push(edgeType.edge_group_id);
       this.selectedEdgeTypesNames2.push(edgeType.edge_group_name);
@@ -170,7 +173,7 @@ export class FilterEdgeTypeLevel2Component implements OnInit {
     console.log("new Filters Edge Types2: ", this.filterParams);
 
     // if (from != 'edgeSelectsWarningModal')
-    this.proceed();
+    // this.proceed();
     this.enableDisableProceedButton();
   }
 
@@ -198,9 +201,8 @@ export class FilterEdgeTypeLevel2Component implements OnInit {
     this.globalVariableService.setSelectedEdgeTypes2(this.selectedEdgeTypes2);
     this.filterParams = this.globalVariableService.getFilterParams();
     console.log("select all edge types All2: ", this.filterParams);
-    // this.enableDisableProceedButton();
 
-    this.proceed();
+    // this.proceed();
     this.enableDisableProceedButton();
   }
 

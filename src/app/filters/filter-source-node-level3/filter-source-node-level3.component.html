@@ -18,6 +18,9 @@
       <div class="body">
         <div *ngIf="sourceNodes3.length">
           <div class="search-options">
+
+            <button class="btn btn-outline-primary" style="position: fixed;z-index: 9;right: 36px; padding: 4px 8px;" [disabled]="disableProceed" (click)="seeMoreproceed()"><i class="bi bi-arrow-right-circle-fill" title="Proceed"></i></button>
+
             <input type="checkbox" name="edgeTypes" [(ngModel)]="isAllSelected" [value]="sourceNodes3" [checked]=""
               (change)="selectAll();">
             <span class="custom-control-description text-dark">&nbsp;Select All</span>

@@ -33,7 +33,7 @@
               "src/styles.scss",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "./node_modules/bootstrap-table/dist/bootstrap-table.min.css",
-              "./src/assets/extrnalJs/jquery.qtip.min.css",    
+              "./src/assets/extrnalJs/jquery.qtip.min.css",
               "./node_modules/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css",
               "./node_modules/bootstrap-table/dist/extensions/filter-control/bootstrap-table-filter-control.min.css"
             ],

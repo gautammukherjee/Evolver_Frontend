@@ -63,6 +63,8 @@ export class FilterSourceNodeComponent implements OnInit {
       if (event.clickOn == undefined) {
         this.selectedSourceNodes = [];
         this.getResetSourceNode();
+      }else{
+        // this.disableProceed=true;
       }
     });
   }
@@ -226,7 +228,7 @@ export class FilterSourceNodeComponent implements OnInit {
     console.log("new Filters SOURCE:: ", this.filterParams);
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data   
     // if (from != 'nodeSelectsWarningModal')
-    this.proceed();
+    // this.proceed();
     this.enableDisableProceedButton();
   }
 
@@ -260,7 +262,7 @@ export class FilterSourceNodeComponent implements OnInit {
 
   public seeMoreproceed() {
     this.proceed();
-    this.enableDisableProceedButton();
+    // this.enableDisableProceedButton();
   }
 
   proceed() {

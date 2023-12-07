@@ -18,6 +18,7 @@ export class FilterNodeSelectLevel2Component implements OnInit {
   // public alphabeticallyGroupedGenes = [];
   // public alphabeticallyGroupedNodeSelects: any = '';
   public selectedNodeSelects2: any = [];
+  public selectedNodeSelectsID: any;
   public node_selects2: any = [];
   private params: object = {};
   private result: any = [];
@@ -38,7 +39,8 @@ export class FilterNodeSelectLevel2Component implements OnInit {
   otherMouseOverONElem: any = undefined;
   public disableProceed = true;
   nodeSelectsFilter: string = '';
-  nodeSelectsFilterText: string = '';
+  nodeSelectsFilterText1: string = '';
+  nodeSelectsFilterText2: string = '';
   //diseaseCheck: any;
   //diseaseCheckCT: any;
   hideCardBody: boolean = true;
@@ -101,6 +103,7 @@ export class FilterNodeSelectLevel2Component implements OnInit {
     // this.diseaseCheckCT = this.params['ct_di_ids']; // if disease_id is checked
     // console.log("checked here Gene: ", this.diseaseCheck);
     this.selectedNodeSelects2 = [];
+    this.nodeSelectsFilterText2="";
 
     console.log("node_selects11111: ", this.filterParams);
 
@@ -113,6 +116,8 @@ export class FilterNodeSelectLevel2Component implements OnInit {
             this.result = data;
             this.node_selects2 = this.result.nodeSelectsRecords;
             console.log("node_selects2: ", this.node_selects2);
+            // this.nodeSelectsFilterText2 = this.node_selects2[2].pair_name;
+            // console.log("nodeSelectsFilterText2: ", this.nodeSelectsFilterText2);
 
             // this.alphabeticallyGroupedNodeSelects = this.groupBy(this.node_selects2, 'pair_name');
             // console.log("alphabeticallyGroupedGenes: ", this.alphabeticallyGroupedGenes);
@@ -148,17 +153,27 @@ export class FilterNodeSelectLevel2Component implements OnInit {
 
   }
 
-  selectNode2(nodeValue: any) {
-    this.selectedNodeSelects2 = nodeValue.target.value;
+  selectNode2(nodeValue: any, pair_name:any) {
+    this.nodeSelectsFilterText1='';
+    // this.selectedNodeSelects2 = nodeValue;
+
+    this.selectedNodeSelectsID = nodeValue;
+    this.nodeSelectsFilterText2 = pair_name;
+    
+    this.globalVariableService.setSelectedNodeSelects2(this.selectedNodeSelectsID);
+    this.selectedNodeSelects2 = Array.from(this.globalVariableService.getSelectedNodeSelects2());
+    this.filterParams = this.globalVariableService.getFilterParams();
+    console.log("new Filters NODE SELECTS2:: ", this.filterParams);
+
     // this.globalVariableService.setSelectedNodeSelects2(this.selectedNodeSelects2);
     // this.selectedNodeSelects2 = Array.from(this.globalVariableService.getSelectedNodeSelects2());
-    console.log("node selects2 in : ", this.selectedNodeSelects2);
+    // console.log("node selects2 in : ", this.selectedNodeSelects2);
 
     // this.globalVariableService.resetfiltersInner();// On click TA other filter's data will update, so've to reset filter selected data   
 
     // if (from != 'nodeSelectsWarningModal')
     this.proceed();
-    this.enableDisableProceedButton();
+    // this.enableDisableProceedButton();
   }
 
   collapseMenuItem() {
@@ -214,7 +229,7 @@ export class FilterNodeSelectLevel2Component implements OnInit {
   }
 
   proceed() {
-    this.globalVariableService.setSelectedNodeSelects2(this.selectedNodeSelects2);
+    this.globalVariableService.setSelectedNodeSelects2(this.selectedNodeSelectsID);
     this.selectedNodeSelects2 = Array.from(this.globalVariableService.getSelectedNodeSelects2());
     console.log("yes here: ", this.selectedNodeSelects2);
     if (this.seeMoreNodeSelectsModal != undefined)

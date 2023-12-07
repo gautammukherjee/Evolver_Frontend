@@ -94,6 +94,7 @@ export class FilterEdgeTypeComponent implements OnInit {
         this.selectedEdgeTypesByGroup = [];
         this.selectedEdgeTypesNames = [];
         this.isAllSelected = false;
+        this.disableProceed=true;
         this.getEdgeType(event, 2);
       }
     });
@@ -129,7 +130,7 @@ export class FilterEdgeTypeComponent implements OnInit {
 
     // this.selectedEdgeTypes = Array.from(this.globalVariableService.getSelectedEdgeTypes());
 
-    this.enableDisableProceedButton();
+    // this.enableDisableProceedButton();
     this.nodeSelectsService.getEdgeType()
       .subscribe(
         data => {
@@ -171,6 +172,8 @@ export class FilterEdgeTypeComponent implements OnInit {
   }
 
   selectEdgeType(edgeType: any, event: any, from: any = null) {
+    
+    this.isAllSelected=false; //selectall checkbox is unchecked when click the checkbox lists
     if (event.target.checked) {
       this.selectedEdgeTypesByGroup.push(edgeType.edge_group_id);
       this.selectedEdgeTypesNames.push(edgeType.edge_group_name);
@@ -194,9 +197,9 @@ export class FilterEdgeTypeComponent implements OnInit {
     console.log("new Filters Edge Types: ", this.filterParams);
 
     // if (from != 'edgeSelectsWarningModal')
-    if (this.selectedEdgeTypesByGroup.length != 0)
-      this.proceed();
-    this.enableDisableProceedButton();
+    // if (this.selectedEdgeTypesByGroup.length != 0)
+      // this.proceed();
+      this.enableDisableProceedButton();
   }
 
   collapseMenuItem() {
@@ -230,7 +233,7 @@ export class FilterEdgeTypeComponent implements OnInit {
     this.filterParams = this.globalVariableService.getFilterParams();
     console.log("select all edge types All: ", this.filterParams);
 
-    this.proceed();
+    // this.proceed();
     this.enableDisableProceedButton();
   }
 
@@ -264,7 +267,7 @@ export class FilterEdgeTypeComponent implements OnInit {
 
   public seeMoreproceed() {
     this.proceed();
-    this.enableDisableProceedButton();
+    // this.enableDisableProceedButton();
   }
 
   proceed() {
@@ -275,7 +278,7 @@ export class FilterEdgeTypeComponent implements OnInit {
 
   private enableDisableProceedButton() {
     // if (this.selectedSourceNodes.length > 0 && (this.selectedDestinationNodes.length > 0 || this.selectedEdgeTypes.length > 0)) {
-    if (this.selectedSourceNodes.length > 0) {
+    if (this.selectedEdgeTypes.length > 0) {
       this.disableProceed = false;
     } else {
       this.disableProceed = true;

@@ -92,6 +92,7 @@ export class FilterEdgeTypeLevel3Component implements OnInit {
         this.selectedEdgeTypesByGroup3 = [];
         this.selectedEdgeTypesNames3 = [];
         this.isAllSelected = false;
+        this.disableProceed=true;
         this.getEdgeType3(event);
       }
     });
@@ -149,6 +150,7 @@ export class FilterEdgeTypeLevel3Component implements OnInit {
 
   selectEdgeType(edgeType: any, event: any, from: any = null) {
 
+    this.isAllSelected=false; //selectall checkbox is unchecked when click the checkbox lists
     if (event.target.checked) {
       this.selectedEdgeTypesByGroup3.push(edgeType.edge_group_id);
       this.selectedEdgeTypesNames3.push(edgeType.edge_group_name);
@@ -171,7 +173,7 @@ export class FilterEdgeTypeLevel3Component implements OnInit {
     console.log("new Filters Edge Types3: ", this.filterParams);
 
     // if (from != 'edgeSelectsWarningModal')
-    this.proceed();
+    // this.proceed();
     this.enableDisableProceedButton();
   }
 
@@ -199,9 +201,7 @@ export class FilterEdgeTypeLevel3Component implements OnInit {
     this.globalVariableService.setSelectedEdgeTypes3(this.selectedEdgeTypes3);
     this.filterParams = this.globalVariableService.getFilterParams();
     console.log("select all edge types All3: ", this.filterParams);
-    // this.enableDisableProceedButton();
-
-    this.proceed();
+    // this.proceed();
     this.enableDisableProceedButton();
   }
 
