@@ -16,6 +16,29 @@ ng2-cytoscape {
     right: 0;
     z-index: 8;
     display: flex;
+    align-items: center;
+}
+
+.rank-dropdown{
+    button{
+        text-align: left;
+        background-color: var(--filter-bar-bg) !important;
+        color: var(--text-white-all) !important;
+        height: 26px;
+        line-height: 16px;
+    }
+    .dropdown-menu{
+        background-color: #f4f5f5;
+        li{
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+
+            input{
+                margin-right: 5px;
+            }
+        }
+    }
 }
 
 .modal.right .modal-dialog {

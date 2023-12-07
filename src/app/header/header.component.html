@@ -1,8 +1,8 @@
 <header class="fixed-top">
-    <nav class="navbar navbar-expand-lg bg-white evolver-header"> <!--fixed-top-->
+    <nav class="navbar navbar-expand-lg evolver-header"> <!--fixed-top-->
         <div class="container-fluid">
             <a class="navbar-brand" [routerLink]="['/index']">
-                <img src="./assets/images/logo.png" alt="" width="160px">
+                <img src="./assets/images/logo.png" alt="" width="160px" class="logo-switcher">
             </a>
             <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -14,7 +14,7 @@
 
                 <div class="ms-4">
                     <div class="header-btn" [routerLinkActive]="'active'">
-                        <a class="nav-link active mr-1 fs-6 px-3 header-btn-a" [routerLink]="['/index']">
+                        <a class="nav-link mr-1 fs-6 px-3 header-btn-a" [routerLink]="['/index']">
                             <strong>
                                 <!-- <i class="bi bi-house"></i> -->
                                 Home
@@ -23,18 +23,27 @@
                     </div>
 
                     <div class="header-btn" [routerLinkActive]="'active'">
-                        <a class="nav-link active mr-1 fs-6 px-3 header-btn-a"
+                        <a class="nav-link mr-1 fs-6 px-3 header-btn-a"
                             [routerLink]="['/dashboard']"><strong>Knowledge Graph</strong></a>
                     </div>
 
                     <div class="header-btn" [routerLinkActive]="'active'">
-                        <a class="nav-link active mr-1 fs-6 px-3 header-btn-a"
+                        <a class="nav-link mr-1 fs-6 px-3 header-btn-a"
                             [routerLink]="['/bio_infomatics']"><strong>Gene
                                 Analysis</strong></a>
                     </div>
+                    <!-- <div class="theme-switcher">
+                        <label class="swtich">
+                          <input
+                            type="checkbox"
+                            [checked]="isLightTheme"
+                            (change)="onThemeSwitchChange()"
+                          />
+                        </label>
+                      </div> -->
 
                     <div class="header-btn">
-                        <a class="nav-link active mr-1 fs-6 px-3 header-btn-a" target="_blank"
+                        <a class="nav-link mr-1 fs-6 px-3 header-btn-a" target="_blank"
                             href="http://150.136.91.243:8887/login/?username=hsharma&password=biosearch@123"><strong>Search
                                 Tool</strong></a>
                     </div>
@@ -49,9 +58,22 @@
                             {{result.email}}
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" style="cursor: pointer;" (click)="openNewTabMyDashboard()">My Dashboard</a></li>
-                            <li><a class="dropdown-item" style="cursor: pointer;" (click)="openNewTabMyDownloadFiles()">Articles & Sentences Files</a></li>
+                            <li><a class="dropdown-item" style="cursor: pointer;" (click)="openNewTabMyDashboard()">My
+                                    Dashboard</a></li>
+                            <li><a class="dropdown-item" style="cursor: pointer;"
+                                    (click)="openNewTabMyDownloadFiles()">Articles & Sentences Files</a></li>
                             <li><a class="dropdown-item" [routerLink]="['/manage-password']">Reset Password</a></li>
+                            <li>
+                                <a class="dropdown-item">
+                                    <div class="form-check form-switch ps-0">
+                                        <label class="form-check-label" for="flexSwitchCheckDefault">Dark Mode</label>
+                                        <input class="form-check-input float-end" type="checkbox" role="switch"
+                                            id="flexSwitchCheckDefault" [checked]="!isLightTheme"
+                                            (change)="onThemeSwitchChange()">
+                                        
+                                    </div>
+                                </a>
+                            </li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>

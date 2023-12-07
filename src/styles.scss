@@ -1,6 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap");
 @import "~bootstrap-icons/font/bootstrap-icons.css";
+@import "./assets/scss/theme";
+
+.evolver-header{
+    background-color: var(--background-dark-color);
+  }
 
 body {
     font-family: 'Roboto', sans-serif;
@@ -211,7 +216,7 @@ body {
         position: sticky;
         width: 100%;
         top: 64px;
-        background: #3066c4;
+        background: var(--filter-bar-bg);
         z-index: 9;
 
         .horizonal-filter-bar {
@@ -231,7 +236,7 @@ body {
                 line-height: 20px;
                 color: #fff;
                 height: 100%;
-                background: #3066C4;
+                background: var(--filter-bar-bg);
                 padding: 3px 10px;
                 font-weight: 600;
                 text-align: left;
@@ -431,7 +436,7 @@ body {
 
         .right-article {
             width: calc(100% - 330px);
-            background: #fff;
+            background: var(--background-dark-color);
             margin-top: 75px;
             border-radius: 20px;
             margin-left: 330px;
@@ -699,6 +704,7 @@ body {
 .custom-fixed-header-table, .modal-event-articles{
     .columns-right, .search{
         margin:0 !important;
+        background-color: var(--background-dark-color);
     }
     .bs-bars{
         display: none;
@@ -712,6 +718,8 @@ body {
 					// background-color: #187ebc !important;
                     // 989da1
                     border:none;
+                    background-color: var(--table-bg-color);
+                    color: var(--text-color);
 
                     .fht-cell{
                         border-top: 1px solid rgba(0, 0, 0, 0.3);
@@ -724,17 +732,19 @@ body {
         tbody{
             tr{
                 border:none;
-                border-bottom: 1px solid #ddd; 
+                border-bottom: 1px solid var(--table-row-border-color);
 
                 td{
                     border: none;
                     font-size: 14px;
                     padding:0.2rem 0.5rem;
+                    background-color: var(--table-bg-color);
+                    color: var(--text-color);
                 }
 
                 &:nth-child(odd){
                     td{
-                        box-shadow: inset 0 0 0 9999px rgba(0, 0, 0, 0.023);
+                        box-shadow: inset 0 0 0 9999px rgba(0, 0, 0, 0.023); 
                         
                     }
                 }
@@ -742,7 +752,7 @@ body {
                 &:hover{
                     td{
                         box-shadow: none;
-                        background-color: rgba(0, 0, 0, 0.035);
+                        background-color: var(--table-row-hover-background)
                     }
                     
                 }
@@ -750,4 +760,32 @@ body {
         }
 	}
 	
+}
+
+//Theme Switcher Style
+.nav-link{
+    color: var(--text-color) !important;
+
+    &.active{
+        color: #fff !important;
+    }
+}
+.inner-wrapper{
+    background-color: var(--background-dark-color);
+}
+
+.fixed-table-body{
+    background-color: var(--table-bg-color) !important;
+}
+
+.common-text-switcher{
+    color: var(--text-color);
+}
+
+.logo-switcher{
+    filter : var(--logo-filter)
+}
+
+.card-body{
+    background-color: var(--table-bg-color);
 }

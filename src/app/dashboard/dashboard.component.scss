@@ -7,6 +7,26 @@ h2 {
     margin-bottom: 20px;
 }
 
+.rank-dropdown{
+    button{
+        text-align: left;
+        background-color: var(--filter-bar-bg) !important;
+        color: var(--text-white-all) !important;
+    }
+    .dropdown-menu{
+        background-color: #f4f5f5;
+        li{
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+
+            input{
+                margin-right: 5px;
+            }
+        }
+    }
+}
+
 // Tab component css
 .tab-slider--nav {
     width: 100%;
@@ -90,7 +110,7 @@ h2 {
 
             button {
                 padding: 3px 13px;
-                background-color: #c4d1d9;
+                background-color: var(--nav-inactive-tabs-bg);
                 color: #000;
                 font-size: 14px;
 

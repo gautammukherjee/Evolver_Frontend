@@ -31,7 +31,7 @@
 .card-panel-box {
 	margin-bottom: 20px;
 	// box-shadow: 0px 1px 5px #ddd;
-	background: #FFF;
+	background: var(--background-color);
 }
 
 .card-panel-box .card-panel-box-heading {
