@@ -18,8 +18,8 @@
                             [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-source-node>
                     </div>
                     <div class="filter-single" style="width:25%;">
-                        <app-filter-edge-type
-                            (onSelectEdgeType)='edgeTypeChanged("edgeTypeFilter")' [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type>
+                        <app-filter-edge-type (onSelectEdgeType)='edgeTypeChanged("edgeTypeFilter")'
+                            [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type>
                     </div>
                     <div class="filter-single" style="width:30%;">
                         <app-filter-destination-node
@@ -35,9 +35,10 @@
             <div [ngStyle]="{'display' : showLevels == false ? 'none' : 'block'}">
                 <div *ngIf="currentLevel > 1" class="horizonal-filter-bar" style="width: 98%;margin-top:15px;">
                     <div class="filter-inner">
-                        <div class="filter-left-heading d-flex" style="font-size:16px;">
+                        <div class="filter-left-heading" style="font-size:16px;">
                             2<sup>nd</sup> Degree
-                            <span *ngIf="currentLevel == 2" style="cursor: pointer;" (click)="deleteSecondDegree('deleteLevel2')" title="Delete Second Degree">
+                            <span *ngIf="currentLevel == 2" style="cursor: pointer;"
+                                (click)="deleteSecondDegree('deleteLevel2')" title="Delete Second Degree">
                                 <i class="bi bi-trash3"></i>
                             </span>
                         </div>
@@ -55,7 +56,8 @@
                                 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-edge-type-level2>
                         </div>
                         <div class="filter-single" style="width:30%;">
-                            <app-filter-destination-node-level2 (onSelectDestinationNode2)='destinationNodeChanged2("destinationNode2Filter")'
+                            <app-filter-destination-node-level2
+                                (onSelectDestinationNode2)='destinationNodeChanged2("destinationNode2Filter")'
                                 [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-destination-node-level2>
                         </div>
                     </div>
@@ -66,9 +68,10 @@
             <div [ngStyle]="{'display' : showLevels == false ? 'none' : 'block'}">
                 <div *ngIf="currentLevel > 2" class="horizonal-filter-bar" style="width: 98%;margin-top: 17px;">
                     <div class="filter-inner">
-                        <div class="filter-left-heading d-flex" style="font-size:16px;">
+                        <div class="filter-left-heading" style="font-size:16px;">
                             3<sup>rd</sup> Degree
-                            <span *ngIf="currentLevel == 3" title="Delete Third Degree" style="cursor: pointer;" (click)="deleteThirdDegree('deleteLevel3')">
+                            <span *ngIf="currentLevel == 3" title="Delete Third Degree" style="cursor: pointer;"
+                                (click)="deleteThirdDegree('deleteLevel3')">
                                 <i class="bi bi-trash3"></i>
                             </span>
                         </div>
@@ -146,6 +149,18 @@
                                 <button class="nav-link" id="tab5-tab" data-bs-toggle="tab" data-bs-target="#tab5"
                                     type="button" role="tab" aria-controls="tab5" aria-selected="false"
                                     (click)="onSubmitTab($event, 'ct')">Clinical Trial (Beta)</button>
+                            </li>
+                            <li class="nav-item ms-auto" role="presentation">
+                                <div class="dropdown rank-dropdown">
+                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
+                                        id="rank-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Select Rank
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="rank-dropdown">
+                                        <li class="dropdown-item"><input type="checkbox"> Rank 1</li>
+                                        <li class="dropdown-item"><input type="checkbox"> Rank 2</li>
+                                    </ul>
+                                </div>
                             </li>
                         </ul>
 

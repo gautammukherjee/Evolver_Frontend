@@ -28,8 +28,8 @@
 .card-panel-box .card-panel-box-heading {
 	font-size: 17px;
 	padding: 7px 15px;
-	background: #7880BA;
-	color: #fff;
+	background: var(--panel-heading-bg);
+	color: var(--text-color);
 }
 
 .card-panel-box .card-panel-box-detail {

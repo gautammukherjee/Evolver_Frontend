@@ -9,7 +9,7 @@ import { GlobalVariableService } from '../services/common/global-variable.servic
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-
+  public isLightTheme = true;
   result: any;
   error = "false";
   errorMessage = "";
@@ -38,6 +38,15 @@ export class HeaderComponent implements OnInit {
     if (sessVal == null) {
       this.router.navigate(['login']);
     }
+  }
+
+  onThemeSwitchChange() {
+    this.isLightTheme = !this.isLightTheme;
+
+    document.body.setAttribute(
+      'data-theme',
+      this.isLightTheme ? 'light' : 'dark'
+    );
   }
 
   autologout() {
