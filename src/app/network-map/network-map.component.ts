@@ -388,6 +388,7 @@ export class NetworkMapComponent implements OnInit {
 
       name: 'fcose',
       quality: "default",
+      minNodeSpacing:140,
       // Use random node positions at beginning of layout
       // if this is set to false, then quality option must be "proof"
       randomize: true,
