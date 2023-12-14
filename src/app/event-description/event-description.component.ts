@@ -313,6 +313,7 @@ export class EventDescriptionComponent implements OnInit {
                 //temps["edgeTypes"] = "<button class='btn btn-sm btn-primary'>Edge Types</button> &nbsp;";
                 //temps["edgeType_articleType"] = event.edge_type_article_type_ne_ids;
                 temps["pmidCount"] = event.pmids;
+                temps["rank_score"] = (event.rank_score!=null? event.rank_score : 'N/A');
                 temps["edgeTypesID"] = edgeTypeIdsPost;
                 temps["edgeNeId"] = edgeTypeNeIdsPost;
                 temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'><i class='bi bi-card-heading'></i>&nbsp;Articles</button> &nbsp;";
@@ -737,6 +738,7 @@ export class EventDescriptionComponent implements OnInit {
                 //temps["edgeTypes"] = "<button class='btn btn-sm btn-primary'>Edge Types</button> &nbsp;";
                 //temps["edgeType_articleType"] = event.edge_type_article_type_ne_ids;
                 temps["pmidCount"] = event.pmids;
+                temps["rank_score"] = (event.rank_score!=null? event.rank_score : 'N/A');
                 temps["edgeTypesID"] = edgeTypeIdsPost;
                 temps["edgeNeId"] = edgeTypeNeIdsPost;
                 temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'><i class='bi bi-card-heading'></i>&nbsp;Articles</button> &nbsp;";

@@ -47,14 +47,20 @@
                 </div>-->
 
                     <div class="map-zoom-btngrp">
-                        <div class="dropdown rank-dropdown" *ngIf="!nodesCheckLength">
+                        <div class="dropdown rank-dropdown">
                             <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="rank-dropdown"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 Select Rank
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="rank-dropdown">
-                                <li class="dropdown-item"><input type="checkbox"> Rank 1</li>
-                                <li class="dropdown-item"><input type="checkbox"> Rank 2</li>
+                                <li class="dropdown-item"><input type="checkbox" name="rank" value="1" checked (click)="selectRank(1, $event)"> Rank 1</li>
+                                <li class="dropdown-item"><input type="checkbox" name="rank" value="2" (click)="selectRank(2, $event)"> Rank 2</li>
+                                <li class="dropdown-item"><input type="checkbox" name="rank" value="3" (click)="selectRank(3, $event)"> Rank 3</li>
+                                <li class="dropdown-item"><input type="checkbox" name="rank" value="4" (click)="selectRank(4, $event)"> Rank 4</li>
+                                <li class="dropdown-item"><input type="checkbox" name="rank" value="5" (click)="selectRank(5, $event)"> Rank 5</li>
+                                <li class="dropdown-item"><input type="checkbox" name="rank" value="6" (click)="selectRank(6, $event)"> Rank 6</li>
+                                <li class="dropdown-item"><input type="checkbox" name="rank" value="7" (click)="selectRank(7, $event)"> Rank 7</li>
+                                <li class="dropdown-item"><input type="checkbox" name="rank" value="8" (click)="selectRank(8, $event)"> Rank 8</li>
                             </ul>
                         </div>
                         <div class="d-flex" [ngClass]="isNetworkMapFullScreen == true ? 'd-none' : ''">

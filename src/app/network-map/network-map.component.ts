@@ -79,14 +79,18 @@ export class NetworkMapComponent implements OnInit {
   firstCompleteApiResult: any;
   secondCompleteApiResult: any;
   thirdCompleteApiResult: any;
-
+  public selectedRankNodes: any = [1];
 
   constructor(
     private globalVariableService: GlobalVariableService,
     private nodeSelectsService: NodeSelectsService,
     private datePipe: DatePipe,
     private modalService: NgbModal,
-  ) { }
+  ) { 
+    this.globalVariableService.setSelectedRanks([1]);
+    this.selectedRankNodes = Array.from(this.globalVariableService.getSelectedRanks());
+    this.filterParams = this.globalVariableService.getFilterParams();
+  }
 
 
   graphSelected(event: any) {
@@ -144,7 +148,7 @@ export class NetworkMapComponent implements OnInit {
       this.noDataFoundMap = false;
 
       this.filterParams = this.globalVariableService.getFilterParams();
-      console.log("master map for filter: ", _filterParams);
+      console.log("master map for filter: ", this.filterParams);
 
       ////////////***********/ Start To get the complete data for level 1 and level 2 ************ /////////////////////////
       if (_filterParams.nnrt_id != undefined) {
@@ -523,6 +527,25 @@ export class NetworkMapComponent implements OnInit {
   refreshMap(elem: any) {
     this.filterParams = this.globalVariableService.getFilterParams();
     console.log("refresh Map:: ", this.filterParams);
+    if (this.filterParams.nnrt_id != undefined)
+      this.getMasterListsMap(this.filterParams, null);
+  }
+
+  selectRank(elem: any, event: any) {
+    console.log("elem: ", elem);
+
+    if (event.target.checked) {
+      this.selectedRankNodes.push(elem);
+    } else {
+      this.selectedRankNodes.splice(this.selectedRankNodes.indexOf(elem), 1);
+    }
+    console.log("selectedRankNodes: ", this.selectedRankNodes);
+
+    this.globalVariableService.setSelectedRanks(this.selectedRankNodes);
+    this.selectedRankNodes = Array.from(this.globalVariableService.getSelectedRanks());
+
+    this.filterParams = this.globalVariableService.getFilterParams();
+    console.log("Rank Map:: ", this.filterParams);
     if (this.filterParams.nnrt_id != undefined)
       this.getMasterListsMap(this.filterParams, null);
   }

@@ -44,6 +44,7 @@ export class GlobalVariableService {
 
   selectedNodes = [];
   selectedEdges: any;
+  selectedRanks = [];
   selectedMapsType: any;
   selectedTabsType: any;
 
@@ -213,6 +214,13 @@ export class GlobalVariableService {
     return this.selectedEdges;
   }
 
+  setSelectedRanks(rank_select: any) {
+    this.selectedRanks = rank_select;
+  }
+  getSelectedRanks() {
+    return this.selectedRanks;
+  }
+
   setMapsSelected(mapType: any) {
     this.selectedMapsType = mapType;
   }
@@ -249,6 +257,7 @@ export class GlobalVariableService {
 
       node_id: this.getSelectedNodes().length > 0 ? this.getSelectedNodes() : undefined,
       edge_select: this.getSelectedEdges() != undefined ? this.getSelectedEdges() : 1,
+      rank_select: this.getSelectedRanks().length > 0 ? this.getSelectedRanks() : undefined,
       mapType: this.getMapsSelected() != undefined ? this.getMapsSelected() : 'default',
       tabType: this.getTabsSelected() != undefined ? this.getTabsSelected() : 'default',
       destination_node_all_for_ct: this.getSelectedAllForCTDestinationNodes().length > 0 ? this.getSelectedAllForCTDestinationNodes() : undefined,
