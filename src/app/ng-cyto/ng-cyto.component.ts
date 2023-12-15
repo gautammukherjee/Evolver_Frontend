@@ -90,20 +90,26 @@ export class NgCytoComponent implements OnChanges {
 
             .selector('node')
             .css({
-                'width': 'mapData(weight, 25, 40, 60, 80)',
-                'label': 'data(name)',
+                'width': 'mapData(weight, 20, 25, 25, 30)',
+                'content': 'data(name)',
                 'text-valign': 'center',
-                'text-outline-width': 2.0,
+                'text-outline-width': 0.2,
                 'background-fit': 'contain',
                 'text-outline-color': 'data(colorCode)',
                 'background-color': 'data(colorCode)',
-                'color': '#000'
+                'color': '#000',
+                'text-halign': 'center',
+                // 'height': '60px',
+                'border-color': 'black',
+                'border-width': '0.5px'
+
+                // 'box-shadow': 'inset -1px -1px 100px   100px black'
             })
             .style({ "font-size": 16, "font-family": "system-ui" })    // big font
 
             .selector(':selected')
             .css({
-                'border-width': 2,
+                'border-width': 1,
                 'border-color': '#333'
             })
 
