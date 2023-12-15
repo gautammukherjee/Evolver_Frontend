@@ -93,7 +93,7 @@ export class NgCytoComponent implements OnChanges {
                 'width': 'mapData(weight, 20, 25, 25, 30)',
                 'content': 'data(name)',
                 'text-valign': 'center',
-                'text-outline-width': 0.2,
+                'text-outline-width': 0.5,
                 'background-fit': 'contain',
                 'text-outline-color': 'data(colorCode)',
                 'background-color': 'data(colorCode)',
