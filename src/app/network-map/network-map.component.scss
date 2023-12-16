@@ -20,6 +20,9 @@ ng2-cytoscape {
 }
 
 .rank-dropdown{
+    position: absolute;
+    top:0;
+    right:10px;
     button{
         text-align: left;
         background-color: var(--filter-bar-bg) !important;
