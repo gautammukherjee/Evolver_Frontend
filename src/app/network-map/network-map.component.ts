@@ -177,6 +177,7 @@ export class NetworkMapComponent implements OnInit {
               console.log("second Complete Api Result: ", this.secondCompleteApiResult);
               console.log("third Complete Api Result: ", this.thirdCompleteApiResult);
               this.masterListsDataDetailsLengthLevelOne = this.firstCompleteApiResult.masterListsData[0].count;
+              console.log("levelOne: ", this.masterListsDataDetailsLengthLevelOne);
 
               //To check wheter the first level data is less than 1000 then deduct the first level value from 1000
               this.remainedCountForFirstLevel = (((1000 - this.masterListsDataDetailsLengthLevelOne) <= 0) ? 0 : (1000 - this.masterListsDataDetailsLengthLevelOne));
