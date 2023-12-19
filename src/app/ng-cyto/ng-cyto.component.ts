@@ -90,7 +90,7 @@ export class NgCytoComponent implements OnChanges {
 
             .selector('node')
             .css({
-                'width': 'mapData(weight, 20, 25, 25, 30)',
+                'width': 'mapData(weight, 25, 40, 60, 80)',
                 'content': 'data(name)',
                 'text-valign': 'center',
                 'text-outline-width': 0.5,
