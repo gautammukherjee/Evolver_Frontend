@@ -203,6 +203,7 @@ export class NgCytoComponent implements OnChanges {
 
             var directlyConnectedNodes = node.neighborhood().nodes();
             console.log("nodesHere2 All: ", directlyConnectedNodes);
+            
             var neighborhood = node.neighborhood().add(node);
             // console.log("neighbr1: ", node.neighborhood().nodes());
 
@@ -211,7 +212,9 @@ export class NgCytoComponent implements OnChanges {
             localselect.emit(node.data('name'));
 
             var edge = node[0]._private.data;
+            var allEdges = node[0]._private.edges;
             console.log("act: ", edge);
+            console.log("allEdges: ", allEdges);
 
             if (edge.node_type == "target") {
 
@@ -231,14 +234,13 @@ export class NgCytoComponent implements OnChanges {
                 $("#pubmedEdgeNames").html('');
                 ($('#myModalEdge') as any).modal('show');
 
-
                 this.pubmedEdgeDetails = "";
                 // this.pubmedEdgeDetails = "<div>";
                 this.pubmedURLsDownload = "";
 
                 var i = 0;
                 // this.pubmedEdgeDetails += '<div style="padding-bottom:10px; color: #BF63A2;">' + directlyConnectedNodes._private.eles[0]._private.data.name + '</div>';
-                directlyConnectedNodes._private.eles.forEach((element: any) => {
+                allEdges.forEach((element: any) => {
                     // this.pubmedEdgeDetails = "<div>";
                     // this.pubmedEdgeDetails += "</div>";
                     // console.log("pubmedEdgeDetails: ", this.pubmedEdgeDetails);
@@ -261,7 +263,7 @@ export class NgCytoComponent implements OnChanges {
                                 // this.pubmedURLsDownload = "";
 
                                 this.pubmedEdgeDetails += '<div style="color: #BF63A2;"><strong>Source Name</strong></div>';
-                                this.pubmedEdgeDetails += '<div style="padding-bottom:1px; color: #BF63A2;">' + element._private.data.name + '</div>';
+                                this.pubmedEdgeDetails += '<div style="padding-bottom:1px; color: #BF63A2;">' + element._private.source[0]._private.data.name + '</div>';
                                 this.pubmedEdgeDetails += '<div style="color: #4B5DA1;"><strong>Destination Name</strong></div>';
                                 this.pubmedEdgeDetails += '<div style="padding-bottom:10px; color: #4B5DA1;">' + edge.name + '</div>';
 
@@ -293,7 +295,7 @@ export class NgCytoComponent implements OnChanges {
                             // $("#pubmedURLsDownload").html(this.pubmedURLsDownload);
                             // $("#pubmedEdgeNames").html(this.edgeNamesMultiple);
                             // ($('#myModalEdge') as any).modal('show');
-                            if ((directlyConnectedNodes._private.eles).length == i) {
+                            if (allEdges.length == i) {
                                 $("#pubmedURLsDownloadLoader").html('');
                                 $("#pubmedURLs").html(this.pubmedEdgeDetails);
                                 ($('#myModalEdge') as any).modal('show');
