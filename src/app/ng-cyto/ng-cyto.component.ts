@@ -57,13 +57,16 @@ export class NgCytoComponent implements OnChanges {
     nodeName: any;
     resultNodes: any = [];
     resultEdgeNames: any = [];
+    conceptIds: any = [];
+    umlsData: any = [];
     edgeTypeNameData: any = [];
     loadingEdge: boolean = false;
+    loadingUmls: boolean = false;
 
     pubmedURLsDownloadLoader: any;
     pubmedURLsDownload: any;
     pubmedEdgeDetails: any;
-    edgeNamesMultiple: any
+    edgeNamesMultiple: any;
 
     // searchConnections;
 
@@ -97,7 +100,7 @@ export class NgCytoComponent implements OnChanges {
                 'background-fit': 'contain',
                 'text-outline-color': 'data(colorCode)',
                 'background-color': 'data(colorCode)',
-                'color': '#000',
+                'color': 'data(colorLabel)',
                 'text-halign': 'center',
                 // 'height': '60px',
                 'border-color': 'black',
@@ -199,8 +202,7 @@ export class NgCytoComponent implements OnChanges {
             // console.log("here edges: ", edges);
 
             var directlyConnectedNodes = node.neighborhood().nodes();
-            console.log("nodesHere2: ", directlyConnectedNodes._private.eles[0]._private.data.name);
-
+            console.log("nodesHere2 All: ", directlyConnectedNodes);
             var neighborhood = node.neighborhood().add(node);
             // console.log("neighbr1: ", node.neighborhood().nodes());
 
@@ -212,20 +214,13 @@ export class NgCytoComponent implements OnChanges {
             console.log("act: ", edge);
 
             if (edge.node_type == "target") {
-                //Get the NE_IDs Lists
-                const regex = /[{}]/g;
-                const edgeTypeNeIds = edge.neIds;
-                const edgeTypeNeIdsPost = edgeTypeNeIds.replace(regex, '');
-                console.log("edgeTypeNeIdsPost: ", edgeTypeNeIdsPost);
 
                 //Get the Edge_Type_ids Lists
-                const edgeTypeIds = edge.edgeTypeIds;
-                const edgeTypeIdsPost = edgeTypeIds.replace(regex, '');
-                console.log("edgeTypeIdsPost: ", edgeTypeIdsPost);
+                const regex = /[{}]/g;
 
                 //////////////// get the pmid lists here /////////////////////
                 // this.resultNodes = [];
-                this.loadingEdge = true;
+                // this.loadingEdge = true;
 
                 //First reset the edge selection area
                 this.pubmedURLsDownloadLoader = '';
@@ -236,87 +231,137 @@ export class NgCytoComponent implements OnChanges {
                 $("#pubmedEdgeNames").html('');
                 ($('#myModalEdge') as any).modal('show');
 
-                //Get the PMID lists
-                this.nodeSelectsService.getEdgePMIDLists({ 'ne_ids': edgeTypeNeIdsPost }).subscribe(
-                    data => {
-                        // const legendsNodeTypes = [];
-                        this.resultNodes = data;
-                        this.edgeTypeNameData = this.resultNodes.pmidLists;
-                        // console.log("edgeTypeNameData1: ", this.edgeTypeNameData);
 
-                        if (this.edgeTypeNameData != undefined) {
+                this.pubmedEdgeDetails = "";
+                // this.pubmedEdgeDetails = "<div>";
+                this.pubmedURLsDownload = "";
 
-                            // var PMIDList = edge.PMID.split(",");
-                            var pubmedBaseUrl = "https://www.ncbi.nlm.nih.gov/pubmed/";
-                            this.pubmedURLsDownload = "";
+                var i = 0;
+                // this.pubmedEdgeDetails += '<div style="padding-bottom:10px; color: #BF63A2;">' + directlyConnectedNodes._private.eles[0]._private.data.name + '</div>';
+                directlyConnectedNodes._private.eles.forEach((element: any) => {
+                    // this.pubmedEdgeDetails = "<div>";
+                    // this.pubmedEdgeDetails += "</div>";
+                    // console.log("pubmedEdgeDetails: ", this.pubmedEdgeDetails);
+                    //Get the PMID lists
+                    const edgeTypeNeIds = element._private.data.neIds;
+                    const edgeTypeNeIdsPost = edgeTypeNeIds.replace(regex, '');
+                    console.log("edgeTypeNeIdsPost: ", edgeTypeNeIdsPost);
 
-                            this.pubmedURLsDownload = "<div>";
-                            this.edgeTypeNameData.forEach((PMID: any) => {
+                    this.nodeSelectsService.getEdgePMIDLists({ 'ne_ids': edgeTypeNeIdsPost }).subscribe(
+                        data => {
+                            // const legendsNodeTypes = [];
+                            this.resultNodes = data;
+                            this.edgeTypeNameData = this.resultNodes.pmidLists;
+                            // console.log("edgeTypeNameData1: ", this.edgeTypeNameData);
 
-                                // const myFormattedDate = this.pipe.transform(PMID.publication_date, 'short');
-                                // console.log("PMID:: ", PMID.edge_type_name);
-                                this.pubmedURLsDownload += "<div style='list-style: none; font-size: 14px; color:#32404E'><strong>PMID: </strong> <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + PMID.pmid + "'>" + PMID.pmid + "</a></div>";
-                                this.pubmedURLsDownload += "<div style='font-size: 14px;color:#32404E'><strong>Edge Type: </strong>" + PMID.edge_type_name + "</div>";
-                                this.pubmedURLsDownload += "<div style='font-size: 14px;color:#32404E'><strong>Title: </strong>" + PMID.title + "</div>";
-                                this.pubmedURLsDownload += "<div style='font-size: 14px; color:#32404E'><strong>Publication Date : </strong>" + PMID.publication_date + "</div>";
-                                this.pubmedURLsDownload += "<hr style='color:#32404E'/>";
-                            });
-                            this.pubmedURLsDownload += "<div style='clear: both;'><hr/></div>";
-                            this.pubmedURLsDownload += "</div>";
+                            if (this.edgeTypeNameData != undefined) {
 
-                        } else {
-                            this.pubmedURLsDownload = "<h4>No PMID Found..</h4>";
-                            this.pubmedURLsDownload += "<div style='clear: both;'><hr/></div>";
-                        }
-                        // console.log("edgeTypeNameData5: ", pubmedURLsDownload);
+                                // var PMIDList = edge.PMID.split(",");
+                                var pubmedBaseUrl = "https://www.ncbi.nlm.nih.gov/pubmed/";
+                                // this.pubmedURLsDownload = "";
 
-                        this.pubmedEdgeDetails;
-                        this.pubmedEdgeDetails = "<div>";
-                        this.pubmedEdgeDetails += '<div style="color: #BF63A2;"><strong>Source Name</strong></div>';
-                        this.pubmedEdgeDetails += '<div style="padding-bottom:10px; color: #BF63A2;">' + directlyConnectedNodes._private.eles[0]._private.data.name + '</div>';
-                        this.pubmedEdgeDetails += '<div style="color: #4B5DA1;"><strong>Destination Name</strong></div>';
-                        this.pubmedEdgeDetails += '<div style="padding-bottom:10px; color: #4B5DA1;">' + edge.name + '</div>';
-                        // pubmedEdgeDetails += '<div style="color: #00ffff;"><strong>Edge Weight</strong></div>';
-                        // pubmedEdgeDetails += '<div style="padding-bottom:10px;">' + edge.strength + '</div>';
-                        //this.pubmedEdgeDetails += "<hr style='color: #32404E;'/>";
-                        this.pubmedEdgeDetails += "</div>";
-            
-                        console.log("pubmedEdgeDetails: ", this.pubmedEdgeDetails);
+                                this.pubmedEdgeDetails += '<div style="color: #BF63A2;"><strong>Source Name</strong></div>';
+                                this.pubmedEdgeDetails += '<div style="padding-bottom:1px; color: #BF63A2;">' + element._private.data.name + '</div>';
+                                this.pubmedEdgeDetails += '<div style="color: #4B5DA1;"><strong>Destination Name</strong></div>';
+                                this.pubmedEdgeDetails += '<div style="padding-bottom:10px; color: #4B5DA1;">' + edge.name + '</div>';
 
-                        //Get the edge names lists
-                        this.nodeSelectsService.getEdgeTypeName({ 'edge_type_ids': edgeTypeIdsPost }).subscribe(
-                            data => {
-                                this.resultEdgeNames = data;
-                                // console.log("resultEdgeNames: ", this.resultEdgeNames);
+                                // this.pubmedURLsDownload += "<div>";
+                                this.edgeTypeNameData.forEach((PMID: any) => {
 
-                                if (this.resultEdgeNames != undefined) {
-                                    this.edgeNamesMultiple = "";
-                                    this.edgeNamesMultiple = "<div>";
-                                    this.edgeNamesMultiple += "<div style='font-size: 15px; font-weight:bold; color:#32404E'>Edge Types</div>";
-                                    this.resultEdgeNames.forEach((EDGES: any) => {
-                                        this.edgeNamesMultiple += "<div style='font-size: 14px;color:#32404E'>" + EDGES.edge_type_name + "</div>";
-                                    });
-                                    this.edgeNamesMultiple += "<div style='clear: both;'><hr/></div>";
-                                    this.edgeNamesMultiple += "</div>";
-                                } else {
-                                    this.edgeNamesMultiple = "<h4>No EDGES Found..</h4>";
-                                    this.edgeNamesMultiple += "<div style='clear: both;'><hr/></div>";
-                                }
+                                    // const myFormattedDate = this.pipe.transform(PMID.publication_date, 'short');
+                                    // console.log("PMID:: ", PMID.edge_type_name);
+                                    this.pubmedEdgeDetails += "<div style='list-style: none; font-size: 14px; color:#32404E'><strong>PMID: </strong> <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + PMID.pmid + "'>" + PMID.pmid + "</a></div>";
+                                    this.pubmedEdgeDetails += "<div style='font-size: 14px;color:#32404E'><strong>Edge Type: </strong>" + PMID.edge_type_name + "</div>";
+                                    this.pubmedEdgeDetails += "<div style='font-size: 14px;color:#32404E'><strong>Title: </strong>" + PMID.title + "</div>";
+                                    this.pubmedEdgeDetails += "<div style='font-size: 14px; color:#32404E'><strong>Publication Date : </strong>" + PMID.publication_date + "</div>";
+                                    this.pubmedEdgeDetails += "<hr style='color:#32404E'/>";
+                                });
+                                this.pubmedEdgeDetails += "<div style='clear: both;'><hr/></div>";
+                                // this.pubmedEdgeDetails += "</div>";
 
+                            } else {
+                                this.pubmedEdgeDetails = "<h4>No PMID Found..</h4>";
+                                this.pubmedEdgeDetails += "<div style='clear: both;'><hr/></div>";
+                            }
+                            i++;
+                        },
+                        err => {
+                            // this.loadingEdge = false;
+                            console.log(err.message);
+                        },
+                        () => {
+                            // $("#pubmedURLsDownload").html(this.pubmedURLsDownload);
+                            // $("#pubmedEdgeNames").html(this.edgeNamesMultiple);
+                            // ($('#myModalEdge') as any).modal('show');
+                            if ((directlyConnectedNodes._private.eles).length == i) {
                                 $("#pubmedURLsDownloadLoader").html('');
                                 $("#pubmedURLs").html(this.pubmedEdgeDetails);
-                                $("#pubmedURLsDownload").html(this.pubmedURLsDownload);
-                                $("#pubmedEdgeNames").html(this.edgeNamesMultiple);
                                 ($('#myModalEdge') as any).modal('show');
-                            });
-                    },
-                    err => {
-                        this.loadingEdge = false;
-                        console.log(err.message);
-                    },
-                    () => {
-                        this.loadingEdge = false;
-                    });
+                            }
+                            // this.loadingEdge = false;   
+                        }
+                    );
+                });
+
+                // pubmedEdgeDetails += '<div style="color: #00ffff;"><strong>Edge Weight</strong></div>';
+                // pubmedEdgeDetails += '<div style="padding-bottom:10px;">' + edge.strength + '</div>';
+                //this.pubmedEdgeDetails += "<hr style='color: #32404E;'/>";
+
+                //Get the edge names lists
+                // const edgeTypeIds = edge.edgeTypeIds;
+                // const edgeTypeIdsPost = edgeTypeIds.replace(regex, '');
+                // console.log("edgeTypeIdsPost: ", edgeTypeIdsPost);
+                // this.nodeSelectsService.getEdgeTypeName({ 'edge_type_ids': edgeTypeIdsPost }).subscribe(
+                //     data => {
+                //         this.resultEdgeNames = data;
+                //         // console.log("resultEdgeNames: ", this.resultEdgeNames);
+                //         if (this.resultEdgeNames != undefined) {
+                //             this.edgeNamesMultiple = "";
+                //             this.edgeNamesMultiple = "<div>";
+                //             this.edgeNamesMultiple += "<div style='font-size: 15px; font-weight:bold; color:#32404E'>Edge Types</div>";
+                //             this.resultEdgeNames.forEach((EDGES: any) => {
+                //                 this.edgeNamesMultiple += "<div style='font-size: 14px;color:#32404E'>" + EDGES.edge_type_name + "</div>";
+                //             });
+                //             this.edgeNamesMultiple += "<div style='clear: both;'><hr/></div>";
+                //             this.edgeNamesMultiple += "</div>";
+                //         } else {
+                //             this.edgeNamesMultiple = "<h4>No EDGES Found..</h4>";
+                //             this.edgeNamesMultiple += "<div style='clear: both;'><hr/></div>";
+                //         }                               
+                //     });
+
+
+                ////////////************ Get the Node Ids Lists *************///////////////
+                const NodeIds = edge.id;
+                const nodeIdsPost = NodeIds.replace(regex, '');
+                console.log("nodeIdsPost: ", nodeIdsPost);
+
+                //Get the Node ids post and concepts ids
+                // this.nodeSelectsService.getConceptIdByNode({ 'node_ids': nodeIdsPost }).subscribe(
+                //     data => {
+                //         this.conceptIds = data;
+                //         console.log("New data: ", this.conceptIds.conceptIds);
+
+                //         this.conceptIds.conceptIds.forEach((element: any) => {
+                //             console.log("unique data: ", element);
+
+                //             // this.nodeSelectsService.getUmlsDataByConceptIds({ 'conceptIds': element.concept_id }).subscribe(
+                //             //     data => {
+                //             //         this.umlsData = data;
+                //             //         console.log("UMLD data: ", this.umlsData);
+                //             //     });
+
+                //         });
+                //     },
+                //     err => {
+                //         this.loadingUmls = false;
+                //         console.log(err.message);
+                //     },
+                //     () => {
+                //         this.loadingUmls = false;
+                //     });
+
+
             }
         });
 

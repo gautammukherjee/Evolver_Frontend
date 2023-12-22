@@ -80,13 +80,14 @@ export class NetworkMapComponent implements OnInit {
   secondCompleteApiResult: any;
   thirdCompleteApiResult: any;
   public selectedRankNodes: any = [1];
+  public isLightTheme = true;
 
   constructor(
     private globalVariableService: GlobalVariableService,
     private nodeSelectsService: NodeSelectsService,
     private datePipe: DatePipe,
     private modalService: NgbModal,
-  ) { 
+  ) {
     this.globalVariableService.setSelectedRanks([1]);
     this.selectedRankNodes = Array.from(this.globalVariableService.getSelectedRanks());
     this.filterParams = this.globalVariableService.getFilterParams();
@@ -111,6 +112,7 @@ export class NetworkMapComponent implements OnInit {
     // this.drawChart();
     this.ProceedDoFilterApply?.subscribe(data => {  // Calling from details, details working as mediator
       console.log("network map data: ", data);
+
       if (data === undefined) { // data=undefined true when apply filter from side panel
         this.filterParams = this.globalVariableService.getFilterParams();
         this.getMasterListsMap(this.filterParams, null);
@@ -336,7 +338,7 @@ export class NetworkMapComponent implements OnInit {
                       this.nodeData.push({
                         // data: { id: Math.floor(event.node_id), name: event.node, node_type: event.nodetype, weight: 100, colorCode: event.colourcode, shapeType: 'octagon' },
                         // data: { id: Math.floor(event.id), name: event.name.toLowerCase(), neIds: event.neIds, edgeTypeIds: event.edgeTypeIds, node_type: event.nodeType, weight: 100, colorCode: event.colorNode, shapeType: event.shapeType }
-                        data: { id: Math.floor(event.id), name: event.name, neIds: event.neIds, edgeTypeIds: event.edgeTypeIds, node_type: event.nodeType, weight: 100, colorCode: event.colorNode, shapeType: event.shapeType }
+                        data: { id: Math.floor(event.id), name: event.name, neIds: event.neIds, edgeTypeIds: event.edgeTypeIds, node_type: event.nodeType, weight: 100, colorCode: event.colorNode, shapeType: event.shapeType, colorLabel: (this.isLightTheme==true?'#000':'#fff') }
                       });
                     });
 
@@ -393,7 +395,7 @@ export class NetworkMapComponent implements OnInit {
 
       name: 'fcose',
       quality: "default",
-      minNodeSpacing:140,
+      minNodeSpacing: 140,
       // Use random node positions at beginning of layout
       // if this is set to false, then quality option must be "proof"
       randomize: true,
@@ -591,5 +593,21 @@ export class NetworkMapComponent implements OnInit {
     createEl.click();
     createEl.remove();
   }
+
+  // onThemeSwitchChange() {
+  //   this.isLightTheme = !this.isLightTheme;
+  //   this.globalVariableService.setSelectedThemes(this.isLightTheme);
+
+  //   document.body.setAttribute(
+  //     'data-theme',
+  //     this.isLightTheme ? 'light' : 'dark'
+  //   );
+
+  //   this.filterParams = this.globalVariableService.getFilterParams();
+  //   console.log("refresh Map22:: ", this.filterParams);
+  //   if (this.filterParams.nnrt_id != undefined)
+  //     this.getMasterListsMap(this.filterParams, null);
+
+  // }
 
 }

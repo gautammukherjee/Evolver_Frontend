@@ -35,6 +35,7 @@ export class GlobalVariableService {
   selectedAllDestinationNodes: number = 0;
   selectedAllDestinationNodes2: number = 0;
   selectedAllDestinationNodes3: number = 0;
+  selectedThemes: boolean = true;
   selectedEdgeTypes = [];
   selectedEdgeTypes2 = [];
   selectedEdgeTypes3 = [];
@@ -146,6 +147,13 @@ export class GlobalVariableService {
   }
   getSelectedAllDestinationNodes() {
     return this.selectedAllDestinationNodes;
+  }
+
+  setSelectedThemes(val: boolean) {
+    this.selectedThemes = val;
+  }
+  getSelectedThemes() {
+    return this.selectedThemes;
   }
 
   setSelectedAllDestinationNodes2(val: number) {
@@ -262,7 +270,8 @@ export class GlobalVariableService {
       tabType: this.getTabsSelected() != undefined ? this.getTabsSelected() : 'default',
       destination_node_all_for_ct: this.getSelectedAllForCTDestinationNodes().length > 0 ? this.getSelectedAllForCTDestinationNodes() : undefined,
       destination_node_all_for_ct2: this.getSelectedAllForCTDestinationNodes2().length > 0 ? this.getSelectedAllForCTDestinationNodes2() : undefined,
-      destination_node_all_for_ct3: this.getSelectedAllForCTDestinationNodes3().length > 0 ? this.getSelectedAllForCTDestinationNodes3() : undefined
+      destination_node_all_for_ct3: this.getSelectedAllForCTDestinationNodes3().length > 0 ? this.getSelectedAllForCTDestinationNodes3() : undefined,
+      selected_themes: this.getSelectedThemes() == true ? this.getSelectedThemes() : false
     };
     return Object.assign(mergeParam, this.filterParams);
   }

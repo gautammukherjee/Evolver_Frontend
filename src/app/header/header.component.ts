@@ -42,6 +42,7 @@ export class HeaderComponent implements OnInit {
 
   onThemeSwitchChange() {
     this.isLightTheme = !this.isLightTheme;
+    this.globalVariableService.setSelectedThemes(this.isLightTheme);
 
     document.body.setAttribute(
       'data-theme',

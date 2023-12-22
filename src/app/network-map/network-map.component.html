@@ -19,6 +19,15 @@
                     <li class="dropdown-item"><input type="checkbox" name="rank" value="8" (click)="selectRank(8, $event)"> Rank 8</li>
                 </ul>
             </div>
+
+            <!-- <div class="form-check form-switch ps-0" style="width: 127px;background-color: #3066c4;border-radius: 5px;padding: 2px;position: absolute;top: 0px;right: 123px;color: #fff;margin-left: 6px;">
+                <label class="form-check-label" style="margin-left: 8px;" for="flexSwitchCheckDefault2">Dark Mode</label>
+                <input class="form-check-input float-end" type="checkbox" role="switch"
+                    id="flexSwitchCheckDefault2" [checked]="!isLightTheme"
+                    (click)="onThemeSwitchChange()">
+                
+            </div> -->
+
             <div class="common-text-switcher fs-2 text-center mb-4" style="margin-top: 160px;" *ngIf="nodesCheckLength">
                 Please
                 select entities to generate
@@ -142,7 +151,7 @@
                     <!-- modal Node -->
 
                     <div class="modal overlay right fade" id="myModalEdge" tabindex="-1" role="dialog">
-                        <div class="modal-dialog" role="document" style="width: 500px;">
+                        <div class="modal-dialog" role="document" style="width: 800px;">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
