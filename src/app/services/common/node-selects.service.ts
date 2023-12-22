@@ -236,19 +236,20 @@ export class NodeSelectsService {
     return this.http.post(this.API_URL + 'getConceptIdByNode', params, httpOptions);    
   }
 
-  getUmlsDataByConceptIds(params: any) {
-    // return this.http.post("https://uts-ws.nlm.nih.gov/rest/content/current/CUI/"+params.conceptIds+"?apiKey=b238480d-ef87-4755-a67c-92734e4dcfe8", httpOptions);
-    return this.http.post(this.API_URL + 'getUmlsDataByConceptIds', params, httpOptions);
-  }
+  // getUmlsDataByConceptIds(params: any) {
+  //   // return this.http.post("https://uts-ws.nlm.nih.gov/rest/content/current/CUI/"+params.conceptIds+"?apiKey=b238480d-ef87-4755-a67c-92734e4dcfe8", httpOptions);
+  //   return this.http.post(this.API_URL + 'getUmlsDataByConceptIds', params, httpOptions);
+  // }
 
   // getTeams() : Observable <TeamData[]> {
   //   var urlPrefix = "http://api.football-data.org/v1/competitions/424/teams;
   //   return this.http.get<TeamData[]>(urlPrefix, httpOptions);
   //   }
 
-  // getUmlsDataByConceptIds(params: any) {
-  //   // var urlPrefix = "http://api.football-data.org/v1/competitions/424/teams";
-  //   return this.http.post("https://uts-ws.nlm.nih.gov/rest/content/current/CUI/"+params.conceptIds+"?apiKey=b238480d-ef87-4755-a67c-92734e4dcfe8", httpOptions);
-  // }
+  getUmlsDataByConceptIds(params: any) {
+    var urlPrefix = "https://uts-ws.nlm.nih.gov/rest/content/current/CUI/"+params.conceptIds+"?apiKey=b238480d-ef87-4755-a67c-92734e4dcfe8";
+    // console.log("urlPrefix: ", urlPrefix);
+    return this.http.get(urlPrefix, httpOptions);
+  }
 
 }

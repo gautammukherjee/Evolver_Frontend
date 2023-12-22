@@ -350,7 +350,7 @@ export class EventDescriptionComponent implements OnInit {
       stickyHeader: true,
       showExport: true,
       exportOptions: {
-        ignoreColumn: [4],
+        ignoreColumn: [6],
         // columns: [6],
         // visible: [6,'true'],
       },

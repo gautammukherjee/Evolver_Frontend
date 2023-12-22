@@ -66,6 +66,7 @@ export class NgCytoComponent implements OnChanges {
     pubmedURLsDownloadLoader: any;
     pubmedURLsDownload: any;
     pubmedEdgeDetails: any;
+    umlsDataLists: any;
     edgeNamesMultiple: any;
 
     // searchConnections;
@@ -203,7 +204,7 @@ export class NgCytoComponent implements OnChanges {
 
             // var directlyConnectedNodes = node.neighborhood().nodes();
             // console.log("nodesHere2 All: ", directlyConnectedNodes);
-            
+
             var neighborhood = node.neighborhood().add(node);
             // console.log("neighbr1: ", node.neighborhood().nodes());
 
@@ -231,6 +232,7 @@ export class NgCytoComponent implements OnChanges {
                 $("#pubmedURLsDownloadLoader").html(this.pubmedURLsDownloadLoader);
                 $("#pubmedURLsDownload").html('');
                 $("#pubmedURLs").html('');
+                // $("#umlsDataLists").html('');
                 $("#pubmedEdgeNames").html('');
                 ($('#myModalEdge') as any).modal('show');
 
@@ -294,7 +296,6 @@ export class NgCytoComponent implements OnChanges {
                         () => {
                             // $("#pubmedURLsDownload").html(this.pubmedURLsDownload);
                             // $("#pubmedEdgeNames").html(this.edgeNamesMultiple);
-                            // ($('#myModalEdge') as any).modal('show');
                             if (allEdges.length == i) {
                                 $("#pubmedURLsDownloadLoader").html('');
                                 $("#pubmedURLs").html(this.pubmedEdgeDetails);
@@ -305,11 +306,75 @@ export class NgCytoComponent implements OnChanges {
                     );
                 });
 
+                ////////////************ Get the Concept Ids Lists on basis of node Ids *************///////////////
+                const NodeIds = edge.id;
+                console.log("NodeIds: ", NodeIds);
+
+                //Get the Node ids post and concepts ids
+                // this.nodeSelectsService.getConceptIdByNode({ 'node_ids': NodeIds }).subscribe(
+                //     data => {
+                //         this.conceptIds = data;
+                //         // console.log("New data: ", this.conceptIds.conceptIds);
+
+                //         this.umlsDataLists = "";
+
+                //         // this.umlsDataLists += '<div class="container text-center">';
+                //         // this.umlsDataLists += '<div class="row align-items-start">';
+                //         // this.umlsDataLists += '<div class="col">ConceptId</div>';
+                //         // this.umlsDataLists += '<div class="col">Name</div>';
+                //         // this.umlsDataLists += '<div class="col">Symentic Type Name</div>';
+                //         // this.umlsDataLists += '</div>';
+                //         // this.umlsDataLists += '</div>';
+
+                //         this.umlsDataLists += '<div style="color: #BF63A2;"><strong>ConceptId</strong></div>';
+                //         this.umlsDataLists += '<div style="color: #BF63A2;"><strong>Name</strong></div>';
+                //         this.umlsDataLists += '<div style="color: #BF63A2;"><strong>Symentic Type Name</strong></div>';
+
+                //         this.conceptIds.conceptIds.forEach((element: any) => {
+                //             console.log("unique data: ", element);
+
+                //             this.loadingUmls = true;
+                //             this.nodeSelectsService.getUmlsDataByConceptIds({ 'conceptIds': element.concept_id }).subscribe(
+                //                 data => {
+                //                     this.umlsData = data;
+                //                     // console.log("UMLS data: ", this.umlsData);                                    
+
+                //                     const umlsName = this.umlsData.result.name;
+                //                     const symenticName = this.umlsData.result.semanticTypes[0].name;
+
+                //                     this.umlsDataLists += '<div>' + element.concept_id + '</div>';
+                //                     this.umlsDataLists += '<div>' + umlsName + '</div>';
+                //                     this.umlsDataLists += '<div>' + symenticName + '</div>';
+
+                //                     console.log("umlsDataLists: ", this.umlsDataLists);
+
+                //                 },
+                //                 err => {
+                //                     this.loadingUmls = false;
+                //                     console.log(err.message);
+                //                 },
+                //                 () => {
+                //                     this.loadingUmls = false;
+                //                     $("#umlsDataLists").html(this.umlsDataLists);
+                //                     ($('#myModalEdge') as any).modal('show');
+                //                 });
+                //         });
+                //         // console.log("umlsDataLists: ", this.umlsDataLists);
+                //     },
+                //     err => {
+                //         this.loadingUmls = false;
+                //         console.log(err.message);
+                //     },
+                //     () => {
+                //         this.loadingUmls = false;
+                //     });
+
                 // pubmedEdgeDetails += '<div style="color: #00ffff;"><strong>Edge Weight</strong></div>';
                 // pubmedEdgeDetails += '<div style="padding-bottom:10px;">' + edge.strength + '</div>';
                 //this.pubmedEdgeDetails += "<hr style='color: #32404E;'/>";
+                
 
-                //Get the edge names lists
+                ////////////////************* Get the edge names lists **********///////////////
                 // const edgeTypeIds = edge.edgeTypeIds;
                 // const edgeTypeIdsPost = edgeTypeIds.replace(regex, '');
                 // console.log("edgeTypeIdsPost: ", edgeTypeIdsPost);
@@ -331,38 +396,6 @@ export class NgCytoComponent implements OnChanges {
                 //             this.edgeNamesMultiple += "<div style='clear: both;'><hr/></div>";
                 //         }                               
                 //     });
-
-
-                ////////////************ Get the Node Ids Lists *************///////////////
-                const NodeIds = edge.id;
-                const nodeIdsPost = NodeIds.replace(regex, '');
-                console.log("nodeIdsPost: ", nodeIdsPost);
-
-                //Get the Node ids post and concepts ids
-                // this.nodeSelectsService.getConceptIdByNode({ 'node_ids': nodeIdsPost }).subscribe(
-                //     data => {
-                //         this.conceptIds = data;
-                //         console.log("New data: ", this.conceptIds.conceptIds);
-
-                //         this.conceptIds.conceptIds.forEach((element: any) => {
-                //             console.log("unique data: ", element);
-
-                //             // this.nodeSelectsService.getUmlsDataByConceptIds({ 'conceptIds': element.concept_id }).subscribe(
-                //             //     data => {
-                //             //         this.umlsData = data;
-                //             //         console.log("UMLD data: ", this.umlsData);
-                //             //     });
-
-                //         });
-                //     },
-                //     err => {
-                //         this.loadingUmls = false;
-                //         console.log(err.message);
-                //     },
-                //     () => {
-                //         this.loadingUmls = false;
-                //     });
-
 
             }
         });
