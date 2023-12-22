@@ -201,8 +201,8 @@ export class NgCytoComponent implements OnChanges {
             // let edges = e.target.connectedEdges().map((edge:any) => edge.data().id)
             // console.log("here edges: ", edges);
 
-            var directlyConnectedNodes = node.neighborhood().nodes();
-            console.log("nodesHere2 All: ", directlyConnectedNodes);
+            // var directlyConnectedNodes = node.neighborhood().nodes();
+            // console.log("nodesHere2 All: ", directlyConnectedNodes);
             
             var neighborhood = node.neighborhood().add(node);
             // console.log("neighbr1: ", node.neighborhood().nodes());
