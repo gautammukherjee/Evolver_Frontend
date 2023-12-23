@@ -301,7 +301,7 @@ export class NgCytoComponent implements OnChanges {
                                 $("#pubmedURLsDownloadLoader").html('');
                                 //Initializer the loader for umlsLists after completing the pmids lists
                                 this.loadingUmlsLoader = '';
-                                this.loadingUmlsLoader = "<div class='overlay'><img style='position:absolute' src='../../assets/images/spinner_small_loader.gif' /></div>";
+                                this.loadingUmlsLoader = "<div class='overlay'><img src='../../assets/images/spinner_small_loader.gif' /></div>";
                                 $("#loadingUmlsLoader").html(this.loadingUmlsLoader);
 
                                 $("#pubmedURLs").html(this.pubmedEdgeDetails);
