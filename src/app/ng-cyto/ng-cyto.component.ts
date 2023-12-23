@@ -303,7 +303,7 @@ export class NgCytoComponent implements OnChanges {
                                 this.loadingUmlsLoader = '';
                                 this.loadingUmlsLoader = "<div class='overlay'><img style='position:absolute' src='../../assets/images/spinner_small_loader.gif' /></div>";
                                 $("#loadingUmlsLoader").html(this.loadingUmlsLoader);
-                                
+
                                 $("#pubmedURLs").html(this.pubmedEdgeDetails);
 
                             }
@@ -506,47 +506,26 @@ export class NgCytoComponent implements OnChanges {
                     }
                     // console.log("edgeTypeNameData5: ", pubmedURLsDownload);
 
-                    //Get the edge names lists
-                    this.nodeSelectsService.getEdgeTypeName({ 'edge_type_ids': edgeTypeIdsPost }).subscribe(
-                        data => {
-                            this.resultEdgeNames = data;
-                            // console.log("resultEdgeNames: ", this.resultEdgeNames);
+                    /////////*************Get the edge names lists *************///////////////
+                    // this.nodeSelectsService.getEdgeTypeName({ 'edge_type_ids': edgeTypeIdsPost }).subscribe(
+                    //     data => {
+                    //         this.resultEdgeNames = data;
+                    //         // console.log("resultEdgeNames: ", this.resultEdgeNames);
 
-                            if (this.resultEdgeNames != undefined) {
-                                this.edgeNamesMultiple = "";
-                                this.edgeNamesMultiple = "<div>";
-                                this.edgeNamesMultiple += "<div style='font-size: 15px; font-weight:bold; color:#32404E'>Edge Types</div>";
-                                this.resultEdgeNames.forEach((EDGES: any) => {
-                                    this.edgeNamesMultiple += "<div style='font-size: 14px;color:#32404E'>" + EDGES.edge_type_name + "</div>";
-                                });
-                                this.edgeNamesMultiple += "<div style='clear: both;'><hr/></div>";
-                                this.edgeNamesMultiple += "</div>";
-                            } else {
-                                this.edgeNamesMultiple = "<h4>No EDGES Found..</h4>";
-                                this.edgeNamesMultiple += "<div style='clear: both;'><hr/></div>";
-                            }
-
-                            var sourceData = e.target._private.source._private.data;
-                            var targetData = e.target._private.target._private.data;
-
-                            this.pubmedEdgeDetails;
-                            this.pubmedEdgeDetails = "<div>";
-                            this.pubmedEdgeDetails += '<div style="color: #BF63A2;"><strong>Source Name</strong></div>';
-                            this.pubmedEdgeDetails += '<div style="padding-bottom:10px; color: #BF63A2;">' + sourceData.name + '</div>';
-                            this.pubmedEdgeDetails += '<div style="color: #4B5DA1;"><strong>Destination Name</strong></div>';
-                            this.pubmedEdgeDetails += '<div style="padding-bottom:10px; color: #4B5DA1;">' + targetData.name + '</div>';
-                            // pubmedEdgeDetails += '<div style="color: #00ffff;"><strong>Edge Weight</strong></div>';
-                            // pubmedEdgeDetails += '<div style="padding-bottom:10px;">' + edge.strength + '</div>';
-                            //this.pubmedEdgeDetails += "<hr style='color: #32404E;'/>";
-                            this.pubmedEdgeDetails += "</div>";
-
-                            console.log("pubmedEdgeDetails: ", this.pubmedEdgeDetails);
-                            $("#pubmedURLsDownloadLoader").html('');
-                            $("#pubmedURLsDownload").html(this.pubmedURLsDownload);
-                            $("#pubmedURLs").html(this.pubmedEdgeDetails);
-                            // $("#pubmedEdgeNames").html(this.edgeNamesMultiple);
-                            ($('#myModalEdge') as any).modal('show');
-                        });
+                    //         if (this.resultEdgeNames != undefined) {
+                    //             this.edgeNamesMultiple = "";
+                    //             this.edgeNamesMultiple = "<div>";
+                    //             this.edgeNamesMultiple += "<div style='font-size: 15px; font-weight:bold; color:#32404E'>Edge Types</div>";
+                    //             this.resultEdgeNames.forEach((EDGES: any) => {
+                    //                 this.edgeNamesMultiple += "<div style='font-size: 14px;color:#32404E'>" + EDGES.edge_type_name + "</div>";
+                    //             });
+                    //             this.edgeNamesMultiple += "<div style='clear: both;'><hr/></div>";
+                    //             this.edgeNamesMultiple += "</div>";
+                    //         } else {
+                    //             this.edgeNamesMultiple = "<h4>No EDGES Found..</h4>";
+                    //             this.edgeNamesMultiple += "<div style='clear: both;'><hr/></div>";
+                    //         }
+                    //     });
                 },
                 err => {
                     this.loadingEdge = false;
@@ -554,6 +533,27 @@ export class NgCytoComponent implements OnChanges {
                 },
                 () => {
                     this.loadingEdge = false;
+
+                    var sourceData = e.target._private.source._private.data;
+                    var targetData = e.target._private.target._private.data;
+
+                    this.pubmedEdgeDetails;
+                    this.pubmedEdgeDetails = "<div>";
+                    this.pubmedEdgeDetails += '<div style="color: #BF63A2;"><strong>Source Name</strong></div>';
+                    this.pubmedEdgeDetails += '<div style="padding-bottom:10px; color: #BF63A2;">' + sourceData.name + '</div>';
+                    this.pubmedEdgeDetails += '<div style="color: #4B5DA1;"><strong>Destination Name</strong></div>';
+                    this.pubmedEdgeDetails += '<div style="padding-bottom:10px; color: #4B5DA1;">' + targetData.name + '</div>';
+                    // pubmedEdgeDetails += '<div style="color: #00ffff;"><strong>Edge Weight</strong></div>';
+                    // pubmedEdgeDetails += '<div style="padding-bottom:10px;">' + edge.strength + '</div>';
+                    //this.pubmedEdgeDetails += "<hr style='color: #32404E;'/>";
+                    this.pubmedEdgeDetails += "</div>";
+
+                    console.log("pubmedEdgeDetails: ", this.pubmedEdgeDetails);
+                    $("#pubmedURLsDownloadLoader").html('');
+                    $("#pubmedURLsDownload").html(this.pubmedURLsDownload);
+                    $("#pubmedURLs").html(this.pubmedEdgeDetails);
+                    // $("#pubmedEdgeNames").html(this.edgeNamesMultiple);
+                    ($('#myModalEdge') as any).modal('show');
                 });
         });
 
