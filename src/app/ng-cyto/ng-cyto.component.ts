@@ -358,7 +358,7 @@ export class NgCytoComponent implements OnChanges {
                                     // console.log("c length: ", this.conceptIds.conceptIds.length);
                                     if (this.conceptIds.conceptIds.length == j) {
                                         this.umlsDataLists += '</div>';
-                                        console.log("umlsDataLists: ", this.umlsDataLists);
+                                        // console.log("umlsDataLists: ", this.umlsDataLists);
                                         $("#loadingUmlsLoader").html('');
                                         $("#umlsDataLists").html(this.umlsDataLists);
                                         ($('#myModalEdge') as any).modal('show');
