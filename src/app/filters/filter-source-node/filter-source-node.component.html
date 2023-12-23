@@ -40,7 +40,7 @@
         <div *ngIf="sourceNodes.length">
           <div class="search-options">
 
-            <button class="btn btn-outline-primary" style="position: fixed;z-index: 9;right: 36px; padding: 4px 8px;" [disabled]="disableProceed" (click)="seeMoreproceed()"><i class="bi bi-arrow-right-circle-fill" title="Proceed"></i></button>
+            <button class="btn btn-outline-primary bg-white btn-sm" style="position: fixed;opacity:1;z-index: 9;right: 36px; padding: 4px 8px;" [disabled]="disableProceed" (click)="seeMoreproceed()"><i class="bi bi-arrow-right-circle-fill" title="Proceed"></i></button>
             
             <!-- <div class="mb-1 form-check" *ngFor="let sourceNode of sourceNodes">
               <input class="form-check-input border border-secondary" type="checkbox" name="sourceNodes"
@@ -70,8 +70,8 @@
                     <input class="form-check-input border border-secondary" type="checkbox" name="sourceNodes"
                       [value]="sourceNode" [checked]="selectedSourceNodes.indexOf(sourceNode.source_node)>-1 "
                       (change)="selectSourceNode(sourceNode,$event)">
-                    <label class="form-check-label">
-                      <span>&nbsp;{{sourceNode.source_node_name}}</span>
+                    <label class="form-check-label pe-4">
+                      <span>{{sourceNode.source_node_name}}</span>
                     </label>
                   </button>
                 </h2>
