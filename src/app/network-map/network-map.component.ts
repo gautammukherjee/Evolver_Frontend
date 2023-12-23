@@ -149,7 +149,6 @@ export class NetworkMapComponent implements OnInit {
       || (_filterParams.source_node3 != undefined && _filterParams.nnrt_id3 != undefined)) {
       this.loadingMap = true;
       this.noDataFoundMap = false;
-      this.chkSelectEntities = false;
 
       this.filterParams = this.globalVariableService.getFilterParams();
       console.log("master map for filter: ", this.filterParams);
@@ -277,6 +276,7 @@ export class NetworkMapComponent implements OnInit {
 
                     if (this.masterListsData.length > 0) {
                       this.nodesCheckLength = false;
+                      this.chkSelectEntities = false;
                     } else {
                       this.nodesCheckLength = true;
                     }
