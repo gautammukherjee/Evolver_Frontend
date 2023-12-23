@@ -19,7 +19,7 @@
         <div *ngIf="sourceNodes3.length">
           <div class="search-options">
 
-            <button class="btn btn-outline-primary" style="position: fixed;z-index: 9;right: 36px; padding: 4px 8px;" [disabled]="disableProceed" (click)="seeMoreproceed()"><i class="bi bi-arrow-right-circle-fill" title="Proceed"></i></button>
+            <button class="btn btn-outline-primary bg-white btn-sm text-primary" style="position: fixed;opacity:1;z-index: 9;right: 36px; padding: 4px 8px;" [disabled]="disableProceed" (click)="seeMoreproceed()"><i class="bi bi-arrow-right-circle-fill" title="Proceed"></i></button>
 
             <input type="checkbox" name="edgeTypes" [(ngModel)]="isAllSelected" [value]="sourceNodes3" [checked]=""
               (change)="selectAll();">
@@ -30,9 +30,7 @@
                  [value]="sourceNode"
                 [checked]="selectedSourceNodes3.indexOf(sourceNode.source_node)>-1 "
                 (change)="selectSourceNode(sourceNode,$event)">
-              <label class="form-check-label">
-                {{sourceNode.source_node_name}}
-              </label>
+              <label class="form-check-label pe-4">{{sourceNode.source_node_name}}</label>
             </div>
           </div>
         </div>

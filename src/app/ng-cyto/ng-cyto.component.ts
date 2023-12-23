@@ -301,7 +301,7 @@ export class NgCytoComponent implements OnChanges {
                                 $("#pubmedURLsDownloadLoader").html('');
                                 //Initializer the loader for umlsLists after completing the pmids lists
                                 this.loadingUmlsLoader = '';
-                                this.loadingUmlsLoader = "<div class='overlay'><img src='../../assets/images/spinner_small_loader.gif' /></div>";
+                                this.loadingUmlsLoader = "<div class='overlay'><img style='position:absolute;top:-23px;' src='../../assets/images/spinner_small_loader.gif' /></div>";
                                 $("#loadingUmlsLoader").html(this.loadingUmlsLoader);
 
                                 $("#pubmedURLs").html(this.pubmedEdgeDetails);
@@ -745,7 +745,7 @@ export class NgCytoComponent implements OnChanges {
     searchConnections22 = () => {
         // searchConnections = function () {
         console.log("sdfsfs");
-        alert("sfsfsf");
+        //alert("sfsfsf");
         // Declare variables
         var input: any, filter: any, ul: any, li: any, a: any, i: any, txtValue: any;
         input = document.getElementById('searchInput');
