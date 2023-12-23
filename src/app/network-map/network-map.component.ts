@@ -273,10 +273,10 @@ export class NetworkMapComponent implements OnInit {
                     // this.masterListsData = this.resultNodes.masterListsData;
                     // console.log("masterListsData: ", this.masterListsData);
                     console.log("masterListsDataLengtH: ", this.masterListsData.length);
+                    this.chkSelectEntities = false;
 
                     if (this.masterListsData.length > 0) {
-                      this.nodesCheckLength = false;
-                      this.chkSelectEntities = false;
+                      this.nodesCheckLength = false;                      
                     } else {
                       this.nodesCheckLength = true;
                     }
