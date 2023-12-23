@@ -28,11 +28,11 @@
                 
             </div> -->
 
-            <div class="common-text-switcher fs-2 text-center mb-4" style="margin-top: 160px;" *ngIf="nodesCheckLength">
+            <div class="common-text-switcher fs-2 text-center mb-4" style="margin-top: 160px;" *ngIf="chkSelectEntities">
                 Please
                 select right entities to generate
                 the Network Map</div>
-            <div class="common-text-switcher fs-2 text-center mb-4 alert alert-danger" style="margin-top: 160px;" *ngIf="nodesCheckLength && masterListsDataDetailsLengthLevelOne>0 && masterListsData.length==0">
+            <div class="common-text-switcher fs-2 text-center mb-4 alert alert-danger" style="margin-top: 160px;" *ngIf="!chkSelectEntities && masterListsData.length==0">
                 No, Appropriate data for this Rank</div>
 
             <div class="overlay text-center" style="margin-top: 160px;" *ngIf="loadingMap">
@@ -162,7 +162,8 @@
                                 <div class="modal-body">
                                     <div id="pubmedURLsDownloadLoader"></div>
                                     <div id="pubmedURLs">&nbsp;</div>
-                                    <!-- <div id="umlsDataLists">&nbsp;</div> -->
+                                    <div id="loadingUmlsLoader"></div>
+                                    <div id="umlsDataLists">&nbsp;</div>
                                     <!-- <div id="pubmedEdgeNames"></div> -->
                                     <div id="pubmedURLsDownload"></div>
 

@@ -106,7 +106,7 @@ export class FilterNodeSelectComponent implements OnInit {
           this.result = data;
           // console.log("result: ", this.result);
           this.node_selects = this.result.nodeSelectsRecords;
-          this.nodeSelectsFilterText2 = this.node_selects[2].pair_name;
+          this.nodeSelectsFilterText2 = this.node_selects[1].pair_name;
           console.log("node_selects: ", this.node_selects);
           console.log("nodeSelectsFilterText2: ", this.nodeSelectsFilterText2);
 

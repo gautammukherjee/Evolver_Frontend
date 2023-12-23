@@ -789,3 +789,18 @@ body {
 .card-body{
     background-color: var(--table-bg-color);
 }
+
+.rowUmls {
+    border: 1px solid;
+}
+
+.inner{
+    background: aliceblue;
+    border-right: 1px solid #D3D3D3;
+    padding: 10px 15px;
+  }
+.inner-end{
+    background: aliceblue;
+    padding: 10px 15px;
+  }
+  

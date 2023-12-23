@@ -62,6 +62,7 @@ export class NetworkMapComponent implements OnInit {
   doFilterApply: Subject<any> = new Subject();  // ## P= Parent
   isNetworkMapFullScreen: boolean = false;
   noDataFoundMap: boolean = false;
+  chkSelectEntities: boolean = true;
 
   masterListsDataDetailsLevelOne: any = [];
   masterListsDataDetailsLengthLevelOne: number = 0;
@@ -148,6 +149,7 @@ export class NetworkMapComponent implements OnInit {
       || (_filterParams.source_node3 != undefined && _filterParams.nnrt_id3 != undefined)) {
       this.loadingMap = true;
       this.noDataFoundMap = false;
+      this.chkSelectEntities = false;
 
       this.filterParams = this.globalVariableService.getFilterParams();
       console.log("master map for filter: ", this.filterParams);

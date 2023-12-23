@@ -62,6 +62,7 @@ export class NgCytoComponent implements OnChanges {
     edgeTypeNameData: any = [];
     loadingEdge: boolean = false;
     loadingUmls: boolean = false;
+    loadingUmlsLoader: any;
 
     pubmedURLsDownloadLoader: any;
     pubmedURLsDownload: any;
@@ -232,7 +233,7 @@ export class NgCytoComponent implements OnChanges {
                 $("#pubmedURLsDownloadLoader").html(this.pubmedURLsDownloadLoader);
                 $("#pubmedURLsDownload").html('');
                 $("#pubmedURLs").html('');
-                // $("#umlsDataLists").html('');
+                $("#umlsDataLists").html('');
                 $("#pubmedEdgeNames").html('');
                 ($('#myModalEdge') as any).modal('show');
 
@@ -298,8 +299,13 @@ export class NgCytoComponent implements OnChanges {
                             // $("#pubmedEdgeNames").html(this.edgeNamesMultiple);
                             if (allEdges.length == i) {
                                 $("#pubmedURLsDownloadLoader").html('');
+                                //Initializer the loader for umlsLists after completing the pmids lists
+                                this.loadingUmlsLoader = '';
+                                this.loadingUmlsLoader = "<div class='overlay'><img style='position:absolute' src='../../assets/images/spinner_small_loader.gif' /></div>";
+                                $("#loadingUmlsLoader").html(this.loadingUmlsLoader);
+                                
                                 $("#pubmedURLs").html(this.pubmedEdgeDetails);
-                                ($('#myModalEdge') as any).modal('show');
+
                             }
                             // this.loadingEdge = false;   
                         }
@@ -311,68 +317,66 @@ export class NgCytoComponent implements OnChanges {
                 console.log("NodeIds: ", NodeIds);
 
                 //Get the Node ids post and concepts ids
-                // this.nodeSelectsService.getConceptIdByNode({ 'node_ids': NodeIds }).subscribe(
-                //     data => {
-                //         this.conceptIds = data;
-                //         // console.log("New data: ", this.conceptIds.conceptIds);
+                this.nodeSelectsService.getConceptIdByNode({ 'node_ids': NodeIds }).subscribe(
+                    data => {
+                        this.conceptIds = data;
+                        // console.log("New data: ", this.conceptIds.conceptIds);
 
-                //         this.umlsDataLists = "";
+                        this.umlsDataLists = "";
+                        this.umlsDataLists += '<div class="container">';
+                        this.umlsDataLists += '<div class="row rowUmls">';
+                        this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner"><strong>ConceptId</strong></div>';
+                        this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner"><strong>Name</strong></div>';
+                        this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner-end"><strong>Symentic Type Name</strong></div>';
+                        this.umlsDataLists += '</div>';
 
-                //         // this.umlsDataLists += '<div class="container text-center">';
-                //         // this.umlsDataLists += '<div class="row align-items-start">';
-                //         // this.umlsDataLists += '<div class="col">ConceptId</div>';
-                //         // this.umlsDataLists += '<div class="col">Name</div>';
-                //         // this.umlsDataLists += '<div class="col">Symentic Type Name</div>';
-                //         // this.umlsDataLists += '</div>';
-                //         // this.umlsDataLists += '</div>';
+                        let j = 0;
+                        this.conceptIds.conceptIds.forEach((element: any) => {
+                            console.log("unique data: ", element);
 
-                //         this.umlsDataLists += '<div style="color: #BF63A2;"><strong>ConceptId</strong></div>';
-                //         this.umlsDataLists += '<div style="color: #BF63A2;"><strong>Name</strong></div>';
-                //         this.umlsDataLists += '<div style="color: #BF63A2;"><strong>Symentic Type Name</strong></div>';
+                            this.loadingUmls = true;
+                            this.nodeSelectsService.getUmlsDataByConceptIds({ 'conceptIds': element.concept_id }).subscribe(
+                                data => {
+                                    this.umlsData = data;
+                                    // console.log("UMLS data: ", this.umlsData);                                    
+                                    const umlsName = this.umlsData.result.name;
+                                    const symenticName = this.umlsData.result.semanticTypes[0].name;
+                                    this.umlsDataLists += '<div class="row rowUmls">';
+                                    this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 inner"><a href="https://uts-ws.nlm.nih.gov/rest/content/2023AB/CUI/' + element.concept_id + '/definitions?apiKey=b238480d-ef87-4755-a67c-92734e4dcfe8" target="_blank">' + element.concept_id + '</a></div>';
+                                    this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner">' + umlsName + '</div>';
+                                    this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner-end">' + symenticName + '</div>';
+                                    this.umlsDataLists += '</div>';
 
-                //         this.conceptIds.conceptIds.forEach((element: any) => {
-                //             console.log("unique data: ", element);
-
-                //             this.loadingUmls = true;
-                //             this.nodeSelectsService.getUmlsDataByConceptIds({ 'conceptIds': element.concept_id }).subscribe(
-                //                 data => {
-                //                     this.umlsData = data;
-                //                     // console.log("UMLS data: ", this.umlsData);                                    
-
-                //                     const umlsName = this.umlsData.result.name;
-                //                     const symenticName = this.umlsData.result.semanticTypes[0].name;
-
-                //                     this.umlsDataLists += '<div>' + element.concept_id + '</div>';
-                //                     this.umlsDataLists += '<div>' + umlsName + '</div>';
-                //                     this.umlsDataLists += '<div>' + symenticName + '</div>';
-
-                //                     console.log("umlsDataLists: ", this.umlsDataLists);
-
-                //                 },
-                //                 err => {
-                //                     this.loadingUmls = false;
-                //                     console.log(err.message);
-                //                 },
-                //                 () => {
-                //                     this.loadingUmls = false;
-                //                     $("#umlsDataLists").html(this.umlsDataLists);
-                //                     ($('#myModalEdge') as any).modal('show');
-                //                 });
-                //         });
-                //         // console.log("umlsDataLists: ", this.umlsDataLists);
-                //     },
-                //     err => {
-                //         this.loadingUmls = false;
-                //         console.log(err.message);
-                //     },
-                //     () => {
-                //         this.loadingUmls = false;
-                //     });
+                                    j++;
+                                },
+                                err => {
+                                    this.loadingUmls = false;
+                                    console.log(err.message);
+                                },
+                                () => {
+                                    this.loadingUmls = false;
+                                    // console.log("c length: ", this.conceptIds.conceptIds.length);
+                                    if (this.conceptIds.conceptIds.length == j) {
+                                        this.umlsDataLists += '</div>';
+                                        console.log("umlsDataLists: ", this.umlsDataLists);
+                                        $("#loadingUmlsLoader").html('');
+                                        $("#umlsDataLists").html(this.umlsDataLists);
+                                        ($('#myModalEdge') as any).modal('show');
+                                    }
+                                });
+                        });
+                    },
+                    err => {
+                        this.loadingUmls = false;
+                        console.log(err.message);
+                    },
+                    () => {
+                        this.loadingUmls = false;
+                    });
 
                 // pubmedEdgeDetails += '<div style="color: #00ffff;"><strong>Edge Weight</strong></div>';
                 // pubmedEdgeDetails += '<div style="padding-bottom:10px;">' + edge.strength + '</div>';
                 //this.pubmedEdgeDetails += "<hr style='color: #32404E;'/>";
-                
 
                 ////////////////************* Get the edge names lists **********///////////////
                 // const edgeTypeIds = edge.edgeTypeIds;
@@ -435,6 +439,8 @@ export class NgCytoComponent implements OnChanges {
             this.pubmedURLsDownloadLoader = '';
             this.pubmedURLsDownloadLoader = "<div class='overlay'><img style='position:absolute' src='../../assets/images/loader_big.gif' /></div>";
             $("#pubmedURLsDownloadLoader").html(this.pubmedURLsDownloadLoader);
+            $("#loadingUmlsLoader").html('');
+            $("#umlsDataLists").html('');
             $("#pubmedURLsDownload").html('');
             $("#pubmedURLs").html('');
             $("#pubmedEdgeNames").html('');
@@ -538,7 +544,7 @@ export class NgCytoComponent implements OnChanges {
                             $("#pubmedURLsDownloadLoader").html('');
                             $("#pubmedURLsDownload").html(this.pubmedURLsDownload);
                             $("#pubmedURLs").html(this.pubmedEdgeDetails);
-                            $("#pubmedEdgeNames").html(this.edgeNamesMultiple);
+                            // $("#pubmedEdgeNames").html(this.edgeNamesMultiple);
                             ($('#myModalEdge') as any).modal('show');
                         });
                 },
