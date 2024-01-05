@@ -2,6 +2,19 @@
     // background: rgb(255,255,255);
     padding:0.5rem 1rem;
     //background: linear-gradient(60deg, rgba(255,255,255,1) 0%, rgba(65,77,158,1) 36%, rgba(184,96,162,1) 100%);
+
+    .dropdown-menu{
+        background-color: var(--background-light-color);
+        li{
+            a{
+                color: var(--text-color);
+
+                &:hover{
+                    background-color: transparent;
+                }
+            }
+        }
+    }
 }
 .header-btn{
     /*background-color: #B25FA2;
