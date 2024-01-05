@@ -3,20 +3,30 @@
         <div class="customTable">
             <!--<h4>Network Map for <span style="text-transform: uppercase;"> {{mapTypes}} </span></h4>-->
             <!-- <h4 style="text-align: center;background-color: #7880BA;padding: 10px; color:#fff;">Network Map </h4> -->
-            <div class="dropdown rank-dropdown" title="Rank establishes the probability of a destination term or entity being the closest match to the entity type; it is an independent measure and does not dictate the order of the combinations." alt="Rank establishes the probability of a destination term or entity being the closest match to the entity type; it is an independent measure and does not dictate the order of the combinations.">
+            <div class="dropdown rank-dropdown"
+                title="Rank establishes the probability of a destination term or entity being the closest match to the entity type; it is an independent measure and does not dictate the order of the combinations."
+                alt="Rank establishes the probability of a destination term or entity being the closest match to the entity type; it is an independent measure and does not dictate the order of the combinations.">
                 <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="rank-dropdown"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     Select Rank
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="rank-dropdown">
-                    <li class="dropdown-item"><input type="checkbox" name="rank" value="1" checked (click)="selectRank(1, $event)"> Rank 1</li>
-                    <li class="dropdown-item"><input type="checkbox" name="rank" value="2" (click)="selectRank(2, $event)"> Rank 2</li>
-                    <li class="dropdown-item"><input type="checkbox" name="rank" value="3" (click)="selectRank(3, $event)"> Rank 3</li>
-                    <li class="dropdown-item"><input type="checkbox" name="rank" value="4" (click)="selectRank(4, $event)"> Rank 4</li>
-                    <li class="dropdown-item"><input type="checkbox" name="rank" value="5" (click)="selectRank(5, $event)"> Rank 5</li>
-                    <li class="dropdown-item"><input type="checkbox" name="rank" value="6" (click)="selectRank(6, $event)"> Rank 6</li>
-                    <li class="dropdown-item"><input type="checkbox" name="rank" value="7" (click)="selectRank(7, $event)"> Rank 7</li>
-                    <li class="dropdown-item"><input type="checkbox" name="rank" value="8" (click)="selectRank(8, $event)"> Rank 8</li>
+                    <li class="dropdown-item"><input type="checkbox" name="rank" value="1" checked
+                            (click)="selectRank(1, $event)"> Rank 1</li>
+                    <li class="dropdown-item"><input type="checkbox" name="rank" value="2"
+                            (click)="selectRank(2, $event)"> Rank 2</li>
+                    <li class="dropdown-item"><input type="checkbox" name="rank" value="3"
+                            (click)="selectRank(3, $event)"> Rank 3</li>
+                    <li class="dropdown-item"><input type="checkbox" name="rank" value="4"
+                            (click)="selectRank(4, $event)"> Rank 4</li>
+                    <li class="dropdown-item"><input type="checkbox" name="rank" value="5"
+                            (click)="selectRank(5, $event)"> Rank 5</li>
+                    <li class="dropdown-item"><input type="checkbox" name="rank" value="6"
+                            (click)="selectRank(6, $event)"> Rank 6</li>
+                    <li class="dropdown-item"><input type="checkbox" name="rank" value="7"
+                            (click)="selectRank(7, $event)"> Rank 7</li>
+                    <li class="dropdown-item"><input type="checkbox" name="rank" value="8"
+                            (click)="selectRank(8, $event)"> Rank 8</li>
                 </ul>
             </div>
 
@@ -28,11 +38,13 @@
                 
             </div> -->
 
-            <div class="common-text-switcher fs-2 text-center mb-4" style="margin-top: 160px;" *ngIf="chkSelectEntities">
+            <div class="common-text-switcher fs-2 text-center mb-4" style="margin-top: 160px;"
+                *ngIf="chkSelectEntities">
                 Please
                 select right entities to generate
                 the Network Map</div>
-            <div class="common-text-switcher fs-2 text-center mb-4 alert alert-danger" style="margin-top: 160px;" *ngIf="!chkSelectEntities && masterListsData.length==0">
+            <div class="common-text-switcher fs-2 text-center mb-4 alert alert-danger" style="margin-top: 160px;"
+                *ngIf="!chkSelectEntities && masterListsData.length==0">
                 No, Appropriate data for this Rank</div>
 
             <div class="overlay text-center" style="margin-top: 160px;" *ngIf="loadingMap">
@@ -73,7 +85,7 @@
                 </div>-->
 
                     <div class="map-zoom-btngrp">
-                        
+
                         <div class="d-flex" [ngClass]="isNetworkMapFullScreen == true ? 'd-none' : ''">
                             <img id="png-eg">
                             <button *ngIf="!nodesCheckLength" class="btn btn-primary btn-sm mr-1 p-1"
@@ -133,25 +145,26 @@
 
                     </div>
 
-                    <!-- <div class="modal overlay right fade" id="myModalNode" tabindex="-1" role="dialog">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header"> -->
-                    <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                        aria-hidden="true">&times;</span></button>-->
-                    <!-- <h5 class="modal-title">Node Details</h5>
+                    <div class="modal overlay right fade" id="myModalNode" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                            aria-hidden="true">&times;</span></button>
+                                    <h5 class="modal-title">Node Details</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- <div id="loadingUmlsLoader"></div> -->
+                                    <div id="nodeDetails"></div>
+                                    <!-- <div [innerHTML]="nodeDetails"></div> -->
+                                </div>
                             </div>
-                            <div class="modal-body">
-                                <div id="nodeDetails"></div> -->
-                    <!--<div [innerHTML]="nodeDetails"></div>-->
-                    <!-- </div>
                         </div>
                     </div>
-                </div> -->
                     <!-- modal Node -->
 
                     <div class="modal overlay right fade" id="myModalEdge" tabindex="-1" role="dialog">
-                        <div class="modal-dialog" role="document" style="width: 800px;">
+                        <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -160,13 +173,38 @@
                                     <h5 class="modal-title">Details</h5>
                                 </div>
                                 <div class="modal-body">
-                                    <div id="loadingUmlsLoader"></div>
-                                    <div id="umlsDataLists">&nbsp;</div>
-                                    <div id="pubmedURLsDownloadLoader"></div>
-                                    <div id="pubmedURLs">&nbsp;</div>
-                                    
-                                    <!-- <div id="pubmedEdgeNames"></div> -->
-                                    <div id="pubmedURLsDownload"></div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div id="pubmedURLsDownloadLoader"></div>
+                                            <div id="pubmedURLs">&nbsp;</div>
+                                            <!-- <div id="pubmedEdgeNames"></div> -->
+                                            <div id="pubmedURLsDownload"></div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div id="loadingUmlsLoader"></div>
+                                            <div id="umlsDataLists">&nbsp;</div>
+                                            <div id="loadingUmlsLoader2"></div>
+                                            <div id="umlsDataLists2" style="margin-top: 10px;">&nbsp;</div>
+                                            <div id="umlsDataListsRelation" style="margin-top: 10px;">&nbsp;</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- <table id="articles_details" data-toolbar="#toolbar" data-search="true"
+                                        data-show-export="true" data-show-columns="true" data-page-size="50"
+                                        data-filter-control="true" data-page-list="[10, 25, 50, 100, All]">
+                                        <thead>
+                                            <tr>                                               
+                                                <th data-field="rootSource" data-sortable="true" width="10%"
+                                                    data-filter-control="input">
+                                                    rootSource
+                                                </th>
+                                                <th data-field="value" data-sortable="true" width="10%"
+                                                    data-filter-control="input">
+                                                    value
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                    </table> -->
 
                                 </div>
                             </div>

@@ -71,6 +71,8 @@ import { ScenarioComponent } from './scenario/scenario.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import { ArticleSentenceDashboardComponent } from './article-sentence-dashboard/article-sentence-dashboard.component';
 import { PreviewComponent } from './preview/preview.component';
+import { UmlsActionSecondComponent } from './umls-action-second/umls-action-second.component';
+import { ClickDirectiveDirective } from './AppDirective/click-directive.directive';
 
 @NgModule({
   declarations: [
@@ -124,7 +126,9 @@ import { PreviewComponent } from './preview/preview.component';
     ScenarioComponent,
     UserDashboardComponent,
     PreviewComponent,
-    ArticleSentenceDashboardComponent
+    ArticleSentenceDashboardComponent,
+    UmlsActionSecondComponent,
+    ClickDirectiveDirective
   ],
   imports: [
     BrowserModule,

@@ -12,6 +12,7 @@ import { ScenarioComponent } from './scenario/scenario.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import { PreviewComponent } from './preview/preview.component';
 import { ArticleSentenceDashboardComponent } from './article-sentence-dashboard/article-sentence-dashboard.component';
+import { UmlsActionSecondComponent } from './umls-action-second/umls-action-second.component';
 
 const routes: Routes = [
   {
@@ -58,6 +59,10 @@ const routes: Routes = [
   {
     path: 'preview',
     component: PreviewComponent
+  },
+  {
+    path: 'umls-action-second',
+    component: UmlsActionSecondComponent
   },
   {
     path: '**', // 404 page

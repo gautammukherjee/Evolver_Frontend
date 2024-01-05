@@ -45,15 +45,24 @@ ng2-cytoscape {
 }
 
 .modal.right .modal-dialog {
-    position: fixed;
-    margin: auto;
-    width: 350px;
+    // position: fixed;
+    // margin: auto;
+    // width: 350px;
     height: calc(100vh - 70px);
-    -webkit-transform: translate3d(0%, 0, 0);
-    -ms-transform: translate3d(0%, 0, 0);
-    -o-transform: translate3d(0%, 0, 0);
-    transform: translate3d(0%, 0, 0);
-    bottom: 0;
+    // -webkit-transform: translate3d(0%, 0, 0);
+    // -ms-transform: translate3d(0%, 0, 0);
+    // -o-transform: translate3d(0%, 0, 0);
+    // transform: translate3d(0%, 0, 0);
+    // bottom: 0;
+
+    width: 800px;
+    min-width: 800px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    bottom: auto;
+
 }
 
 .modal.right .modal-content {
@@ -67,13 +76,13 @@ ng2-cytoscape {
     padding: 15px 15px 80px;
 }
 
-.modal.right.fade .modal-dialog {
-    right: 0px;
-    -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
-    -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
-    -o-transition: opacity 0.3s linear, right 0.3s ease-out;
-    transition: opacity 0.3s linear, right 0.3s ease-out;
-}
+// .modal.right.fade .modal-dialog {
+//     right: 0px;
+//     -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+//     -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+//     -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+//     transition: opacity 0.3s linear, right 0.3s ease-out;
+// }
 
 .modal.right.fade.in .modal-dialog {
     right: 0;

@@ -1,7 +1,9 @@
-import { Component, OnChanges, Renderer2, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnChanges, Renderer2, ViewChild, ElementRef, Input, Output, EventEmitter, HostListener } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GlobalVariableService } from 'src/app/services/common/global-variable.service';
 import { NodeSelectsService } from '../services/common/node-selects.service';
+import { Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 // import cytoscape from 'cytoscape';
 
 // import * as $ from 'jquery';
@@ -59,23 +61,33 @@ export class NgCytoComponent implements OnChanges {
     resultEdgeNames: any = [];
     conceptIds: any = [];
     umlsData: any = [];
+    umlsDefintionData: any = [];
+    umlsRelationsByCodeUrl: any = [];
+    umlsRelationData: any = [];
+    umlsDataInner: any = [];
     edgeTypeNameData: any = [];
     loadingEdge: boolean = false;
     loadingUmls: boolean = false;
     loadingUmlsLoader: any;
+    loadingUmlsLoader2: any;
 
     pubmedURLsDownloadLoader: any;
     pubmedURLsDownload: any;
     pubmedEdgeDetails: any;
     umlsDataLists: any;
+    umlsDataLists2: any = '';
+    umlsDataListsRelation: any = '';
+    articles_details: any = [];
     edgeNamesMultiple: any;
+    nodeDetails: any;
+    error: any;
 
     // searchConnections;
 
     @ViewChild('showNode', { static: false }) show_nodes?: ElementRef;
     @ViewChild('showEdge', { static: false }) show_edges?: ElementRef;
 
-    public constructor(private globalVariableService: GlobalVariableService, private nodeSelectsService: NodeSelectsService, private renderer: Renderer2, private el: ElementRef, private modalService: NgbModal) {
+    public constructor(private router: Router, private globalVariableService: GlobalVariableService, private nodeSelectsService: NodeSelectsService, private renderer: Renderer2, private el: ElementRef, private modalService: NgbModal) {
 
         // this._selectedNodes = this.globalVariableService.getSelectedNodes();
         this._selectedNodes = this.globalVariableService.getSelectedSourceNodes();
@@ -234,7 +246,11 @@ export class NgCytoComponent implements OnChanges {
                 $("#pubmedURLsDownload").html('');
                 $("#pubmedURLs").html('');
                 $("#umlsDataLists").html('');
+                $("#umlsDataLists2").html('');
+                $("#umlsDataListsRelation").html('');
                 $("#pubmedEdgeNames").html('');
+                // jQuery('#articles_details').bootstrapTable("load", "");
+
                 ($('#myModalEdge') as any).modal('show');
 
                 this.pubmedEdgeDetails = "";
@@ -275,11 +291,13 @@ export class NgCytoComponent implements OnChanges {
 
                                     // const myFormattedDate = this.pipe.transform(PMID.publication_date, 'short');
                                     // console.log("PMID:: ", PMID.edge_type_name);
+                                    this.pubmedEdgeDetails += "<div>";
                                     this.pubmedEdgeDetails += "<div style='list-style: none; font-size: 14px; color:#32404E'><strong>PMID: </strong> <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + PMID.pmid + "'>" + PMID.pmid + "</a></div>";
                                     this.pubmedEdgeDetails += "<div style='font-size: 14px;color:#32404E'><strong>Edge Type: </strong>" + PMID.edge_type_name + "</div>";
                                     this.pubmedEdgeDetails += "<div style='font-size: 14px;color:#32404E'><strong>Title: </strong>" + PMID.title + "</div>";
                                     this.pubmedEdgeDetails += "<div style='font-size: 14px; color:#32404E'><strong>Publication Date : </strong>" + PMID.publication_date + "</div>";
                                     this.pubmedEdgeDetails += "<hr style='color:#32404E'/>";
+                                    this.pubmedEdgeDetails += "</div>";
                                 });
                                 this.pubmedEdgeDetails += "<div style='clear: both;'><hr/></div>";
                                 // this.pubmedEdgeDetails += "</div>";
@@ -335,36 +353,48 @@ export class NgCytoComponent implements OnChanges {
                             console.log("unique data: ", element);
 
                             this.loadingUmls = true;
-                            this.nodeSelectsService.getUmlsDataByConceptIds({ 'conceptIds': element.concept_id }).subscribe(
-                                data => {
-                                    this.umlsData = data;
-                                    // console.log("UMLS data: ", this.umlsData);                                    
-                                    const umlsName = this.umlsData.result.name;
-                                    const symenticName = this.umlsData.result.semanticTypes[0].name;
-                                    this.umlsDataLists += '<div class="row rowUmls">';
-                                    //this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 inner"><a href="https://uts-ws.nlm.nih.gov/rest/content/2023AB/CUI/' + element.concept_id + '/definitions?apiKey=b238480d-ef87-4755-a67c-92734e4dcfe8" target="_blank">' + element.concept_id + '</a></div>';
-                                    this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner">' + element.concept_id + '</div>';
-                                    this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner">' + umlsName + '</div>';
-                                    this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner-end">' + symenticName + '</div>';
-                                    this.umlsDataLists += '</div>';
+                            this.error = "";
+                            this.nodeSelectsService.getUmlsDataByConceptIds({ 'conceptIds': element.concept_id })
+                                .subscribe(
+                                    result => {
+                                        this.umlsData = result;
+                                        console.log("you full data here1: ", this.umlsData);
 
-                                    j++;
-                                },
-                                err => {
-                                    this.loadingUmls = false;
-                                    console.log(err.message);
-                                },
-                                () => {
-                                    this.loadingUmls = false;
-                                    // console.log("c length: ", this.conceptIds.conceptIds.length);
-                                    if (this.conceptIds.conceptIds.length == j) {
-                                        this.umlsDataLists += '</div>';
-                                        // console.log("umlsDataLists: ", this.umlsDataLists);
+                                        if (!this.error) {
+                                            const umlsName = this.umlsData.result.name;
+                                            const symenticName = this.umlsData.result.semanticTypes[0].name;
+                                            const atomURL = this.umlsData.result.atoms;
+
+                                            this.umlsDataLists += '<div class="row rowUmls">';
+                                            // this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 inner"><a href="https://uts-ws.nlm.nih.gov/rest/content/2023AB/CUI/' + element.concept_id + '/definitions?apiKey=b238480d-ef87-4755-a67c-92734e4dcfe8" target="_blank">' + element.concept_id + '</a></div>';
+                                            this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner"><a id="' + element.concept_id + ', ' + umlsName + '" class="conceptIDClick" value="' + element.concept_id + '" style="cursor:pointer;">' + element.concept_id + '</a></div>';
+                                            this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner">' + umlsName + '</div>';
+                                            this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner-end">' + symenticName + '</div>';
+                                            this.umlsDataLists += '</div>';
+                                            j++;
+                                        }
+                                    },
+                                    err => {
+                                        this.loadingUmls = false;
+                                        this.error = err;
                                         $("#loadingUmlsLoader").html('');
-                                        $("#umlsDataLists").html(this.umlsDataLists);
+                                        $("#umlsDataLists").html('<h5 class="alert alert-warning">' + this.error + '</h5>');
                                         ($('#myModalEdge') as any).modal('show');
-                                    }
-                                });
+                                    },
+                                    () => {
+                                        if (!this.error) {
+                                            this.loadingUmls = false;
+                                            console.log("concept length: ", this.conceptIds.conceptIds.length);
+                                            console.log("J length: ", j);
+                                            if (this.conceptIds.conceptIds.length == j) {
+                                                this.umlsDataLists += '</div>';
+                                                // console.log("umlsDataLists: ", this.umlsDataLists);
+                                                $("#loadingUmlsLoader").html('');
+                                                $("#umlsDataLists").html(this.umlsDataLists);
+                                                ($('#myModalEdge') as any).modal('show');
+                                            }
+                                        }
+                                    });
                         });
                     },
                     err => {
@@ -442,6 +472,9 @@ export class NgCytoComponent implements OnChanges {
             $("#pubmedURLsDownloadLoader").html(this.pubmedURLsDownloadLoader);
             $("#loadingUmlsLoader").html('');
             $("#umlsDataLists").html('');
+            $("#loadingUmlsLoader2").html('');
+            $("#umlsDataLists2").html('');
+            $("#umlsDataListsRelation").html('');
             $("#pubmedURLsDownload").html('');
             $("#pubmedURLs").html('');
             $("#pubmedEdgeNames").html('');
@@ -573,7 +606,10 @@ export class NgCytoComponent implements OnChanges {
         //     console.log("act: ", node[0]._private.data);
         //     var directlyConnectedNodes = node.neighborhood().nodes();
         //     console.log("nodesHere: ", directlyConnectedNodes);
-        //     $("#nodeDetails").html("");
+        //     // $("#nodeDetails").html("");
+        //     this.nodeDetails = "<div class='overlay'><img style='position:absolute' src='../../assets/images/loader_big.gif' /></div>";
+        //     $("#nodeDetails").html(this.nodeDetails);
+
         //     if (directlyConnectedNodes != undefined) {
         //         var nodeDetails = "";
 
@@ -582,7 +618,7 @@ export class NgCytoComponent implements OnChanges {
         //         nodeDetails += '<div style="padding: 5px;"><strong>Node Type: ' + TargetNode.node_type + '</strong></div>';
         //         nodeDetails += '<div style="padding: 5px;"><strong>Connections: </strong></div>';
 
-        //         //nodeDetails += '<input type="text" id="searchInput" autocomplete="off" onkeyup="searchConnections()" placeholder="&#xf002; Search for connections..">';
+        //         nodeDetails += '<input type="text" id="searchInput" autocomplete="off" onkeyup="searchConnections()" placeholder="&#xf002; Search for connections..">';
 
         //         nodeDetails += "<ul style='padding: 2px 18px;'>";
         //         directlyConnectedNodes.forEach((directlyConnectedNode: any) => {
@@ -639,7 +675,6 @@ export class NgCytoComponent implements OnChanges {
                 // })
             }
         })
-
 
         cy.on('mouseover', 'node', function (event: any) {
             var evtTarget = event.target;
@@ -741,6 +776,8 @@ export class NgCytoComponent implements OnChanges {
         console.log("test: ");
     }
 
+    // @HostListener('document:dblclick', ['$event.target'])
+    // @HostListener('document:click', ['$event.target']) onClick(target: any) {
 
     searchConnections22 = () => {
         // searchConnections = function () {
@@ -766,5 +803,183 @@ export class NgCytoComponent implements OnChanges {
             }
         }
     }
+
+    // @HostListener('document:dblclick', ['$event.target'])
+    @HostListener('document:click', ['$event.target']) onClick(target: any) {
+        // event.preventDefault();
+        console.log("22: ", target.classList.contains('conceptIDClick'));
+        console.log("2 here: ", target);
+        // console.log("2 here by id: ", target.id);
+        const splitByIdName = target.id.split(", ");
+        // console.log("22 here by id: ", splitByIdName[0]);
+        // console.log("22 here by name: ", splitByIdName[1]);
+
+        if (target.classList.contains('conceptIDClick')) {
+            // $("#umlsDataLists2").html('');
+
+            // jQuery('#articles_details').bootstrapTable({});
+            this.error = "";
+            this.loadingUmlsLoader2 = '';
+            this.loadingUmlsLoader2 = "<div class='overlay'><img src='../../assets/images/spinner_small_loader.gif' /></div>";
+            $("#loadingUmlsLoader2").html(this.loadingUmlsLoader2);
+
+            let k = 0;
+            this.nodeSelectsService.getUmlsDataDefintionsByConceptIds({ 'conceptIds': splitByIdName[0] }).subscribe(
+                result => {
+                    let umlsDefintionAllData: any = result;
+                    console.log("you full data here2: ", umlsDefintionAllData);
+
+                    let vocabalary = ['ATC', 'CCSR_ICD10CM', 'CCSR_ICD10PCS', 'CPT', 'CVX', 'DRUGBANK', 'GO', 'GS',
+                        'HCDT', 'HCPCS', 'HCPT', 'HGNC', 'HL7V3.0', 'HPO', 'ICD10CM', 'ICD10PCS', 'ICNP', 'LNC', 'MDR',
+                        'MED-RT', 'MEDCIN', 'MEDLINEPLUS', 'MMSL', 'MMX', 'MSH', 'MTHCMSFRF', 'MTHSPL', 'MVX', 'NCBI',
+                        'NCI', 'NDDF', 'NEU', 'NUCCHCPT', 'OMIM', 'ORPHANET', 'RXNORM', 'SNOMEDCT_US', 'SNOMEDCT_VET', 'UMD', 'USP', 'VANDF'];
+
+                    //Check the vocabulary here and filter with them
+                    this.umlsDefintionData = umlsDefintionAllData.result.filter((item: any) => vocabalary.includes(item.rootSource));
+                    console.log("res: ", this.umlsDefintionData);
+
+                    this.umlsDataLists2 = '';
+                    if (!this.error) {
+                        /////////////////////// Definitions ///////////////////
+                        this.umlsDataLists2 += '<div class="row text-dark mt-3"><h5>Definitions</h5></div>';
+                        this.umlsDataLists2 += '<div class="container" style="overflow:scroll;height:200px;">';
+                        this.umlsDataLists2 += '<div class="row rowUmls">';
+                        this.umlsDataLists2 += '<div class="col-lg-6 col-sm-6 col-xs-6 col-xxs-12 text-dark inner"><strong>Root Source</strong></div>';
+                        this.umlsDataLists2 += '<div class="col-lg-6 col-sm-6 col-xs-6 col-xxs-12 text-dark inner"><strong>Value</strong></div>';
+                        // this.umlsDataLists2 += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner"><strong>Class Type</strong></div>';
+                        this.umlsDataLists2 += '</div>';
+
+                        for (let i = 0; i < this.umlsDefintionData.length; i++) {
+                            this.umlsDataLists2 += '<div class="row rowUmlsInner">';
+                            this.umlsDataLists2 += '<div class="col-lg-6 col-sm-6 col-xs-6 col-xxs-12 text-dark inner">' + this.umlsDefintionData[i].rootSource + '</div>';
+                            this.umlsDataLists2 += '<div class="col-lg-6 col-sm-6 col-xs-6 col-xxs-12 text-dark inner">' + this.umlsDefintionData[i].value + '</div>';
+                            // this.umlsDataLists2 += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner-end">' + this.umlsDefintionData[i].classType + '</div>';
+                            this.umlsDataLists2 += '</div>';
+                            k++;
+                        }
+                        if (this.umlsDefintionData.length == k) {
+                            this.umlsDataLists2 += '</div>';
+                        }
+                    }
+                },
+                err => {
+                    // this.loadingUmls = false;
+                    this.error = err;
+                    $("#loadingUmlsLoader2").html('');
+                    $("#umlsDataLists2").html('<h5 class="alert alert-warning">' + this.error + '</h5>');
+                    ($('#myModalEdge') as any).modal('show');
+                },
+                () => {
+                    $("#loadingUmlsLoader2").html('');
+                    $("#umlsDataLists2").html(this.umlsDataLists2);
+                    ($('#myModalEdge') as any).modal('show');
+                });
+            //////////////End here for defintions
+
+            ////////////////////// Start Relations //////////////////////
+            this.nodeSelectsService.getUmlsDataAtomsByConceptIds({ 'conceptIds': splitByIdName[0] }).subscribe(
+                result => {
+                    let umlsRootSourceByCodeUrl: any = result;
+                    console.log("umls Root Source By Code Url: ", umlsRootSourceByCodeUrl);
+
+                    let modelAtoms = ['NCI', 'SNOMEDCT_US', 'MSH', 'RXNORM'];
+                    //Check the vocabulary here and filter with them
+                    this.umlsRelationsByCodeUrl = umlsRootSourceByCodeUrl.result.filter((item: any) => modelAtoms.includes(item.rootSource));
+                    console.log("res by code: ", this.umlsRelationsByCodeUrl);
+
+                    //Here to get the relation by atom loop by rootSource Filters
+                    if (this.umlsRelationsByCodeUrl.length > 0) {
+                        this.umlsRelationsByCodeUrl.forEach((element: any) => {
+                            console.log("atoms unique data: ", element.code);
+
+                            let l = 0;
+                            // this.loadingUmls = true;
+                            this.error = "";
+                            this.nodeSelectsService.getUmlsDataRelationsByConceptIds({ 'codeUrl': element.code })
+                                .subscribe(
+                                    result => {
+                                        let umlsDataByRelation: any = result;
+                                        console.log("final relations data: ", umlsDataByRelation);
+
+                                        this.umlsRelationData = umlsDataByRelation.result.filter((item: any) => modelAtoms.includes(item.rootSource));
+                                        console.log("res code final relations: ", this.umlsRelationData);
+
+                                        this.umlsDataListsRelation = '';
+                                        ////////////////////// Relations //////////////////////
+                                        this.umlsDataListsRelation += '<div class="row text-dark mt-3"><h5>Relations of ' + element.name + '</h5></div>';
+                                        this.umlsDataListsRelation += '<div class="container" style="overflow:scroll;height:400px;">';
+                                        this.umlsDataListsRelation += '<div class="row rowUmls">';
+                                        this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner"><strong>Source</strong></div>';
+                                        this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner"><strong>Destination</strong></div>';
+                                        this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner"><strong>Relation</strong></div>';
+                                        this.umlsDataListsRelation += '</div>';
+
+                                        for (let i = 0; i < this.umlsRelationData.length; i++) {
+                                            this.umlsDataListsRelation += '<div class="row rowUmlsInner">';
+                                            this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner">' + splitByIdName[1] + '</div>';
+                                            this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner">' + this.umlsRelationData[i].relatedIdName + '</div>';
+                                            this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner-end">' + this.umlsRelationData[i].additionalRelationLabel + '</div>';
+                                            this.umlsDataListsRelation += '</div>';
+                                            l++;
+                                        }
+                                        // console.log("First: ", this.umlsRelationData.length);
+                                        // console.log("l size: ", l);
+
+                                        if (this.umlsRelationData.length == l) {
+                                            this.umlsDataListsRelation += '</div>';
+                                        }
+                                        //////////////// End here for relations
+                                    },
+                                    err => {
+                                        // this.loadingUmls = false;
+                                        this.error = err;
+                                        $("#loadingUmlsLoader2").html('');
+                                        $("#umlsDataListsRelation").html('<h5 class="alert alert-warning">' + this.error + '</h5>');
+                                        ($('#myModalEdge') as any).modal('show');
+                                    },
+                                    () => {
+                                        $("#loadingUmlsLoader2").html('');
+                                        // console.log("total Relation Data: ", this.umlsDataLists2);
+                                        $("#umlsDataListsRelation").html(this.umlsDataListsRelation);
+                                        ($('#myModalEdge') as any).modal('show');
+                                    });
+                        });
+                    }else{
+                        $("#loadingUmlsLoader2").html('');
+                        $("#umlsDataListsRelation").html('<h5 class="alert alert-warning">No any relation found..</h5>');
+                        ($('#myModalEdge') as any).modal('show');
+                    }
+                },
+                err => {
+                    // this.loadingUmls = false;
+                    this.error = err;
+                    $("#loadingUmlsLoader2").html('');
+                    $("#umlsDataListsRelation").html('<h5 class="alert alert-warning">' + this.error + '</h5>');
+                    ($('#myModalEdge') as any).modal('show');
+                },
+                () => {
+                    // $("#loadingUmlsLoader2").html('');
+                    // $("#umlsDataLists2").html(this.umlsDataLists2);
+                    // ($('#myModalEdge') as any).modal('show');
+                }
+            );
+
+        }
+    }
+
+    // @HostListener('document:click', ['$event', '$event.target'])
+    // onClick(event: MouseEvent, targetElement: HTMLElement): void {
+    //     if (!targetElement) {
+    //         console.log("inside1: ", targetElement);
+    //     }else{
+    //         console.log("inside2: ", targetElement);
+    //     }
+    //     const clickedInside = this.el.nativeElement.contains(targetElement);
+    //     if (!clickedInside) {
+    //         console.log("inside3: ", clickedInside);
+    //     }else{
+    //         console.log("inside4: ", clickedInside);
+    //     }
+    // }
 
 }

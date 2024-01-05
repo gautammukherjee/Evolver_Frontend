@@ -3,7 +3,7 @@
     <div class="dropdown-toggle" id="edge-type-filter" data-bs-toggle="dropdown" aria-expanded="false"
       data-bs-auto-close="outside">
       <div class="body">
-        <div class="search-input">
+        <div class="search-input" appClickDirective>
           <input class="form-control" type="text" value="{{selectedEdgeTypesNames.join(', ')}}"
             placeholder="Search Edge Type First Degree" aria-label="Search" [(ngModel)]="edgeTypeFilter" />
           <img *ngIf="loading" src="../../assets/images/loader_small.gif" width="20px" />

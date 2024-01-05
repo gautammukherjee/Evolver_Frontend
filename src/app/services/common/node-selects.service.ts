@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { environment } from './../../../environments/environment';
 
 // import { Observable } from 'rxjs';
@@ -11,6 +11,7 @@ import { Observable, of, throwError } from "rxjs";
 // import { tap } from "rxjs/operators";
 // import {tap} from 'rxjs/internal/operators';
 import { tap, catchError, map } from 'rxjs/operators';
+import { data } from 'jquery';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -60,7 +61,7 @@ export class NodeSelectsService {
   getSourceNode2(params: any) {
     return this.http.post(this.API_URL + 'getSourceNode2', params, httpOptions);
   }
-  
+
   getSourceNode3(params: any) {
     return this.http.post(this.API_URL + 'getSourceNode3', params, httpOptions);
   }
@@ -77,7 +78,7 @@ export class NodeSelectsService {
       return of(this._edge_types_first);
     } else {
       return this.http.get(this.API_URL + 'getEdgeTypeFirst', httpOptions).pipe(tap(
-        (data:any) => {
+        (data: any) => {
           this._edge_types_first = data;
         })
       )
@@ -93,7 +94,7 @@ export class NodeSelectsService {
       return of(this._edge_types);
     } else {
       return this.http.get(this.API_URL + 'getEdgeType', httpOptions).pipe(tap(
-        (data:any) => {
+        (data: any) => {
           this._edge_types = data;
         })
       )
@@ -161,10 +162,6 @@ export class NodeSelectsService {
       );
   }
 
-  private handleError(error: any) {
-    return throwError(error);
-  }
-
   getDistributionRelationType(params: any) {
     return this.http.post(this.API_URL + 'getDistributionRelationType', params, httpOptions);
   }
@@ -174,7 +171,7 @@ export class NodeSelectsService {
   }
   getEdgeTypeSentencePMIDLists(params: any) {
     return this.http.post(this.API_URL + 'getEdgeTypeSentencePMIDLists', params, httpOptions);
-  }  
+  }
 
   getPMIDListsInRelation(params: any) {
     return this.http.post(this.API_URL + 'getPMIDListsInRelation', params, httpOptions);
@@ -184,7 +181,7 @@ export class NodeSelectsService {
     return this.http.post(this.API_URL + 'getEdgePMIDCount', params, httpOptions);
   }
 
-  getEvidenceData(params:any){
+  getEvidenceData(params: any) {
     return this.http.post(this.API_URL + 'getEvidenceData', params, httpOptions);
   }
 
@@ -213,10 +210,10 @@ export class NodeSelectsService {
     return this.http.post(this.API_URL + 'getCTInvestigatorRelsByStats', params, httpOptions);
   }
 
-  downloadAtricleAndEvidencesData(params:any){
+  downloadAtricleAndEvidencesData(params: any) {
     return this.http.post(this.API_URL + 'downloadAtricleAndEvidencesData', params, httpOptions)
   }
-  
+
   getEdgeTypeSce1(params: any) {
     return this.http.post(this.API_URL + 'getEdgeTypeSce1', params, httpOptions);
   }
@@ -233,7 +230,7 @@ export class NodeSelectsService {
 
   getConceptIdByNode(params: any) {
     // console.log("datas: ", params.node_ids);
-    return this.http.post(this.API_URL + 'getConceptIdByNode', params, httpOptions);    
+    return this.http.post(this.API_URL + 'getConceptIdByNode', params, httpOptions);
   }
 
   // getUmlsDataByConceptIds(params: any) {
@@ -247,9 +244,58 @@ export class NodeSelectsService {
   //   }
 
   getUmlsDataByConceptIds(params: any) {
-    var urlPrefix = "https://uts-ws.nlm.nih.gov/rest/content/current/CUI/"+params.conceptIds+"?apiKey=b238480d-ef87-4755-a67c-92734e4dcfe8";
+    var urlPrefix = "https://uts-ws.nlm.nih.gov/rest/content/current/CUI/" + params.conceptIds + "?apiKey=b238480d-ef87-4755-a67c-92734e4dcfe8";
     // console.log("urlPrefix: ", urlPrefix);
-    return this.http.get(urlPrefix, httpOptions);
+    return this.http.get(urlPrefix).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getUmlsDataDefintionsByConceptIds(params: any) {
+    let urlPrefix = "https://uts-ws.nlm.nih.gov/rest/content/2023AB/CUI/" + params.conceptIds + "/definitions?apiKey=b238480d-ef87-4755-a67c-92734e4dcfe8";
+    return this.http.get(urlPrefix).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getUmlsDataAtomsByConceptIds(params: any) {
+    let codeUrlPrefix = "https://uts-ws.nlm.nih.gov/rest/content/2023AB/CUI/" + params.conceptIds + "/atoms?apiKey=b238480d-ef87-4755-a67c-92734e4dcfe8";
+    console.log(codeUrlPrefix);
+    return this.http.get(codeUrlPrefix).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getUmlsDataRelationsByConceptIds(params: any) {
+    let urlRelationPrefix = params.codeUrl + "/relations?apiKey=b238480d-ef87-4755-a67c-92734e4dcfe8";
+    return this.http.get(urlRelationPrefix).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      errorMessage = `An error occurred: ${error.error.message}`;
+    } else {
+      // errorMessage = `Server returned code ${error.status}, error message is: ${error.message}`;
+      errorMessage = `API doesn't return any data.`;
+    }
+    console.error(errorMessage);
+    return throwError(() => errorMessage);
+
+
+    // if (error.status === 0) {
+    //   // A client-side or network error occurred. Handle it accordingly.
+    //   console.error('An error occurred:', error.error);
+    // } else {
+    //   // The backend returned an unsuccessful response code.
+    //   // The response body may contain clues as to what went wrong.
+    //   console.error(
+    //     `Backend returned code ${error.status}, body was: `, error.error);
+    // }
+    // // Return an observable with a user-facing error message.
+    // return throwError(() => new Error('Something bad happened; please try again later.'));
   }
 
 }
