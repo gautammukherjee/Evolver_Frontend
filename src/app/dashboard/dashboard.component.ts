@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Subject } from "rxjs";
 import { Router } from '@angular/router';
 import { GlobalVariableService } from '../services/common/global-variable.service';
+declare var particlesJS: any;
 
 @Component({
   selector: 'app-dashboard',
@@ -39,6 +40,7 @@ export class DashboardComponent implements OnInit {
     this.globalVariableService.resetfilters();// on hard reset when page gets loaded
     this.filterParams = this.globalVariableService.getFilterParams();
     console.log("main page filters: ", this.filterParams);
+    particlesJS.load('particles-js', '../assets/particles.json', null);
   }
 
   ontoggleSidebar() {
