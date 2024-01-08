@@ -241,7 +241,7 @@ export class NgCytoComponent implements OnChanges {
 
                 //First reset the edge selection area
                 this.pubmedURLsDownloadLoader = '';
-                this.pubmedURLsDownloadLoader = "<div class='overlay' style='margin-left:160px;margin-top:40px;'><img style='position:absolute' src='../../assets/images/loader_big.gif' /></div>";
+                this.pubmedURLsDownloadLoader = "<div class='overlay' style='margin-left:180px;margin-top:40px;'><img style='position:absolute' src='../../assets/images/loader_big.gif' /></div>";
                 $("#pubmedURLsDownloadLoader").html(this.pubmedURLsDownloadLoader);
                 $("#pubmedURLsDownload").html('');
                 $("#pubmedURLs").html('');
@@ -468,7 +468,7 @@ export class NgCytoComponent implements OnChanges {
 
             //First reset the edge selection area
             this.pubmedURLsDownloadLoader = '';
-            this.pubmedURLsDownloadLoader = "<div class='overlay'><img style='position:absolute' src='../../assets/images/loader_big.gif' /></div>";
+            this.pubmedURLsDownloadLoader = "<div class='overlay' style='margin-left:180px;margin-top:40px;'><img style='position:absolute' src='../../assets/images/loader_big.gif' /></div>";
             $("#pubmedURLsDownloadLoader").html(this.pubmedURLsDownloadLoader);
             $("#loadingUmlsLoader").html('');
             $("#umlsDataLists").html('');
@@ -592,7 +592,7 @@ export class NgCytoComponent implements OnChanges {
         });
 
         ////////// OLD when click the nodes show in popup
-        // cy.on('click', 'node', (e: any) => {
+        // cy.on('rightclick', 'node', (e: any) => {
         //     var node = e.target;
 
         //     var neighborhood = node.neighborhood().add(node);
