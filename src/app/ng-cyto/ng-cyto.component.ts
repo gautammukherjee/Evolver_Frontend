@@ -286,21 +286,21 @@ export class NgCytoComponent implements OnChanges {
                                 this.pubmedEdgeDetails += '<div style="color: #4B5DA1;"><strong>Destination Name</strong></div>';
                                 this.pubmedEdgeDetails += '<div style="padding-bottom:10px; color: #4B5DA1;">' + edge.name + '</div>';
 
-                                // this.pubmedURLsDownload += "<div>";
+                                this.pubmedEdgeDetails += "<div style='overflow:auto;max-height:225px;'>";
                                 this.edgeTypeNameData.forEach((PMID: any) => {
 
                                     // const myFormattedDate = this.pipe.transform(PMID.publication_date, 'short');
                                     // console.log("PMID:: ", PMID.edge_type_name);
-                                    this.pubmedEdgeDetails += "<div>";
+                                    // this.pubmedEdgeDetails += "<div>";
                                     this.pubmedEdgeDetails += "<div style='list-style: none; font-size: 14px; color:#32404E'><strong>PMID: </strong> <a target='_blank' style='color: #BF63A2 !important;' href='" + pubmedBaseUrl + PMID.pmid + "'>" + PMID.pmid + "</a></div>";
                                     this.pubmedEdgeDetails += "<div style='font-size: 14px;color:#32404E'><strong>Edge Type: </strong>" + PMID.edge_type_name + "</div>";
                                     this.pubmedEdgeDetails += "<div style='font-size: 14px;color:#32404E'><strong>Title: </strong>" + PMID.title + "</div>";
                                     this.pubmedEdgeDetails += "<div style='font-size: 14px; color:#32404E'><strong>Publication Date : </strong>" + PMID.publication_date + "</div>";
                                     this.pubmedEdgeDetails += "<hr style='color:#32404E'/>";
-                                    this.pubmedEdgeDetails += "</div>";
+                                    // this.pubmedEdgeDetails += "</div>";
                                 });
-                                this.pubmedEdgeDetails += "<div style='clear: both;'><hr/></div>";
-                                // this.pubmedEdgeDetails += "</div>";
+                                // this.pubmedEdgeDetails += "<div style='clear: both;'><hr/></div>";
+                                this.pubmedEdgeDetails += "</div>";
 
                             } else {
                                 this.pubmedEdgeDetails = "<h4>No PMID Found..</h4>";
@@ -840,22 +840,29 @@ export class NgCytoComponent implements OnChanges {
                     this.umlsDataLists2 = '';
                     if (!this.error) {
                         /////////////////////// Definitions ///////////////////
-                        this.umlsDataLists2 += '<div class="row text-dark mt-3"><h5>Definitions</h5></div>';
-                        this.umlsDataLists2 += '<div class="container" style="overflow:scroll;height:200px;">';
-                        this.umlsDataLists2 += '<div class="row rowUmls">';
-                        this.umlsDataLists2 += '<div class="col-lg-6 col-sm-6 col-xs-6 col-xxs-12 text-dark inner"><strong>Root Source</strong></div>';
-                        this.umlsDataLists2 += '<div class="col-lg-6 col-sm-6 col-xs-6 col-xxs-12 text-dark inner"><strong>Value</strong></div>';
-                        // this.umlsDataLists2 += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner"><strong>Class Type</strong></div>';
-                        this.umlsDataLists2 += '</div>';
+                        this.umlsDataLists2 += '<div class="row text-dark mt-3;"><h5>Definitions</h5></div>';
+                        this.umlsDataLists2 += '<div class="container" style="overflow: auto;max-height:400px;border: 1px solid;padding: 8px;">';
+                        // this.umlsDataLists2 += '<div class="row rowUmls">';
+                        // this.umlsDataLists2 += '<div class="col-lg-6 col-sm-6 col-xs-6 col-xxs-12 text-dark inner"><strong>Root Source</strong></div>';
+                        // this.umlsDataLists2 += '<div class="col-lg-6 col-sm-6 col-xs-6 col-xxs-12 text-dark inner"><strong>Value</strong></div>';
+                        // // this.umlsDataLists2 += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner"><strong>Class Type</strong></div>';
+                        // this.umlsDataLists2 += '</div>';
 
                         for (let i = 0; i < this.umlsDefintionData.length; i++) {
-                            this.umlsDataLists2 += '<div class="row rowUmlsInner">';
-                            this.umlsDataLists2 += '<div class="col-lg-6 col-sm-6 col-xs-6 col-xxs-12 text-dark inner">' + this.umlsDefintionData[i].rootSource + '</div>';
-                            this.umlsDataLists2 += '<div class="col-lg-6 col-sm-6 col-xs-6 col-xxs-12 text-dark inner">' + this.umlsDefintionData[i].value + '</div>';
-                            // this.umlsDataLists2 += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner-end">' + this.umlsDefintionData[i].classType + '</div>';
-                            this.umlsDataLists2 += '</div>';
+                            // this.umlsDataLists2 += '<div class="row rowUmlsInner">';
+                            // this.umlsDataLists2 += '<div class="col-lg-6 col-sm-6 col-xs-6 col-xxs-12 text-dark inner">' + this.umlsDefintionData[i].rootSource + '</div>';
+                            // this.umlsDataLists2 += '<div class="col-lg-6 col-sm-6 col-xs-6 col-xxs-12 text-dark inner">' + this.umlsDefintionData[i].value + '</div>';
+                            // // this.umlsDataLists2 += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner-end">' + this.umlsDefintionData[i].classType + '</div>';
+                            // this.umlsDataLists2 += '</div>';
+
+                            this.umlsDataLists2 += "<div>";
+                            this.umlsDataLists2 += "<div style='list-style: none; font-size: 14px; color:#32404E'><strong>Root Source: </strong>" + this.umlsDefintionData[i].rootSource + "</a></div>";
+                            this.umlsDataLists2 += "<div style='font-size: 14px;color:#32404E'><strong>Value: </strong>" + this.umlsDefintionData[i].value + "</div>";
+                            this.umlsDataLists2 += "<hr style='color:#32404E'/>";
+                            this.umlsDataLists2 += "</div>";
                             k++;
                         }
+                        this.umlsDataLists2 += "<div style='clear: both;'><hr/></div>";
                         if (this.umlsDefintionData.length == k) {
                             this.umlsDataLists2 += '</div>';
                         }
@@ -890,7 +897,7 @@ export class NgCytoComponent implements OnChanges {
                     if (this.umlsRelationsByCodeUrl.length > 0) {
 
                         this.umlsDataListsRelation = '<div class="row text-dark mt-3"><h5>Relations</h5></div>';
-                        this.umlsDataListsRelation += '<div class="container" style="overflow:scroll;height:400px; border:1px solid;">';
+                        this.umlsDataListsRelation += '<div class="container" style="overflow:auto;max-height:400px; border:1px solid;">';
 
                         let k=0;
                         this.umlsRelationsByCodeUrl.forEach((element: any) => {
@@ -910,23 +917,33 @@ export class NgCytoComponent implements OnChanges {
 
                                         ////////////////////// Relations //////////////////////
                                         this.umlsDataListsRelation += '<div class="">';
-                                        this.umlsDataListsRelation += '<div class="row text-dark mt-3"><h5>Relations of ' + element.name + '</h5></div>';
-                                        this.umlsDataListsRelation += '<div class="row rowUmls">';
-                                        this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner"><strong>Source</strong></div>';
-                                        this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner"><strong>Destination</strong></div>';
-                                        this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner"><strong>Relation</strong></div>';
-                                        this.umlsDataListsRelation += '</div>';
+                                        this.umlsDataListsRelation += '<div class="row text-bg-primary p-3">' + element.name + '</div>';
+                                        // this.umlsDataListsRelation += '<div class="row rowUmls">';
+                                        // this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner"><strong>Source</strong></div>';
+                                        // this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner"><strong>Destination</strong></div>';
+                                        // this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner"><strong>Relation</strong></div>';
+                                        // this.umlsDataListsRelation += '</div>';
 
                                         for (let i = 0; i < this.umlsRelationData.length; i++) {
-                                            this.umlsDataListsRelation += '<div class="row rowUmlsInner">';
-                                            this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner">' + splitByIdName[1] + '</div>';
-                                            this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner">' + this.umlsRelationData[i].relatedIdName + '</div>';
-                                            this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner-end">' + this.umlsRelationData[i].additionalRelationLabel + '</div>';
-                                            this.umlsDataListsRelation += '</div>';
+
+                                            this.umlsDataListsRelation += "<div>";
+                                            this.umlsDataListsRelation += "<div style='list-style: none; font-size: 14px; color:#32404E'><strong>Source: </strong>" + splitByIdName[1] + "</a></div>";
+                                            this.umlsDataListsRelation += "<div style='font-size: 14px;color:#32404E'><strong>Destination: </strong>" + this.umlsRelationData[i].relatedIdName + "</div>";
+                                            this.umlsDataListsRelation += "<div style='font-size: 14px;color:#32404E'><strong>Relation: </strong>" + this.umlsRelationData[i].additionalRelationLabel + "</div>";
+                                            this.umlsDataListsRelation += "<hr style='color:#32404E'/>";
+                                            this.umlsDataListsRelation += "</div>";
+                                            
+                                            // this.umlsDataListsRelation += '<div class="row rowUmlsInner">';
+                                            // this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner">' + splitByIdName[1] + '</div>';
+                                            // this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner">' + this.umlsRelationData[i].relatedIdName + '</div>';
+                                            // this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner-end">' + this.umlsRelationData[i].additionalRelationLabel + '</div>';
+                                            // this.umlsDataListsRelation += '</div>';
                                             l++;
                                         }
                                         // console.log("First: ", this.umlsRelationData.length);
                                         // console.log("l size: ", l);
+
+                                        this.umlsDataListsRelation += "<div style='clear: both;'><hr/></div>";
 
                                         if (this.umlsRelationData.length == l) {
                                             this.umlsDataListsRelation += '</div>';
