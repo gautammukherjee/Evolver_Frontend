@@ -13,6 +13,7 @@ import { UserDashboardComponent } from './user-dashboard/user-dashboard.componen
 import { PreviewComponent } from './preview/preview.component';
 import { ArticleSentenceDashboardComponent } from './article-sentence-dashboard/article-sentence-dashboard.component';
 import { UmlsActionSecondComponent } from './umls-action-second/umls-action-second.component';
+import { PmidSearchComponent } from './pmid-search/pmid-search.component';
 
 const routes: Routes = [
   {
@@ -63,6 +64,10 @@ const routes: Routes = [
   {
     path: 'umls-action-second',
     component: UmlsActionSecondComponent
+  },
+  {
+    path: 'pmid-search',
+    component: PmidSearchComponent
   },
   {
     path: '**', // 404 page

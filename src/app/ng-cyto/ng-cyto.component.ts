@@ -592,53 +592,53 @@ export class NgCytoComponent implements OnChanges {
         });
 
         ////////// OLD when click the nodes show in popup
-        // cy.on('rightclick', 'node', (e: any) => {
-        //     var node = e.target;
+        cy.on('cxttap', 'node', (e: any) => {
+            var node = e.target;
 
-        //     var neighborhood = node.neighborhood().add(node);
-        //     // console.log("neighbr1: ", node.neighborhood().nodes());
+            var neighborhood = node.neighborhood().add(node);
+            // console.log("neighbr1: ", node.neighborhood().nodes());
 
-        //     cy.elements().addClass('faded');
-        //     neighborhood.removeClass('faded');
-        //     localselect.emit(node.data('name'));
+            cy.elements().addClass('faded');
+            neighborhood.removeClass('faded');
+            localselect.emit(node.data('name'));
 
-        //     var TargetNode = node[0]._private.data;
-        //     console.log("act: ", node[0]._private.data);
-        //     var directlyConnectedNodes = node.neighborhood().nodes();
-        //     console.log("nodesHere: ", directlyConnectedNodes);
-        //     // $("#nodeDetails").html("");
-        //     this.nodeDetails = "<div class='overlay'><img style='position:absolute' src='../../assets/images/loader_big.gif' /></div>";
-        //     $("#nodeDetails").html(this.nodeDetails);
+            var TargetNode = node[0]._private.data;
+            console.log("act: ", node[0]._private.data);
+            var directlyConnectedNodes = node.neighborhood().nodes();
+            console.log("nodesHere: ", directlyConnectedNodes);
+            // $("#nodeDetails").html("");
+            this.nodeDetails = "<div class='overlay'><img style='position:absolute' src='../../assets/images/loader_big.gif' /></div>";
+            $("#nodeDetails").html(this.nodeDetails);
 
-        //     if (directlyConnectedNodes != undefined) {
-        //         var nodeDetails = "";
+            if (directlyConnectedNodes != undefined) {
+                var nodeDetails = "";
 
-        //         nodeDetails += "<div style='float:left;'>";
-        //         nodeDetails += '<div style="padding: 5px; color:#BF63A2"><strong>' + TargetNode.name + '</strong></div>';
-        //         nodeDetails += '<div style="padding: 5px;"><strong>Node Type: ' + TargetNode.node_type + '</strong></div>';
-        //         nodeDetails += '<div style="padding: 5px;"><strong>Connections: </strong></div>';
+                nodeDetails += "<div style='float:left;'>";
+                nodeDetails += '<div style="padding: 5px; color:#BF63A2"><strong>' + TargetNode.name + '</strong></div>';
+                nodeDetails += '<div style="padding: 5px;"><strong>Node Type: ' + TargetNode.node_type + '</strong></div>';
+                nodeDetails += '<div style="padding: 5px;"><strong>Connections: </strong></div>';
 
-        //         nodeDetails += '<input type="text" id="searchInput" autocomplete="off" onkeyup="searchConnections()" placeholder="&#xf002; Search for connections..">';
+                nodeDetails += '<input type="text" id="searchInput" autocomplete="off" onkeyup="searchConnections()" placeholder="&#xf002; Search for connections..">';
 
-        //         nodeDetails += "<ul style='padding: 2px 18px;'>";
-        //         directlyConnectedNodes.forEach((directlyConnectedNode: any) => {
-        //             // window.gv = directlyConnectedNode;
-        //             //console.log("inner: ", directlyConnectedNode);
-        //             // console.log("inner: ", gv);
-        //             // const el = document.getElementById("nodeClick");
-        //             // el?.addEventListener("onclick", this.nodeClickEvent);
-        //             nodeDetails += "<li style='list-style: initial; color:" + directlyConnectedNode._private.data.colorCode + "'>" + directlyConnectedNode._private.data.name + "</li>"; //22509 -HSP90 molecular
-        //         });
-        //         nodeDetails += "</ul>";
-        //         nodeDetails += "</div>";
+                nodeDetails += "<ul style='padding: 2px 18px;'>";
+                directlyConnectedNodes.forEach((directlyConnectedNode: any) => {
+                    // window.gv = directlyConnectedNode;
+                    //console.log("inner: ", directlyConnectedNode);
+                    // console.log("inner: ", gv);
+                    // const el = document.getElementById("nodeClick");
+                    // el?.addEventListener("onclick", this.nodeClickEvent);
+                    nodeDetails += "<li style='list-style: initial; color:" + directlyConnectedNode._private.data.colorCode + "'>" + directlyConnectedNode._private.data.name + "</li>"; //22509 -HSP90 molecular
+                });
+                nodeDetails += "</ul>";
+                nodeDetails += "</div>";
 
-        //         $("#nodeDetails").html(nodeDetails);
-        //     } else {
-        //         $("#nodeDetails").html("");
-        //     }
-        //     ($('#myModalNode') as any).modal('show');
-        //     // this.showNodeInfo(node[0]._private.data.id); //append the node and reload the graph
-        // });
+                $("#nodeDetails").html(nodeDetails);
+            } else {
+                $("#nodeDetails").html("");
+            }
+            ($('#myModalNode') as any).modal('show');
+            // this.showNodeInfo(node[0]._private.data.id); //append the node and reload the graph
+        });
 
         // cy.on('cxttap', 'node', (e: any) => {
         //     var node = e.target;
@@ -779,35 +779,38 @@ export class NgCytoComponent implements OnChanges {
     // @HostListener('document:dblclick', ['$event.target'])
     // @HostListener('document:click', ['$event.target']) onClick(target: any) {
 
-    searchConnections22 = () => {
-        // searchConnections = function () {
-        console.log("sdfsfs");
-        alert("sfsfsf");
-        // Declare variables
-        var input: any, filter: any, ul: any, li: any, a: any, i: any, txtValue: any;
-        input = document.getElementById('searchInput');
+    // searchConnections22 = () => {
 
-        filter = input.value.toUpperCase();
+    // @HostListener('document:click', ['$event.target']) clickOutside(target: any) {
+            
+    //     // searchConnections = function () {
+    //     console.log("sdfsfs");
+    //     alert("sfsfsf");
+    //     // Declare variables
+    //     var input: any, filter: any, ul: any, li: any, a: any, i: any, txtValue: any;
+    //     input = document.getElementById('searchInput');
 
-        ul = document.getElementById("myUL");
-        li = ul.getElementsByTagName('li');
+    //     filter = input.value.toUpperCase();
 
-        // Loop through all list items, and hide those who don't match the search query
-        for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName("a")[0];
-            txtValue = a.textContent || a.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                li[i].style.display = "";
-            } else {
-                li[i].style.display = "none";
-            }
-        }
-    }
+    //     ul = document.getElementById("myUL");
+    //     li = ul.getElementsByTagName('li');
+
+    //     // Loop through all list items, and hide those who don't match the search query
+    //     for (i = 0; i < li.length; i++) {
+    //         a = li[i].getElementsByTagName("a")[0];
+    //         txtValue = a.textContent || a.innerText;
+    //         if (txtValue.toUpperCase().indexOf(filter) > -1) {
+    //             li[i].style.display = "";
+    //         } else {
+    //             li[i].style.display = "none";
+    //         }
+    //     }
+    // }
 
     // @HostListener('document:dblclick', ['$event.target'])
     @HostListener('document:click', ['$event.target']) onClick(target: any) {
         // event.preventDefault();
-        console.log("22: ", target.classList.contains('conceptIDClick'));
+        // console.log("22: ", target.classList.contains('conceptIDClick'));
         console.log("2 here: ", target);
         // console.log("2 here by id: ", target.id);
         const splitByIdName = target.id.split(", ");

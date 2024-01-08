@@ -73,6 +73,7 @@ import { ArticleSentenceDashboardComponent } from './article-sentence-dashboard/
 import { PreviewComponent } from './preview/preview.component';
 import { UmlsActionSecondComponent } from './umls-action-second/umls-action-second.component';
 import { ClickDirectiveDirective } from './AppDirective/click-directive.directive';
+import { PmidSearchComponent } from './pmid-search/pmid-search.component';
 
 @NgModule({
   declarations: [
@@ -128,7 +129,8 @@ import { ClickDirectiveDirective } from './AppDirective/click-directive.directiv
     PreviewComponent,
     ArticleSentenceDashboardComponent,
     UmlsActionSecondComponent,
-    ClickDirectiveDirective
+    ClickDirectiveDirective,
+    PmidSearchComponent
   ],
   imports: [
     BrowserModule,
