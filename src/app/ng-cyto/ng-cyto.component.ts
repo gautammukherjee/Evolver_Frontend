@@ -816,7 +816,6 @@ export class NgCytoComponent implements OnChanges {
 
         if (target.classList.contains('conceptIDClick')) {
             // $("#umlsDataLists2").html('');
-
             // jQuery('#articles_details').bootstrapTable({});
             this.error = "";
             this.loadingUmlsLoader2 = '';
@@ -889,6 +888,11 @@ export class NgCytoComponent implements OnChanges {
 
                     //Here to get the relation by atom loop by rootSource Filters
                     if (this.umlsRelationsByCodeUrl.length > 0) {
+
+                        this.umlsDataListsRelation = '<div class="row text-dark mt-3"><h5>Relations</h5></div>';
+                        this.umlsDataListsRelation += '<div class="container" style="overflow:scroll;height:400px; border:1px solid;">';
+
+                        let k=0;
                         this.umlsRelationsByCodeUrl.forEach((element: any) => {
                             console.log("atoms unique data: ", element.code);
 
@@ -904,10 +908,9 @@ export class NgCytoComponent implements OnChanges {
                                         this.umlsRelationData = umlsDataByRelation.result.filter((item: any) => modelAtoms.includes(item.rootSource));
                                         console.log("res code final relations: ", this.umlsRelationData);
 
-                                        this.umlsDataListsRelation = '';
                                         ////////////////////// Relations //////////////////////
+                                        this.umlsDataListsRelation += '<div class="">';
                                         this.umlsDataListsRelation += '<div class="row text-dark mt-3"><h5>Relations of ' + element.name + '</h5></div>';
-                                        this.umlsDataListsRelation += '<div class="container" style="overflow:scroll;height:400px;">';
                                         this.umlsDataListsRelation += '<div class="row rowUmls">';
                                         this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner"><strong>Source</strong></div>';
                                         this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner"><strong>Destination</strong></div>';
@@ -929,6 +932,7 @@ export class NgCytoComponent implements OnChanges {
                                             this.umlsDataListsRelation += '</div>';
                                         }
                                         //////////////// End here for relations
+                                        k++;
                                     },
                                     err => {
                                         // this.loadingUmls = false;
@@ -940,11 +944,19 @@ export class NgCytoComponent implements OnChanges {
                                     () => {
                                         $("#loadingUmlsLoader2").html('');
                                         // console.log("total Relation Data: ", this.umlsDataLists2);
+
+                                        // console.log("new1: ", this.umlsRelationsByCodeUrl.length);
+                                        // console.log("new2: ", k);
+                                        
+                                        if (this.umlsRelationsByCodeUrl.length == k) {
+                                            this.umlsDataListsRelation += '</div>';
+                                        }
+
                                         $("#umlsDataListsRelation").html(this.umlsDataListsRelation);
                                         ($('#myModalEdge') as any).modal('show');
                                     });
                         });
-                    }else{
+                    } else {
                         $("#loadingUmlsLoader2").html('');
                         $("#umlsDataListsRelation").html('<h5 class="alert alert-warning">No any relation found..</h5>');
                         ($('#myModalEdge') as any).modal('show');
@@ -963,7 +975,6 @@ export class NgCytoComponent implements OnChanges {
                     // ($('#myModalEdge') as any).modal('show');
                 }
             );
-
         }
     }
 
