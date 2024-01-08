@@ -781,7 +781,7 @@ export class NgCytoComponent implements OnChanges {
 
     // searchConnections22 = () => {
 
-    // @HostListener('document:click', ['$event.target']) clickOutside(target: any) {
+    // @HostListener('document:click', ['$event.target']) onDblClick(target: any) {
             
     //     // searchConnections = function () {
     //     console.log("sdfsfs");
