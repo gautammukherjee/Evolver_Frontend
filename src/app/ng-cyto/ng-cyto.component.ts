@@ -241,7 +241,7 @@ export class NgCytoComponent implements OnChanges {
 
                 //First reset the edge selection area
                 this.pubmedURLsDownloadLoader = '';
-                this.pubmedURLsDownloadLoader = "<div class='overlay'><img style='position:absolute' src='../../assets/images/loader_big.gif' /></div>";
+                this.pubmedURLsDownloadLoader = "<div class='overlay' style='margin-left:160px;margin-top:40px;'><img style='position:absolute' src='../../assets/images/loader_big.gif' /></div>";
                 $("#pubmedURLsDownloadLoader").html(this.pubmedURLsDownloadLoader);
                 $("#pubmedURLsDownload").html('');
                 $("#pubmedURLs").html('');
@@ -286,7 +286,7 @@ export class NgCytoComponent implements OnChanges {
                                 this.pubmedEdgeDetails += '<div style="color: #4B5DA1;"><strong>Destination Name</strong></div>';
                                 this.pubmedEdgeDetails += '<div style="padding-bottom:10px; color: #4B5DA1;">' + edge.name + '</div>';
 
-                                this.pubmedEdgeDetails += "<div style='overflow:auto;max-height:225px;'>";
+                                this.pubmedEdgeDetails += "<div style='overflow:auto;max-height:225px;border:1px solid;padding:2px 4px;'>";
                                 this.edgeTypeNameData.forEach((PMID: any) => {
 
                                     // const myFormattedDate = this.pipe.transform(PMID.publication_date, 'short');
