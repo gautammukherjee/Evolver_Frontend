@@ -898,7 +898,7 @@ export class NgCytoComponent implements OnChanges {
                     console.log("res: ", this.umlsDefintionData);
 
                     this.umlsDataLists2 = '';
-                    if (!this.error) {
+                    if (!this.error) { 
                         /////////////////////// Definitions ///////////////////
                         this.umlsDataLists2 += '<div class="row text-dark mt-3;"><h5>Definitions</h5></div>';
                         this.umlsDataLists2 += '<div class="container" style="overflow: auto;max-height:400px;border: 1px solid;padding: 8px;">';
