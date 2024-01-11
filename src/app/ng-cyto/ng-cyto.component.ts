@@ -346,7 +346,8 @@ export class NgCytoComponent implements OnChanges {
                         // console.log("New data: ", this.conceptIds.conceptIds);
 
                         this.umlsDataLists = "";
-                        this.umlsDataLists += '<div class="container" style="overflow:auto;max-height:300px;">';
+                        this.umlsDataLists += '<div class="container">';
+                        this.umlsDataLists += '<div class="conceptIdsWrapper">';
                         // this.umlsDataLists += '<div class="row rowUmls">';
                         // // this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner"><strong>Concept Id</strong></div>';
                         // // this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner"><strong>Name</strong></div>';
@@ -369,13 +370,10 @@ export class NgCytoComponent implements OnChanges {
                                             const umlsName = this.umlsData.result.name;
                                             const symenticName = this.umlsData.result.semanticTypes[0].name;
                                             const atomURL = this.umlsData.result.atoms;
-
-                                            this.umlsDataLists += '<div class="row rowUmls" style="float:left;margin-left:18px;">';
-                                            this.umlsDataLists += '<div class="col-lg-12 col-sm-6 col-xs-6 col-xxs-12 text-dark inner"><button id="' + element.concept_id + ', ' + umlsName + '" class="conceptIDClick" value="' + element.concept_id + '" style="cursor:pointer;">' + element.concept_id + '</button></div>';
+                                            this.umlsDataLists += '<div class="conceptIdBox"><button id="' + element.concept_id + ', ' + umlsName + '" class="conceptIDClick" value="' + element.concept_id + '">' + element.concept_id + '</button></div>';
                                             // this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 inner"><a href="https://uts-ws.nlm.nih.gov/rest/content/2023AB/CUI/' + element.concept_id + '/definitions?apiKey=b238480d-ef87-4755-a67c-92734e4dcfe8" target="_blank">' + element.concept_id + '</a></div>';
                                             // this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner">' + umlsName + '</div>';
                                             // this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner-end">' + symenticName + '</div>';
-                                            this.umlsDataLists += '</div>';
                                             j++;
                                         }
                                     },
@@ -393,6 +391,7 @@ export class NgCytoComponent implements OnChanges {
                                             console.log("J length: ", j);
                                             if (this.conceptIds.conceptIds.length == j) {
                                                 this.umlsDataLists += '</div>';
+                                                this.umlsDataLists += '</div>';
                                                 // console.log("umlsDataLists: ", this.umlsDataLists);
                                                 $("#loadingUmlsLoader").html('');
                                                 $("#umlsDataLists").html(this.umlsDataLists);
@@ -401,6 +400,7 @@ export class NgCytoComponent implements OnChanges {
                                         }
                                     });
                         });
+                        
                     },
                     err => {
                         this.loadingUmls = false;
@@ -900,8 +900,11 @@ export class NgCytoComponent implements OnChanges {
                     this.umlsDataLists2 = '';
                     if (!this.error) { 
                         /////////////////////// Definitions ///////////////////
-                        this.umlsDataLists2 += '<div class="row text-dark mt-3;"><h5>Definitions</h5></div>';
-                        this.umlsDataLists2 += '<div class="container" style="overflow: auto;max-height:400px;border: 1px solid;padding: 8px;">';
+                        this.umlsDataLists2 += '<div class="accordion" id="accordionDifinition">';
+                        this.umlsDataLists2 += '<div class="accordion-item">';
+                        this.umlsDataLists2 += '<h2 class="accordion-header" id="headingOne"><button class="accordion-button p-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDefinition" aria-expanded="true" aria-controls="collapseDefinition">Definitions</button></h2>';
+                        this.umlsDataLists2 += '<div id="collapseDefinition" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionDifinition"><div class="accordion-body" style="max-height:400px;overflow:auto">';
+                        // this.umlsDataLists2 += '<div class="container" style="overflow: auto;max-height:400px;border: 1px solid;padding: 8px;">';
                         // this.umlsDataLists2 += '<div class="row rowUmls">';
                         // this.umlsDataLists2 += '<div class="col-lg-6 col-sm-6 col-xs-6 col-xxs-12 text-dark inner"><strong>Root Source</strong></div>';
                         // this.umlsDataLists2 += '<div class="col-lg-6 col-sm-6 col-xs-6 col-xxs-12 text-dark inner"><strong>Value</strong></div>';
@@ -922,8 +925,11 @@ export class NgCytoComponent implements OnChanges {
                             this.umlsDataLists2 += "</div>";
                             k++;
                         }
-                        this.umlsDataLists2 += "<div style='clear: both;'><hr/></div>";
+                        // this.umlsDataLists2 += "<div style='clear: both;'><hr/></div>";
                         if (this.umlsDefintionData.length == k) {
+                            this.umlsDataLists2 += '</div>';
+                            this.umlsDataLists2 += '</div>';
+                            this.umlsDataLists2 += '</div>';
                             this.umlsDataLists2 += '</div>';
                         }
                     }
@@ -956,11 +962,15 @@ export class NgCytoComponent implements OnChanges {
                     //Here to get the relation by atom loop by rootSource Filters
                     if (this.umlsRelationsByCodeUrl.length > 0) {
 
-                        this.umlsDataListsRelation = '<div class="row text-dark mt-3"><h5>Relations</h5></div>';
-                        this.umlsDataListsRelation += '<div class="container" style="overflow:auto;max-height:400px; border:1px solid;">';
+                        this.umlsDataListsRelation += '<div class="accordion" id="accordionRelation">';
+                        this.umlsDataListsRelation += '<div class="accordion-item">';
+                        this.umlsDataListsRelation += '<h2 class="accordion-header" id="accRelMainHead"><button class="accordion-button p-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRelation" aria-expanded="true" aria-controls="collapseRelation">Relations</button></h2>';
+                        this.umlsDataListsRelation += '<div id="collapseRelation" class="accordion-collapse collapse show" aria-labelledby="accRelMainHead" data-bs-parent="#accordionRelation"><div class="accordion-body" style="max-height:400px;overflow:auto">';
+                        // this.umlsDataListsRelation = '<div class="row text-dark mt-3"><h5>Relations</h5></div>';
+                        // this.umlsDataListsRelation += '<div class="container" style="overflow:auto;max-height:400px; border:1px solid;">';
 
                         let k = 0;
-                        this.umlsRelationsByCodeUrl.forEach((element: any) => {
+                        this.umlsRelationsByCodeUrl.forEach((element: any, index:any) => {
                             console.log("atoms unique data: ", element);
 
                             let l = 0;
@@ -982,13 +992,14 @@ export class NgCytoComponent implements OnChanges {
                                         // this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner"><strong>Relation</strong></div>';
                                         // this.umlsDataListsRelation += '</div>';
 
-                                        this.umlsDataListsRelation += '<div>';
-                                        this.umlsDataListsRelation += '<div class="row text-bg-primary">' + element.rootSource + " ( " + element.name + ")" + '</div>';
-
+                                        this.umlsDataListsRelation += "<div class='accordion' id='accordionRelationChild'>";
+                                        this.umlsDataListsRelation += "<div class='accordion-item'>";
+                                        this.umlsDataListsRelation += "<h2 class='accordion-header' id='accRelChildHead'><button class='accordion-button p-2' type='button' data-bs-toggle='collapse' data-bs-target='#collapseRelationChild" + index +"' aria-expanded='true' aria-controls='collapseRelationChild'>" + element.rootSource + " ( " + element.name + ")" + "</button></h2>";
+                                        this.umlsDataListsRelation += "<div id='collapseRelationChild"+index+"' class='accordion-collapse collapse show' aria-labelledby='accRelChildHead' data-bs-parent='#accordionRelationChild'><div class='accordion-body'>";
+                                        
                                         for (let i = 0; i < this.umlsRelationData.length; i++) {
                                             this.umlsDataListsRelation += "<div>";
-                                            this.umlsDataListsRelation += "<div style='list-style: none; font-size: 14px; color:#32404E'><strong style='background-color:#DAAfff;margin-right:12px;'>" + splitByIdName[1] + "</strong><strong style='background-color:#FF8787;margin-right:12px;'>" + this.umlsRelationData[i].relatedIdName + "</strong><strong style='background-color:#A8E890;'>" + this.umlsRelationData[i].additionalRelationLabel + "</strong></div>";
-                                            this.umlsDataListsRelation += "<hr style='color:#32404E'/>";
+                                            this.umlsDataListsRelation += "<div style='list-style: none; font-size: 14px; color:#32404E;padding-bottom: 5px;padding-top:5px;border-bottom:1px solid #ddd'><strong class='badge' style='background-color:#DAAfff;margin-right:12px;'>" + splitByIdName[1] + "</strong><strong class='badge' style='background-color:#FF8787;margin-right:12px;'>" + this.umlsRelationData[i].relatedIdName + "</strong><strong class='badge' style='background-color:#6fb654;'>" + this.umlsRelationData[i].additionalRelationLabel + "</strong></div>";
                                             this.umlsDataListsRelation += "</div>";
 
                                             // this.umlsDataListsRelation += '<div class="row rowUmlsInner">';
@@ -1002,6 +1013,9 @@ export class NgCytoComponent implements OnChanges {
                                         // console.log("l size: ", l);
                                         // this.umlsDataListsRelation += "<div style='clear: both;'><hr/></div>";
                                         if (this.umlsRelationData.length == l) {
+                                            this.umlsDataListsRelation += '</div>';
+                                            this.umlsDataListsRelation += '</div>';
+                                            this.umlsDataListsRelation += '</div>';
                                             this.umlsDataListsRelation += '</div>';
                                         }
                                         //////////////// End here for relations
@@ -1022,6 +1036,10 @@ export class NgCytoComponent implements OnChanges {
                                         // console.log("new2: ", k);
 
                                         if (this.umlsRelationsByCodeUrl.length == k) {
+                                            this.umlsDataListsRelation += '</div>';
+                                            this.umlsDataListsRelation += '</div>';
+                                            this.umlsDataListsRelation += '</div>';
+                                            this.umlsDataListsRelation += '</div>';
                                             this.umlsDataListsRelation += '</div>';
                                         }
 
