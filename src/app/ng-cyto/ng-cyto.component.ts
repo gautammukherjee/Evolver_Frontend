@@ -346,8 +346,8 @@ export class NgCytoComponent implements OnChanges {
                         // console.log("New data: ", this.conceptIds.conceptIds);
 
                         this.umlsDataLists = "";
-                        this.umlsDataLists += '<div class="container">';
                         this.umlsDataLists += '<div class="conceptIdsWrapper">';
+                        this.umlsDataLists += '<div class="me-2 text-black">Select Concept :</div>';
                         // this.umlsDataLists += '<div class="row rowUmls">';
                         // // this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner"><strong>Concept Id</strong></div>';
                         // // this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner"><strong>Name</strong></div>';
@@ -355,6 +355,7 @@ export class NgCytoComponent implements OnChanges {
                         // this.umlsDataLists += '</div>';
 
                         let j = 0;
+                        
                         this.conceptIds.conceptIds.forEach((element: any) => {
                             console.log("unique data: ", element);
 
@@ -390,7 +391,6 @@ export class NgCytoComponent implements OnChanges {
                                             console.log("concept length: ", this.conceptIds.conceptIds.length);
                                             console.log("J length: ", j);
                                             if (this.conceptIds.conceptIds.length == j) {
-                                                this.umlsDataLists += '</div>';
                                                 this.umlsDataLists += '</div>';
                                                 // console.log("umlsDataLists: ", this.umlsDataLists);
                                                 $("#loadingUmlsLoader").html('');
@@ -902,8 +902,8 @@ export class NgCytoComponent implements OnChanges {
                         /////////////////////// Definitions ///////////////////
                         this.umlsDataLists2 += '<div class="accordion" id="accordionDifinition">';
                         this.umlsDataLists2 += '<div class="accordion-item">';
-                        this.umlsDataLists2 += '<h2 class="accordion-header" id="headingOne"><button class="accordion-button p-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDefinition" aria-expanded="true" aria-controls="collapseDefinition">Definitions</button></h2>';
-                        this.umlsDataLists2 += '<div id="collapseDefinition" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionDifinition"><div class="accordion-body" style="max-height:400px;overflow:auto">';
+                        this.umlsDataLists2 += '<h2 class="accordion-header" id="headingOne"><button class="accordion-button p-2 collapsed no-shadow" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDefinition" aria-expanded="true" aria-controls="collapseDefinition">Definitions</button></h2>';
+                        this.umlsDataLists2 += '<div id="collapseDefinition" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionDifinition"><div class="accordion-body" style="max-height:400px;overflow:auto">';
                         // this.umlsDataLists2 += '<div class="container" style="overflow: auto;max-height:400px;border: 1px solid;padding: 8px;">';
                         // this.umlsDataLists2 += '<div class="row rowUmls">';
                         // this.umlsDataLists2 += '<div class="col-lg-6 col-sm-6 col-xs-6 col-xxs-12 text-dark inner"><strong>Root Source</strong></div>';
@@ -965,8 +965,8 @@ export class NgCytoComponent implements OnChanges {
 
                         this.umlsDataListsRelation += '<div class="accordion" id="accordionRelation">';
                         this.umlsDataListsRelation += '<div class="accordion-item">';
-                        this.umlsDataListsRelation += '<h2 class="accordion-header" id="accRelMainHead"><button class="accordion-button p-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRelation" aria-expanded="true" aria-controls="collapseRelation">Relations</button></h2>';
-                        this.umlsDataListsRelation += '<div id="collapseRelation" class="accordion-collapse collapse show" aria-labelledby="accRelMainHead" data-bs-parent="#accordionRelation"><div class="accordion-body" style="max-height:400px;overflow:auto">';
+                        this.umlsDataListsRelation += '<h2 class="accordion-header" id="accRelMainHead"><button class="accordion-button p-2 collapsed no-shadow" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRelation" aria-expanded="true" aria-controls="collapseRelation">Relations</button></h2>';
+                        this.umlsDataListsRelation += '<div id="collapseRelation" class="accordion-collapse collapse" aria-labelledby="accRelMainHead" data-bs-parent="#accordionRelation"><div class="accordion-body" style="max-height:400px;overflow:auto">';
                         // this.umlsDataListsRelation = '<div class="row text-dark mt-3"><h5>Relations</h5></div>';
                         // this.umlsDataListsRelation += '<div class="container" style="overflow:auto;max-height:400px; border:1px solid;">';
 
@@ -981,10 +981,7 @@ export class NgCytoComponent implements OnChanges {
                             this.nodeSelectsService.getUmlsDataRelationsByConceptIds({ 'codeUrl': element.code })
                                 .subscribe(
                                     result => {
-                                        let showVal = '';
-                                        if (index == 0) {
-                                            showVal = "show";
-                                        }
+                                        
                                         let umlsDataByRelation: any = result;
                                         console.log("final relations data: ", umlsDataByRelation);
 
@@ -999,9 +996,9 @@ export class NgCytoComponent implements OnChanges {
                                         // this.umlsDataListsRelation += '</div>';
 
                                         this.umlsDataListsRelation += "<div class='accordion' id='accordionRelationChild'>";
-                                        this.umlsDataListsRelation += "<div class='accordion-item'>";
-                                        this.umlsDataListsRelation += "<h2 class='accordion-header' id='accRelChildHead'><button class='accordion-button p-2' type='button' data-bs-toggle='collapse' data-bs-target='#collapseRelationChild" + index + "' aria-expanded='true' aria-controls='collapseRelationChild'>" + element.rootSource + " ( " + element.name + ")" + "</button></h2>";
-                                        this.umlsDataListsRelation += "<div id='collapseRelationChild" + index + "' class='accordion-collapse collapse " + showVal + "' aria-labelledby='accRelChildHead' data-bs-parent='#accordionRelationChild'><div class='accordion-body'>";
+                                        this.umlsDataListsRelation += "<div class='accordion-item mb-2'>";
+                                        this.umlsDataListsRelation += "<h2 class='accordion-header' id='accRelChildHead'><button class='accordion-button p-2 collapsed no-shadow' type='button' data-bs-toggle='collapse' data-bs-target='#collapseRelationChild" + index + "' aria-expanded='true' aria-controls='collapseRelationChild'>" + element.rootSource + " ( " + element.name + ")" + "</button></h2>";
+                                        this.umlsDataListsRelation += "<div id='collapseRelationChild" + index + "' class='accordion-collapse collapse' aria-labelledby='accRelChildHead' data-bs-parent='#accordionRelationChild'><div class='accordion-body'>";
 
                                         for (let i = 0; i < this.umlsRelationData.length; i++) {
                                             this.umlsDataListsRelation += "<div>";

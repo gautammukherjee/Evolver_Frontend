@@ -20,6 +20,9 @@ body {
     cursor: pointer;
 }
 
+.no-shadow{
+    box-shadow: none !important;
+}
 .login-wrapper {
     background-color: #F3F3F3;
     background-size: cover;
@@ -820,6 +823,7 @@ body {
         display: flex;
         flex-wrap: nowrap;
         overflow: auto;
+        align-items: center;
         .conceptIdBox{
             margin-right: 10px;
             button{
