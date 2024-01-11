@@ -370,7 +370,7 @@ export class NgCytoComponent implements OnChanges {
                                             const umlsName = this.umlsData.result.name;
                                             const symenticName = this.umlsData.result.semanticTypes[0].name;
                                             const atomURL = this.umlsData.result.atoms;
-                                            this.umlsDataLists += '<div class="conceptIdBox"><button id="' + element.concept_id + ', ' + umlsName + '" class="conceptIDClick" value="' + element.concept_id + '">' + element.concept_id + '</button></div>';
+                                            this.umlsDataLists += '<div class="conceptIdBox"><button id="' + element.concept_id + ', ' + umlsName + '" class="conceptIDClick" value="' + element.concept_id + '">' + element.nuc_id + '</button></div>';
                                             // this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 inner"><a href="https://uts-ws.nlm.nih.gov/rest/content/2023AB/CUI/' + element.concept_id + '/definitions?apiKey=b238480d-ef87-4755-a67c-92734e4dcfe8" target="_blank">' + element.concept_id + '</a></div>';
                                             // this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner">' + umlsName + '</div>';
                                             // this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner-end">' + symenticName + '</div>';
@@ -400,7 +400,7 @@ export class NgCytoComponent implements OnChanges {
                                         }
                                     });
                         });
-                        
+
                     },
                     err => {
                         this.loadingUmls = false;
@@ -772,7 +772,7 @@ export class NgCytoComponent implements OnChanges {
         // this.checkedNodes.push(parseInt(nodeId));  // and append the selecting nodeid
         // this.globalVariableService.setSelectedNodes(this.checkedNodes);
         // console.log("node id append: ", this.checkedNodes);
-        
+
         // this.checkedNodes = Array.from(this.globalVariableService.getSelectedNodes()); //get the existing node id
         // this.checkedNodes.push(parseInt(nodeId));  // and append the selecting nodeid
         this.globalVariableService.setSelectedNodes(nodeId);
@@ -864,7 +864,7 @@ export class NgCytoComponent implements OnChanges {
         // console.log("22: ", target.classList.contains('searchConnectionIDClick'));
         // console.log("2 here1: ", target.id);
 
-        if (target.classList.contains('nodeIdClick')){
+        if (target.classList.contains('nodeIdClick')) {
             console.log("2 here22: ", target.id);
             this.showNodeInfo(target.id); //append the node and reload the graph
         }
@@ -898,7 +898,7 @@ export class NgCytoComponent implements OnChanges {
                     console.log("res: ", this.umlsDefintionData);
 
                     this.umlsDataLists2 = '';
-                    if (!this.error) { 
+                    if (!this.error) {
                         /////////////////////// Definitions ///////////////////
                         this.umlsDataLists2 += '<div class="accordion" id="accordionDifinition">';
                         this.umlsDataLists2 += '<div class="accordion-item">';
@@ -960,6 +960,7 @@ export class NgCytoComponent implements OnChanges {
                     console.log("res by code: ", this.umlsRelationsByCodeUrl);
 
                     //Here to get the relation by atom loop by rootSource Filters
+                    this.umlsDataListsRelation = '';
                     if (this.umlsRelationsByCodeUrl.length > 0) {
 
                         this.umlsDataListsRelation += '<div class="accordion" id="accordionRelation">';
@@ -970,7 +971,8 @@ export class NgCytoComponent implements OnChanges {
                         // this.umlsDataListsRelation += '<div class="container" style="overflow:auto;max-height:400px; border:1px solid;">';
 
                         let k = 0;
-                        this.umlsRelationsByCodeUrl.forEach((element: any, index:any) => {
+                        this.umlsRelationsByCodeUrl.forEach((element: any, index: any) => {
+                            console.log("new index: ", index);
                             console.log("atoms unique data: ", element);
 
                             let l = 0;
@@ -979,6 +981,10 @@ export class NgCytoComponent implements OnChanges {
                             this.nodeSelectsService.getUmlsDataRelationsByConceptIds({ 'codeUrl': element.code })
                                 .subscribe(
                                     result => {
+                                        let showVal = '';
+                                        if (index == 0) {
+                                            showVal = "show";
+                                        }
                                         let umlsDataByRelation: any = result;
                                         console.log("final relations data: ", umlsDataByRelation);
 
@@ -994,9 +1000,9 @@ export class NgCytoComponent implements OnChanges {
 
                                         this.umlsDataListsRelation += "<div class='accordion' id='accordionRelationChild'>";
                                         this.umlsDataListsRelation += "<div class='accordion-item'>";
-                                        this.umlsDataListsRelation += "<h2 class='accordion-header' id='accRelChildHead'><button class='accordion-button p-2' type='button' data-bs-toggle='collapse' data-bs-target='#collapseRelationChild" + index +"' aria-expanded='true' aria-controls='collapseRelationChild'>" + element.rootSource + " ( " + element.name + ")" + "</button></h2>";
-                                        this.umlsDataListsRelation += "<div id='collapseRelationChild"+index+"' class='accordion-collapse collapse show' aria-labelledby='accRelChildHead' data-bs-parent='#accordionRelationChild'><div class='accordion-body'>";
-                                        
+                                        this.umlsDataListsRelation += "<h2 class='accordion-header' id='accRelChildHead'><button class='accordion-button p-2' type='button' data-bs-toggle='collapse' data-bs-target='#collapseRelationChild" + index + "' aria-expanded='true' aria-controls='collapseRelationChild'>" + element.rootSource + " ( " + element.name + ")" + "</button></h2>";
+                                        this.umlsDataListsRelation += "<div id='collapseRelationChild" + index + "' class='accordion-collapse collapse " + showVal + "' aria-labelledby='accRelChildHead' data-bs-parent='#accordionRelationChild'><div class='accordion-body'>";
+
                                         for (let i = 0; i < this.umlsRelationData.length; i++) {
                                             this.umlsDataListsRelation += "<div>";
                                             this.umlsDataListsRelation += "<div style='list-style: none; font-size: 14px; color:#32404E;padding-bottom: 5px;padding-top:5px;border-bottom:1px solid #ddd'><strong class='badge' style='background-color:#DAAfff;margin-right:12px;'>" + splitByIdName[1] + "</strong><strong class='badge' style='background-color:#FF8787;margin-right:12px;'>" + this.umlsRelationData[i].relatedIdName + "</strong><strong class='badge' style='background-color:#6fb654;'>" + this.umlsRelationData[i].additionalRelationLabel + "</strong></div>";
