@@ -56,7 +56,7 @@ ng2-cytoscape {
     // bottom: 0;
 
     width: 800px;
-    min-width: 800px;
+    min-width: 1245px;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -68,7 +68,8 @@ ng2-cytoscape {
 .modal.right .modal-content {
     height: 100%;
     overflow-y: auto;
-    background-color: #fafbfc;
+    // background-color: #fafbfc;
+    background-color: #FCFCF2;
     color: lightgray;
 }
 

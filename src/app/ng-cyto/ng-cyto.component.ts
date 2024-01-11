@@ -22,6 +22,11 @@ cyqtip(cytoscape); // register extension
 //     svg(cytoscape); // register extension
 // });
 
+export enum KEY_CODE {
+    RIGHT_ARROW = 39,
+    LEFT_ARROW = 37
+}
+
 @Component({
     selector: 'ng2-cytoscape',
     template: '<div id="cy"></div>',
@@ -241,7 +246,7 @@ export class NgCytoComponent implements OnChanges {
 
                 //First reset the edge selection area
                 this.pubmedURLsDownloadLoader = '';
-                this.pubmedURLsDownloadLoader = "<div class='overlay' style='margin-left:180px;margin-top:40px;'><img style='position:absolute' src='../../assets/images/loader_big.gif' /></div>";
+                this.pubmedURLsDownloadLoader = "<div class='overlay' style='margin-left:350px;margin-top:40px;'><img style='position:absolute' src='../../assets/images/loader_big.gif' /></div>";
                 $("#pubmedURLsDownloadLoader").html(this.pubmedURLsDownloadLoader);
                 $("#pubmedURLsDownload").html('');
                 $("#pubmedURLs").html('');
@@ -286,7 +291,7 @@ export class NgCytoComponent implements OnChanges {
                                 this.pubmedEdgeDetails += '<div style="color: #4B5DA1;"><strong>Destination Name</strong></div>';
                                 this.pubmedEdgeDetails += '<div style="padding-bottom:10px; color: #4B5DA1;">' + edge.name + '</div>';
 
-                                this.pubmedEdgeDetails += "<div style='overflow:auto;max-height:225px;border:1px solid;padding:2px 4px;'>";
+                                this.pubmedEdgeDetails += "<div style='overflow:auto;max-height:525px;border:1px solid;padding:2px 4px;'>";
                                 this.edgeTypeNameData.forEach((PMID: any) => {
 
                                     // const myFormattedDate = this.pipe.transform(PMID.publication_date, 'short');
@@ -341,12 +346,12 @@ export class NgCytoComponent implements OnChanges {
                         // console.log("New data: ", this.conceptIds.conceptIds);
 
                         this.umlsDataLists = "";
-                        this.umlsDataLists += '<div class="container">';
-                        this.umlsDataLists += '<div class="row rowUmls">';
-                        this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner"><strong>ConceptId</strong></div>';
-                        this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner"><strong>Name</strong></div>';
-                        this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner-end"><strong>Symentic Type Name</strong></div>';
-                        this.umlsDataLists += '</div>';
+                        this.umlsDataLists += '<div class="container" style="overflow:auto;max-height:300px;">';
+                        // this.umlsDataLists += '<div class="row rowUmls">';
+                        // // this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner"><strong>Concept Id</strong></div>';
+                        // // this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner"><strong>Name</strong></div>';
+                        // // this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner-end"><strong>Semantic Type Name</strong></div>';
+                        // this.umlsDataLists += '</div>';
 
                         let j = 0;
                         this.conceptIds.conceptIds.forEach((element: any) => {
@@ -365,11 +370,11 @@ export class NgCytoComponent implements OnChanges {
                                             const symenticName = this.umlsData.result.semanticTypes[0].name;
                                             const atomURL = this.umlsData.result.atoms;
 
-                                            this.umlsDataLists += '<div class="row rowUmls">';
+                                            this.umlsDataLists += '<div class="row rowUmls" style="float:left;margin-left:18px;">';
+                                            this.umlsDataLists += '<div class="col-lg-12 col-sm-6 col-xs-6 col-xxs-12 text-dark inner"><button id="' + element.concept_id + ', ' + umlsName + '" class="conceptIDClick" value="' + element.concept_id + '" style="cursor:pointer;">' + element.concept_id + '</button></div>';
                                             // this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 inner"><a href="https://uts-ws.nlm.nih.gov/rest/content/2023AB/CUI/' + element.concept_id + '/definitions?apiKey=b238480d-ef87-4755-a67c-92734e4dcfe8" target="_blank">' + element.concept_id + '</a></div>';
-                                            this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner"><a id="' + element.concept_id + ', ' + umlsName + '" class="conceptIDClick" value="' + element.concept_id + '" style="cursor:pointer;">' + element.concept_id + '</a></div>';
-                                            this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner">' + umlsName + '</div>';
-                                            this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner-end">' + symenticName + '</div>';
+                                            // this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner">' + umlsName + '</div>';
+                                            // this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner-end">' + symenticName + '</div>';
                                             this.umlsDataLists += '</div>';
                                             j++;
                                         }
@@ -468,7 +473,7 @@ export class NgCytoComponent implements OnChanges {
 
             //First reset the edge selection area
             this.pubmedURLsDownloadLoader = '';
-            this.pubmedURLsDownloadLoader = "<div class='overlay' style='margin-left:180px;margin-top:40px;'><img style='position:absolute' src='../../assets/images/loader_big.gif' /></div>";
+            this.pubmedURLsDownloadLoader = "<div class='overlay' style='margin-left:350px;margin-top:40px;'><img style='position:absolute' src='../../assets/images/loader_big.gif' /></div>";
             $("#pubmedURLsDownloadLoader").html(this.pubmedURLsDownloadLoader);
             $("#loadingUmlsLoader").html('');
             $("#umlsDataLists").html('');
@@ -592,53 +597,54 @@ export class NgCytoComponent implements OnChanges {
         });
 
         ////////// OLD when click the nodes show in popup
-        cy.on('cxttap', 'node', (e: any) => {
-            var node = e.target;
+        // cy.on('cxttap', 'node', (e: any) => {
+        //     var node = e.target;
 
-            var neighborhood = node.neighborhood().add(node);
-            // console.log("neighbr1: ", node.neighborhood().nodes());
+        //     var neighborhood = node.neighborhood().add(node);
+        //     // console.log("neighbr1: ", node.neighborhood().nodes());
 
-            cy.elements().addClass('faded');
-            neighborhood.removeClass('faded');
-            localselect.emit(node.data('name'));
+        //     cy.elements().addClass('faded');
+        //     neighborhood.removeClass('faded');
+        //     localselect.emit(node.data('name'));
 
-            var TargetNode = node[0]._private.data;
-            console.log("act: ", node[0]._private.data);
-            var directlyConnectedNodes = node.neighborhood().nodes();
-            console.log("nodesHere: ", directlyConnectedNodes);
-            // $("#nodeDetails").html("");
-            this.nodeDetails = "<div class='overlay'><img style='position:absolute' src='../../assets/images/loader_big.gif' /></div>";
-            $("#nodeDetails").html(this.nodeDetails);
+        //     var TargetNode = node[0]._private.data;
+        //     console.log("act: ", node[0]._private.data);
+        //     var directlyConnectedNodes = node.neighborhood().nodes();
+        //     console.log("nodesHere: ", directlyConnectedNodes);
+        //     // $("#nodeDetails").html("");
+        //     this.nodeDetails = "<div class='overlay'><img style='position:absolute' src='../../assets/images/loader_big.gif' /></div>";
+        //     $("#nodeDetails").html(this.nodeDetails);
 
-            if (directlyConnectedNodes != undefined) {
-                var nodeDetails = "";
+        //     if (directlyConnectedNodes != undefined) {
+        //         var nodeDetails = "";
 
-                nodeDetails += "<div style='float:left;'>";
-                nodeDetails += '<div style="padding: 5px; color:#BF63A2"><strong>' + TargetNode.name + '</strong></div>';
-                nodeDetails += '<div style="padding: 5px;"><strong>Node Type: ' + TargetNode.node_type + '</strong></div>';
-                nodeDetails += '<div style="padding: 5px;"><strong>Connections: </strong></div>';
+        //         nodeDetails += "<div style='float:left;'>";
+        //         nodeDetails += '<div style="padding: 5px; color:#BF63A2"><strong>' + TargetNode.name + '</strong></div>';
+        //         nodeDetails += '<div style="padding: 5px;"><strong>Node Type: ' + TargetNode.node_type + '</strong></div>';
+        //         nodeDetails += '<div style="padding: 5px;"><strong>Connections: </strong></div>';
 
-                nodeDetails += '<input type="text" id="searchInput" autocomplete="off" onkeyup="searchConnections()" placeholder="&#xf002; Search for connections..">';
+        //         nodeDetails += '<input type="text" id="searchInput" autocomplete="off" class="SearchConnectionIDClick" placeholder="&#xf002; Search for connections..">';
+        //         // nodeDetails += '<input type="text" id="searchInput" autocomplete="off" class="SearchConnectionIDClick" onkeyup="searchConnections()" placeholder="&#xf002; Search for connections..">';
 
-                nodeDetails += "<ul style='padding: 2px 18px;'>";
-                directlyConnectedNodes.forEach((directlyConnectedNode: any) => {
-                    // window.gv = directlyConnectedNode;
-                    //console.log("inner: ", directlyConnectedNode);
-                    // console.log("inner: ", gv);
-                    // const el = document.getElementById("nodeClick");
-                    // el?.addEventListener("onclick", this.nodeClickEvent);
-                    nodeDetails += "<li style='list-style: initial; color:" + directlyConnectedNode._private.data.colorCode + "'>" + directlyConnectedNode._private.data.name + "</li>"; //22509 -HSP90 molecular
-                });
-                nodeDetails += "</ul>";
-                nodeDetails += "</div>";
+        //         nodeDetails += "<ul style='padding: 2px 18px;' id='myUL'>";
+        //         directlyConnectedNodes.forEach((directlyConnectedNode: any) => {
+        //             // window.gv = directlyConnectedNode;
+        //             console.log("inner: ", directlyConnectedNode);
+        //             // console.log("inner: ", gv);
+        //             // const el = document.getElementById("nodeClick");
+        //             // el?.addEventListener("onclick", this.nodeClickEvent);
+        //             nodeDetails += "<li style='list-style: initial; color:" + directlyConnectedNode._private.data.colorCode + "'><a id='" + directlyConnectedNode._private.data.id + "' class='nodeIdClick'>" + directlyConnectedNode._private.data.name + "</a></li>"; //22509 -HSP90 molecular
+        //         });
+        //         nodeDetails += "</ul>";
+        //         nodeDetails += "</div>";
 
-                $("#nodeDetails").html(nodeDetails);
-            } else {
-                $("#nodeDetails").html("");
-            }
-            ($('#myModalNode') as any).modal('show');
-            // this.showNodeInfo(node[0]._private.data.id); //append the node and reload the graph
-        });
+        //         $("#nodeDetails").html(nodeDetails);
+        //     } else {
+        //         $("#nodeDetails").html("");
+        //     }
+        //     ($('#myModalNode') as any).modal('show');
+        //     // this.showNodeInfo(node[0]._private.data.id); //append the node and reload the graph
+        // });
 
         // cy.on('cxttap', 'node', (e: any) => {
         //     var node = e.target;
@@ -762,10 +768,19 @@ export class NgCytoComponent implements OnChanges {
         // console.log("select2: ", this.checkedNodes);
         // this.onGraphSelection.emit();
 
-        this.checkedNodes = Array.from(this.globalVariableService.getSelectedNodes()); //get the existing node id
-        this.checkedNodes.push(parseInt(nodeId));  // and append the selecting nodeid
-        this.globalVariableService.setSelectedNodes(this.checkedNodes);
+        // this.checkedNodes = Array.from(this.globalVariableService.getSelectedNodes()); //get the existing node id
+        // this.checkedNodes.push(parseInt(nodeId));  // and append the selecting nodeid
+        // this.globalVariableService.setSelectedNodes(this.checkedNodes);
         // console.log("node id append: ", this.checkedNodes);
+        
+        // this.checkedNodes = Array.from(this.globalVariableService.getSelectedNodes()); //get the existing node id
+        // this.checkedNodes.push(parseInt(nodeId));  // and append the selecting nodeid
+        this.globalVariableService.setSelectedNodes(nodeId);
+        // console.log("node id append: ", this.checkedNodes);
+
+        this.filterParams = this.globalVariableService.getFilterParams();
+        console.log("node id append:: ", this.filterParams);
+
         this.onGraphSelection.emit();
 
         // this.node_name = "piyush";
@@ -779,26 +794,59 @@ export class NgCytoComponent implements OnChanges {
     // @HostListener('document:dblclick', ['$event.target'])
     // @HostListener('document:click', ['$event.target']) onClick(target: any) {
 
+    @HostListener('document:keyup', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+        // console.log("event1: ", event);
+        // console.log("event2: ", event.target);
+        const inputValue = (event.target as any).value;
+        const inputValue1 = (event.target as any).classList.value;
+
+        if (inputValue1 == "SearchConnectionIDClick") {
+            // Declare variables
+            var input: any, filter: any, ul: any, li: any, a: any, i: any, txtValue: any;
+            // input = document.getElementById('searchInput');
+            input = inputValue;
+            // filter = input.value.toUpperCase();
+            filter = input.toUpperCase();
+            console.log("filter: ", filter);
+
+            ul = document.getElementById("myUL");
+            console.log("UL: ", ul);
+            li = ul.getElementsByTagName('li');
+            console.log("LI: ", li.length);
+            // Loop through all list items, and hide those who don't match the search query
+            for (i = 0; i < li.length; i++) {
+                a = li[i].getElementsByTagName("a")[0];
+                txtValue = a.textContent || a.innerText;
+                console.log("txtValue: ", txtValue);
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }
+    }
+
     // searchConnections22 = () => {
 
-    // @HostListener('document:click', ['$event.target']) onDblClick(target: any) {
-            
-    //     // searchConnections = function () {
+    // searchConnections = function () {
     //     console.log("sdfsfs");
-    //     alert("sfsfsf");
     //     // Declare variables
     //     var input: any, filter: any, ul: any, li: any, a: any, i: any, txtValue: any;
     //     input = document.getElementById('searchInput');
-
+    //     // input = target.id;
     //     filter = input.value.toUpperCase();
+    //     console.log("filter: ", filter);
 
     //     ul = document.getElementById("myUL");
+    //     console.log("UL: ", ul);
     //     li = ul.getElementsByTagName('li');
-
+    //     console.log("LI: ", li.length);
     //     // Loop through all list items, and hide those who don't match the search query
     //     for (i = 0; i < li.length; i++) {
     //         a = li[i].getElementsByTagName("a")[0];
     //         txtValue = a.textContent || a.innerText;
+    //         console.log("txtValue: ", txtValue);
     //         if (txtValue.toUpperCase().indexOf(filter) > -1) {
     //             li[i].style.display = "";
     //         } else {
@@ -810,14 +858,23 @@ export class NgCytoComponent implements OnChanges {
     // @HostListener('document:dblclick', ['$event.target'])
     @HostListener('document:click', ['$event.target']) onClick(target: any) {
         // event.preventDefault();
-        // console.log("22: ", target.classList.contains('conceptIDClick'));
-        console.log("2 here: ", target);
-        // console.log("2 here by id: ", target.id);
-        const splitByIdName = target.id.split(", ");
-        // console.log("22 here by id: ", splitByIdName[0]);
-        // console.log("22 here by name: ", splitByIdName[1]);
+        console.log("22: ", target.classList.contains('conceptIDClick'));
+        console.log("22: ", target.classList.contains('nodeIdClick'));
+
+        // console.log("22: ", target.classList.contains('searchConnectionIDClick'));
+        // console.log("2 here1: ", target.id);
+
+        if (target.classList.contains('nodeIdClick')){
+            console.log("2 here22: ", target.id);
+            this.showNodeInfo(target.id); //append the node and reload the graph
+        }
 
         if (target.classList.contains('conceptIDClick')) {
+            console.log("2 here2: ", target.id);
+            const splitByIdName = target.id.split(", ");
+            // console.log("22 here by id: ", splitByIdName[0]);
+            // console.log("22 here by name: ", splitByIdName[1]);
+
             // $("#umlsDataLists2").html('');
             // jQuery('#articles_details').bootstrapTable({});
             this.error = "";
@@ -902,9 +959,9 @@ export class NgCytoComponent implements OnChanges {
                         this.umlsDataListsRelation = '<div class="row text-dark mt-3"><h5>Relations</h5></div>';
                         this.umlsDataListsRelation += '<div class="container" style="overflow:auto;max-height:400px; border:1px solid;">';
 
-                        let k=0;
+                        let k = 0;
                         this.umlsRelationsByCodeUrl.forEach((element: any) => {
-                            console.log("atoms unique data: ", element.code);
+                            console.log("atoms unique data: ", element);
 
                             let l = 0;
                             // this.loadingUmls = true;
@@ -919,23 +976,21 @@ export class NgCytoComponent implements OnChanges {
                                         console.log("res code final relations: ", this.umlsRelationData);
 
                                         ////////////////////// Relations //////////////////////
-                                        this.umlsDataListsRelation += '<div class="">';
-                                        this.umlsDataListsRelation += '<div class="row text-bg-primary p-3">' + element.name + '</div>';
                                         // this.umlsDataListsRelation += '<div class="row rowUmls">';
                                         // this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner"><strong>Source</strong></div>';
                                         // this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner"><strong>Destination</strong></div>';
                                         // this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner"><strong>Relation</strong></div>';
                                         // this.umlsDataListsRelation += '</div>';
 
-                                        for (let i = 0; i < this.umlsRelationData.length; i++) {
+                                        this.umlsDataListsRelation += '<div>';
+                                        this.umlsDataListsRelation += '<div class="row text-bg-primary">' + element.rootSource + " ( " + element.name + ")" + '</div>';
 
+                                        for (let i = 0; i < this.umlsRelationData.length; i++) {
                                             this.umlsDataListsRelation += "<div>";
-                                            this.umlsDataListsRelation += "<div style='list-style: none; font-size: 14px; color:#32404E'><strong>Source: </strong>" + splitByIdName[1] + "</a></div>";
-                                            this.umlsDataListsRelation += "<div style='font-size: 14px;color:#32404E'><strong>Destination: </strong>" + this.umlsRelationData[i].relatedIdName + "</div>";
-                                            this.umlsDataListsRelation += "<div style='font-size: 14px;color:#32404E'><strong>Relation: </strong>" + this.umlsRelationData[i].additionalRelationLabel + "</div>";
+                                            this.umlsDataListsRelation += "<div style='list-style: none; font-size: 14px; color:#32404E'><strong style='background-color:#DAAfff;margin-right:12px;'>" + splitByIdName[1] + "</strong><strong style='background-color:#FF8787;margin-right:12px;'>" + this.umlsRelationData[i].relatedIdName + "</strong><strong style='background-color:#A8E890;'>" + this.umlsRelationData[i].additionalRelationLabel + "</strong></div>";
                                             this.umlsDataListsRelation += "<hr style='color:#32404E'/>";
                                             this.umlsDataListsRelation += "</div>";
-                                            
+
                                             // this.umlsDataListsRelation += '<div class="row rowUmlsInner">';
                                             // this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner">' + splitByIdName[1] + '</div>';
                                             // this.umlsDataListsRelation += '<div class="col-lg-4 col-sm-4 col-xs-4 col-xxs-12 text-dark inner">' + this.umlsRelationData[i].relatedIdName + '</div>';
@@ -945,9 +1000,7 @@ export class NgCytoComponent implements OnChanges {
                                         }
                                         // console.log("First: ", this.umlsRelationData.length);
                                         // console.log("l size: ", l);
-
-                                        this.umlsDataListsRelation += "<div style='clear: both;'><hr/></div>";
-
+                                        // this.umlsDataListsRelation += "<div style='clear: both;'><hr/></div>";
                                         if (this.umlsRelationData.length == l) {
                                             this.umlsDataListsRelation += '</div>';
                                         }
@@ -967,7 +1020,7 @@ export class NgCytoComponent implements OnChanges {
 
                                         // console.log("new1: ", this.umlsRelationsByCodeUrl.length);
                                         // console.log("new2: ", k);
-                                        
+
                                         if (this.umlsRelationsByCodeUrl.length == k) {
                                             this.umlsDataListsRelation += '</div>';
                                         }
