@@ -66,14 +66,21 @@ export class HeaderComponent implements OnInit {
     // with the window.open() function
     const url = this.router.serializeUrl(
       this.router.createUrlTree([`/user-dashboard`])
-    );  
+    );
     window.open(url, '_blank');
   }
 
   openNewTabMyDownloadFiles() {
     const url = this.router.serializeUrl(
       this.router.createUrlTree([`/article-sentence-dashboard`])
-    );  
+    );
+    window.open(url, '_blank');
+  }
+
+  openPMIDSearch() {
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree([`/pmid-search`])
+    );
     window.open(url, '_blank');
   }
 }
