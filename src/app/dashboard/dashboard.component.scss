@@ -113,10 +113,11 @@ h2 {
                 background-color: var(--nav-inactive-tabs-bg);
                 color: #000;
                 font-size: 14px;
-
+                
                 &.active {
                     background-color: #B765A3;
                     color: #fff;
+                
                 }
             }
         }
@@ -126,3 +127,10 @@ h2 {
 .btn-custom-sm{
     padding:0px 10px;
 }
+
+// button{
+//     box-shadow: 0 0 5px cyan, 0 0 25px cyan
+// }
+// button:hover{
+//     box-shadow: 0 0 5px cyan, 0 0 25px cyan, 0 0 50px cyan, 0 0 100px cyan, 0 0 200px cyan;
+// }

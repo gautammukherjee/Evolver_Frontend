@@ -273,6 +273,10 @@ export class NodeSelectsService {
     );
   }
 
+  getPMIDSearchData(params: any) {
+    return this.http.post(this.API_URL + 'getPMIDSearchData', params, httpOptions)
+  }
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {

@@ -81,7 +81,7 @@ export class EventDescriptionComponent implements OnInit {
   notEmptyPost: boolean = true;
   notscrolly: boolean = true;
   currentPage: number = 1;
-  itemsPerPage: number = 1000;
+  itemsPerPage: number = 2000;
   public isloading: boolean = false;
   public loadingArticleSaved: boolean = false;
   loaderEvidence = false;
@@ -313,7 +313,7 @@ export class EventDescriptionComponent implements OnInit {
                 //temps["edgeTypes"] = "<button class='btn btn-sm btn-primary'>Edge Types</button> &nbsp;";
                 //temps["edgeType_articleType"] = event.edge_type_article_type_ne_ids;
                 temps["pmidCount"] = event.pmids;
-                temps["rank_score"] = (event.rank_score!=null? event.rank_score : 'N/A');
+                temps["rank_score"] = (event.rank_score != null ? event.rank_score : 'N/A');
                 temps["edgeTypesID"] = edgeTypeIdsPost;
                 temps["edgeNeId"] = edgeTypeNeIdsPost;
                 temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'><i class='bi bi-card-heading'></i>&nbsp;Articles</button> &nbsp;";
@@ -341,7 +341,7 @@ export class EventDescriptionComponent implements OnInit {
       showToggle: true,
       showColumns: true,
       search: true,
-      pageSize: 100,
+      pageSize: 500,
       // pageList: [10, 25, 50, 100, All],
       striped: true,
       //showFilter: true,
@@ -447,7 +447,7 @@ export class EventDescriptionComponent implements OnInit {
         showToggle: true,
         showColumns: true,
         search: true,
-        pageSize: 25,
+        pageSize: 500,
         striped: true,
         showFullscreen: true,
         stickyHeader: true,
@@ -463,8 +463,8 @@ export class EventDescriptionComponent implements OnInit {
 
           //console.log("Sentence class container:-" + $($element).parent().next().attr("class"));
           let tr_class = $($element).parent().next().attr("class");
-          if (((tr_class === undefined)  || (tr_class === "selected")) || (tr_class != "sentence_container")) {
-            
+          if (((tr_class === undefined) || (tr_class === "selected")) || (tr_class != "sentence_container")) {
+
             let sentences: any;
             let html: string;
             let html_str: string;
@@ -561,7 +561,7 @@ export class EventDescriptionComponent implements OnInit {
               });
             }
           } else {
-            
+
             //$($element).parent().next().hide(700);
             if ($($element).parent().next().is(":visible")) {//if sentence-table is visible
               //console.log("in if...");
@@ -731,19 +731,19 @@ export class EventDescriptionComponent implements OnInit {
                 const edgeTypeNeIdsPost = edgeTypeNeIds.replace(regex, '');
                 //console.log(edgeTypeNeIdsPost);
                 // temps["news_id"] = event.news_id;
-                temps["news_id"] = (index + 1);
+                temps["news_id"] = j;
                 temps["sourcenode_name"] = event.sourcenode_name;
                 temps["destinationnode_name"] = event.destinationnode_name;
                 temps["level"] = event.level;
                 //temps["edgeTypes"] = "<button class='btn btn-sm btn-primary'>Edge Types</button> &nbsp;";
                 //temps["edgeType_articleType"] = event.edge_type_article_type_ne_ids;
                 temps["pmidCount"] = event.pmids;
-                temps["rank_score"] = (event.rank_score!=null? event.rank_score : 'N/A');
+                temps["rank_score"] = (event.rank_score != null ? event.rank_score : 'N/A');
                 temps["edgeTypesID"] = edgeTypeIdsPost;
                 temps["edgeNeId"] = edgeTypeNeIdsPost;
                 temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'><i class='bi bi-card-heading'></i>&nbsp;Articles</button> &nbsp;";
                 this.masterListsDataDetailsExtra.push(temps);
-                // j++;
+                j++;
               });
               console.log("New data Scroll Added: ", this.masterListsDataDetailsExtra);
               this.masterListsDataDetailsCombined = this.masterListsDataDetailsCombined.concat(this.masterListsDataDetailsExtra);

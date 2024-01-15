@@ -1002,7 +1002,7 @@ export class NgCytoComponent implements OnChanges {
 
                                         for (let i = 0; i < this.umlsRelationData.length; i++) {
                                             this.umlsDataListsRelation += "<div>";
-                                            this.umlsDataListsRelation += "<div style='list-style: none; font-size: 14px; color:#32404E;padding-bottom: 5px;padding-top:5px;border-bottom:1px solid #ddd'><strong class='badge' style='background-color:#DAAfff;margin-right:12px;'>" + splitByIdName[1] + "</strong><strong class='badge' style='background-color:#FF8787;margin-right:12px;'>" + this.umlsRelationData[i].relatedIdName + "</strong><strong class='badge' style='background-color:#6fb654;'>" + this.umlsRelationData[i].additionalRelationLabel + "</strong></div>";
+                                            this.umlsDataListsRelation += "<div style='list-style: none; font-size: 14px; color:#32404E;padding-bottom: 5px;padding-top:5px;border-bottom:1px solid #ddd'><strong class='badge' style='background-color:#DAAfff;margin-right:12px;'>" + splitByIdName[1] + "</strong><strong class='badge' style='background-color:#6fb654;margin-right:12px;'>" + this.umlsRelationData[i].additionalRelationLabel + "</strong><strong class='badge' style='background-color:#FF8787;'>" + this.umlsRelationData[i].relatedIdName + "</strong></div>";
                                             this.umlsDataListsRelation += "</div>";
 
                                             // this.umlsDataListsRelation += '<div class="row rowUmlsInner">';

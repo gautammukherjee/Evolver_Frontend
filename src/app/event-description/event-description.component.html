@@ -1,11 +1,11 @@
 <!-- <div class="search-options event-desc-wrapper" infinite-scroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="50"
     (scrolled)="onDescScroll()" [scrollWindow]="false"> -->
-    <!-- <div class="save-query-top-btn" *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">
+<!-- <div class="save-query-top-btn" *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">
         <button class="btn btn-primary btn-sm" (click)="captureScenario(userScenario)">
             <i class="bi bi-sd-card" title="Save"></i>&nbsp;Save Query
         </button>
     </div> -->
-    <div class="search-options">
+<div class="search-options">
     <div class="card-panel-box">
         <div class="customTable" style="border: 0px solid #ddd; min-height:400px;">
             <div class="text-muted fs-2 text-center mb-4" *ngIf="(masterListsDataDetailsLengthLevelOne==0)">Please
@@ -29,6 +29,7 @@
                     <div class="overlay text-center" *ngIf="loadingDesc">
                         <img style="margin:155px 508px;" src="../../assets/images/loader_big.gif" />
                     </div>
+
                     <div *ngIf="noDataFoundDetails" class="bg-danger"
                         style="color:#fff; text-align: center; font-weight: bold;">
                         Please Choose Pair Type and Source for Second Degree
@@ -56,8 +57,8 @@
 
                         <table id="showEventDescription" data-toolbar="#toolbar" data-search="true"
                             data-show-export="true" data-export-options='{"fileName": "evolverAI"}'
-                            data-show-columns="true" data-page-size="100" data-filter-control="true"
-                            data-page-list="[10, 25, 50, 100, all]" class="table-striped">
+                            data-show-columns="true" data-page-size="1000" data-filter-control="true"
+                            data-page-list="[10, 25, 50, 100, 500, all]" class="table-striped">
                             <!--<table id="showEventDescription" data-toolbar="#toolbar" data-search="true" data-page-size="50" data-page-list="[10, 25, 50, 100, All]">-->
                             <thead>
                                 <tr>
@@ -75,8 +76,9 @@
                                     <th data-field="pmidCount" data-sortable="true" width="10%"
                                         data-filter-control="select" data-tableexport-value="PMID Count">
                                         PMID Count</th>
-                                    <th data-field="rank_score" data-sortable="true" width="10%" data-filter-control="select" data-tableexport-value="Rank">
-                                            Rank</th>
+                                    <th data-field="rank_score" data-sortable="true" width="10%"
+                                        data-filter-control="select" data-tableexport-value="Rank">
+                                        Rank</th>
                                     <th data-field="edgeNeCount" width="10%">
                                     </th>
 
@@ -145,7 +147,7 @@
                     <div class="fade show">
                         <table id="articles_details_pmid" data-toolbar="#toolbar" data-search="true"
                             data-show-export="true" data-show-columns="true" data-page-size="50"
-                            data-filter-control="true" data-page-list="[10, 25, 50, 100, All]">
+                            data-filter-control="true" data-page-list="[10, 25, 50, 100, 500, All]">
                             <thead>
                                 <tr>
                                     <th data-field="source" data-sortable="true" width="10%"
@@ -200,7 +202,7 @@
                         </div> -->
                             <table id="articles_details" data-toolbar="#toolbar" data-search="true"
                                 data-show-export="true" data-show-columns="true" data-page-size="50"
-                                data-filter-control="true" data-page-list="[10, 25, 50, 100, All]">
+                                data-filter-control="true" data-page-list="[10, 25, 50, 100, 500, All]">
                                 <thead>
                                     <tr>
                                         <th data-field="state" data-checkbox="true">ID</th>
@@ -309,8 +311,8 @@
             <br />
             <div class="row">
                 <div class="col-md-12 bottam-buffer home_tiles">
-                    <input type="checkbox" ngModel class="form-check-input" style="border: 1px solid #32404E" formControlName="result_set_checked"
-                        name="result_set_checked" value="1" autocomplete="off">
+                    <input type="checkbox" ngModel class="form-check-input" style="border: 1px solid #32404E"
+                        formControlName="result_set_checked" name="result_set_checked" value="1" autocomplete="off">
                     &nbsp;<label for="result_set_checked">Save with result-set</label>
                 </div>
             </div>
@@ -367,13 +369,15 @@
             <div class="row">
                 <div class="col-md-12 bottam-buffer home_tiles">
                     <label for="filter1_name">Select Existing Scenario</label>
-                    <span *ngIf="loadingArticleScenarioLists"><img src="./assets/images/spinner_small_loader.gif"></span>
-                    <select ngModel class="form-control" formControlName="scenario_exist_name" name="scenario_exist_name" (change)="onScenarioChoose('dropdown')">
+                    <span *ngIf="loadingArticleScenarioLists"><img
+                            src="./assets/images/spinner_small_loader.gif"></span>
+                    <select ngModel class="form-control" formControlName="scenario_exist_name"
+                        name="scenario_exist_name" (change)="onScenarioChoose('dropdown')">
                         <option value="" selected>--Select existing scenario--</option>
                         <option *ngFor="let scenarionName of scenarioExistName" [value]="scenarionName['id']">
                             {{scenarionName['name']}}</option>
                     </select>
-                </div>               
+                </div>
             </div>
             <br />
 
@@ -389,8 +393,8 @@
             <div class="row">
                 <div class="col-md-12 bottam-buffer home_tiles">
                     <div class="pull-left" style="margin-right: 10px; float:left;">
-                        <button (click)="articlesWithEvidenceData()" type="submit" class="btn btn-success btn-block mb-4"
-                            [disabled]="sentenceForm.invalid">Save</button>
+                        <button (click)="articlesWithEvidenceData()" type="submit"
+                            class="btn btn-success btn-block mb-4" [disabled]="sentenceForm.invalid">Save</button>
                     </div>
                     <div class="pull-left">
                         <button class="btn btn-danger" (click)="closePopup2()">Close</button>
