@@ -20,7 +20,7 @@ export class PmidSearchComponent implements OnInit {
   public loadingPMIDSearch: boolean = false;
   masterListsData: any = [];
   masterListsDataDetailsLoaded: any = [];
-  notEmptyPost: boolean = true;
+  notEmptyPost: boolean = false;
   notscrolly: boolean = true;
   public isloading: boolean = false;
 
@@ -88,6 +88,7 @@ export class PmidSearchComponent implements OnInit {
           this.masterListsDataDetailsLoaded.push(temps);
         });
         console.log("masterListsDataDetailsLoaded: ", this.masterListsDataDetailsLoaded);
+        console.log("masterListsDataDetailsLoadedlength: ", this.masterListsDataDetailsLoaded.length);
         this.bootstrapTableChart();
       },
       err => {

@@ -72,22 +72,23 @@
         <img src="../../assets/images/loader_big.gif" />
       </div>
 
-      <table id="showEventDescription" data-toolbar="#toolbar" data-search="true" data-show-export="true"
-        data-export-options='{"fileName": "evolverAI"}' data-show-columns="true" data-page-size="100"
-        data-filter-control="true" data-page-list="[10, 25, 50, 100, 500, all]" class="table-striped">
-        <thead>
-          <tr>
-            <th data-field="news_id" data-sortable="true" width="10%">#</th>
-            <th data-field="pair_type" data-sortable="true" width="10%" data-filter-control="input">Association</th>
-            <th data-field="source_node_name" data-sortable="true" width="10%" data-filter-control="input">Source</th>
-            <th data-field="destination_node_name" data-sortable="true" width="10%" data-filter-control="input">
-              Destination</th>
-            <th data-field="edge_type_name" data-sortable="true" width="10%" data-filter-control="select"
-              data-tableexport-value="Relationship">
-              Relationship</th>
-        </thead>
-      </table>
-
+      <div *ngIf="notEmptyPost">
+        <table id="showEventDescription" data-toolbar="#toolbar" data-search="true" data-show-export="true"
+          data-export-options='{"fileName": "evolverAI"}' data-show-columns="true" data-page-size="100"
+          data-filter-control="true" data-page-list="[10, 25, 50, 100, 500, all]" class="table-striped">
+          <thead>
+            <tr>
+              <th data-field="news_id" data-sortable="true" width="10%">#</th>
+              <th data-field="pair_type" data-sortable="true" width="10%" data-filter-control="input">Association</th>
+              <th data-field="source_node_name" data-sortable="true" width="10%" data-filter-control="input">Source</th>
+              <th data-field="destination_node_name" data-sortable="true" width="10%" data-filter-control="input">
+                Destination</th>
+              <th data-field="edge_type_name" data-sortable="true" width="10%" data-filter-control="select"
+                data-tableexport-value="Relationship">
+                Relationship</th>
+          </thead>
+        </table>
+      </div>
     </div>
 
     <!-- <div *ngIf="!notEmptyPost">
