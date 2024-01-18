@@ -876,7 +876,7 @@ export class NgCytoComponent implements OnChanges {
             // console.log("22 here by concept name: ", splitByIdName[1]);
             // console.log("destination name: ", splitByIdName[2]);
 
-            // $("#umlsDataLists2").html('');
+            $("#umlsDataLists2").html('');
             // jQuery('#articles_details').bootstrapTable({});
             this.error = "";
             this.loadingUmlsLoader2 = '';
@@ -950,6 +950,8 @@ export class NgCytoComponent implements OnChanges {
             //////////////End here for defintions
 
             ////////////////////// Start Relations //////////////////////
+            $("#umlsDataListsRelation").html("");
+
             this.nodeSelectsService.getUmlsDataAtomsByConceptIds({ 'conceptIds': splitByIdName[0] }).subscribe(
                 result => {
                     let umlsRootSourceByCodeUrl: any = result;
