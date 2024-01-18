@@ -24,7 +24,7 @@ export class PmidSearchComponent implements OnInit {
   notscrolly: boolean = true;
   public isloading: boolean = false;
 
-  pmidForm = new FormGroup({
+  pmidForm:FormGroup = new FormGroup({
     pair_type: new FormControl('', [Validators.required]),
     pmid_value: new FormControl('', [Validators.required]),
   })

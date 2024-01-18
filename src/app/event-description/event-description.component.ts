@@ -102,6 +102,7 @@ export class EventDescriptionComponent implements OnInit {
   articleSentencesScenario: object = {};
   moduleTypes: number = 0;
   scenariosPerUserCount: number = 0;
+  sentenceScenariosPerUserCount: number = 0;
   private userScenario: any;
   private userSentences: any;
   // private userScenarioWithResult: any;
@@ -804,12 +805,13 @@ export class EventDescriptionComponent implements OnInit {
           this.scenariosPerUserCount = this.result.totalScenariosPerUser[0].count;
           console.log("scenario per user: ", this.scenariosPerUserCount);
 
-          if (this.scenariosPerUserCount >= 20) {
-            alert("Each user atleast 10 queries are saved.....");
+          if (this.scenariosPerUserCount > 20) {
+            this.userScenario.close();
+            this.loadingScenario = false;
+            alert("Each user atleast 20 queries are saved.....");
             // return false;
           }
           else {
-
             let detailsLists: Array<object> = [];
             for (var i = 0; i < this.masterListsDataDetailsCombined.length; i++) {
               detailsLists.push({
@@ -817,7 +819,8 @@ export class EventDescriptionComponent implements OnInit {
                 'sourcenode': this.masterListsDataDetailsCombined[i].sourcenode_name,
                 'destinationnode': this.masterListsDataDetailsCombined[i].destinationnode_name,
                 'level': this.masterListsDataDetailsCombined[i].level,
-                'PMIDCount': this.masterListsDataDetailsCombined[i].pmidCount
+                'PMIDCount': this.masterListsDataDetailsCombined[i].pmidCount,
+                'RankScore': this.masterListsDataDetailsCombined[i].rank_score
               });
             }
 
@@ -988,45 +991,66 @@ export class EventDescriptionComponent implements OnInit {
     // let downloadData = JSON.stringify(jQuery("#articles_details").bootstrapTable('getSelections'));
     // console.log(downloadData);
 
-    let articleLists: Array<object> = [];
-    for (var i = 0; i < this.downloadData.length; i++) {
-      articleLists.push({
-        'source': this.downloadData[i].source,
-        'destination': this.downloadData[i].destination,
-        'pubmed_id': this.downloadData[i].pubmed_id,
-        'publication_date': this.downloadData[i].publication_date,
-        'title': this.downloadData[i].title,
-        'ne_id': this.downloadData[i].ne_id,
-        'edge_type': this.downloadData[i].edge_type
-      });
-    }
-    // console.log(articleLists);
-    this.articleSentencesScenario = {
-      user_id: this.currentUser,
-      filter1_name: this.sentenceForm.value.filter1_name,
-      scenario_exist_id: this.sentenceForm.value.scenario_exist_name,
-      user1_comments: this.sentenceForm.value.user1_comments,
-      result_data_set: articleLists
-    };
-    console.log("your article and sentences: ", this.articleSentencesScenario);
+    this.scenarioService.getPerUserSentenceScenarios(this.currentUser).subscribe(
+      data => {
+        this.result = data;
+        this.sentenceScenariosPerUserCount = this.result.totalSentenceScenariosPerUser[0].count;
+        console.log("sentences scenario per user: ", this.sentenceScenariosPerUserCount);
 
-    this.nodeSelectsService.downloadAtricleAndEvidencesData(this.articleSentencesScenario).subscribe(
-      (p: any) => {
-        let sentences = p;
-        console.log(JSON.stringify(sentences));
-        alert("Articles and sentences Saved Successfully...");
-        this.userSentences.close();
+        if (this.sentenceScenariosPerUserCount > 20) {
+          this.userSentences.close();
+          this.loadingArticleSaved = false;
+          alert("Each user atleast 20 queries are saved.....");
+          // return false;
+        }
+        else {
+          let articleLists: Array<object> = [];
+          for (var i = 0; i < this.downloadData.length; i++) {
+            articleLists.push({
+              'source': this.downloadData[i].source,
+              'destination': this.downloadData[i].destination,
+              'pubmed_id': this.downloadData[i].pubmed_id,
+              'publication_date': this.downloadData[i].publication_date,
+              'title': this.downloadData[i].title,
+              'ne_id': this.downloadData[i].ne_id,
+              'edge_type': this.downloadData[i].edge_type
+            });
+          }
+          // console.log(articleLists);
+          this.articleSentencesScenario = {
+            user_id: this.currentUser,
+            filter1_name: this.sentenceForm.value.filter1_name,
+            scenario_exist_id: this.sentenceForm.value.scenario_exist_name,
+            user1_comments: this.sentenceForm.value.user1_comments,
+            result_data_set: articleLists
+          };
+          console.log("your article and sentences: ", this.articleSentencesScenario);
+
+          this.nodeSelectsService.downloadAtricleAndEvidencesData(this.articleSentencesScenario).subscribe(
+            (p: any) => {
+              let sentences = p;
+              console.log(JSON.stringify(sentences));
+              alert("Articles and sentences Saved Successfully...");
+              this.userSentences.close();
+            },
+            err => {
+              alert("Articles and sentences not saved...");
+              this.loadingArticleSaved = false;
+              console.log(err);
+            },
+            () => {
+              this.loadingArticleSaved = false;
+            }
+          )
+        }
       },
       err => {
-        alert("Articles and sentences not saved...");
-        this.loadingArticleSaved = false;
+        // this.loading = false;
         console.log(err);
       },
       () => {
-        this.loadingArticleSaved = false;
-      }
-    )
-
+        // this.loading = false;
+      });
   }
 
   closePopup2() {
