@@ -347,7 +347,7 @@ export class NgCytoComponent implements OnChanges {
 
                         this.umlsDataLists = "";
                         this.umlsDataLists += '<div class="conceptIdsWrapper">';
-                        this.umlsDataLists += '<div class="me-2 text-black">Select Concept :</div>';
+                        this.umlsDataLists += '<div class="me-2 text-black"></div>';
                         // this.umlsDataLists += '<div class="row rowUmls">';
                         // // this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner"><strong>Concept Id</strong></div>';
                         // // this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner"><strong>Name</strong></div>';
@@ -355,7 +355,7 @@ export class NgCytoComponent implements OnChanges {
                         // this.umlsDataLists += '</div>';
 
                         let j = 0;
-                        
+
                         this.conceptIds.conceptIds.forEach((element: any) => {
                             console.log("unique data: ", element);
 
@@ -371,7 +371,7 @@ export class NgCytoComponent implements OnChanges {
                                             const umlsName = this.umlsData.result.name;
                                             const symenticName = this.umlsData.result.semanticTypes[0].name;
                                             const atomURL = this.umlsData.result.atoms;
-                                            this.umlsDataLists += '<div class="conceptIdBox"><button id="' + element.concept_id + ', ' + umlsName + '" class="conceptIDClick" value="' + element.concept_id + '">' + element.nuc_id + '</button></div>';
+                                            this.umlsDataLists += '<div class="conceptIdBox"><button id="' + element.concept_id + '; ' + umlsName + '; ' + edge.name + '" class="conceptIDClick" value="' + element.concept_id + '">' + element.nuc_id + '</button></div>';
                                             // this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 inner"><a href="https://uts-ws.nlm.nih.gov/rest/content/2023AB/CUI/' + element.concept_id + '/definitions?apiKey=b238480d-ef87-4755-a67c-92734e4dcfe8" target="_blank">' + element.concept_id + '</a></div>';
                                             // this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner">' + umlsName + '</div>';
                                             // this.umlsDataLists += '<div class="col-lg-4 col-sm-6 col-xs-6 col-xxs-12 text-dark inner-end">' + symenticName + '</div>';
@@ -858,24 +858,25 @@ export class NgCytoComponent implements OnChanges {
     // @HostListener('document:dblclick', ['$event.target'])
     @HostListener('document:click', ['$event.target']) onClick(target: any) {
         // event.preventDefault();
-        console.log("22: ", target.classList.contains('conceptIDClick'));
-        console.log("22: ", target.classList.contains('nodeIdClick'));
+        console.log("concept click: ", target.classList.contains('conceptIDClick'));
+        console.log("node click: ", target.classList.contains('nodeIdClick'));
 
         // console.log("22: ", target.classList.contains('searchConnectionIDClick'));
         // console.log("2 here1: ", target.id);
 
         if (target.classList.contains('nodeIdClick')) {
-            console.log("2 here22: ", target.id);
+            console.log("2 here node click: ", target.id);
             this.showNodeInfo(target.id); //append the node and reload the graph
         }
 
         if (target.classList.contains('conceptIDClick')) {
-            console.log("2 here2: ", target.id);
-            const splitByIdName = target.id.split(", ");
-            // console.log("22 here by id: ", splitByIdName[0]);
-            // console.log("22 here by name: ", splitByIdName[1]);
+            console.log("2 here concept id click: ", target.id);
+            const splitByIdName = target.id.split("; ");
+            // console.log("22 here by concept id: ", splitByIdName[0]);
+            // console.log("22 here by concept name: ", splitByIdName[1]);
+            // console.log("destination name: ", splitByIdName[2]);
 
-            // $("#umlsDataLists2").html('');
+            $("#umlsDataLists2").html('');
             // jQuery('#articles_details').bootstrapTable({});
             this.error = "";
             this.loadingUmlsLoader2 = '';
@@ -902,7 +903,7 @@ export class NgCytoComponent implements OnChanges {
                         /////////////////////// Definitions ///////////////////
                         this.umlsDataLists2 += '<div class="accordion" id="accordionDifinition">';
                         this.umlsDataLists2 += '<div class="accordion-item">';
-                        this.umlsDataLists2 += '<h2 class="accordion-header" id="headingOne"><button class="accordion-button p-2 collapsed no-shadow" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDefinition" aria-expanded="true" aria-controls="collapseDefinition">Definitions</button></h2>';
+                        this.umlsDataLists2 += '<h2 class="accordion-header" id="headingOne"><button class="accordion-button p-2 collapsed no-shadow" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDefinition" aria-expanded="true" aria-controls="collapseDefinition">Definitions of ' + splitByIdName[2] + '</button></h2>';
                         this.umlsDataLists2 += '<div id="collapseDefinition" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionDifinition"><div class="accordion-body" style="max-height:400px;overflow:auto">';
                         // this.umlsDataLists2 += '<div class="container" style="overflow: auto;max-height:400px;border: 1px solid;padding: 8px;">';
                         // this.umlsDataLists2 += '<div class="row rowUmls">';
@@ -949,6 +950,8 @@ export class NgCytoComponent implements OnChanges {
             //////////////End here for defintions
 
             ////////////////////// Start Relations //////////////////////
+            $("#umlsDataListsRelation").html("");
+
             this.nodeSelectsService.getUmlsDataAtomsByConceptIds({ 'conceptIds': splitByIdName[0] }).subscribe(
                 result => {
                     let umlsRootSourceByCodeUrl: any = result;
@@ -981,7 +984,7 @@ export class NgCytoComponent implements OnChanges {
                             this.nodeSelectsService.getUmlsDataRelationsByConceptIds({ 'codeUrl': element.code })
                                 .subscribe(
                                     result => {
-                                        
+
                                         let umlsDataByRelation: any = result;
                                         console.log("final relations data: ", umlsDataByRelation);
 
