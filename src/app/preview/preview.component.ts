@@ -79,7 +79,7 @@ export class PreviewComponent implements OnInit {
   notEmptyPost: boolean = true;
   notscrolly: boolean = true;
   currentPage: number = 1;
-  itemsPerPage: number = 1000;
+  itemsPerPage: number = 2000;
   public isloading: boolean = false;
   loaderEvidence = false;
   noDataFoundDetails: boolean = false;
@@ -350,6 +350,7 @@ export class PreviewComponent implements OnInit {
                 //temps["edgeTypes"] = "<button class='btn btn-sm btn-primary'>Edge Types</button> &nbsp;";
                 //temps["edgeType_articleType"] = event.edge_type_article_type_ne_ids;
                 temps["pmidCount"] = event.pmids;
+                temps["rank_score"] = (event.rank_score != null ? event.rank_score : 'N/A');
                 temps["edgeTypesID"] = edgeTypeIdsPost;
                 temps["edgeNeId"] = edgeTypeNeIdsPost;
                 temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'><i class='bi bi-card-heading'></i>&nbsp;Articles</button> &nbsp;";
@@ -386,7 +387,7 @@ export class PreviewComponent implements OnInit {
       showToggle: true,
       showColumns: true,
       search: true,
-      pageSize: 100,
+      pageSize: 500,
       // pageList: [10, 25, 50, 100, All],
       striped: true,
       //showFilter: true,
@@ -472,7 +473,7 @@ export class PreviewComponent implements OnInit {
         showToggle: true,
         showColumns: true,
         search: true,
-        pageSize: 25,
+        pageSize: 500,
         striped: true,
         showFullscreen: true,
         stickyHeader: true,
@@ -721,6 +722,7 @@ export class PreviewComponent implements OnInit {
                 //temps["edgeTypes"] = "<button class='btn btn-sm btn-primary'>Edge Types</button> &nbsp;";
                 //temps["edgeType_articleType"] = event.edge_type_article_type_ne_ids;
                 temps["pmidCount"] = event.pmids;
+                temps["rank_score"] = (event.rank_score != null ? event.rank_score : 'N/A');
                 temps["edgeTypesID"] = edgeTypeIdsPost;
                 temps["edgeNeId"] = edgeTypeNeIdsPost;
                 temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'><i class='bi bi-card-heading'></i>&nbsp;Articles</button> &nbsp;";

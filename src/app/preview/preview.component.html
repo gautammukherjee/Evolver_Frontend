@@ -225,7 +225,8 @@
 
 
     <!-- Result set Shown here -->
-    <div class="preview-data-table px-3" [ngClass]="node_selects3.length>0 ? 'level3' : !node_selects3.length && node_selects2.length>0 ? 'level2' : 'level1'">
+    <div class="preview-data-table px-3"
+        [ngClass]="node_selects3.length>0 ? 'level3' : !node_selects3.length && node_selects2.length>0 ? 'level2' : 'level1'">
         <div class="search-options">
             <div class="card-panel-box">
                 <div class="customTable" style="border: 0px solid #ddd; min-height:400px;">
@@ -244,9 +245,11 @@
                                 [ngClass]="node_selects3.length>0 ? 'level3' : !node_selects3.length && node_selects2.length>0 ? 'level2' : 'level1'">
 
                                 <h5>
-                                    <span *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">{{scenarioName | titlecase}}</span>
+                                    <span
+                                        *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">{{scenarioName
+                                        | titlecase}}</span>
                                     <div class="d-inline-block ms-3">
-                                        <span class="btn btn-primary bg-primary btn-sm text-white p-1 mr-2 level1-title"  
+                                        <span class="btn btn-primary bg-primary btn-sm text-white p-1 mr-2 level1-title"
                                             *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">First
                                             Degree Combinations
                                             <span
@@ -264,10 +267,13 @@
                                     </div>
                                 </h5>
 
-                                <div style="position: absolute;top: 48px;font-size: 12px;"><a [routerLink]="['/user-dashboard']">Go to Dashboard</a></div>
-                                <div style="position: absolute;top: 48px;left:102px;font-size: 12px;" *ngIf="uploadedFileUrl!='null'"><a href="{{uploadedFileUrl}}">Download Saved Result</a></div>
+                                <div style="position: absolute;top: 48px;font-size: 12px;"><a
+                                        [routerLink]="['/user-dashboard']">Go to Dashboard</a></div>
+                                <div style="position: absolute;top: 48px;left:102px;font-size: 12px;"
+                                    *ngIf="uploadedFileUrl!='null'"><a href="{{uploadedFileUrl}}">Download Saved
+                                        Result</a></div>
 
-                                <table id="showEventDescriptionP" data-toolbar="#toolbar" data-search="true" 
+                                <table id="showEventDescriptionP" data-toolbar="#toolbar" data-search="true"
                                     data-show-export="true" data-export-options='{"fileName": "evolverAI"}'
                                     data-show-columns="true" data-page-size="100" data-filter-control="true"
                                     data-page-list="[10, 25, 50, 100, all]" class="table-striped">
@@ -288,6 +294,9 @@
                                             <th data-field="pmidCount" data-sortable="true" width="10%"
                                                 data-filter-control="select" data-tableexport-value="PMID Count">
                                                 PMID Count</th>
+                                            <th data-field="rank_score" data-sortable="true" width="10%"
+                                                data-filter-control="select" data-tableexport-value="Rank">
+                                                Rank</th>
                                             <!-- <th data-filter-control="select" data-field="article_count" data-sortable="true" width="10%">
                                                     Articles Count</th> -->
                                             <th data-field="edgeNeCount" width="10%">
@@ -299,7 +308,7 @@
                                     </thead>
                                 </table>
                             </div>
-                        </div>                        
+                        </div>
                     </div>
 
                     <div *ngIf="!notEmptyPost">
@@ -408,7 +417,8 @@
         <div class="modal-footer">
             <a class="btn btn-primary" (click)="captureSentences(userSentences)">
                 <i class="bi bi-download" title="Download & Save"></i></a>
-            <a class="btn btn-primary " (click)="scrollTop()"><i class="bi bi-arrow-up-circle" title="Go to Top"></i></a>
+            <a class="btn btn-primary " (click)="scrollTop()"><i class="bi bi-arrow-up-circle"
+                    title="Go to Top"></i></a>
         </div>
     </div>
 
@@ -448,13 +458,15 @@
             <div class="row">
                 <div class="col-md-12 bottam-buffer home_tiles">
                     <label for="filter1_name">Select Existing Scenario</label>
-                    <span *ngIf="loadingArticleScenarioLists"><img src="./assets/images/spinner_small_loader.gif"></span>
-                    <select ngModel class="form-control" formControlName="scenario_exist_name" name="scenario_exist_name" (change)="onScenarioChoose('dropdown')">
+                    <span *ngIf="loadingArticleScenarioLists"><img
+                            src="./assets/images/spinner_small_loader.gif"></span>
+                    <select ngModel class="form-control" formControlName="scenario_exist_name"
+                        name="scenario_exist_name" (change)="onScenarioChoose('dropdown')">
                         <option value="" selected>--Select existing scenario--</option>
                         <option *ngFor="let scenarionName of scenarioExistName" [value]="scenarionName['id']">
                             {{scenarionName['name']}}</option>
                     </select>
-                </div>               
+                </div>
             </div>
             <br />
 
@@ -470,8 +482,8 @@
             <div class="row">
                 <div class="col-md-12 bottam-buffer home_tiles">
                     <div class="pull-left" style="margin-right: 10px; float:left;">
-                        <button (click)="articlesWithEvidenceData()" type="submit" class="btn btn-success btn-block mb-4"
-                            [disabled]="sentenceForm.invalid">Save</button>
+                        <button (click)="articlesWithEvidenceData()" type="submit"
+                            class="btn btn-success btn-block mb-4" [disabled]="sentenceForm.invalid">Save</button>
                     </div>
                     <div class="pull-left">
                         <button class="btn btn-danger" (click)="closePopup2()">Close</button>

@@ -44,6 +44,10 @@ export class ScenarioService {
     return this.http.post(API_URL + 'getPerUserScenarios', params, httpOptions);
   }
 
+  getPerUserSentenceScenarios(params: any) {
+    return this.http.post(API_URL + 'getPerUserSentenceScenarios', params, httpOptions);
+  }
+
   // getScenarioDetail(params) {
   //   return this.http.post(API_URL + 'getScenarioDetail', params, httpOptions);
   // }
