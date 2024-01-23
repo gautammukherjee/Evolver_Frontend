@@ -81,7 +81,7 @@ export class EventDescriptionComponent implements OnInit {
   notEmptyPost: boolean = true;
   notscrolly: boolean = true;
   currentPage: number = 1;
-  itemsPerPage: number = 5000;
+  itemsPerPage: number = 10000;
   public isloading: boolean = false;
   public loadingArticleSaved: boolean = false;
   loaderEvidence = false;
