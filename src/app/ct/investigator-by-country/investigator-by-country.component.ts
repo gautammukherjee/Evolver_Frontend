@@ -65,11 +65,11 @@ export class InvestigatorByCountryComponent implements OnInit {
     this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
     // console.log("params in CT in word map: ", this.filterParams);
 
-    if (this.filterParams.source_node != undefined) {
+    // if (this.filterParams.source_node != undefined) {
       // this.loadingCTCountry = true;
       this.chartWordMap();
-      // console.log("topology: ", topology);
-    }
+      console.log("topology: ", topology);
+    // }
   }
 
   chartWordMap() {
