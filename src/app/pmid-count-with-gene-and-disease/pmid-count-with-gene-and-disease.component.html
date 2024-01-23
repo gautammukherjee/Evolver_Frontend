@@ -14,7 +14,7 @@
             <div class="col">
                 <div class="text-muted fs-2 text-center mb-4" *ngIf="!pmidCountGraph.length">Please select entities to
                     generate Article Count Graph!</div>
-                <div class="overlay" *ngIf="graphLoader">
+                <div class="overlay-second" *ngIf="graphLoader">
                     <img src="../../assets/images/loader_big.gif" style="margin:155px 508px;" />
                 </div>
                 <highcharts-chart [Highcharts]="highcharts" [options]="chartOptions" style="width: 100%; display: block"
