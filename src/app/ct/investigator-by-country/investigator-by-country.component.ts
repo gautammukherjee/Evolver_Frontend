@@ -68,11 +68,12 @@ export class InvestigatorByCountryComponent implements OnInit {
     if (this.filterParams.source_node != undefined) {
       // this.loadingCTCountry = true;
       this.chartWordMap();
+      // console.log("topology: ", topology);
     }
   }
 
   chartWordMap() {
-    Highcharts.mapChart('container', <any> {
+    Highcharts.mapChart('container2', <any> {
     // this.chartOptions = {
       chart: {
         map: topology
@@ -155,7 +156,7 @@ export class InvestigatorByCountryComponent implements OnInit {
       series: [
         {
           type: "map",
-          name: "Random data",
+          name: "Investigator data",
           states: {
             hover: {
               color: "#BADA55"
@@ -179,7 +180,7 @@ export class InvestigatorByCountryComponent implements OnInit {
             ["pt", 9],
             ["sw", 10],
             ["sh", 11],
-            ["br", 12],
+            ["br", 122],
             ["ki", 13],
             ["ph", 14],
             ["mx", 15],
@@ -393,7 +394,7 @@ export class InvestigatorByCountryComponent implements OnInit {
     })
   }
 
-  // chartWordMap(){
+  // chartWordMap2(){
   //   (async () => {
 
   //     const topology = await fetch(
@@ -401,7 +402,7 @@ export class InvestigatorByCountryComponent implements OnInit {
   //     ).then(response => response.json());
   
   //     // Instantiate the map
-  //     Highcharts.mapChart('container', <any> {
+  //     Highcharts.mapChart('container2', <any> {
   //         chart: {
   //             map: topology,
   //             spacingBottom: 20
@@ -472,7 +473,6 @@ export class InvestigatorByCountryComponent implements OnInit {
   
   // })();
   // }
-
 
   reloadInvestigatorCountry() {
     // console.log("ct country data: ")
