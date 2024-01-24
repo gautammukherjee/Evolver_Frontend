@@ -108,8 +108,12 @@
                         (click)="resetAllFilters()"><i class="bi bi-arrow-clockwise" title="Reset"></i></button>&nbsp;
                         <button class="btn btn-sm btn-custom-sm"
                         style="background-color: #B765A3;color: #fff; border:1px solid #B765A3;"
-                        [disabled]="isSubmitChk" (click)="onSubmit()"><i class="bi bi-search" title="Search"
+                        (click)="onSubmit()"><i class="bi bi-search" title="Search"
                             alt="Search"></i> Submit</button>
+                        <!-- <button class="btn btn-sm btn-custom-sm"
+                        style="background-color: #B765A3;color: #fff; border:1px solid #B765A3;"
+                        [disabled]="isSubmitChk" (click)="onSubmit()"><i class="bi bi-search" title="Search"
+                            alt="Search"></i> Submit</button> -->
                 </div>
             </div>
         </div>
@@ -192,9 +196,10 @@
                                     [ProceedDoFilterApply]="doFilterApplyTab4"></app-pmid-count-with-gene-and-disease>
                             </div>
 
+
                             <div class="tab-pane p-2 fade" id="tab5" role="tabpanel" aria-labelledby="tab5-tab">
                                 <!-- <app-ct-index></app-ct-index> -->
-                                <!-- <app-ct_disease_assoc [ProceedDoFilterApply]="doFilterApplyTab5"></app-ct_disease_assoc> -->
+                                <app-ct_disease_assoc [ProceedDoFilterApply]="doFilterApplyTab5"></app-ct_disease_assoc>
                                 <!-- <app-ct_investigator_rels
                                     [ProceedDoFilterApply]="doFilterApplyTab5"></app-ct_investigator_rels>
                                 <app-nct-investigator-name

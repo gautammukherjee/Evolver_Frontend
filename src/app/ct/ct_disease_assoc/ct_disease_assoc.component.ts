@@ -36,6 +36,7 @@ export class CTDiseaseAssocComponent implements OnInit {
   public isloading: boolean = false;
   diseaseAssocData: any = [];
   diseaseAssocDetailsData: any = [];
+  notEmptyData: boolean = false;
 
   constructor(
     private globalVariableService: GlobalVariableService,
@@ -57,16 +58,19 @@ export class CTDiseaseAssocComponent implements OnInit {
   }
 
   getCTDataAssocWithDisease() {
+    
     this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
     console.log("params in CT1: ", this.filterParams);
 
     if (this.filterParams.source_node != undefined) {
+      
       // $('.overlay').fadeOut(500);
       this.loadingCTDisease = true;
 
       //console.log("filterparams: ", _filterParams);
-      this.nodeSelectsService.getCTDiseaseAssoc(this.filterParams).subscribe(
+      this.nodeSelectsService.getCTDiseaseAssoc_new(this.filterParams).subscribe(
         data => {
+          this.notEmptyData = true;
           //console.log("data: ", data);
           this.result = data;
           this.diseaseAssocData = this.result.CTDATA;

@@ -76,7 +76,7 @@ export class DashboardComponent implements OnInit {
     if (e && e.length > 0) {
       this.isAddLevelChk = false;
       this.isSubmitChk = false;
-    }else{
+    } else {
       this.isAddLevelChk = true;
       this.isSubmitChk = true;
     }
@@ -125,7 +125,7 @@ export class DashboardComponent implements OnInit {
     if (e && e.length > 0) {
       this.isAddLevelChk = false;
       this.isSubmitChk = false;
-    }else{
+    } else {
       this.isAddLevelChk = true;
       this.isSubmitChk = false;
     }
@@ -174,30 +174,38 @@ export class DashboardComponent implements OnInit {
 
     // this.doFilterApply.next(undefined);
     this.showLevels = true;
-    this.isAddLevelChk=true;
+    this.isAddLevelChk = true;
     this.isSubmitChk = false;
     this.currentLevel = this.currentLevel + 1;
     // console.log("level add: ", this.currentLevel);
   }
 
   onSubmit() {
+
     this.filterParams = this.globalVariableService.getFilterParams();
     console.log("filterparams main2: ", this.filterParams['tabType']);
+    // console.log("srcNode: ", this.filterParams['source_node']);
 
-    if (this.filterParams['tabType'] == "map" || this.filterParams['tabType'] == "default") {
-      this.doFilterApply.next(undefined);
-    }
-    else if (this.filterParams['tabType'] == "details") {
-      this.doFilterApplyTab2.next(undefined);
-    }
-    else if (this.filterParams['tabType'] == "relation") {
-      this.doFilterApplyTab3.next(undefined);
-    }
-    else if (this.filterParams['tabType'] == "articlecount") {
-      this.doFilterApplyTab4.next(undefined);
-    }
-    else if (this.filterParams['tabType'] == "ct") {
-      this.doFilterApplyTab5.next(undefined);
+    if (this.filterParams['source_node'] == undefined) {
+      alert("Please choose first pair type and source node!");
+      // return false;
+    } else {
+
+      if (this.filterParams['tabType'] == "map" || this.filterParams['tabType'] == "default") {
+        this.doFilterApply.next(undefined);
+      }
+      else if (this.filterParams['tabType'] == "details") {
+        this.doFilterApplyTab2.next(undefined);
+      }
+      else if (this.filterParams['tabType'] == "relation") {
+        this.doFilterApplyTab3.next(undefined);
+      }
+      else if (this.filterParams['tabType'] == "articlecount") {
+        this.doFilterApplyTab4.next(undefined);
+      }
+      else if (this.filterParams['tabType'] == "ct") {
+        this.doFilterApplyTab5.next(undefined);
+      }
     }
   }
 
@@ -215,17 +223,17 @@ export class DashboardComponent implements OnInit {
       this.doFilterApplyTab2.next(undefined);
     }
     else if (tab == 'relation') {
-      this.globalVariableService.setTabsSelected('relation');      
+      this.globalVariableService.setTabsSelected('relation');
       // console.log("filterparams relation Type: ", this.filterParams);
       this.doFilterApplyTab3.next(undefined);
     }
     else if (tab == 'articlecount') {
-      this.globalVariableService.setTabsSelected('articlecount');      
+      this.globalVariableService.setTabsSelected('articlecount');
       // console.log("filterparams article Type: ", this.filterParams);
       this.doFilterApplyTab4.next(undefined);
     }
     else if (tab == 'ct') {
-      this.globalVariableService.setTabsSelected('ct');      
+      this.globalVariableService.setTabsSelected('ct');
       // console.log("filterparams article Type: ", this.filterParams);
       this.doFilterApplyTab5.next(undefined);
     }
@@ -260,12 +268,12 @@ export class DashboardComponent implements OnInit {
     // this.proceed();
   }
 
-  deleteSecondDegree(clickOn:any){
+  deleteSecondDegree(clickOn: any) {
     // this.showLevels = !this.showLevels;
-    this.currentLevel = this.currentLevel - 1;    
+    this.currentLevel = this.currentLevel - 1;
     // console.log("level minus: ", this.currentLevel);
     this.isAddLevelChk = false;
-    
+
     // this.doUpdateFilterDataApply.next({ clickOn: clickOn });
     this.globalVariableService.resetfiltersForLevel2();
 
@@ -273,12 +281,12 @@ export class DashboardComponent implements OnInit {
     console.log("filterparams after level 2 delete: ", this.filterParams);
   }
 
-  deleteThirdDegree(clickOn:any){
+  deleteThirdDegree(clickOn: any) {
     // this.showLevels = !this.showLevels;
     this.currentLevel = this.currentLevel - 1;
     // console.log("level minus: ", this.currentLevel);
     this.isAddLevelChk = false;
-    
+
     // this.doUpdateFilterDataApply.next({ clickOn: clickOn });
     this.globalVariableService.resetfiltersForLevel3();
 

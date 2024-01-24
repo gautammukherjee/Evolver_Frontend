@@ -210,6 +210,33 @@ export class NodeSelectsService {
     return this.http.post(this.API_URL + 'getCTInvestigatorRelsByStats', params, httpOptions);
   }
 
+  //Clinical trials new services start
+  getCTDiseaseAssoc_new(params: any) {
+    return this.http.post(this.API_URL + 'getCTDiseaseAssoc_new', params, httpOptions);
+  }
+
+  getCTTrialInvestRels_new(params: any) {
+    return this.http.post(this.API_URL + 'getCTTrialInvestRels_new', params, httpOptions);
+  }
+
+  getCTInvestigatorName_new(params: any) {
+    return this.http.post(this.API_URL + 'getCTInvestigatorName_new', params, httpOptions);
+  }
+
+  getCTInvestigatorRole_new(params: any) {
+    return this.http.post(this.API_URL + 'getCTInvestigatorRole_new', params, httpOptions);
+  }
+
+  getCTInvestigatorCountry_new(params: any) {
+    return this.http.post(this.API_URL + 'getCTInvestigatorCountry_new', params, httpOptions);
+  }
+
+  getCTInvestigatorRelsByStats_new(params: any) {
+    return this.http.post(this.API_URL + 'getCTInvestigatorRelsByStats_new', params, httpOptions);
+  }
+  //END NEW CT data APIS
+
+
   downloadAtricleAndEvidencesData(params: any) {
     return this.http.post(this.API_URL + 'downloadAtricleAndEvidencesData', params, httpOptions)
   }
