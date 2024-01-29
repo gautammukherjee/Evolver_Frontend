@@ -46,7 +46,8 @@ export class CTDiseaseAssocComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getCTDataAssocWithDisease();
+    
+    // this.getCTDataAssocWithDisease();
 
     this.ProceedDoFilterApply?.subscribe(data => {  // Calling from details, details working as mediator
       console.log("eventData: ", data);      
@@ -58,11 +59,14 @@ export class CTDiseaseAssocComponent implements OnInit {
   }
 
   getCTDataAssocWithDisease() {
-    
+
     this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
     console.log("params in CT1: ", this.filterParams);
 
     if (this.filterParams.source_node != undefined) {
+
+      // this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
+      // console.log("params in CT1: ", this.filterParams);
       
       // $('.overlay').fadeOut(500);
       this.loadingCTDisease = true;
@@ -82,8 +86,6 @@ export class CTDiseaseAssocComponent implements OnInit {
             var temps: any = {};            
             // temps["associated_pmids"] = event.associated_pmids;
             // temps["associated_tit_ids"] = event.associated_tit_ids;
-
-
             temps["ct_id"] = event.ct_id;
             temps["disease_name"] = event.disease_name;            
             temps["has_expanded_access"] = event.has_expanded_access;
@@ -108,9 +110,9 @@ export class CTDiseaseAssocComponent implements OnInit {
             temps["trial_design"] = event.trial_design;
             temps["phase_id"] = event.phase_id;            
 
-            this.diseaseAssocDetailsData.push(temps);
+            this.diseaseAssocDetailsData.push(temps);            
           });
-          this.bootstrapTableChart();
+          this.bootstrapTableChart2();
         },
         err => {
           console.log(err.message);
@@ -123,16 +125,16 @@ export class CTDiseaseAssocComponent implements OnInit {
     }
   }
 
-  bootstrapTableChart() {
+  bootstrapTableChart2() {
     jQuery('#CT_data_new').bootstrapTable({
       bProcessing: true,
       bServerSide: true,
       pagination: true,
-      showRefresh: true,
+      // showRefresh: true,
       showToggle: true,
       showColumns: true,
       search: true,
-      pageSize: 25,
+      pageSize: 500,
       // pageList: [10, 25, 50, 100, All],
       striped: true,
       //showFilter: true,
@@ -142,7 +144,6 @@ export class CTDiseaseAssocComponent implements OnInit {
       showExport: true,
       data: this.diseaseAssocDetailsData,
       // onClickRow: (field: any, row: any, $element: any) => {
-
       // },
     });
     jQuery('#CT_data_new').bootstrapTable("load", this.diseaseAssocDetailsData);

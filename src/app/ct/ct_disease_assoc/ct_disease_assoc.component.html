@@ -17,9 +17,14 @@
                 <div class="card-body" *ngIf="notEmptyData">
                     <div class="table-responsive-lg custom-fixed-header-table"
                         style="max-height:400px; overflow-y: scroll;">
+
                         <table id="CT_data_new" data-toolbar="#toolbar" data-search="true" data-show-export="true"
+                            data-export-options='{"fileName": "evolverAICTData"}' data-show-columns="true"
+                            data-page-size="1000" data-filter-control="true"
+                            data-page-list="[10, 25, 50, 100, 500, all]" class="table-striped">
+                            <!-- <table id="CT_data_new" data-toolbar="#toolbar" data-search="true" data-show-export="true"
                             data-show-columns="true" data-page-size="50" data-filter-control="true"
-                            data-page-list="[10, 25, 50, 100, All]">
+                            data-page-list="[10, 25, 50, 100, All]"> -->
                             <thead>
                                 <tr>
                                     <th data-field="nct_id" data-sortable="true" data-filter-control="input"
