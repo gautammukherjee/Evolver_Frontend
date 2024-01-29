@@ -35,6 +35,7 @@ export class CTDiseaseAssocComponent implements OnInit {
   itemsPerPage: number = 2;
   public isloading: boolean = false;
   diseaseAssocData: any = [];
+  totlCountCTData: number=0;
   diseaseAssocDetailsData: any = [];
   notEmptyData: boolean = false;
 
@@ -78,7 +79,9 @@ export class CTDiseaseAssocComponent implements OnInit {
           //console.log("data: ", data);
           this.result = data;
           this.diseaseAssocData = this.result.CTDATA;
+          this.totlCountCTData = this.diseaseAssocData.length; 
           console.log("CT data LOAD: ", this.diseaseAssocData);
+          console.log("CT data count: ", this.totlCountCTData);
 
           // this.loadingCTDisease = false;
           this.diseaseAssocDetailsData = [];
@@ -112,7 +115,7 @@ export class CTDiseaseAssocComponent implements OnInit {
 
             this.diseaseAssocDetailsData.push(temps);            
           });
-          this.bootstrapTableChart2();
+          this.bootstrapTableChartCT();
         },
         err => {
           console.log(err.message);
@@ -125,7 +128,7 @@ export class CTDiseaseAssocComponent implements OnInit {
     }
   }
 
-  bootstrapTableChart2() {
+  bootstrapTableChartCT() {
     jQuery('#CT_data_new').bootstrapTable({
       bProcessing: true,
       bServerSide: true,
