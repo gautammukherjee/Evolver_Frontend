@@ -80,8 +80,10 @@ export class CTDiseaseAssocComponent implements OnInit {
           this.diseaseAssocDetailsData = [];
           this.diseaseAssocData.forEach((event: any) => {
             var temps: any = {};            
-            temps["associated_pmids"] = event.associated_pmids;
-            temps["associated_tit_ids"] = event.associated_tit_ids;
+            // temps["associated_pmids"] = event.associated_pmids;
+            // temps["associated_tit_ids"] = event.associated_tit_ids;
+
+
             temps["ct_id"] = event.ct_id;
             temps["disease_name"] = event.disease_name;            
             temps["has_expanded_access"] = event.has_expanded_access;
@@ -95,7 +97,7 @@ export class CTDiseaseAssocComponent implements OnInit {
             temps["minimum_age"] = event.minimum_age;
             temps["maximum_age"] = event.maximum_age;
             temps["healthy_volunteers"] = event.healthy_volunteers;
-            temps["verification_date"] = event.varification_date;                  
+            temps["verification_date"] = event.verification_date;
             temps["last_update_submitted"] = event.last_update_submitted;
             temps["last_update_submitted_qc"] = event.last_update_submitted_qc;
             temps["study_first_posted"] = event.study_first_posted;
@@ -106,7 +108,7 @@ export class CTDiseaseAssocComponent implements OnInit {
             temps["trial_design"] = event.trial_design;
             temps["phase_id"] = event.phase_id;            
 
-            this.diseaseAssocDetailsData.push(temps);            
+            this.diseaseAssocDetailsData.push(temps);
           });
           this.bootstrapTableChart();
         },
@@ -122,11 +124,11 @@ export class CTDiseaseAssocComponent implements OnInit {
   }
 
   bootstrapTableChart() {
-    jQuery('#CT_data').bootstrapTable({
+    jQuery('#CT_data_new').bootstrapTable({
       bProcessing: true,
       bServerSide: true,
       pagination: true,
-      // showRefresh: true,
+      showRefresh: true,
       showToggle: true,
       showColumns: true,
       search: true,
@@ -143,7 +145,7 @@ export class CTDiseaseAssocComponent implements OnInit {
 
       // },
     });
-    jQuery('#CT_data').bootstrapTable("load", this.diseaseAssocDetailsData);
+    jQuery('#CT_data_new').bootstrapTable("load", this.diseaseAssocDetailsData);
   }
 
 
