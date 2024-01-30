@@ -25,7 +25,7 @@ export class CTDiseaseAssocComponent implements OnInit {
 
   loader: boolean = false;
   CTData: any = [];
-  hideCardBody: boolean = true;
+  hideCardBody: boolean = false;
   loadingCTDisease = false;
   params: any;
   layout: any = {};
@@ -35,7 +35,7 @@ export class CTDiseaseAssocComponent implements OnInit {
   itemsPerPage: number = 2;
   public isloading: boolean = false;
   diseaseAssocData: any = [];
-  totlCountCTData: number=0;
+  totlCountCTData: number = 0;
   diseaseAssocDetailsData: any = [];
   notEmptyData: boolean = false;
 
@@ -47,87 +47,89 @@ export class CTDiseaseAssocComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    
+
     // this.getCTDataAssocWithDisease();
 
     this.ProceedDoFilterApply?.subscribe(data => {  // Calling from details, details working as mediator
-      console.log("eventData: ", data);      
+      console.log("eventDataCT: ", data);
       if (data === undefined) { // data=undefined true when apply filter from side panel
-        // this.hideCardBody = true;
-        this.getCTDataAssocWithDisease();
+
+        this.filterParams = this.globalVariableService.getFilterParams();
+        // console.log("params in CT1: ", this.filterParams);
+        if (this.filterParams.source_node != undefined) {
+          this.notEmptyData = true;
+          this.getCTDataAssocWithDisease();
+        }
       }
     });
   }
 
   getCTDataAssocWithDisease() {
 
-    this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
+    this.filterParams = this.globalVariableService.getFilterParams();
     console.log("params in CT1: ", this.filterParams);
 
-    if (this.filterParams.source_node != undefined) {
+    // this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
 
-      // this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
-      // console.log("params in CT1: ", this.filterParams);
-      
-      // $('.overlay').fadeOut(500);
-      this.loadingCTDisease = true;
+    // $('.overlay').fadeOut(500);
+    this.loadingCTDisease = true;
 
-      //console.log("filterparams: ", _filterParams);
-      this.nodeSelectsService.getCTDiseaseAssoc_new(this.filterParams).subscribe(
-        data => {
-          this.notEmptyData = true;
-          //console.log("data: ", data);
-          this.result = data;
-          this.diseaseAssocData = this.result.CTDATA;
-          console.log("CT data LOAD: ", this.diseaseAssocData);
+    //console.log("filterparams: ", _filterParams);
+    this.nodeSelectsService.getCTDiseaseAssoc_new(this.filterParams).subscribe(
+      data => {
+        //console.log("data: ", data);
+        this.result = data;
+        this.diseaseAssocData = this.result.CTDATA;
+        console.log("CT data LOAD: ", this.diseaseAssocData);
 
-          // this.loadingCTDisease = false;
-          this.diseaseAssocDetailsData = [];
-          this.diseaseAssocData.forEach((event: any) => {
-            var temps: any = {};            
-            // temps["associated_pmids"] = event.associated_pmids;
-            // temps["associated_tit_ids"] = event.associated_tit_ids;
-            temps["ct_id"] = event.ct_id;
-            temps["disease_name"] = event.disease_name;            
-            temps["has_expanded_access"] = event.has_expanded_access;
-            temps["nct_id"] = event.nct_id;
-            temps["node_id"] = event.node_id;
-            temps["org_study_id"] = event.org_study_id;
-            temps["secondary_study_id"] = event.secondary_study_id;
-            temps["title"] = event.title;
-            temps["overall_status"] = event.overall_status;
-            temps["phase_name"] = event.phase_name;
-            temps["minimum_age"] = event.minimum_age;
-            temps["maximum_age"] = event.maximum_age;
-            temps["healthy_volunteers"] = event.healthy_volunteers;
-            temps["verification_date"] = event.verification_date;
-            temps["last_update_submitted"] = event.last_update_submitted;
-            temps["last_update_submitted_qc"] = event.last_update_submitted_qc;
-            temps["study_first_posted"] = event.study_first_posted;
-            temps["study_first_submitted"] = event.study_first_submitted;
-            temps["study_first_submitted_qc"] = event.study_first_submitted_qc;
-            temps["study_type"] = event.study_type;
-            temps["gender"] = event.gender;
-            temps["trial_design"] = event.trial_design;
-            temps["phase_id"] = event.phase_id;            
+        // this.loadingCTDisease = false;
+        this.diseaseAssocDetailsData = [];
+        this.diseaseAssocData.forEach((event: any) => {
+          var temps: any = {};
+          // temps["associated_pmids"] = event.associated_pmids;
+          // temps["associated_tit_ids"] = event.associated_tit_ids;
+          temps["ct_id"] = event.ct_id;
+          temps["disease_name"] = event.disease_name;
+          temps["has_expanded_access"] = event.has_expanded_access;
+          temps["nct_id"] = event.nct_id;
+          temps["node_id"] = event.node_id;
+          temps["org_study_id"] = event.org_study_id;
+          temps["secondary_study_id"] = event.secondary_study_id;
+          temps["title"] = event.title;
+          temps["overall_status"] = event.overall_status;
+          temps["phase_name"] = event.phase_name;
+          temps["minimum_age"] = event.minimum_age;
+          temps["maximum_age"] = event.maximum_age;
+          temps["healthy_volunteers"] = event.healthy_volunteers;
+          temps["verification_date"] = event.verification_date;
+          temps["last_update_submitted"] = event.last_update_submitted;
+          temps["last_update_submitted_qc"] = event.last_update_submitted_qc;
+          temps["study_first_posted"] = event.study_first_posted;
+          temps["study_first_submitted"] = event.study_first_submitted;
+          temps["study_first_submitted_qc"] = event.study_first_submitted_qc;
+          temps["study_type"] = event.study_type;
+          temps["gender"] = event.gender;
+          temps["trial_design"] = event.trial_design;
+          temps["phase_id"] = event.phase_id;
 
-            this.diseaseAssocDetailsData.push(temps);            
-          });
-          this.bootstrapTableChartCT();
-        },
-        err => {
-          console.log(err.message);
-          this.loadingCTDisease = false;
-        },
-        () => {
-          this.loadingCTDisease = false;
-        }
-      );
-    }
+          this.diseaseAssocDetailsData.push(temps);
+        });
+
+      },
+      err => {
+        console.log(err.message);
+        this.loadingCTDisease = false;
+      },
+      () => {
+        this.bootstrapTableChartCT();
+        this.loadingCTDisease = false;
+      }
+    );
+
   }
 
   bootstrapTableChartCT() {
-    this.totlCountCTData = this.diseaseAssocData.length; 
+    this.totlCountCTData = this.diseaseAssocData.length;
     console.log("CT data count: ", this.totlCountCTData);
     jQuery('#CT_data_new').bootstrapTable({
       bProcessing: true,
@@ -149,7 +151,7 @@ export class CTDiseaseAssocComponent implements OnInit {
       // onClickRow: (field: any, row: any, $element: any) => {
       // },
     });
-    jQuery('#CT_data_new').bootstrapTable("load", this.diseaseAssocDetailsData);    
+    jQuery('#CT_data_new').bootstrapTable("load", this.diseaseAssocDetailsData);
   }
 
 
