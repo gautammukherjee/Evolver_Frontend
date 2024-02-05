@@ -24,6 +24,7 @@ export class GlobalVariableService {
   selectedDevelopment = [];
   selectedDrug = [];
   selectedNodeSelects = '';
+  selectedNodeSelectsCT = '';
   selectedNodeSelects2 = '';
   selectedNodeSelects3 = '';
   selectedSourceNodes = [];
@@ -36,6 +37,7 @@ export class GlobalVariableService {
   selectedAllDestinationNodes2: number = 0;
   selectedAllDestinationNodes3: number = 0;
   selectedThemes: boolean = true;
+  selectedNNRTID: boolean = true;
   selectedEdgeTypes = [];
   selectedEdgeTypes2 = [];
   selectedEdgeTypes3 = [];
@@ -84,6 +86,13 @@ export class GlobalVariableService {
   }
   getSelectedNodeSelects() {
     return this.selectedNodeSelects;
+  }
+
+  setSelectedNodeSelectsCT(nodes: any) {
+    this.selectedNodeSelectsCT = nodes;
+  }
+  getSelectedNodeSelectsCT() {
+    return this.selectedNodeSelectsCT;
   }
 
   setSelectedNodeSelects2(nodes2: any) {
@@ -154,6 +163,12 @@ export class GlobalVariableService {
   }
   getSelectedThemes() {
     return this.selectedThemes;
+  }
+  setSelectedNNRTID(val: boolean) {
+    this.selectedNNRTID = val;
+  }
+  getSelectedNNRTID() {
+    return this.selectedNNRTID;
   }
 
   setSelectedAllDestinationNodes2(val: number) {
@@ -248,6 +263,7 @@ export class GlobalVariableService {
       from_date: this.getFromDate(),
       to_date: this.getToDate(),
       nnrt_id: this.getSelectedNodeSelects() != undefined ? this.getSelectedNodeSelects() : '',
+      nnrt_id_ct: this.getSelectedNodeSelectsCT() != undefined ? this.getSelectedNodeSelectsCT() : '',
       nnrt_id2: this.getSelectedNodeSelects2() != undefined ? this.getSelectedNodeSelects2() : undefined,
       nnrt_id3: this.getSelectedNodeSelects3() != undefined ? this.getSelectedNodeSelects3() : undefined,
       source_node: this.getSelectedSourceNodes().length > 0 ? this.getSelectedSourceNodes() : undefined,
@@ -271,7 +287,8 @@ export class GlobalVariableService {
       destination_node_all_for_ct: this.getSelectedAllForCTDestinationNodes().length > 0 ? this.getSelectedAllForCTDestinationNodes() : undefined,
       destination_node_all_for_ct2: this.getSelectedAllForCTDestinationNodes2().length > 0 ? this.getSelectedAllForCTDestinationNodes2() : undefined,
       destination_node_all_for_ct3: this.getSelectedAllForCTDestinationNodes3().length > 0 ? this.getSelectedAllForCTDestinationNodes3() : undefined,
-      selected_themes: this.getSelectedThemes() == true ? this.getSelectedThemes() : false
+      selected_themes: this.getSelectedThemes() == true ? this.getSelectedThemes() : false,
+      nnrtIdChk: this.getSelectedNNRTID() == true ? this.getSelectedNNRTID() : false
     };
     return Object.assign(mergeParam, this.filterParams);
   }

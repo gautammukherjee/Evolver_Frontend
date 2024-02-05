@@ -74,6 +74,7 @@ import { PreviewComponent } from './preview/preview.component';
 import { UmlsActionSecondComponent } from './umls-action-second/umls-action-second.component';
 import { ClickDirectiveDirective } from './AppDirective/click-directive.directive';
 import { PmidSearchComponent } from './pmid-search/pmid-search.component';
+import { FilterNodeSelectCTComponent } from './filters/filter-node-select-ct/filter-node-select-ct.component';
 
 @NgModule({
   declarations: [
@@ -130,7 +131,8 @@ import { PmidSearchComponent } from './pmid-search/pmid-search.component';
     ArticleSentenceDashboardComponent,
     UmlsActionSecondComponent,
     ClickDirectiveDirective,
-    PmidSearchComponent
+    PmidSearchComponent,
+    FilterNodeSelectCTComponent,
   ],
   imports: [
     BrowserModule,
