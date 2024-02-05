@@ -113,7 +113,7 @@ export class InvestigatorByCountryComponent implements OnInit {
       colors: ['rgba(19,64,117,0.05)', 'rgba(19,64,117,0.2)', 'rgba(19,64,117,0.4)',
         'rgba(19,64,117,0.5)', 'rgba(19,64,117,0.6)', 'rgba(19,64,117,0.8)', 'rgba(19,64,117,1)'],
       title: {
-        text: 'Population density by country (/km²)',
+        text: 'Investigator Count',
         align: 'left'
       },
       mapNavigation: {
@@ -139,7 +139,7 @@ export class InvestigatorByCountryComponent implements OnInit {
       },
       legend: {
         title: {
-          text: 'Individuals per km²',
+          text: ' ',
           style: {
             color: ( // theme
               Highcharts.defaultOptions &&
