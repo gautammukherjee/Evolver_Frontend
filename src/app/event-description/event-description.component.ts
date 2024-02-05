@@ -142,7 +142,7 @@ export class EventDescriptionComponent implements OnInit {
   ngOnInit() {
 
     this.filterParams = this.globalVariableService.getFilterParams();
-    // console.log("new Filters1: ", this.filterParams);
+    console.log("new Filters For Details: ", this.filterParams);
     this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
     this.getEventDescription(this.filterParams);
     // this.getEventTotalDescription(this.filterParams);
@@ -157,7 +157,7 @@ export class EventDescriptionComponent implements OnInit {
         this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
         this.getEventDescription(this.filterParams);
         // this.getEventTotalDescription(this.filterParams);
-        //console.log("new Filters for articles: ", this.filterParams);
+        console.log("new Filters for description: ", this.filterParams);
       }
     });
   }

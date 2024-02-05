@@ -39,6 +39,11 @@ export class NodeSelectsService {
     return this.http.post(this.API_URL + 'getNodeSelects3', params, httpOptions);
   }
 
+  //for CT
+  getNodeSelectsCT(params: any) {
+    return this.http.post(this.API_URL + 'getNodeSelectsCT', params, httpOptions);
+  }
+
   // getCategories() {
   //   if (this._TAs) {
   //     return Observable.of(this._TAs);
