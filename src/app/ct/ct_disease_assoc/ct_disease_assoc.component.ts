@@ -145,7 +145,7 @@ export class CTDiseaseAssocComponent implements OnInit {
       //showFilter: true,
       // filter: true,
       showFullscreen: true,
-      stickyHeader: true,
+      // stickyHeader: true,
       showExport: true,
       data: this.diseaseAssocDetailsData,
       // onClickRow: (field: any, row: any, $element: any) => {
