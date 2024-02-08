@@ -71,7 +71,7 @@ export class FilterNodeSelectComponent implements OnInit {
         // console.log("pair type chk in node-select:: ", this.filterParams['nnrtIdChk']);
 
         // if (this.filterParams['nnrtIdChk'] == false) {
-          this.globalVariableService.setSelectedNodeSelects(2);
+          this.globalVariableService.setSelectedNodeSelects(5);
           this.selectedNodeSelects = Array.from(this.globalVariableService.getSelectedNodeSelects());
           console.log("sel_nodes in GO TO CT: ", this.selectedNodeSelects);
           this.filterParams = this.globalVariableService.getFilterParams();
