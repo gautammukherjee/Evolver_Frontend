@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, ChangeDetectorRef, Input, Pipe, PipeTransform, ElementRef, ViewChild, ViewChildren } from '@angular/core';
 import { NodeSelectsService } from '../../services/common/node-selects.service';
 import { GlobalVariableService } from '../../services/common/global-variable.service';
-import { Subject, mergeMap, switchMap } from 'rxjs';
+import { Subject } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -71,7 +71,7 @@ export class FilterNodeSelectComponent implements OnInit {
         // console.log("pair type chk in node-select:: ", this.filterParams['nnrtIdChk']);
 
         // if (this.filterParams['nnrtIdChk'] == false) {
-          this.globalVariableService.setSelectedNodeSelects(26);
+          this.globalVariableService.setSelectedNodeSelects(5);
           this.selectedNodeSelects = Array.from(this.globalVariableService.getSelectedNodeSelects());
           console.log("sel_nodes in GO TO CT: ", this.selectedNodeSelects);
           this.filterParams = this.globalVariableService.getFilterParams();
@@ -124,8 +124,7 @@ export class FilterNodeSelectComponent implements OnInit {
 
     //if (this.diseaseCheck !== undefined || this.diseaseCheckCT !== undefined) {
     this.nodeSelectsService.getNodeSelects(this.filterParams)
-    .pipe(
-    ).subscribe(
+      .subscribe(
         data => {
           this.result = data;
           // console.log("result: ", this.result);
