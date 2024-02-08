@@ -39,6 +39,7 @@ export class DistributionByRelationTypeComponent implements OnInit {
   resultNodesPopup: any = [];
   pmidData: any = [];
   loadingPMIDLists: boolean = false;
+  noSourceNodeSelected:number=0;
 
   constructor(
     private globalVariableService: GlobalVariableService,
@@ -69,6 +70,7 @@ export class DistributionByRelationTypeComponent implements OnInit {
       console.log("Rel Type IN: ", this.filterParams);
       this.loadingDesc = true;
       this.noDataFound = false;
+      this.noSourceNodeSelected=0;
       this.nodeSelectsService.getDistributionRelationType(_filterParams).subscribe(
         data => {
           this.resultNodes = data;
@@ -212,6 +214,9 @@ export class DistributionByRelationTypeComponent implements OnInit {
     } else if (_filterParams.source_node != undefined) {
       console.log("Please choose source node level 2");
       this.noDataFound = true;
+      this.noSourceNodeSelected=0;
+    }else{
+      this.noSourceNodeSelected=1;
     }
   }
 

@@ -17,8 +17,10 @@
                 <div class="overlay-second" *ngIf="graphLoader">
                     <img src="../../assets/images/loader_big.gif" style="margin:155px 508px;" />
                 </div>
-                <highcharts-chart [Highcharts]="highcharts" [options]="chartOptions" style="width: 100%; display: block"
-                    *ngIf="pmidCountGraph.length>0"></highcharts-chart>
+                <div *ngIf="noSourceNodeSelected==0">
+                    <highcharts-chart [Highcharts]="highcharts" [options]="chartOptions"
+                        style="width: 100%; display: block" *ngIf="pmidCountGraph.length>0"></highcharts-chart>
+                </div>
             </div>
         </div>
     </div>

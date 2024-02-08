@@ -37,7 +37,8 @@ export class CTDiseaseAssocComponent implements OnInit {
   diseaseAssocData: any = [];
   totlCountCTData: number = 0;
   diseaseAssocDetailsData: any = [];
-  notEmptyData: boolean = false;
+  notEmptyData: boolean = true;
+  noSourceNodeSelected: number = 0;
 
   constructor(
     private globalVariableService: GlobalVariableService,
@@ -49,7 +50,6 @@ export class CTDiseaseAssocComponent implements OnInit {
   ngOnInit() {
 
     // this.getCTDataAssocWithDisease();
-
     this.ProceedDoFilterApply?.subscribe(data => {  // Calling from details, details working as mediator
       console.log("eventDataCT: ", data);
       if (data === undefined) { // data=undefined true when apply filter from side panel
@@ -57,8 +57,11 @@ export class CTDiseaseAssocComponent implements OnInit {
         this.filterParams = this.globalVariableService.getFilterParams();
         // console.log("params in CT1: ", this.filterParams);
         if (this.filterParams.source_node != undefined) {
-          this.notEmptyData = true;
+          this.noSourceNodeSelected = 0;
           this.getCTDataAssocWithDisease();
+        } else {
+          this.noSourceNodeSelected = 1;
+          this.notEmptyData = true;
         }
       }
     });
@@ -121,6 +124,7 @@ export class CTDiseaseAssocComponent implements OnInit {
         this.loadingCTDisease = false;
       },
       () => {
+        this.notEmptyData = false;  
         this.bootstrapTableChartCT();
         this.loadingCTDisease = false;
       }

@@ -28,6 +28,10 @@ export class DashboardComponent implements OnInit {
   public selectedTabs: any = [];
 
   private filterParams: any;
+  headerPairType = false;
+  cameFromCT = false;
+  hideAddLevelONCT = 0;
+  public selectedPairTypeArray: any = [25, 26, 29, 36, 37, 38, 39, 40];
 
   constructor(private globalVariableService: GlobalVariableService, private router: Router) {
     // this.globalVaiableService.setSelectedTa([1]);
@@ -39,6 +43,9 @@ export class DashboardComponent implements OnInit {
 
     this.globalVariableService.resetfilters();// on hard reset when page gets loaded
     this.filterParams = this.globalVariableService.getFilterParams();
+
+    this.globalVariableService.setSelectedNNRTID(false);
+
     console.log("main page filters: ", this.filterParams);
     particlesJS.load('particles-js', '../assets/particles.json', null);
   }
@@ -214,28 +221,139 @@ export class DashboardComponent implements OnInit {
       this.globalVariableService.setTabsSelected('map');
       // this.selectedTabs = Array.from(this.globalVariableService.getTabsSelected());
       // this.filterParams = this.globalVariableService.getFilterParams();
-      // console.log("filterparams map Type: ", this.filterParams);
+      // console.log("filterparams map Type: ", this.filterParams['nnrt_id']);
+      // this.headerPairType = this.selectedPairTypeArray.includes(this.filterParams['nnrt_id'])
+      // console.log("Map:: ", this.headerPairType);
+
+      console.log("cameFromCT in MAP:: ", this.cameFromCT);
+      // if (this.headerPairType == true && this.cameFromCT == true) {
+      if (this.cameFromCT == true) {
+        // this.globalVariableService.setSelectedNNRTID(this.headerPairType);
+        // this.filterParams = this.globalVariableService.getFilterParams();
+
+        this.currentLevel = this.currentLevel - 1;
+        this.globalVariableService.resetfilters();
+        this.globalVariableService.resetfiltersForLevel2();
+        this.globalVariableService.resetfiltersForLevel3();
+
+        this.doUpdateFilterDataApply.next({ clickOn: 'revert_from_ct' });
+        this.cameFromCT = false;
+        this.hideAddLevelONCT = 0;
+      } else {
+        // this.doFilterApply.next(undefined);
+      }
       this.doFilterApply.next(undefined);
     }
     else if (tab == 'details') {
       this.globalVariableService.setTabsSelected('details');
-      // console.log("filterparams details Type: ", this.filterParams);
+      // this.filterParams = this.globalVariableService.getFilterParams();
+      // console.log("filterparams details Type: ", this.filterParams['nnrt_id']);
+      // this.headerPairType = this.selectedPairTypeArray.includes(this.filterParams['nnrt_id'])
+      // console.log("Details:: ", this.headerPairType);
+
+      console.log("cameFromCT in DETAILS:: ", this.cameFromCT);
+      // if (this.headerPairType == true && this.cameFromCT == true) {
+      if (this.cameFromCT == true) {
+        // this.globalVariableService.setSelectedNNRTID(this.headerPairType);
+        // this.filterParams = this.globalVariableService.getFilterParams();
+
+        this.currentLevel = this.currentLevel - 1;
+        this.globalVariableService.resetfilters();
+        this.globalVariableService.resetfiltersForLevel2();
+        this.globalVariableService.resetfiltersForLevel3();
+
+        this.doUpdateFilterDataApply.next({ clickOn: 'revert_from_ct' });
+        this.hideAddLevelONCT = 0;
+        this.cameFromCT = false;
+      } else {
+        // this.doFilterApplyTab2.next(undefined);
+      }
       this.doFilterApplyTab2.next(undefined);
     }
     else if (tab == 'relation') {
       this.globalVariableService.setTabsSelected('relation');
-      // console.log("filterparams relation Type: ", this.filterParams);
+      // this.filterParams = this.globalVariableService.getFilterParams();
+      // console.log("filterparams relation Type: ", this.filterParams['nnrt_id']);
+      // this.headerPairType = this.selectedPairTypeArray.includes(this.filterParams['nnrt_id'])
+      // console.log("Relations:: ", this.headerPairType);
+
+      console.log("cameFromCT in RELATION:: ", this.cameFromCT);
+      // if (this.headerPairType == true && this.cameFromCT == true) {
+      if (this.cameFromCT == true) {
+        // this.globalVariableService.setSelectedNNRTID(this.headerPairType);
+        // this.filterParams = this.globalVariableService.getFilterParams();
+
+        this.currentLevel = this.currentLevel - 1;
+        this.globalVariableService.resetfilters();
+        this.globalVariableService.resetfiltersForLevel2();
+        this.globalVariableService.resetfiltersForLevel3();
+
+        this.doUpdateFilterDataApply.next({ clickOn: 'revert_from_ct' });
+        this.hideAddLevelONCT = 0;
+        this.cameFromCT = false;
+      } else {
+        // this.doFilterApplyTab3.next(undefined);
+      }
       this.doFilterApplyTab3.next(undefined);
     }
     else if (tab == 'articlecount') {
       this.globalVariableService.setTabsSelected('articlecount');
-      // console.log("filterparams article Type: ", this.filterParams);
+      
+      // this.filterParams = this.globalVariableService.getFilterParams();
+      // console.log("filterparams article count: ", this.filterParams['nnrt_id']);
+      // this.headerPairType = this.selectedPairTypeArray.includes(this.filterParams['nnrt_id'])
+      // console.log("ArticleCount:: ", this.headerPairType);
+
+      console.log("cameFromCT in AC:: ", this.cameFromCT);
+
+      // if (this.headerPairType == true && this.cameFromCT == true) {
+      if (this.cameFromCT == true) {
+        // this.globalVariableService.setSelectedNNRTID(this.headerPairType);
+        // this.filterParams = this.globalVariableService.getFilterParams();
+
+        this.currentLevel = this.currentLevel - 1;
+        this.globalVariableService.resetfilters();
+        this.globalVariableService.resetfiltersForLevel2();
+        this.globalVariableService.resetfiltersForLevel3();
+
+        this.doUpdateFilterDataApply.next({ clickOn: 'revert_from_ct' });
+        this.hideAddLevelONCT = 0;
+        this.cameFromCT = false;
+      } else {
+        // this.doFilterApplyTab4.next(undefined);
+      }
       this.doFilterApplyTab4.next(undefined);
     }
     else if (tab == 'ct') {
       this.globalVariableService.setTabsSelected('ct');
       // console.log("filterparams article Type: ", this.filterParams);
+      
+      // this.filterParams = this.globalVariableService.getFilterParams();
+      // console.log("filterparams CT Type: ", this.filterParams['nnrt_id']);
+      // this.headerPairType = this.selectedPairTypeArray.includes(this.filterParams['nnrt_id'])
+      // console.log("CT:: ", this.headerPairType);
+
+      // if (this.headerPairType == false) {
+      // this.globalVariableService.setSelectedNNRTID(this.headerPairType);
+      // this.filterParams = this.globalVariableService.getFilterParams();
+
+      // this.filterParams = this.globalVariableService.getFilterParams();
+      // this.globalVariableService.setSelectedSourceNodes([]);
+      // Array.from(this.globalVariableService.getSelectedSourceNodes());
+      // console.log("pair type chk:: ", this.filterParams);
+
+
+      console.log("cameFromCT:: ", this.cameFromCT);
+      this.currentLevel = this.currentLevel - 1;
+      this.globalVariableService.resetfilters();
+      this.globalVariableService.resetfiltersForLevel2();
+      this.globalVariableService.resetfiltersForLevel3();
+
+      this.doUpdateFilterDataApply.next({ clickOn: 'go_to_ct' });
+      this.hideAddLevelONCT = 1; // hide the level filter on CT page
+      this.cameFromCT = true;
       this.doFilterApplyTab5.next(undefined);
+      // }
     }
 
     // console.log("yes2: ", this.currentLevel);

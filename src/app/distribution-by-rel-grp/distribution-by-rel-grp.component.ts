@@ -81,6 +81,7 @@ export class DistributionByRelGrpComponent implements OnInit {
   public beta: number = 1;
   public depth: number = 1;
   private modalRef: any;
+  noSourceNodeSelected: number=0;
 
   @ViewChild('showPopupEvent', { static: false }) show_popup_event: ElementRef | any;
 
@@ -115,7 +116,7 @@ export class DistributionByRelGrpComponent implements OnInit {
         console.log("new Filters by rel group charts: ", this.filterParams);
       }
     });
-    this.getDistributionByRelGroup(this.filterParams);
+    // this.getDistributionByRelGroup(this.filterParams);
   }
 
   getDistributionByRelGroup(_filterParams: any) {
@@ -129,6 +130,7 @@ export class DistributionByRelGrpComponent implements OnInit {
       console.log("new Filters by Rel group charts IN: ", this.filterParams);
       this.loadingChart = true;
       this.noDataFound = false;
+      this.noSourceNodeSelected=0;
 
       if (_filterParams.nnrt_id != undefined) {
 
@@ -316,6 +318,11 @@ export class DistributionByRelGrpComponent implements OnInit {
     } else if (_filterParams.source_node != undefined) {
       console.log("Please choose source node level 2");
       this.noDataFound = true;
+      this.noSourceNodeSelected=0
+    }
+    else{
+      this.loadingMessage=true;
+      this.noSourceNodeSelected=1;      
     }
   }
 

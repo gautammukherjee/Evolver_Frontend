@@ -82,6 +82,7 @@ export class NetworkMapComponent implements OnInit {
   thirdCompleteApiResult: any;
   public selectedRankNodes: any = [1];
   public isLightTheme = true;
+  noSourceNodeSelected: number=0;
 
   constructor(
     private globalVariableService: GlobalVariableService,
@@ -149,6 +150,7 @@ export class NetworkMapComponent implements OnInit {
       || (_filterParams.source_node3 != undefined && _filterParams.nnrt_id3 != undefined)) {
       this.loadingMap = true;
       this.noDataFoundMap = false;
+      this.noSourceNodeSelected=0;
 
       this.filterParams = this.globalVariableService.getFilterParams();
       console.log("master map for filter: ", this.filterParams);
@@ -383,9 +385,12 @@ export class NetworkMapComponent implements OnInit {
     } else if (_filterParams.source_node != undefined) {
       console.log("go else: ");
       this.noDataFoundMap = true;
+      this.noSourceNodeSelected = 0;
       this.nodeData = [];
       this.edgeData = [];
       this.drawChart();
+    }else{
+      this.noSourceNodeSelected = 1;
     }
   }
 

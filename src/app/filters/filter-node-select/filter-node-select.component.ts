@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, ChangeDetectorRef, Input, Pipe, PipeTransform, ElementRef, ViewChild, ViewChildren } from '@angular/core';
 import { NodeSelectsService } from '../../services/common/node-selects.service';
 import { GlobalVariableService } from '../../services/common/global-variable.service';
-import { Subject } from 'rxjs';
+import { Subject, mergeMap, switchMap } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -13,7 +13,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class FilterNodeSelectComponent implements OnInit {
 
   @Output() onSelectNode: EventEmitter<any> = new EventEmitter();
-  // @Input() UpdateFilterDataApply?: Subject<any>;
+  @Input() UpdateFilterDataApply?: Subject<any>;
   // public alphabeticallyGroupedGenes = [];
   public alphabeticallyGroupedNodeSelects: any = '';
   public selectedNodeSelects: any = [];
@@ -42,7 +42,6 @@ export class FilterNodeSelectComponent implements OnInit {
   nodeSelectsFilterText2: string = '';
   //diseaseCheck: any;
   //diseaseCheckCT: any;
-  hideCardBody: boolean = true;
   private filterParams: any;
 
   constructor(
@@ -63,36 +62,60 @@ export class FilterNodeSelectComponent implements OnInit {
     this.seeMoreFilterPlaceholder = "Search Nodes";
     //End here
 
-    // this.UpdateFilterDataApply.subscribe(event => {  // Calling from details, details working as mediator
-    //   console.log("eventGenes:: ", event);
-    //   if (event == undefined) {
-    //     this.hideCardBody = true;
-    //     // this.selectedGenes = []; // Reinitialized, because when data updated on click TA, it should empty locally
-    //     // this.getNodeSelects(event, 2);
-    //   } else if (event !== undefined && event.clickOn != 'geneFilter' && event.clickOn != 'geneFilter')
-    //     this.hideCardBody = true;
-    //   // this.getNodeSelects(event, 2);
-    // });
-    this.getNodeSelects(event, 1);
-    // this.hideCardBody = true;
+    this.UpdateFilterDataApply?.subscribe(event => {  // Calling from details, details working as mediator
+      console.log("event node params here:: ", event.clickOn);
+      if (event.clickOn == 'go_to_ct') {
+        // this.selectedGenes = []; // Reinitialized, because when data updated on click TA, it should empty locally
+
+        this.filterParams = this.globalVariableService.getFilterParams();
+        // console.log("pair type chk in node-select:: ", this.filterParams['nnrtIdChk']);
+
+        // if (this.filterParams['nnrtIdChk'] == false) {
+          this.globalVariableService.setSelectedNodeSelects(26);
+          this.selectedNodeSelects = Array.from(this.globalVariableService.getSelectedNodeSelects());
+          console.log("sel_nodes in GO TO CT: ", this.selectedNodeSelects);
+          this.filterParams = this.globalVariableService.getFilterParams();
+          console.log("new Filters node select inside: ", this.filterParams);
+
+          this.proceed();
+        // }
+        this.getNodeSelects(event, 2, 'ct_type');
+        
+      } else if (event.clickOn == 'revert_from_ct') {
+        // this.selectedGenes = []; // Reinitialized, because when data updated on click TA, it should empty locally
+        // if (this.filterParams['nnrtIdChk'] == false) {
+          this.globalVariableService.setSelectedNodeSelects(44);
+          this.selectedNodeSelects = Array.from(this.globalVariableService.getSelectedNodeSelects());
+          console.log("sel_nodes revert from CT: ", this.selectedNodeSelects);
+          this.filterParams = this.globalVariableService.getFilterParams();
+          console.log("new Filters node select From CT: ", this.filterParams);
+
+          this.proceed();
+        // }
+        this.getNodeSelects(event, 2, ''); // re-initialzed as usual
+      }
+    });
 
     this.globalVariableService.setSelectedNodeSelects(44);
     this.selectedNodeSelects = Array.from(this.globalVariableService.getSelectedNodeSelects());
-    console.log("sel_nodes: ", this.selectedNodeSelects);
-
+    console.log("sel_nodes by default: ", this.selectedNodeSelects);
     this.filterParams = this.globalVariableService.getFilterParams();
-    // console.log("new Filters node select: ", this.filterParams);
+    console.log("new Filters node select: ", this.filterParams);
 
+    this.getNodeSelects(event, 1, '');
   }
 
   ngOnDestroy() {
-    // this.UpdateFilterDataApply?.unsubscribe();
+    this.UpdateFilterDataApply?.unsubscribe();
   }
 
-  public getNodeSelects(event: any, type: any) {
+  public getNodeSelects(event: any, type: any, ct_type: any) {
     this.loading = true;
+
+    this.filterParams = this.globalVariableService.getFilterParams({ "ct_type": ct_type });
+    console.log("chk all params: ", this.filterParams);
     this.params = this.globalVariableService.getFilterParams();
-    this.filterParams = this.globalVariableService.getFilterParams();
+
     // this.diseaseCheck = this.params['di_ids']; // if disease_id is checked
     // this.diseaseCheckCT = this.params['ct_di_ids']; // if disease_id is checked
     // console.log("checked here Gene: ", this.diseaseCheck);
@@ -101,7 +124,8 @@ export class FilterNodeSelectComponent implements OnInit {
 
     //if (this.diseaseCheck !== undefined || this.diseaseCheckCT !== undefined) {
     this.nodeSelectsService.getNodeSelects(this.filterParams)
-      .subscribe(
+    .pipe(
+    ).subscribe(
         data => {
           this.result = data;
           // console.log("result: ", this.result);
@@ -143,8 +167,8 @@ export class FilterNodeSelectComponent implements OnInit {
     // }
   }
 
-  selectNode(nodeValue: any, pair_name:any) {
-    this.nodeSelectsFilterText1='';
+  selectNode(nodeValue: any, pair_name: any) {
+    this.nodeSelectsFilterText1 = '';
     // console.log("nodeValue: ", nodeValue);
 
     this.globalVariableService.resetfilters();

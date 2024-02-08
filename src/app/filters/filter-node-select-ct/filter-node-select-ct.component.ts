@@ -67,10 +67,6 @@ export class FilterNodeSelectCTComponent implements OnInit {
 
     // this.hideCardBody = true;
 
-    this.globalVariableService.setSelectedNodeSelects(26);
-    this.selectedNodeSelects = Array.from(this.globalVariableService.getSelectedNodeSelects());
-    console.log("sel_nodes_CT: ", this.selectedNodeSelects);
-
     this.selectedPairTypeArray = [26, 29, 36, 37, 38, 39, 40];
 
     this.filterParams = this.globalVariableService.getFilterParams();
@@ -89,6 +85,11 @@ export class FilterNodeSelectCTComponent implements OnInit {
 
     this.filterParams = this.globalVariableService.getFilterParams();
     // console.log("new Filters node select: ", this.filterParams);
+
+    this.globalVariableService.setSelectedNodeSelects(26);
+    this.selectedNodeSelects = Array.from(this.globalVariableService.getSelectedNodeSelects());
+    console.log("sel_nodes_CT: ", this.selectedNodeSelects);
+    
     this.getNodeSelects(event, 1);
 
   }

@@ -33,6 +33,7 @@ export class PmidCountWithGeneAndDiseaseComponent implements OnInit {
   masterListsDataDetailsLevelOne: any = [];
   masterListsDataDetailsLevelTwo: any = [];
   masterListsDataDetailsLevelThree: any = [];
+  noSourceNodeSelected:number=0;
 
   //dateCat: any;
   @Input() ProceedDoFilterApply?: Subject<any>;
@@ -68,6 +69,7 @@ export class PmidCountWithGeneAndDiseaseComponent implements OnInit {
 
       this.graphLoader = true;
       this.noDataFound = false;
+      this.noSourceNodeSelected=0;
 
       if (_filterParams.nnrt_id != undefined) {
 
@@ -150,6 +152,10 @@ export class PmidCountWithGeneAndDiseaseComponent implements OnInit {
     else if (_filterParams.source_node != undefined) {
       console.log("Please choose source node level 2");
       this.noDataFound = true;
+      this.noSourceNodeSelected=0;
+    }else{
+      this.noSourceNodeSelected=1;
+      this.pmidCountGraph=[];
     }
   }
 
