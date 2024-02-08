@@ -11,7 +11,7 @@
                         1<sup>st</sup> Degree
                     </div>
                     <div class="filter-single" style="width:15%;">
-                        <app-filter-node-select (onSelectNode)='nodeChanged($event)'></app-filter-node-select>
+                        <app-filter-node-select (onSelectNode)='nodeChanged($event)' [UpdateFilterDataApply]="doUpdateFilterDataApply"></app-filter-node-select>
                     </div>
                     <div class="filter-single" style="width:30%;">
                         <app-filter-source-node (onSelectSourceNode)='sourceNodeChanged("sourceNodeFilter" , $event)'
@@ -98,9 +98,9 @@
 
             <div class="add-level-handler pe-2 ml-4 mr-4" style="height: 24px;">
                 <div class="float-start">
-                    &nbsp;&nbsp;&nbsp;<button class="btn btn-light btn-sm btn-custom-sm" (click)="onAddLevel()"
+                    &nbsp;&nbsp;&nbsp;<button class="btn btn-light btn-sm btn-custom-sm" (click)="onAddLevel()" *ngIf="hideAddLevelONCT==0"
                         [disabled]="isAddLevelChk">+ Add Level</button>
-                    <button class="btn btn-light btn-sm ms-2 btn-custom-sm" *ngIf="currentLevel > 1"
+                    <button class="btn btn-light btn-sm ms-2 btn-custom-sm" *ngIf="(hideAddLevelONCT==0 && currentLevel > 1)"
                         (click)="onToggleLevel()">{{showLevels == false ? 'Show' : 'Hide'}} Level</button>
                 </div>
                 <div class="float-end">

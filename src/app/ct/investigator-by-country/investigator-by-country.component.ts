@@ -38,9 +38,8 @@ export class InvestigatorByCountryComponent implements OnInit {
   graphData: any = [];
   chartOptions: any;
 
-
   loader: boolean = false;
-
+  noSourceNodeSelected: number = 0;
 
   constructor(
     private globalVariableService: GlobalVariableService,
@@ -52,17 +51,17 @@ export class InvestigatorByCountryComponent implements OnInit {
 
 
   ngOnInit() {
-    // this.ProceedDoFilterApply?.subscribe(data => {  // Calling from details, details working as mediator
-    //   console.log("word map data: ", data);
-    //   if (data === undefined) { // data=undefined true when apply filter from side panel
-    //     // this.hideCardBody = true;
-    //     this.getCTDataInvestigatorCountry();
-    //   }
-    // });
+    this.ProceedDoFilterApply?.subscribe(data => {
+      console.log("word map data: ", data);
+      if (data === undefined) { // data=undefined true when apply filter from side panel
+        this.hideCardBody = true;
+        // this.getCTDataInvestigatorCountry();
+      }
+    });
   }
 
   getCTDataInvestigatorCountry() {
-    this.loadingCTCountry = true; 
+    this.loadingCTCountry = true;
     this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
     // console.log("params in CT in word map: ", this.filterParams);
 
@@ -73,9 +72,9 @@ export class InvestigatorByCountryComponent implements OnInit {
         this.ctInvestigatorCountryData = this.result.countryData;
         console.log("Country data LOAD: ", this.ctInvestigatorCountryData);
 
-        this.graphData = [];  
+        this.graphData = [];
         for (let i = 0; i < this.ctInvestigatorCountryData.length; i++) {
-          this.graphData.push([ this.ctInvestigatorCountryData[i]['country_code'].toLowerCase(), this.ctInvestigatorCountryData[i]['count_investigator_ids'] ]);
+          this.graphData.push([this.ctInvestigatorCountryData[i]['country_code'].toLowerCase(), this.ctInvestigatorCountryData[i]['count_investigator_ids']]);
         }
         // this.graphData.push(["bd", 5],["be", 6]);
         console.log("graphData: ", this.graphData);
@@ -110,8 +109,10 @@ export class InvestigatorByCountryComponent implements OnInit {
       chart: {
         map: topology
       },
-      colors: ['rgba(19,64,117,0.05)', 'rgba(19,64,117,0.2)', 'rgba(19,64,117,0.4)',
-        'rgba(19,64,117,0.5)', 'rgba(19,64,117,0.6)', 'rgba(19,64,117,0.8)', 'rgba(19,64,117,1)'],
+      // colors: ['rgba(195, 177, 225,0.05)', 'rgba(195, 177, 225,0.2)', 'rgba(195, 177, 225,0.4)',
+      //   'rgba(195, 177, 225,0.5)', 'rgba(195, 177, 225,0.6)', 'rgba(195, 177, 225,0.8)', 'rgba(195, 177, 225,1)'],
+      colors: ['rgb(245,209,13)', 'rgb(40,77,44)', 'rgb(126,48,9)',
+        'rgb(244,154,192)', 'rgb(207,156,38)', 'rgb(201,107,73)', 'rgb(118,59,87)'],
       title: {
         text: 'Investigator Count',
         align: 'left'
@@ -165,24 +166,31 @@ export class InvestigatorByCountryComponent implements OnInit {
       },
       colorAxis: {
         dataClasses: [{
-          to: 3
+          to: 3,
+          color: 'rgb(245,209,13)'
         }, {
           from: 3,
-          to: 10
+          to: 10,
+          color: 'rgb(40,77,44)'
         }, {
           from: 10,
-          to: 30
+          to: 30,
+          color: 'rgb(126,48,9)'
         }, {
           from: 30,
-          to: 100
+          to: 100,
+          color: 'rgb(244,154,192)'
         }, {
           from: 100,
-          to: 300
+          to: 300,
+          color: 'rgb(207,156,38)'
         }, {
           from: 300,
-          to: 1000
+          to: 1000,
+          color: 'rgb(201,107,73)'
         }, {
-          from: 1000
+          from: 1000,
+          color: 'rgb(118,59,87)'
         }]
       },
       series: [
@@ -297,8 +305,11 @@ export class InvestigatorByCountryComponent implements OnInit {
     this.hideCardBody = !this.hideCardBody;
     this.filterParams = this.globalVariableService.getFilterParams();
     if (this.filterParams.source_node != undefined) {
+      this.noSourceNodeSelected = 0;
       if (!this.hideCardBody)
         this.getCTDataInvestigatorCountry();
+    } else {
+      this.noSourceNodeSelected = 1;
     }
   }
 

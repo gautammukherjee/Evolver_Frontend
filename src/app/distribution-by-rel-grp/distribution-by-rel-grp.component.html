@@ -21,8 +21,9 @@
 
     <!-- <highcharts-chart [Highcharts]="highcharts" [options]="chartOptions" style="width: 100%; display: block">
     </highcharts-chart> -->
-
-    <div id="container"></div>
+    <div *ngIf="noSourceNodeSelected==0">
+        <div id="container"></div>
+    </div>
     <!--<div *ngIf="errorMsg!==''">
     {{errorMsg}}
 </div>-->

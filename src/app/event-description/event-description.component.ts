@@ -86,6 +86,7 @@ export class EventDescriptionComponent implements OnInit {
   public loadingArticleSaved: boolean = false;
   loaderEvidence = false;
   noDataFoundDetails: boolean = false;
+  noSourceNodeSelected: number=0;
 
   firstLoadApiResult: any;
   secondLoadApiResult: any;
@@ -194,6 +195,7 @@ export class EventDescriptionComponent implements OnInit {
       || (_filterParams.source_node3 != undefined && _filterParams.nnrt_id3 != undefined)) {
       this.loadingDesc = true;
       this.noDataFoundDetails = false;
+      this.noSourceNodeSelected=0;
 
       this.filterParams = this.globalVariableService.getFilterParams();
       console.log("new data complete: ", this.filterParams);
@@ -328,8 +330,11 @@ export class EventDescriptionComponent implements OnInit {
     }
     else if (_filterParams.source_node != undefined) {
       this.noDataFoundDetails = true;
+      this.noSourceNodeSelected=0
       // this.masterListsData = [];
       // this.loadingDesc = false;
+    }else{
+      this.noSourceNodeSelected = 1;
     }
   }
 
