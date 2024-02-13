@@ -89,10 +89,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "evolver-ai-new:build:production"
+              "buildTarget": "evolver-ai-new:build:production"
             },
             "development": {
-              "browserTarget": "evolver-ai-new:build:development"
+              "buildTarget": "evolver-ai-new:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -100,7 +100,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "evolver-ai-new:build"
+            "buildTarget": "evolver-ai-new:build"
           }
         },
         "test": {
