@@ -131,6 +131,16 @@ export class NodeSelectsService {
   getMasterListsRevampLevelThreeCount(params: any) {
     return this.http.post(this.API_URL + 'getMasterListsRevampLevelThreeCount', params, httpOptions);
   }
+  //For download in details page
+  getMasterListsRevampEdgeTypeLevelOne(params: any) {
+    return this.http.post(this.API_URL + 'getMasterListsRevampEdgeTypeLevelOne', params, httpOptions);
+  }
+  getMasterListsRevampEdgeTypeLevelTwo(params: any) {
+    return this.http.post(this.API_URL + 'getMasterListsRevampEdgeTypeLevelTwo', params, httpOptions);
+  }
+  getMasterListsRevampEdgeTypeLevelThree(params: any) {
+    return this.http.post(this.API_URL + 'getMasterListsRevampEdgeTypeLevelThree', params, httpOptions);
+  }
 
   //network map
   getMasterListsMapRevampLevelOne(params: any) {

@@ -116,6 +116,7 @@ export class UserDashboardComponent implements OnInit {
           temps["user_name"] = event.user_name;
           temps["visible"] = false;
           temps["uploaded_file_url"] = event.uploaded_file_url;
+          temps["uploaded_file_url2"] = event.uploaded_file_url2;
           this.scenarioListsTables.push(temps);
         });
         console.log("scenario lists: ", this.scenarioListsTables);
