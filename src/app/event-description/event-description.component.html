@@ -34,7 +34,8 @@
                         style="color:#fff; text-align: center; font-weight: bold;">
                         Please Choose Pair Type and Source for Second Degree
                     </div>
-                    <div class="table-responsive custom-fixed-header-table table table-striped table-hover" *ngIf="noSourceNodeSelected==0"
+                    <div class="table-responsive custom-fixed-header-table table table-striped table-hover"
+                        *ngIf="noSourceNodeSelected==0"
                         [ngClass]="toggleLevels == false ? 'hiddenLevels' : currentLevel == '1' ? 'level1' : currentLevel == 2 ? 'level2' : 'level3'">
 
                         <div>
@@ -107,8 +108,9 @@
 
             <div class="text-center" *ngIf="isloading"><img src="./assets/images/spinner_small_loader.gif"></div>
             <div class="text-center" style="margin-top: 40px;">
-                <button *ngIf="!isloading && notEmptyPost && firstCompleteApiResult!=undefined && noSourceNodeSelected==0" (click)="onDescScroll()"
-                    class="loadMoreBtn">Load More</button>
+                <button
+                    *ngIf="!isloading && notEmptyPost && firstCompleteApiResult!=undefined && noSourceNodeSelected==0"
+                    (click)="onDescScroll()" class="loadMoreBtn">Load More</button>
             </div>
 
             <!-- <a class="dropdown-item" class="text-dark m-1" style="cursor: pointer;"
@@ -116,8 +118,10 @@
                 <span class="fa fa-save"></span> Save Query
               </a> -->
 
-            <div class="text-center" *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0 && noSourceNodeSelected==0">
-                <button class="btn btn-primary btn-sm save-query" (click)="captureScenario(userScenario)"><i class="bi bi-sd-card" title="Save"></i>&nbsp;Save Query</button>
+            <div class="text-center"
+                *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0 && noSourceNodeSelected==0">
+                <button class="btn btn-primary btn-sm save-query" (click)="captureScenario(userScenario)"><i
+                        class="bi bi-sd-card" title="Save"></i>&nbsp;Save Query</button>
             </div>
             <!-- <div style="position: absolute;float: left;right: 341px;"
                 *ngIf="firstLoadApiResult!=undefined && masterListsDataDetailsLengthLevelOne > 0">
@@ -312,8 +316,20 @@
             <div class="row">
                 <div class="col-md-12 bottam-buffer home_tiles">
                     <input type="checkbox" ngModel class="form-check-input" style="border: 1px solid #32404E"
-                        formControlName="result_set_checked" name="result_set_checked" value="1" autocomplete="off">
+                        formControlName="result_set_checked" name="result_set_checked" value="1"
+                        (change)="saveWithResultsetData($event)" autocomplete="off">
                     &nbsp;<label for="result_set_checked">Save with result-set</label>
+                    <span *ngIf="returnResultsetData" style="position: absolute;top: 194px;">&nbsp;<img src="./assets/images/spinner_small_loader.gif"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 bottam-buffer home_tiles">
+                    <input type="checkbox" ngModel class="form-check-input" style="border: 1px solid #32404E"
+                        formControlName="result_set_with_edge_type" name="result_set_with_edge_type" value="1"
+                        (change)="saveWithEdgeTypeResultsetData($event)" autocomplete="off">
+                    &nbsp;<label for="result_set_with_edge_type">Save with Edge Type</label>
+                    <span *ngIf="returnWithEdgeTypeResultsetData" style="position: absolute;top: 214px;">&nbsp;<img
+                            src="./assets/images/spinner_small_loader.gif"></span>
                 </div>
             </div>
             <br />
@@ -321,7 +337,7 @@
                 <div class="col-md-12 bottam-buffer home_tiles">
                     <div class="pull-left" style="margin-right: 10px; float:left;">
                         <button (click)="saveCaptureScenario()" type="submit" class="btn btn-success btn-block mb-4"
-                            [disabled]="scenarioForm.invalid">Save</button>
+                            [disabled]="scenarioForm.invalid || returnResultsetData || returnWithEdgeTypeResultsetData">Save</button>
                     </div>
                     <div class="pull-left">
                         <button class="btn btn-danger" (click)="closePopup()">Close</button>

@@ -55,6 +55,7 @@ export class EventDescriptionComponent implements OnInit {
   helpContents: any;
   masterListsData: any = [];
   masterListsDataNew: any = [];
+  masterListsEdgeDataNew: any = [];
 
   masterListsDataDetailsLevelOne: any = [];
   masterListsDataDetailsLengthLevelOne: number = 0;
@@ -106,6 +107,13 @@ export class EventDescriptionComponent implements OnInit {
   masterListsDataDetailsNewLevelTwo: any = [];
   masterListsDataDetailsNewLevelThree: any = [];
 
+  firstLoadApiNewEdgeResult: any;
+  secondLoadApiNewEdgeResult: any;
+  thirdLoadApiNewEdgeResult: any;
+  masterListsDataDetailsNewEdgeLevelOne: any = [];
+  masterListsDataDetailsNewEdgeLevelTwo: any = [];
+  masterListsDataDetailsNewEdgeLevelThree: any = [];
+
   scenario: object = {};
   articleSentencesScenario: object = {};
   moduleTypes: number = 0;
@@ -117,6 +125,10 @@ export class EventDescriptionComponent implements OnInit {
   private currentUser: any = JSON.parse(sessionStorage.getItem('currentUser') || "null");
   loadingScenario: boolean = false;
   loadingArticleScenarioLists = false;
+  returnResultsetData: boolean = false;
+  returnWithEdgeTypeResultsetData: boolean = false;
+  detailsLists: Array<object> = [];
+  detailsEdgeLists: Array<object> = [];
   // firstAPI: any;
   // secondAPI: any;
 
@@ -129,7 +141,8 @@ export class EventDescriptionComponent implements OnInit {
   scenarioForm = new FormGroup({
     filter_name: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(15)]),
     user_comments: new FormControl(''),
-    result_set_checked: new FormControl(0)
+    result_set_checked: new FormControl(0),
+    result_set_with_edge_type: new FormControl(0)
   })
   sentenceForm = new FormGroup({
     filter1_name: new FormControl('', [Validators.required]),
@@ -368,6 +381,18 @@ export class EventDescriptionComponent implements OnInit {
         // visible: [6,'true'],
       },
       data: this.masterListsDataDetailsCombined,
+
+      // onCreatedControls () {  
+      //   $('select.bootstrap-table-filter-control-rank_score').each(function (index:any, i:any) {
+      //     i.setAttribute('multiple','multiple');
+      //     jQuery(this).find('option[value=""]').remove();
+      //     jQuery(this).multipleSelect('destroy').multipleSelect({
+      //       container: 'body',
+      //       filter: true,
+      //       selectAll:true  
+      //     })
+      //   })
+      // },
       onClickRow: (field: any, row: any, $element: any) => {
         //edge types
         // if ($element == "edgeNeCount") {
@@ -387,24 +412,24 @@ export class EventDescriptionComponent implements OnInit {
         }
       },
     });
-    
-    jQuery('#showEventDescription').bootstrapTable("load", this.masterListsDataDetailsCombined);
+
+    // jQuery('#showEventDescription').bootstrapTable("load", this.masterListsDataDetailsCombined);
 
     //start here for multi select but not working
-  //   jQuery('#showEventDescription').bootstrapTable({
-  //     data: this.masterListsDataDetailsCombined,
-  //     onCreatedControls () {  
-  //       jQuery('select.bootstrap-table-filter-control-rank_score').each(function (index:any, i:any) {
-  //         i.setAttribute('multiple','multiple');
-  //         jQuery(i).find('option[value=""]').remove();
-  //         jQuery(i).multipleSelect('destroy').multipleSelect({
-  //           container: 'body',
-  //           filter: true,
-  //           selectAll:true  
-  //         })
-  //       })
-  //     }
-  //  })
+    //   jQuery('#showEventDescription').bootstrapTable({
+    //     data: this.masterListsDataDetailsCombined,
+    //     onCreatedControls () {  
+    //       jQuery('select.bootstrap-table-filter-control-rank_score').each(function (index:any, i:any) {
+    //         i.setAttribute('multiple','multiple');
+    //         i.find('option[value=""]').remove();
+    //         i.multipleSelect('destroy').multipleSelect({
+    //           container: 'body',
+    //           filter: true,
+    //           selectAll:true  
+    //         })
+    //       })
+    //     }
+    //  })
 
   }
 
@@ -808,6 +833,195 @@ export class EventDescriptionComponent implements OnInit {
     this.userScenario = this.modalService.open(userScenario, { size: 'lg' });
   }
 
+  //Start to get the data when you click the save with result set
+  saveWithResultsetData(event: any) {
+    console.log("checked or not: ", event.target.checked);
+
+    if (event.target.checked == true) {
+      this.returnResultsetData = true;
+      //Start to get all the data from level1, level2 and level3 and combined into one place            
+      // this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
+      this.filterParams = this.globalVariableService.getFilterParams();
+      if (this.filterParams.nnrt_id != undefined) {
+        const firstNewAPIs = this.nodeSelectsService.getMasterListsRevampLevelOne(this.filterParams);
+        let combinedDataNewAPI;
+        if (this.filterParams.nnrt_id2 != undefined) {
+          const secondNewAPI = this.nodeSelectsService.getMasterListsRevampLevelTwo(this.filterParams);
+          if (this.filterParams.nnrt_id3 != undefined) {
+            const thirdNewAPI = this.nodeSelectsService.getMasterListsRevampLevelThree(this.filterParams);
+            combinedDataNewAPI = [firstNewAPIs, secondNewAPI, thirdNewAPI];
+          } else {
+            combinedDataNewAPI = [firstNewAPIs, secondNewAPI];
+          }
+        } else {
+          combinedDataNewAPI = [firstNewAPIs];
+        }
+
+        forkJoin(combinedDataNewAPI) //we can use more that 2 api request 
+          .subscribe(
+            result => {
+              console.log("you load here: ", result);
+              //this will return list of array of the result
+              this.firstLoadApiNewResult = result[0];
+              this.secondLoadApiNewResult = result[1];
+              this.thirdLoadApiNewResult = result[2];
+
+              ////////// **************** Merging the data into one place *******************////////////////              
+              this.masterListsDataDetailsNewLevelOne = this.firstLoadApiNewResult.masterListsData;
+              this.masterListsDataNew = this.masterListsDataDetailsNewLevelOne;
+              console.log("First Level New Data: ", this.masterListsDataDetailsNewLevelOne);
+              let firstLevelNewDataStore = this.masterListsDataDetailsNewLevelOne; //Store the First level data
+
+              //Second Degree Data
+              this.masterListsDataDetailsNewLevelTwo = [];
+              if (this.secondLoadApiNewResult != undefined) {
+                //Second level data and Combined data first and second level
+                this.masterListsDataDetailsNewLevelTwo = this.secondLoadApiNewResult.masterListsData;
+                console.log("Second Level New Data: ", this.masterListsDataDetailsNewLevelTwo);
+                this.masterListsDataNew = [].concat(firstLevelNewDataStore, this.masterListsDataDetailsNewLevelTwo);
+              }
+              let secondLevelNewDataStore = this.masterListsDataDetailsNewLevelTwo; //Store the First level data
+
+              //Third Degree Data
+              this.masterListsDataDetailsNewLevelThree = [];
+              if (this.thirdLoadApiNewResult != undefined) {
+                this.masterListsDataDetailsNewLevelThree = this.thirdLoadApiNewResult.masterListsData;
+                console.log("Third Level New Data: ", this.masterListsDataDetailsNewLevelThree);
+                this.masterListsDataNew = [].concat(firstLevelNewDataStore, secondLevelNewDataStore, this.masterListsDataDetailsNewLevelThree);
+              }
+              console.log("Combined Data New Load: ", this.masterListsDataNew);
+              //End here
+
+              this.detailsLists = [];
+              for (var i = 0; i < this.masterListsDataNew.length; i++) {
+                this.detailsLists.push({
+                  'news_id': i + 1,
+                  'sourcenode': this.masterListsDataNew[i].sourcenode_name,
+                  'destinationnode': this.masterListsDataNew[i].destinationnode_name,
+                  'level': this.masterListsDataNew[i].level,
+                  'PMIDCount': this.masterListsDataNew[i].pmids,
+                  'RankScore': this.masterListsDataNew[i].rank_score
+                });
+              }
+              console.log("detailsLists: ", this.detailsLists);
+            },
+            err => {
+              alert("Something's went wrong, Please try again!");
+              // this.loadingScenario = false;
+              this.returnResultsetData = false;
+              console.log(err);
+            },
+            () => {
+              // this.scenarioForm.value.filter_name = "";
+              // this.scenarioForm.value.user_comments = "";
+              // this.scenarioForm.value.result_set_checked = 0;
+              // this.loadingScenario = false;
+              this.returnResultsetData = false;
+            });
+      }//end if nnrt_id is not empty tag closed
+    } else {
+      this.detailsLists = [];
+    }
+
+  }
+  //End to get the data
+
+  //Start to get the data when you click the save with result set
+  saveWithEdgeTypeResultsetData(event: any) {
+    console.log("checked or not: ", event.target.checked);
+
+    if (event.target.checked == true) {
+      this.returnWithEdgeTypeResultsetData = true;
+      this.filterParams = this.globalVariableService.getFilterParams();
+      if (this.filterParams.nnrt_id != undefined) {
+        const firstNewEdgeTypeAPIs = this.nodeSelectsService.getMasterListsRevampEdgeTypeLevelOne(this.filterParams);
+        let combinedDataNewEdgeTypeAPI;
+        if (this.filterParams.nnrt_id2 != undefined) {
+          const secondNewEdgeTypeAPI = this.nodeSelectsService.getMasterListsRevampEdgeTypeLevelTwo(this.filterParams);
+          if (this.filterParams.nnrt_id3 != undefined) {
+            const thirdNewEdgeTypeAPI = this.nodeSelectsService.getMasterListsRevampEdgeTypeLevelThree(this.filterParams);
+            combinedDataNewEdgeTypeAPI = [firstNewEdgeTypeAPIs, secondNewEdgeTypeAPI, thirdNewEdgeTypeAPI];
+          } else {
+            combinedDataNewEdgeTypeAPI = [firstNewEdgeTypeAPIs, secondNewEdgeTypeAPI];
+          }
+        } else {
+          combinedDataNewEdgeTypeAPI = [firstNewEdgeTypeAPIs];
+        }
+
+        forkJoin(combinedDataNewEdgeTypeAPI) //we can use more that 2 api request 
+          .subscribe(
+            result => {
+              console.log("you load here edge type: ", result);
+              //this will return list of array of the result
+              this.firstLoadApiNewEdgeResult = result[0];
+              this.secondLoadApiNewEdgeResult = result[1];
+              this.thirdLoadApiNewEdgeResult = result[2];
+              // console.log("first Load Api Edge Result: ", this.firstLoadApiNewEdgeResult);
+              // console.log("second Load Api Edge Result: ", this.secondLoadApiNewEdgeResult);
+              // console.log("third Load Api Edge Result: ", this.thirdLoadApiNewEdgeResult);
+
+              ////////// **************** Merging the data into one place *******************////////////////              
+              this.masterListsDataDetailsNewEdgeLevelOne = this.firstLoadApiNewEdgeResult.masterListsDataEdges;
+              this.masterListsEdgeDataNew = this.masterListsDataDetailsNewEdgeLevelOne;
+              console.log("First Level New Edge Data: ", this.masterListsDataDetailsNewEdgeLevelOne);
+              let firstLevelNewDataStore = this.masterListsDataDetailsNewEdgeLevelOne; //Store the First level data
+
+              //Second Degree Data
+              this.masterListsDataDetailsNewEdgeLevelTwo = [];
+              if (this.secondLoadApiNewEdgeResult != undefined) {
+                //Second level data and Combined data first and second level
+                this.masterListsDataDetailsNewEdgeLevelTwo = this.secondLoadApiNewEdgeResult.masterListsDataEdges;
+                console.log("Second Level New Edge Data: ", this.masterListsDataDetailsNewEdgeLevelTwo);
+                this.masterListsEdgeDataNew = [].concat(firstLevelNewDataStore, this.masterListsDataDetailsNewEdgeLevelTwo);
+              }
+              let secondLevelNewDataStore = this.masterListsDataDetailsNewEdgeLevelTwo; //Store the First level data
+
+              //Third Degree Data
+              this.masterListsDataDetailsNewEdgeLevelThree = [];
+              if (this.thirdLoadApiNewEdgeResult != undefined) {
+                this.masterListsDataDetailsNewEdgeLevelThree = this.thirdLoadApiNewEdgeResult.masterListsDataEdges;
+                console.log("Third Level New Edge Data: ", this.masterListsDataDetailsNewEdgeLevelThree);
+                this.masterListsEdgeDataNew = [].concat(firstLevelNewDataStore, secondLevelNewDataStore, this.masterListsDataDetailsNewEdgeLevelThree);
+              }
+              console.log("Combined Data New Edge Load: ", this.masterListsEdgeDataNew);
+              //End here
+
+              this.detailsEdgeLists = [];
+              for (var i = 0; i < this.masterListsEdgeDataNew.length; i++) {
+                this.detailsEdgeLists.push({
+                  'news_id': i + 1,
+                  'sourcenode': this.masterListsEdgeDataNew[i].sourcenode_name,
+                  'destinationnode': this.masterListsEdgeDataNew[i].destinationnode_name,
+                  'level': this.masterListsEdgeDataNew[i].level,
+                  'edgeTypeName': this.masterListsEdgeDataNew[i].edge_type_name,
+                  'neId': this.masterListsEdgeDataNew[i].ne_id,
+                  'PMIDCount': this.masterListsEdgeDataNew[i].pmids,
+                  'RankScore': this.masterListsEdgeDataNew[i].rank_score
+                });
+              }
+              console.log("detailsEdgeLists: ", this.detailsEdgeLists);
+            },
+            err => {
+              alert("Something's went wrong, Please try again!");
+              // this.loadingScenario = false;
+              this.returnWithEdgeTypeResultsetData = false;
+              console.log(err);
+            },
+            () => {
+              // this.scenarioForm.value.filter_name = "";
+              // this.scenarioForm.value.user_comments = "";
+              // this.scenarioForm.value.result_set_checked = 0;
+              // this.loadingScenario = false;
+              this.returnWithEdgeTypeResultsetData = false;
+            });
+      }//end if nnrt_id is not empty tag closed
+    } else {
+      this.detailsEdgeLists = [];
+    }
+
+  }
+  //End to get the data
+
   ///////// ************* SAVE the scenario *******************/////////////////////
   saveCaptureScenario() {
 
@@ -841,168 +1055,80 @@ export class EventDescriptionComponent implements OnInit {
             // return false;
           }
           else {
-            //Start to get all the data from level1, level2 and level3 and combined into one place            
-            // this.filterParams = this.globalVariableService.getFilterParams({ "offSetValue": 0, "limitValue": this.itemsPerPage });
-            this.filterParams = this.globalVariableService.getFilterParams();
-            if (this.filterParams.nnrt_id != undefined) {
-              const firstNewAPIs = this.nodeSelectsService.getMasterListsRevampLevelOne(this.filterParams);
-              let combinedDataNewAPI;
-              if (this.filterParams.nnrt_id2 != undefined) {
-                const secondNewAPI = this.nodeSelectsService.getMasterListsRevampLevelTwo(this.filterParams);
-                if (this.filterParams.nnrt_id3 != undefined) {
-                  const thirdNewAPI = this.nodeSelectsService.getMasterListsRevampLevelThree(this.filterParams);
-                  combinedDataNewAPI = [firstNewAPIs, secondNewAPI, thirdNewAPI];
-                } else {
-                  combinedDataNewAPI = [firstNewAPIs, secondNewAPI];
+
+            // console.log("check or not: ", this.scenarioForm.value.result_set_checked);
+            // console.log("with edge checked or not: ", this.scenarioForm.value.result_set_with_edge_type);
+
+            if (!this.scenarioForm.value.result_set_checked && !this.scenarioForm.value.result_set_with_edge_type) {
+              this.scenario = {
+                user_id: this.currentUser,
+                filter_criteria: filterCC, //filterCC,
+                filter_name: this.scenarioForm.value.filter_name,
+                user_comments: this.scenarioForm.value.user_comments,
+                result_set_checked: false,
+                result_set_with_edge_type: false
+              };
+              console.log("your scenario1: ", this.scenario);
+              this.scenarioService.addUserScenario(this.scenario).subscribe(
+                data => {
+                  const datas: any = data;
+                  alert("Scenario Saved Successfully...");
+                  this.userScenario.close();
+                },
+                err => {
+                  alert("Please choose another scenario name, this one is already exists or Data size is large. Reduce it by apply more accurate filters");
+                  this.loadingScenario = false;
+                  console.log(err);
+                },
+                () => {
+                  this.scenarioForm.value.filter_name = "";
+                  this.scenarioForm.value.user_comments = "";
+                  this.scenarioForm.value.result_set_checked = 0;
+                  this.loadingScenario = false;
                 }
-              } else {
-                combinedDataNewAPI = [firstNewAPIs];
-              }
+              );
+            }
+            else {
 
-              forkJoin(combinedDataNewAPI) //we can use more that 2 api request 
-                .subscribe(
-                  result => {
-                    console.log("you load here: ", result);
-                    //this will return list of array of the result
-                    this.firstLoadApiNewResult = result[0];
-                    this.secondLoadApiNewResult = result[1];
-                    this.thirdLoadApiNewResult = result[2];
-                    // console.log("first Load Api Result: ", this.firstLoadApiNewResult);
-                    // console.log("second Load Api Result: ", this.secondLoadApiNewResult);
-                    // console.log("third Load Api Result: ", this.thirdLoadApiNewResult);
+              this.scenario = {
+                user_id: this.currentUser,
+                filter_criteria: filterCC, //filterCC,
+                filter_name: this.scenarioForm.value.filter_name,
+                user_comments: this.scenarioForm.value.user_comments,
+                result_set_checked: this.scenarioForm.value.result_set_checked,
+                result_set_with_edge_type: this.scenarioForm.value.result_set_with_edge_type,
+                result_data_set: this.detailsLists,
+                result_data_set_edge: this.detailsEdgeLists
+              };
+              console.log("your scenario2: ", this.scenario);
 
-                    ////////// **************** Merging the data into one place *******************////////////////              
-                    this.masterListsDataDetailsNewLevelOne = this.firstLoadApiNewResult.masterListsData;
-                    this.masterListsDataNew = this.masterListsDataDetailsNewLevelOne;
-                    console.log("First Level New Data: ", this.masterListsDataDetailsNewLevelOne);
-                    let firstLevelNewDataStore = this.masterListsDataDetailsNewLevelOne; //Store the First level data
+              this.scenarioService.addUserScenario(this.scenario).subscribe(
+                data => {
+                  const datas: any = data;
+                  // console.log("dataFromSave: ", datas.scenarioLastId); // GET the last insert Scenario ID
+                  alert("Scenario Saved Successfully...");
+                  this.userScenario.close();
+                  // this.scenarioForm.value.filter_name = "";
+                  // this.scenarioForm.value.user_comments = "";
+                  // console.log(data);                
+                  // this.informatorySecarioExpendedStatus = false;                
+                },
+                err => {
+                  alert("Please choose another scenario name, this one is already exists or Data size is large. Reduce it by apply more accurate filters");
+                  this.loadingScenario = false;
+                  console.log(err);
+                },
+                () => {
+                  this.scenarioForm.value.filter_name = "";
+                  this.scenarioForm.value.user_comments = "";
+                  this.scenarioForm.value.result_set_checked = 0;
+                  this.scenarioForm.value.result_set_with_edge_type = 0;
+                  this.loadingScenario = false;
+                }
+              );
 
-                    //Second Degree Data
-                    this.masterListsDataDetailsNewLevelTwo = [];
-                    if (this.secondLoadApiNewResult != undefined) {
-                      //Second level data and Combined data first and second level
-                      this.masterListsDataDetailsNewLevelTwo = this.secondLoadApiNewResult.masterListsData;
-                      console.log("Second Level New Data: ", this.masterListsDataDetailsNewLevelTwo);
-                      this.masterListsDataNew = [].concat(firstLevelNewDataStore, this.masterListsDataDetailsNewLevelTwo);
-                    }
-                    let secondLevelNewDataStore = this.masterListsDataDetailsNewLevelTwo; //Store the First level data
+            }
 
-                    //Third Degree Data
-                    this.masterListsDataDetailsNewLevelThree = [];
-                    if (this.thirdLoadApiNewResult != undefined) {
-                      this.masterListsDataDetailsNewLevelThree = this.thirdLoadApiNewResult.masterListsData;
-                      console.log("Third Level New Data: ", this.masterListsDataDetailsNewLevelThree);
-                      this.masterListsDataNew = [].concat(firstLevelNewDataStore, secondLevelNewDataStore, this.masterListsDataDetailsNewLevelThree);
-                    }
-                    console.log("Combined Data New Load: ", this.masterListsDataNew);
-                    //End here
-
-                    let detailsLists: Array<object> = [];
-                    for (var i = 0; i < this.masterListsDataNew.length; i++) {
-                      detailsLists.push({
-                        'news_id': i+1,
-                        'sourcenode': this.masterListsDataNew[i].sourcenode_name,
-                        'destinationnode': this.masterListsDataNew[i].destinationnode_name,
-                        'level': this.masterListsDataNew[i].level,
-                        'PMIDCount': this.masterListsDataNew[i].pmids,
-                        'RankScore': this.masterListsDataNew[i].rank_score
-                      });
-                    }
-
-                    this.scenario = {
-                      user_id: this.currentUser,
-                      // module_id: this.globalVariableService.getSelectedModules(),
-                      // page_id: this.globalVariableService.getSelectedPageType(),
-                      filter_criteria: filterCC, //filterCC,
-                      filter_name: this.scenarioForm.value.filter_name,
-                      user_comments: this.scenarioForm.value.user_comments,
-                      result_set_checked: this.scenarioForm.value.result_set_checked,
-                      result_data_set: detailsLists
-                    };
-                    console.log("your scenario: ", this.scenario);
-
-                    this.scenarioService.addUserScenario(this.scenario).subscribe(
-                      data => {
-                        const datas: any = data;
-                        // console.log("dataFromSave: ", datas.scenarioLastId); // GET the last insert Scenario ID
-
-                        //Start Result set is also stored in the excel format 
-                        // if (this.scenarioForm.value.result_set == 1) {
-                        //   //Save or download the result set into excel format
-                        //   console.log("here all result set: ", this.masterListsDataDetailsCombined);
-
-                        // let detailsLists: Array<object> = [];
-                        // for (var i = 0; i < this.masterListsDataDetailsCombined.length; i++) {
-                        //   detailsLists.push({
-                        //     'news_id': this.masterListsDataDetailsCombined[i].news_id,
-                        //     'sourcenode': this.masterListsDataDetailsCombined[i].sourcenode_name,
-                        //     'destinationnode': this.masterListsDataDetailsCombined[i].destinationnode_name,
-                        //     'level': this.masterListsDataDetailsCombined[i].level,
-                        //     'PMIDCount': this.masterListsDataDetailsCombined[i].pmidCount
-                        //   });
-                        // }
-                        //   /* generate worksheet */
-                        //   const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(detailsLists);
-
-                        //   /* generate workbook and add the worksheet */
-                        //   const wb: XLSX.WorkBook = XLSX.utils.book_new();
-                        //   XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-
-                        //   /* save to file */
-                        //   // console.log("values: ", this.myDateValue);
-                        //   this.fileName = this.scenarioForm.value.filter_name + "_" + this.myDateValue + '.xlsx';
-                        //   const xcelFileName = XLSX.writeFile(wb, this.fileName);
-                        //   console.log("fileName: ", this.fileName);
-                        //   console.log("xcelFileName: ", xcelFileName);
-
-                        //   ////////// START UPDATE the scenario id and update the url with associative scenario id ////////////////////
-                        //   const scenarioDetails = {
-                        //     user_id: this.currentUser,
-                        //     scenario_id: datas.scenarioLastId,
-                        //     fileName: this.fileName
-                        //   }
-                        //   this.scenarioService.updateUserScenario(scenarioDetails).subscribe(
-                        //     data2 => {
-                        //       console.log("dataFromUpdate: ", data2); // GET the last insert Scenario ID
-                        //       alert("Scenario Saved Successfully and URL updated successfully...");
-                        //     },
-                        //     err => {
-                        //       alert("Something is wrong with your update of URL");
-                        //       this.loadingScenario = false;
-                        //       console.log(err);
-                        //     },
-                        //     () => {
-                        //       this.loadingScenario = false;
-                        //     }
-                        //   )
-                        // } 
-                        ////////// END UPDATE the scenario id and update the url with associative scenario id ////////////////////
-                        // else {
-                        //   alert("Scenario Saved Successfully...");
-                        // }
-
-                        alert("Scenario Saved Successfully...");
-                        this.userScenario.close();
-                        // this.scenarioForm.value.filter_name = "";
-                        // this.scenarioForm.value.user_comments = "";
-                        // console.log(data);                
-                        // this.informatorySecarioExpendedStatus = false;                
-                      },
-                      err => {
-                        alert("Please choose another scenario name, this one is already exists or Data size is large. Reduce it by apply more accurate filters");
-                        this.loadingScenario = false;
-                        console.log(err);
-                      },
-                      () => {
-                        this.scenarioForm.value.filter_name = "";
-                        this.scenarioForm.value.user_comments = "";
-                        this.scenarioForm.value.result_set_checked = 0;
-                        this.loadingScenario = false;
-                      }
-                    );
-                  });
-
-            }//end if nnrt_id is not empty tag closed
           }
         },
         err => {

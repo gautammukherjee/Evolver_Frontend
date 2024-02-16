@@ -612,7 +612,7 @@ export class DistributionByRelGrpComponent implements OnInit {
   }
 
   drawColumnChartDrillDown() {
-    Highcharts.chart('container2', <any>{
+    Highcharts.chart('container_popup', <any>{
       chart: {
         type: 'column',
         plotBorderWidth: 1,
