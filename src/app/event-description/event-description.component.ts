@@ -1018,7 +1018,6 @@ export class EventDescriptionComponent implements OnInit {
     } else {
       this.detailsEdgeLists = [];
     }
-
   }
   //End to get the data
 
@@ -1055,7 +1054,6 @@ export class EventDescriptionComponent implements OnInit {
             // return false;
           }
           else {
-
             // console.log("check or not: ", this.scenarioForm.value.result_set_checked);
             // console.log("with edge checked or not: ", this.scenarioForm.value.result_set_with_edge_type);
 
@@ -1089,7 +1087,6 @@ export class EventDescriptionComponent implements OnInit {
               );
             }
             else {
-
               this.scenario = {
                 user_id: this.currentUser,
                 filter_criteria: filterCC, //filterCC,
@@ -1126,9 +1123,7 @@ export class EventDescriptionComponent implements OnInit {
                   this.loadingScenario = false;
                 }
               );
-
             }
-
           }
         },
         err => {
