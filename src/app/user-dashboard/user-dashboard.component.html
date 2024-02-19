@@ -44,7 +44,7 @@
                     <th>Scenario Name</th>
                     <th>Username</th>
                     <th>URL</th>
-                    <!-- <th>URL2</th> -->
+                    <th>URL2</th>
                     <th>Created</th>
                     <th>Comments</th>
                     <th>Action</th>
@@ -61,8 +61,8 @@
                     <td >{{scenario.user_name}}</td>
                     <td *ngIf="scenario.uploaded_file_url!=null"><a href="{{scenario.uploaded_file_url}}">Download Saved Result</a></td>
                     <td *ngIf="scenario.uploaded_file_url==null">NA</td>
-                    <!-- <td *ngIf="scenario.uploaded_file_url2!=null"><a href="{{scenario.uploaded_file_url2}}">Download Saved Result2</a></td>
-                    <td *ngIf="scenario.uploaded_file_url2==null">NA</td> -->
+                    <td *ngIf="scenario.uploaded_file_url2!=null"><a href="{{scenario.uploaded_file_url2}}">Download Saved Result2</a></td>
+                    <td *ngIf="scenario.uploaded_file_url2==null">NA</td>
                     <td >{{scenario.created_at | date: 'MM-dd-yyyy'}}</td>
                     <td >
                         <!-- {{ (scenario.user_comments.length>15)? (scenario.user_comments |

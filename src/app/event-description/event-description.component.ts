@@ -1123,7 +1123,9 @@ export class EventDescriptionComponent implements OnInit {
                   this.loadingScenario = false;
                 }
               );
+
             }
+
           }
         },
         err => {
