@@ -81,6 +81,7 @@
                                         data-filter-control="select" data-tableexport-value="Rank">
                                         Rank</th>
                                     <th data-field="edgeNeCount" width="10%">
+                                    <th data-field="ctLists" width="10%">
                                     </th>
 
                                     <!-- <th data-field="edgeNe" data-sortable="true" width="10%">
@@ -137,7 +138,7 @@
 </div>
 
 <!-- help section goes here -->
-<ng-template #edgeTypeDescModal let-c="close" let-d="dismiss">
+<!-- <ng-template #edgeTypeDescModal let-c="close" let-d="dismiss">
     <div class="modal-header blue_bg_hdr  modal-lg">
         <h4 class="modal-title">Edge Type Name(s) </h4>
         <button class="close" aria-label="Close" (click)="d('Cross click')">
@@ -181,7 +182,7 @@
             </div>
         </div>
     </div>
-</ng-template>
+</ng-template> -->
 
 <ng-template #articleModal let-c="close" let-d="dismiss">
     <div class="modal-content modal-fullscreen" id="articleModal">
@@ -273,6 +274,77 @@
 
 </ng-template>
 
+<!-- //CT lists -->
+<ng-template #ctModal let-c="close" let-d="dismiss">
+    <div class="modal-content modal-fullscreen" id="articleModal">
+        <div class="modal-header blue_bg_hdr modal-lg">
+            <h4 class="modal-title">CT Lists(s) </h4>
+            <button class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body white_bg without_bord_rad">
+            <div class="row">
+                <div class="col-md-12 bottam-buffer home_tiles modal-event-articles">
+
+                    <div class="m-1">
+                        <div class="fade show">                            
+                            <table id="ct_details" data-toolbar="#toolbar" data-search="true"
+                                data-show-export="true" data-show-columns="true" data-page-size="50"
+                                data-filter-control="true" data-page-list="[10, 25, 50, 100, 500, All]">
+                                <thead>
+                                    <tr>
+                                        <!-- <th data-field="state" data-checkbox="true">ID</th> -->
+                                        <th data-field="id" data-sortable="true" width="2%">
+                                            #
+                                        </th>
+                                        <th data-field="nctid" data-sortable="true" width="10%"
+                                            data-filter-control="input">
+                                            NCTID
+                                        </th>
+                                        <th data-field="title" data-sortable="true" width="10%"
+                                            data-filter-control="input">
+                                            Title
+                                        </th>
+                                        <th data-field="disease_name" data-sortable="true" width="10%"
+                                            data-filter-control="input">
+                                            Disease Name
+                                        </th>
+                                        <th data-field="phase_name" data-sortable="true" width="10%"
+                                            data-filter-control="select">
+                                            Phase Name
+                                        </th>
+                                        <th data-field="verification_date" data-sortable="true" width="10%"
+                                            data-filter-control="input">
+                                            Verification Date
+                                        </th>                                        
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="text-center" *ngIf="loaderCTLists">
+                                <img src="../../assets/images/loader_big.gif" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overlay" *ngIf="loaderEvidence">
+                <img style="margin:155px 508px;" src="../../assets/images/loader_big.gif" />
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <!-- <a class="btn btn-primary" (click)="captureSentences(userSentences)">
+                <i class="bi bi-download" title="Download & Save"></i></a> -->
+            <!-- <a class="btn btn-primary " (click)="articlesWithEvidenceData()">Download</a> -->
+            <a class="btn btn-primary " (click)="scrollTop()">
+                <i class="bi bi-arrow-up-circle" title="Go to Top"></i></a>
+        </div>
+    </div>
+
+</ng-template>
+
 <!-- SAVE scenario -->
 <ng-template #userScenario let-c="close" let-d="dismiss">
 
@@ -349,7 +421,6 @@
     <!-- comment from piyush -->
 </ng-template>
 <!-- SAVE scenario with result set -->
-
 
 <!--------------------- SAVE article sentences ----------------------------->
 <ng-template #userSentences let-c="close" let-d="dismiss">

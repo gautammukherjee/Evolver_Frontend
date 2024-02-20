@@ -43,13 +43,15 @@ export class EventDescriptionComponent implements OnInit {
   private modalRef: any;
 
   loaderEdgeType = false;
-  private edgeTypeDescModal: any;
-  @ViewChild('edgeTypeDescModal', { static: false }) edgeTypeDescModal_Detail: ElementRef | any;
-
-
   loaderArticle = false;
-  private articleModal: any;
+  loaderCTLists = false;
+
+  // private edgeTypeDescModal: any;
+  // private articleModal: any;
+
+  // @ViewChild('edgeTypeDescModal', { static: false }) edgeTypeDescModal_Detail: ElementRef | any;
   @ViewChild('articleModal', { static: false }) articleModal_Detail: ElementRef | any;
+  @ViewChild('ctModal', { static: false }) ctListsModal_Detail: ElementRef | any;
 
   edgeTypeList: any = [];
   helpContents: any;
@@ -77,7 +79,9 @@ export class EventDescriptionComponent implements OnInit {
   public edgeTypes: any = [];
   public edgeHere: any = [];
   public articleHere: any = [];
+  public ctListsHere: any = [];
   articleList: any = [];
+  ctList: any = [];
   public articleHerePMID: any = [];
   articlePMID: any = [];
   notEmptyPost: boolean = true;
@@ -331,6 +335,7 @@ export class EventDescriptionComponent implements OnInit {
                 // temps["news_id"] = event.news_id;
                 temps["news_id"] = (index + 1);
                 temps["sourcenode_name"] = event.sourcenode_name;
+                temps["destinationnode"] = event.destinationnode;
                 temps["destinationnode_name"] = event.destinationnode_name;
                 temps["level"] = event.level;
                 //temps["edgeTypes"] = "<button class='btn btn-sm btn-primary'>Edge Types</button> &nbsp;";
@@ -340,6 +345,7 @@ export class EventDescriptionComponent implements OnInit {
                 temps["edgeTypesID"] = edgeTypeIdsPost;
                 temps["edgeNeId"] = edgeTypeNeIdsPost;
                 temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'><i class='bi bi-card-heading'></i>&nbsp;Articles</button> &nbsp;";
+                temps["ctLists"] = "<button class='btn btn-sm btn-primary'><i class='bi bi-card-heading'></i>&nbsp;CT Lists</button> &nbsp;";
                 this.masterListsDataDetailsLoaded.push(temps);
               });
               this.masterListsDataDetailsCombined = this.masterListsDataDetailsLoaded;
@@ -410,6 +416,11 @@ export class EventDescriptionComponent implements OnInit {
           this.modalRef = this.modalService.open(this.articleModal_Detail, { size: 'xl', keyboard: false, backdrop: 'static' });
           this.ArticlePopup(field.edgeNeId, field.sourcenode_name, field.destinationnode_name, field.edgeTypesID, field.level);
         }
+        if ($element == "ctLists") {
+          this.loaderCTLists = true;
+          this.modalRef = this.modalService.open(this.ctListsModal_Detail, { size: 'xl', keyboard: false, backdrop: 'static' });
+          this.CTPopup(field.destinationnode);
+        }
       },
     });
 
@@ -474,7 +485,8 @@ export class EventDescriptionComponent implements OnInit {
     //console.log(typeof edgeNeIdArr + edgeNeIdArr +edgeNeIdArr[0]);
     var pubmedBaseUrl = "https://www.ncbi.nlm.nih.gov/pubmed/";
 
-    this.nodeSelectsService.getEdgeTypeSentencePMIDLists({ 'ne_ids': edgeNeIdArr, 'edge_type_id': (level == 1 ? this.filterParams['edge_type_id'] : this.filterParams['edge_type_id2']) }).subscribe((p: any) => {
+    // this.nodeSelectsService.getEdgeTypeSentencePMIDLists({ 'ne_ids': edgeNeIdArr, 'edge_type_id': (level == 1 ? this.filterParams['edge_type_id'] : this.filterParams['edge_type_id2']) }).subscribe((p: any) => {
+    this.nodeSelectsService.getEdgeTypeSentencePMIDLists({ 'ne_ids': edgeNeIdArr, 'edge_type_id': (level == 1 ? this.filterParams['edge_type_id'] : (level == 2 ? this.filterParams['edge_type_id2'] : this.filterParams['edge_type_id3'])) }).subscribe((p: any) => {
       this.result = p;
       console.log(this.result);
       this.articleHere = this.result.pmidListsSentence;
@@ -635,6 +647,48 @@ export class EventDescriptionComponent implements OnInit {
     });
   }
 
+  //Start For CT details
+
+  CTPopup(destinationNode: string) {
+    this.ctListsHere = [];
+    console.log("destinationNode: ", destinationNode);
+    this.nodeSelectsService.getCTPMIDLists({ 'unique_destination_node': destinationNode }).subscribe((p: any) => {
+      this.result = p;
+      console.log(this.result);
+      this.ctListsHere = this.result.CTDATAInDetails;
+      this.ctList = [];
+      var i = 1;
+      this.ctListsHere.forEach((event: any, index: any) => {
+        var temps: any = {};
+        temps["id"] = (index + 1);        
+        temps["nctid"] = event.nct_id;        
+        temps["title"] = event.title;
+        temps["disease_name"] = event.disease_name;
+        temps["phase_name"] = event.phase_name;
+        temps["verification_date"] = event.verification_date;
+        i++
+        this.ctList.push(temps);
+      });
+      jQuery('#ct_details').bootstrapTable({
+        bProcessing: true,
+        bServerSide: true,
+        pagination: true,
+        showToggle: true,
+        showColumns: true,
+        search: true,
+        pageSize: 500,
+        striped: true,
+        showFullscreen: true,
+        stickyHeader: true,
+        showExport: true,
+        data: this.ctList
+      });
+      this.loaderCTLists = false;
+    });
+  }
+
+  //End for CT details
+
   // showPMIDLists(edgeNeId: any, sourceNode: string, destinationNode: string) {
   //   const edgeNeIdArr = edgeNeId.split(",");
   //   //console.log(typeof edgeNeIdArr + edgeNeIdArr +edgeNeIdArr[0]);
@@ -789,6 +843,7 @@ export class EventDescriptionComponent implements OnInit {
                 // temps["news_id"] = event.news_id;
                 temps["news_id"] = j;
                 temps["sourcenode_name"] = event.sourcenode_name;
+                temps["destinationnode"] = event.destinationnode;
                 temps["destinationnode_name"] = event.destinationnode_name;
                 temps["level"] = event.level;
                 //temps["edgeTypes"] = "<button class='btn btn-sm btn-primary'>Edge Types</button> &nbsp;";
@@ -798,6 +853,7 @@ export class EventDescriptionComponent implements OnInit {
                 temps["edgeTypesID"] = edgeTypeIdsPost;
                 temps["edgeNeId"] = edgeTypeNeIdsPost;
                 temps["edgeNeCount"] = "<button class='btn btn-sm btn-primary'><i class='bi bi-card-heading'></i>&nbsp;Articles</button> &nbsp;";
+                temps["ctLists"] = "<button class='btn btn-sm btn-primary'><i class='bi bi-card-heading'></i>&nbsp;CT Lists</button> &nbsp;";
                 this.masterListsDataDetailsExtra.push(temps);
                 j++;
               });
