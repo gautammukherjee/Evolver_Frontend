@@ -187,6 +187,9 @@ export class NodeSelectsService {
   getEdgeTypeSentencePMIDLists(params: any) {
     return this.http.post(this.API_URL + 'getEdgeTypeSentencePMIDLists', params, httpOptions);
   }
+  getCTPMIDLists(params: any) {
+    return this.http.post(this.API_URL + 'getCTPMIDLists', params, httpOptions);
+  }
 
   getPMIDListsInRelation(params: any) {
     return this.http.post(this.API_URL + 'getPMIDListsInRelation', params, httpOptions);
