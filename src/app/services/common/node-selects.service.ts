@@ -208,10 +208,6 @@ export class NodeSelectsService {
     return this.http.post(this.API_URL + 'getCTDiseaseAssoc', params, httpOptions);
   }
 
-  getCTTrialInvestRels(params: any) {
-    return this.http.post(this.API_URL + 'getCTTrialInvestRels', params, httpOptions);
-  }
-
   getCTInvestigatorName(params: any) {
     return this.http.post(this.API_URL + 'getCTInvestigatorName', params, httpOptions);
   }
